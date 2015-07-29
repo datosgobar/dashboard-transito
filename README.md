@@ -18,4 +18,10 @@ python app.py
 En navegador
 http://0.0.0.0:8080/
 
+Documentacion
+
+https://gevent-socketio.readthedocs.org/en/latest/
+http://bottlepy.org/docs/dev/index.html
+http://gevent.org/intro.html
+
 ```
