@@ -31,22 +31,14 @@ else:
     port = 8080
 
 def parserEmitData(self, result):
+  
+  corredores = ["independencia", "illia", "nueve_de_julio", "alem", "corrientes", \
+  "rivadavia", "av_de_mayo", "san_martin", "juan_b_justo", "cordoba", "paseo_colon", "cabildo", "pueyrredon", "alcorta"]
 
   if len(result):
-    self.emit('independencia', result['corredores'][0][result['corredores'][0].keys()[0]])
-    self.emit('illia', result['corredores'][1][result['corredores'][1].keys()[0]])
-    self.emit('nueve_de_julio', result['corredores'][2][result['corredores'][2].keys()[0]])
-    self.emit('alem', result['corredores'][3][result['corredores'][3].keys()[0]])
-    self.emit('corrientes', result['corredores'][4][result['corredores'][4].keys()[0]])
-    self.emit('rivadavia', result['corredores'][5][result['corredores'][5].keys()[0]])
-    self.emit('av_de_mayo', result['corredores'][6][result['corredores'][6].keys()[0]])
-    self.emit('san_martin', result['corredores'][7][result['corredores'][7].keys()[0]])
-    self.emit('juan_b_justo', result['corredores'][8][result['corredores'][8].keys()[0]])
-    self.emit('cordoba', result['corredores'][9][result['corredores'][9].keys()[0]])
-    self.emit('paseo_colon', result['corredores'][10][result['corredores'][10].keys()[0]])
-    self.emit('cabildo', result['corredores'][11][result['corredores'][11].keys()[0]])
-    self.emit('pueyrredon', result['corredores'][12][result['corredores'][12].keys()[0]])
-    self.emit('alcorta', result['corredores'][13][result['corredores'][13].keys()[0]])
+    for i in range(len(corredores)):
+      self.emit(corredores[i], result['corredores'][i][result['corredores'][i].keys()[0]])
+      time.sleep(0.5)
   else:
     self.emit('info', "sin datos")
 
@@ -57,6 +49,7 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
     def on_receive(self, msg):
 
       if msg:
+        print "connect"
 
         estadocero = {}
         parserEmitData(self, estadocero)
@@ -67,6 +60,8 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
           parserEmitData(self, data)
           time.sleep(300)
 
+    def recv_disconnect(self):
+      print "disconnect"
 
 # genero ruta / que envia template index
 @app.get('/')
