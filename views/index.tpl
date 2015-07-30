@@ -21,7 +21,7 @@
 		});
 
 		// aqui especificamos el canal para la recepcion continua de los datos
-		socket.on('/corredores', function(data) {
+		socket.on('corredores', function(data) {
 			console.log(data)
 		});
 		
