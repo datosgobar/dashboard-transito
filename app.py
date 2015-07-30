@@ -35,15 +35,12 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
     # metodo que escucha on_<<CHANNELL>>(self, msg) enviado desde el front
     def on_receive(self, msg):
       print(msg) # Connected
+      #estado 0
       self.emit("corredores", {})
-
-    # metodo que automaticamente envia datos al front
-    def recv_connect(self):
-      def sendData():
-        while True:
-          data = getData()
-          self.emit('corredores', data)
-        time.sleep(300)
+      while True:
+        data = getData()
+        self.emit('corredores', data)
+      time.sleep(300)
 
 
 # genero ruta / que envia template index
