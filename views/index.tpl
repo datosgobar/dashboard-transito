@@ -67,7 +67,10 @@
 		socket.on('error', function(e){
 			console.log("error")
 		});
-
+		// cuando el client se desconecta, socket tmb lo hace
+		socket.on('info', function(e){
+			console.log(e)
+		});
 		// cuando el client se desconecta, socket tmb lo hace
 		socket.on('disconnect', function(e){
 			console.log("Disconnect.")

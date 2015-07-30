@@ -32,6 +32,7 @@ else:
 
 def parserEmitData(self, result):
 
+  if len(result):
     self.emit('independencia', result['corredores'][0][result['corredores'][0].keys()[0]])
     self.emit('illia', result['corredores'][1][result['corredores'][1].keys()[0]])
     self.emit('nueve_de_julio', result['corredores'][2][result['corredores'][2].keys()[0]])
@@ -46,14 +47,15 @@ def parserEmitData(self, result):
     self.emit('cabildo', result['corredores'][11][result['corredores'][11].keys()[0]])
     self.emit('pueyrredon', result['corredores'][12][result['corredores'][12].keys()[0]])
     self.emit('alcorta', result['corredores'][13][result['corredores'][13].keys()[0]])
-
+  else:
+    self.emit('info', "sin datos")
 
 # clase que hereda funcionalidades de socketio
 class dataSemaforos(BaseNamespace, BroadcastMixin):
 
     # metodo que escucha on_<<CHANNELL>>(self, msg) enviado desde el front
     def on_receive(self, msg):
-      
+
       if msg:
 
         estadocero = {}
