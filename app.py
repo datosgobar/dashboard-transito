@@ -53,15 +53,15 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
 
     # metodo que escucha on_<<CHANNELL>>(self, msg) enviado desde el front
     def on_receive(self, msg):
+      
       if msg:
 
-        data = getData()
-        parserEmitData(self, data)
-        self.emit("corredores", {})
+        estadocero = {}
+        parserEmitData(self, estadocero)
 
         while True:
 
-          data = getData()
+          estadocero = getData()
           parserEmitData(self, data)
           time.sleep(300)
 

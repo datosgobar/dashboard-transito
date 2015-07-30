@@ -6,7 +6,7 @@ import os
 
 def getData():
 	
-	filecorredorfake = os.path.abspath("corredores_fake.json")
+	filecorredorfake = os.path.abspath("analisis/corredores_fake.json")
 	with open(filecorredorfake) as f:
 		output = json.loads(f.read())
 
