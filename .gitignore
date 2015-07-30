@@ -1,4 +1,5 @@
 dist/
 build/
+dashboard_operativo_transito.egg-info/
 *.egg-info/
 *.pyc
