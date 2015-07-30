@@ -1,0 +1,338 @@
+[
+  {
+    "seg_id":"",
+    "corredor":"Independencia",
+    "sentido": "provincia",
+    "nombre": "Corredor independencia",
+    "sub_seg_id": 10
+  },
+  {
+    "seg_id":"",
+    "corredor":"Illia",
+    "sentido": "provincia",    
+    "nombre": "Corredor illia",
+    "sub_seg_id": 11
+  },
+  {
+    "seg_id":"",
+    "corredor":"illia",
+    "sentido": "capital",    
+    "nombre": "Corredor illia",
+    "sub_seg_id": 12
+  },
+  {
+    "seg_id":"",
+    "corredor":"9 de julio",
+    "sentido": "capital",    
+    "nombre": "Corredor 9 de julio interna",
+    "sub_seg_id": 13
+  },
+  {
+    "seg_id":"",
+    "corredor":"9 de julio",
+    "sentido": "capital",
+    "nombre": "Corredor 9 de julio externa",
+    "sub_seg_id": 14
+  },
+  {
+    "seg_id":"",
+    "corredor":"9 de julio",
+    "sentido": "provincia",
+    "nombre": "Corredor 9 de julio interna",
+    "sub_seg_id": 15
+  },
+  {
+    "seg_id":"",
+    "corredor":"9 de julio",
+    "sentido": "provincia",
+    "nombre": "Corredor 9 de julio externa",
+    "sub_seg_id": 16
+  },
+  {
+    "seg_id":"",
+    "corredor":"9 de julio",
+    "sentido": "capital",
+    "nombre": "Corredor 9 de julio interna",
+    "sub_seg_id": 17
+  },
+  {
+    "seg_id":"",
+    "corredor":"9 de julio",
+    "sentido": "capital",
+    "nombre": "Corredor 9 de julio externa",
+    "sub_seg_id": 18
+  },
+  {
+    "seg_id":"",
+    "corredor":"9 de julio",
+    "sentido": "provincia",
+    "nombre": "Corredor 9 de julio interna",
+    "sub_seg_id": 19
+  },
+  {
+    "seg_id":"",
+    "corredor":"9 de julio",
+    "sentido": "provincia",
+    "nombre": "Corredor 9 de julio externa",
+    "sub_seg_id": 20
+  },
+  {
+    "seg_id":"",
+    "corredor":"alem",
+    "sentido": "capital",
+    "nombre": "Corredor alem",
+    "sub_seg_id": 21
+  },
+  {
+    "seg_id":"",
+    "corredor":"alem",
+    "sentido": "provincia",
+    "nombre": "Corredor alem",
+    "sub_seg_id": 22
+  },
+  {
+    "seg_id":"",
+    "corredor":"corrientes",
+    "sentido": "capital",
+    "nombre": "Corredor corrientes",
+    "sub_seg_id": 23
+  },
+  {
+    "seg_id":"",
+    "corredor":"rivadavia",
+    "sentido": "capital",
+    "nombre": "Corredor rivadavia",
+    "sub_seg_id": 24
+  },
+  {
+    "seg_id":"",
+    "corredor":"av de mayo",
+    "sentido": "capital",
+    "nombre": "Corredor av de mayo",
+    "sub_seg_id": 25
+  },
+  {
+    "seg_id":"",
+    "corredor":"san martin",
+    "sentido": "capital",
+    "nombre": "Corredor san martin",
+    "sub_seg_id": 26
+  },
+  {
+    "seg_id":"",
+    "corredor":"san martin",
+    "sentido": "provincia",
+    "nombre": "Corredor san martin",
+    "sub_seg_id": 27
+  },
+  {
+    "seg_id":"",
+    "corredor":"san martin",
+    "sentido": "capital",
+    "nombre": "Corredor san martin",
+    "sub_seg_id": 28
+  },
+  {
+    "seg_id":"",
+    "corredor":"san martin",
+    "sentido": "provincia",
+    "nombre": "Corredor san martin",
+    "sub_seg_id": 29
+  },
+  {
+    "seg_id":"",
+    "corredor":"juan b justo",
+    "sentido": "capital",
+    "nombre": "Corredor juan b justo",
+    "sub_seg_id": 30
+  },
+  {
+    "seg_id":"",
+    "corredor":"juan b justo",
+    "sentido": "capital",
+    "nombre": "Corredor juan b justo",
+    "sub_seg_id": 31
+  },
+  {
+    "seg_id":"",
+    "corredor":"juan b justo",
+    "sentido": "capital",
+    "nombre": "Corredor juan b justo",
+    "sub_seg_id": 32
+  },
+  {
+    "seg_id":"",
+    "corredor":"juan b justo",
+    "sentido": "capital",
+    "nombre": "Corredor juan b justo",
+    "sub_seg_id": 33
+  },
+  {
+    "seg_id":"",
+    "corredor":"juan b justo",
+    "sentido": "provincia",
+    "nombre": "Corredor juan b justo",
+    "sub_seg_id": 34
+  },
+  {
+    "seg_id":"",
+    "corredor":"juan b justo",
+    "sentido": "capital",
+    "nombre": "Corredor juan b justo",
+    "sub_seg_id": 35
+  },
+  {
+    "seg_id":"",
+    "corredor":"cordoba",
+    "sentido": "capital",
+    "nombre": "Corredor cordoba",
+    "sub_seg_id": 36
+  },
+  {
+    "seg_id":"",
+    "corredor":"",
+    "sentido": "capital",
+    "nombre": "Corredor cordoba",
+    "sub_seg_id": 37
+  },
+  {
+    "seg_id":"",
+    "corredor":"cordoba",
+    "sentido": "capital",
+    "nombre": "Corredor paseo colon",
+    "sub_seg_id": 38
+  },
+  {
+    "seg_id":"",
+    "corredor":"paseo colon",
+    "sentido": "provincia",
+    "nombre": "Corredor paseo colon",
+    "sub_seg_id": 39
+  },
+  {
+    "seg_id":"",
+    "corredor":"",
+    "sentido": "capital",
+    "nombre": "Corredor cabildo",
+    "sub_seg_id": 40
+  },
+  {
+    "seg_id":"",
+    "corredor":"cabildo",
+    "sentido": "provincia",
+    "nombre": "Corredor cabildo",
+    "sub_seg_id": 41
+  },
+  {
+    "seg_id":"",
+    "corredor":"cabildo",
+    "sentido": "provincia",
+    "nombre": "Corredor cabildo",
+    "sub_seg_id": 42
+  },
+  {
+    "seg_id":"",
+    "corredor":"",
+    "sentido": "capital",
+    "nombre": "Corredor cabildo",
+    "sub_seg_id": 43
+  },
+  {
+    "seg_id":"",
+    "corredor":"cabildo",
+    "sentido": "capital",
+    "nombre": "Corredor cabildo",
+    "sub_seg_id": 44
+  },
+  {
+    "seg_id":"",
+    "corredor":"cabildo",
+    "sentido": "capital",
+    "nombre": "Corredor cabildo",
+    "sub_seg_id": 45
+  },
+  {
+    "seg_id":"",
+    "corredor":"pueyrredon",
+    "sentido": "provincia",
+    "nombre": "Corredor pueyrredon",
+    "sub_seg_id": 46
+  },
+  {
+    "seg_id":"",
+    "corredor":"pueyrredon",
+    "sentido": "capital",
+    "nombre": "Corredor pueyrredon",
+    "sub_seg_id": 47
+  },
+  {
+    "seg_id":"",
+    "corredor":"libertador",
+    "sentido": "capital",
+    "nombre": "Corredor libertador",
+    "sub_seg_id": 48
+  },
+  {
+    "seg_id":"",
+    "corredor":"libertador",
+    "sentido": "capital",
+    "nombre": "Corredor libertador",
+    "sub_seg_id": 49
+  },
+  {
+    "seg_id":"",
+    "corredor":"libertador",
+    "sentido": "provincia",
+    "nombre": "Corredor libertador",
+    "sub_seg_id": 50
+  },
+  {
+    "seg_id":"",
+    "corredor":"libertador",
+    "sentido": "capital",
+    "nombre": "Corredor libertador",
+    "sub_seg_id": 51
+  },
+  {
+    "seg_id":"",
+    "corredor":"libertador",
+    "sentido": "provincia",
+    "nombre": "Corredor libertador",
+    "sub_seg_id": 52
+  },
+  {
+    "seg_id":"",
+    "corredor":"libertador",
+    "sentido": "capital",
+    "nombre": "Corredor libertador",
+    "sub_seg_id": 53
+  },
+  {
+    "seg_id":"",
+    "corredor":"alcorta",
+    "sentido": "provincia",
+    "nombre": "Corredor alcorta",
+    "sub_seg_id": 54
+  },
+  {
+    "seg_id":"",
+    "corredor":"alcorta",
+    "sentido": "provincia",
+    "nombre": "Corredor alcorta",
+    "sub_seg_id": 55
+  },
+  {
+    "seg_id":"",
+    "corredor":"illia",
+    "sentido": "provincia",
+    "nombre": "Corredor illia",
+    "sub_seg_id": 56
+  },
+  {
+    "seg_id":"",
+    "corredor":"illia",
+    "sentido": "capital",
+    "nombre": "Corredor illia",
+    "sub_seg_id": 57
+  }
+]

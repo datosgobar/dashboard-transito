@@ -9,5 +9,5 @@ setup(name='dashboard operativo transito',
       author='lab gcba',
       author_email='',
       url='http://git.gcba.gob.ar/labgcba/dashboard-operativo-transito.git',
-      install_requires=['bottle', 'gevent', 'gevent-socketio']
+      install_requires=['bottle', 'gevent', 'gevent-socketio', 'pymongo']
       )

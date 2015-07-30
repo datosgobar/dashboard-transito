@@ -6,6 +6,7 @@ import gevent
 import os
 import bottle
 
+from analisis import * 
 from bottle import error
 from socketio import socketio_manage
 from socketio.mixins import BroadcastMixin
@@ -34,12 +35,15 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
     # metodo que escucha on_<<CHANNELL>>(self, msg) enviado desde el front
     def on_receive(self, msg):
       print(msg) # Connected
-      self.emit("nada", "ok")
+      self.emit("corredores", {})
 
     # metodo que automaticamente envia datos al front
-    def on_message(self, msg):
-      self.emit('message', msg)
-      print msg
+    def recv_connect(self):
+      def sendData():
+        while True:
+          data = getData()
+          self.emit('corredores', data)
+        time.sleep(300)
 
 
 # genero ruta / que envia template index

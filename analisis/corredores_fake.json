@@ -1,0 +1,1083 @@
+{
+	"corredores": [{
+			"ID_Corredor" : {
+				"nombre": "Libertador",
+				"velocidad_prom_cap": "22",
+				"velocidad_prom_prov": "15",
+				"segmentos" : [{
+						"id": "1",
+						"capital": {
+							"id": "12",
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"id": "32",
+							"timestamp_medicion": "",
+							"anomalia" : "2",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				}]
+			}
+
+		},{
+			"ID_Corredor" : {
+				"nombre": "Libertador",
+				"velocidad_prom_cap": "22",
+				"velocidad_prom_prov": "15",
+				"segmentos" : [{
+						"id": "1",
+						"capital": {
+							"id": "12",
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"id": "32",
+							"timestamp_medicion": "",
+							"anomalia" : "2",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				}]
+			}
+
+		},{
+			"ID_Corredor" : {
+				"nombre": "Libertador",
+				"velocidad_prom_cap": "22",
+				"velocidad_prom_prov": "15",
+				"segmentos" : [{
+						"id": "1",
+						"capital": {
+							"id": "12",
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"id": "32",
+							"timestamp_medicion": "",
+							"anomalia" : "2",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				}]
+			}
+
+		},{
+			"ID_Corredor" : {
+				"nombre": "Libertador",
+				"velocidad_prom_cap": "22",
+				"velocidad_prom_prov": "15",
+				"segmentos" : [{
+						"id": "1",
+						"capital": {
+							"id": "12",
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"id": "32",
+							"timestamp_medicion": "",
+							"anomalia" : "2",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				}]
+			}
+
+		},{
+			"ID_Corredor" : {
+				"nombre": "Libertador",
+				"velocidad_prom_cap": "22",
+				"velocidad_prom_prov": "15",
+				"segmentos" : [{
+						"id": "1",
+						"capital": {
+							"id": "12",
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"id": "32",
+							"timestamp_medicion": "",
+							"anomalia" : "2",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				}]
+			}
+
+		},{
+			"ID_Corredor" : {
+				"nombre": "Libertador",
+				"velocidad_prom_cap": "22",
+				"velocidad_prom_prov": "15",
+				"segmentos" : [{
+						"id": "1",
+						"capital": {
+							"id": "12",
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"id": "32",
+							"timestamp_medicion": "",
+							"anomalia" : "2",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				}]
+			}
+
+		},{
+			"ID_Corredor" : {
+				"nombre": "Libertador",
+				"velocidad_prom_cap": "22",
+				"velocidad_prom_prov": "15",
+				"segmentos" : [{
+						"id": "1",
+						"capital": {
+							"id": "12",
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"id": "32",
+							"timestamp_medicion": "",
+							"anomalia" : "2",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				}]
+			}
+
+		},{
+			"ID_Corredor" : {
+				"nombre": "Libertador",
+				"velocidad_prom_cap": "22",
+				"velocidad_prom_prov": "15",
+				"segmentos" : [{
+						"id": "1",
+						"capital": {
+							"id": "12",
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"id": "32",
+							"timestamp_medicion": "",
+							"anomalia" : "2",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				}]
+			}
+
+		},{
+			"ID_Corredor" : {
+				"nombre": "Libertador",
+				"velocidad_prom_cap": "22",
+				"velocidad_prom_prov": "15",
+				"segmentos" : [{
+						"id": "1",
+						"capital": {
+							"id": "12",
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"id": "32",
+							"timestamp_medicion": "",
+							"anomalia" : "2",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				}]
+			}
+
+		},{
+			"ID_Corredor" : {
+				"nombre": "Libertador",
+				"velocidad_prom_cap": "22",
+				"velocidad_prom_prov": "15",
+				"segmentos" : [{
+						"id": "1",
+						"capital": {
+							"id": "12",
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"id": "32",
+							"timestamp_medicion": "",
+							"anomalia" : "2",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				}]
+			}
+
+		},{
+			"ID_Corredor" : {
+				"nombre": "Libertador",
+				"velocidad_prom_cap": "22",
+				"velocidad_prom_prov": "15",
+				"segmentos" : [{
+						"id": "1",
+						"capital": {
+							"id": "12",
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"id": "32",
+							"timestamp_medicion": "",
+							"anomalia" : "2",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				}]
+			}
+
+		},{
+			"ID_Corredor" : {
+				"nombre": "Libertador",
+				"velocidad_prom_cap": "22",
+				"velocidad_prom_prov": "15",
+				"segmentos" : [{
+						"id": "1",
+						"capital": {
+							"id": "12",
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"id": "32",
+							"timestamp_medicion": "",
+							"anomalia" : "2",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				}]
+			}
+
+		}]
+}

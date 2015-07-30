@@ -21,10 +21,10 @@
 		});
 
 		// aqui especificamos el canal para la recepcion continua de los datos
-		socket.on('nada', function(data) {
+		socket.on('/corredores', function(data) {
 			console.log(data)
 		});
-
+		
 		// en caso que socket disponga de un error
 		socket.on('error', function(e){
 			console.log("error")
