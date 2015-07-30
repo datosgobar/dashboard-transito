@@ -1,6 +1,6 @@
 {
 	"corredores": [{
-			"ID_Corredor" : {
+			"independencia" : {
 				"nombre": "Libertador",
 				"velocidad_prom_cap": "22",
 				"velocidad_prom_prov": "15",
@@ -90,8 +90,8 @@
 			}
 
 		},{
-			"ID_Corredor" : {
-				"nombre": "Libertador",
+			"Illia" : {
+				"nombre": "Illia",
 				"velocidad_prom_cap": "22",
 				"velocidad_prom_prov": "15",
 				"segmentos" : [{
@@ -180,8 +180,8 @@
 			}
 
 		},{
-			"ID_Corredor" : {
-				"nombre": "Libertador",
+			"9_de_julio" : {
+				"nombre": "9 de julio",
 				"velocidad_prom_cap": "22",
 				"velocidad_prom_prov": "15",
 				"segmentos" : [{
@@ -270,8 +270,8 @@
 			}
 
 		},{
-			"ID_Corredor" : {
-				"nombre": "Libertador",
+			"alem" : {
+				"nombre": "alem",
 				"velocidad_prom_cap": "22",
 				"velocidad_prom_prov": "15",
 				"segmentos" : [{
@@ -360,8 +360,8 @@
 			}
 
 		},{
-			"ID_Corredor" : {
-				"nombre": "Libertador",
+			"corrientes" : {
+				"nombre": "corrientes",
 				"velocidad_prom_cap": "22",
 				"velocidad_prom_prov": "15",
 				"segmentos" : [{
@@ -450,8 +450,8 @@
 			}
 
 		},{
-			"ID_Corredor" : {
-				"nombre": "Libertador",
+			"rivadavia" : {
+				"nombre": "rivadavia",
 				"velocidad_prom_cap": "22",
 				"velocidad_prom_prov": "15",
 				"segmentos" : [{
@@ -540,8 +540,8 @@
 			}
 
 		},{
-			"ID_Corredor" : {
-				"nombre": "Libertador",
+			"av_de_mayo" : {
+				"nombre": "av de mayo",
 				"velocidad_prom_cap": "22",
 				"velocidad_prom_prov": "15",
 				"segmentos" : [{
@@ -630,8 +630,8 @@
 			}
 
 		},{
-			"ID_Corredor" : {
-				"nombre": "Libertador",
+			"san_martin" : {
+				"nombre": "san_martin",
 				"velocidad_prom_cap": "22",
 				"velocidad_prom_prov": "15",
 				"segmentos" : [{
@@ -720,8 +720,8 @@
 			}
 
 		},{
-			"ID_Corredor" : {
-				"nombre": "Libertador",
+			"juan_b_justo" : {
+				"nombre": "Juan B Justo",
 				"velocidad_prom_cap": "22",
 				"velocidad_prom_prov": "15",
 				"segmentos" : [{
@@ -810,8 +810,8 @@
 			}
 
 		},{
-			"ID_Corredor" : {
-				"nombre": "Libertador",
+			"cordoba" : {
+				"nombre": "cordoba",
 				"velocidad_prom_cap": "22",
 				"velocidad_prom_prov": "15",
 				"segmentos" : [{
@@ -900,8 +900,8 @@
 			}
 
 		},{
-			"ID_Corredor" : {
-				"nombre": "Libertador",
+			"paseo_colon" : {
+				"nombre": "paseo colon",
 				"velocidad_prom_cap": "22",
 				"velocidad_prom_prov": "15",
 				"segmentos" : [{
@@ -990,8 +990,188 @@
 			}
 
 		},{
-			"ID_Corredor" : {
-				"nombre": "Libertador",
+			"cabildo" : {
+				"nombre": "cabildo",
+				"velocidad_prom_cap": "22",
+				"velocidad_prom_prov": "15",
+				"segmentos" : [{
+						"id": "1",
+						"capital": {
+							"id": "12",
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"id": "32",
+							"timestamp_medicion": "",
+							"anomalia" : "2",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				}]
+			}
+
+		},{
+			"pueyrredon" : {
+				"nombre": "pueyrredon",
+				"velocidad_prom_cap": "22",
+				"velocidad_prom_prov": "15",
+				"segmentos" : [{
+						"id": "1",
+						"capital": {
+							"id": "12",
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"id": "32",
+							"timestamp_medicion": "",
+							"anomalia" : "2",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				},{
+						"id": "22",
+						"capital": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+						},
+						"provincia": {
+							"anomalia" : "2",
+							"timestamp_medicion": "",
+							"tiempo":"", 
+							"velocidad":"",
+							"causa" : "",
+							"duracion_anomalia":"",
+							"indicador_anomalia":""
+					}
+				}]
+			}
+
+		},{
+			"alcorta" : {
+				"nombre": "alcorta",
 				"velocidad_prom_cap": "22",
 				"velocidad_prom_prov": "15",
 				"segmentos" : [{

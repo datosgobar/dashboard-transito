@@ -5,7 +5,7 @@ import json
 
 def getData():
 
-	with open("corredores_fake.json") as f:
+	with open("/home/lmokto/Desktop/dashboard-operativo-transito/analisis/corredores_fake.json") as f:
 		output = json.loads(f.read())
 
 	return output
