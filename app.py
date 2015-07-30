@@ -5,6 +5,7 @@ import json
 import gevent
 import os
 import bottle
+import time
 
 from analisis import * 
 from bottle import error
@@ -39,7 +40,7 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
         while True:
           data = getData()
           self.emit('corredores', data)
-        time.sleep(300)
+          time.sleep(300)
 
 
 # genero ruta / que envia template index
