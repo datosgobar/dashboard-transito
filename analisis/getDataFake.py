@@ -2,10 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import json
+import os
 
 def getData():
-
-	with open("/home/lmokto/Desktop/dashboard-operativo-transito/analisis/corredores_fake.json") as f:
+	
+	filecorredorfake = os.path.abspath("corredores_fake.json")
+	with open(filecorredorfake) as f:
 		output = json.loads(f.read())
 
 	return output
