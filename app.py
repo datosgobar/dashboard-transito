@@ -57,7 +57,7 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
         while True:
 
           estadocero = getData()
-          parserEmitData(self, data)
+          parserEmitData(self, estadocero)
           time.sleep(300)
 
     def recv_disconnect(self):
