@@ -14,24 +14,31 @@ if os.environ.get('OPENSHIFT_MYSQL_DIR'):
 	pwd = os.environ.get('OPENSHIFT_MYSQL_DB_PASSWORD')
 	db = MySQLdb.connect(host=host, user=user, passwd=pwd, db="dashboardoperativo")
 else:
-	db = MySQLdb.connect(host="localhost", user="root", db="dashboardoperativo")
-
+	db = MySQLdb.connect(host="localhost", user="root")
+	cur = db.cursor()
+	cur.execute('CREATE DATABASE IF NOT EXISTS dashboardoperativo;')
+	cur.close()
+	db.select_db("dashboardoperativo")
 
 def createSegmentos():
 	try:
 		cur = db.cursor()
-		cur.execute("""CREATE TABLE infosegmentos2 (id INT NOT NULL, PRIMARY KEY(id), timestamp_medicion TIMESTAMP, tiempo INT, \
+		cur.execute("""CREATE TABLE infosegmentos (id INT NOT NULL, PRIMARY KEY(id), timestamp_medicion TIMESTAMP, tiempo INT, \
 		velocidad FLOAT,causa TEXT,causa_id INT,duracion_anomalia INT,indicador_anomalia FLOAT,anomalia INT);""")
+		cur.close()
 	except Exception, ex:
 		return ex
 	else:
 		cur = db.cursor()
-		#"anomalia","timestamp_medicion","tiempo","velocidad","causa","duracion_anomalia","indicador_anomalia","id"
-		for ID in range(10, 59):
-			cur.execute("""INSERT INTO infosegmentos2 VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)""",  \
+		for ID in range(10, 58):
+			cur.execute("""INSERT INTO infosegmentos VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)""",  \
 				(ID, time.time(), random.randrange(2, 10), random.random(), "algo sucedio", random.randrange(2, 3), \
 					random.randrange(1, 50), random.random(), random.randrange(2, 15)))
 			print "Auto Increment ID: %s" % ID
+	finally:
+		db.close()
+		db.commit()
+  		cur.close()
 
 def readSegmentos():
 	"""
@@ -44,10 +51,12 @@ def readSegmentos():
 	except:
 		result = []
 	else:
-		cur.execute("SELECT * FROM infosegmentos2")
+		cur.execute("SELECT * FROM infosegmentos")
 		for row in cur.fetchall():
 			result.append(row)
 	finally:
+       	cur.close()
+        db.close()
 		return result
 
 
