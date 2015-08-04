@@ -32,8 +32,6 @@ def createSegmentos():
 				(ID, time.time(), random.randrange(2, 10), random.random(), "algo sucedio", random.randrange(2, 3), \
 					random.randrange(1, 50), random.random(), random.randrange(2, 15)))
 			print "Auto Increment ID: %s" % ID
-	except:
-		pass
 
 def readSegmentos():
 	"""
@@ -112,9 +110,9 @@ def parserEmitData(self, template):
 				else:
 					continue
 
-			for channell in corredores.keys():
-			  self.emit(channell, template['corredores'][channell])
-			  time.sleep(0.5)
+		for channell in corredores.keys():
+		  self.emit(channell, template['corredores'][channell])
+		  time.sleep(0.5)
 	else:
 		self.emit('info', "sin datos")
 
