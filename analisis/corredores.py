@@ -117,10 +117,6 @@ def parserEmitData(self, template):
 		self.emit('info', "sin datos")
 
 
-# if __name__ == '__main__':
+if __name__ == '__main__':
 
-# 	template_filename = os.path.abspath("analisis/template.json")
-# 	with open(template_filename) as f:
-# 		template = json.loads(f.read())	
-
-# 	parserEmitData(self, template)
+	createSegmentos()

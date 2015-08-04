@@ -1,6 +1,9 @@
 # Dashboard Operativo Transito
 
 ## Instalacion Mac y Linux
+
+Tener instalado MySQL 5.1
+
 ```sh
 $ sudo python setup install
 ```
@@ -22,6 +25,11 @@ easy_install gevent-socketio
 
 Ejecutar
 ```sh
+
+Crea la tabla en MySQL
+$ python analisis/corredores.py
+
+Instancia la App
 $ python app.py
 ```
 
