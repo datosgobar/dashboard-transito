@@ -5,7 +5,6 @@
 	<script type="text/javascript" src="_static/js/jquery-2.1.3.min.js"></script>
 </head>
 <body>
-	<p>a</p>
 </body>
 	<script>
 
