@@ -1,6 +1,6 @@
 # Dashboard Operativo Transito
 
-## Instalacion Mac y Linux
+## Instalacion bajo Mac y Linux
 
 Tener instalado MySQL 5.1
 ```sh
@@ -17,23 +17,28 @@ $ sudo easy_install gevent
 $ sudo easy_install gevent-socketio
 $ sudo easy_install MySQL-python
 ```
-## Instalacion Windows
-Bajar e instalar [Visual C++ for Python 2.7](http://download.microsoft.com/download/7/9/6/796EF2E4-801B-4FC4-AB28-B59FBF6D907B/VCForPython27.msi)
+## Instalacion bajo Windows
+Bajar e instalar [Visual C++ for Python 2.7](http://download.microsoft.com/download/7/9/6/796EF2E4-801B-4FC4-AB28-B59FBF6D907B/VCForPython27.msi) y [MySQL for Python](https://github.com/farcepest/MySQLdb1)
+
 ```sh
 easy_install bottle
 easy_install gevent
 easy_install gevent-socketio
+easy_install MySQL-python
 ```
 
 ## Corriendo la app
-Ejecutar
-Primero, crear tabla en MySQL
-Segundo, Instanciar Python Server
+Crear tabla en MySQL
 
 ```sh
 $ python analisis/corredores.py
+```
+
+Instanciar Python Server
+```sh
 $ python app.py
 ```
+
 
 Abrir el navegador en [http://127.0.0.1:8080/](http://127.0.0.1:8080/)
 

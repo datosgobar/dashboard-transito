@@ -1,8 +1,15 @@
-<!DOCTYPE html>
-<meta charset="utf-8">
-<head>
+<!DOCTYPE HTML>
+<html lang="es">
+<head>    
+    <title>Dashboard de Tránsito</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<script type="text/javascript" src="_static/js/socket.io.js"></script>
 	<script type="text/javascript" src="_static/js/jquery-2.1.3.min.js"></script>
+	<script type="text/javascript" src="_static/js/app.js"></script>
+	<link rel="icon" href="favicon.ico"/>
+
 </head>
 <body>
 </body>
@@ -19,7 +26,7 @@
 		});
 		// aqui especificamos el canal para la recepcion continua de los datos
 		socket.on('independencia', function(data) {
-			console.log(data)
+			console.log(data.nombre);
 		});
 		socket.on('Illia', function(data) {
 			console.log(data)
@@ -28,34 +35,34 @@
 			console.log(data)
 		});
 		socket.on('alem', function(data) {
-			console.log(data)
+			console.log(data.nombre);
 		});
 		socket.on('corrientes', function(data) {
-			console.log(data)
+			console.log(data.nombre);
 		});
 		socket.on('rivadavia', function(data) {
-			console.log(data)
+			console.log(data.nombre);
 		});
 		socket.on('av_de_mayo', function(data) {
-			console.log(data)
+			console.log(data.nombre);
 		});
 		socket.on('san_martin', function(data) {
-			console.log(data)
+			console.log(data.nombre);
 		});
 		socket.on('juan_b_justo', function(data) {
-			console.log(data)
+			console.log(data.nombre);
 		});
 		socket.on('cordoba', function(data) {
-			console.log(data)
+			console.log(data.nombre);
 		});
 		socket.on('paseo_colon', function(data) {
-			console.log(data)
+			console.log(data.nombre);
 		});
 		socket.on('cabildo', function(data) {
-			console.log(data)
+			console.log(data.nombre);
 		});
 		socket.on('pueyrredon', function(data) {
-			console.log(data)
+			console.log(data.nombre);
 		});
 		socket.on('alcorta', function(data) {
 			console.log(data)
@@ -75,6 +82,8 @@
 		socket.on('disconnect', function(e){
 			console.log("Disconnect.")
 		});
+
+
 
 	</script>
 </html>
