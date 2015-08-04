@@ -30,12 +30,12 @@ else:
     ip = "0.0.0.0"
     port = 8080
 
-def parserEmitData(self, result):
+def parserEmitDataFake(self, result):
   """
     funcion que trae los datos de mongo, crea un json y emite al front segun corredor
   """
-  corredores = ["independencia", "illia", "nueve_de_julio", "alem", "corrientes", \
-  "rivadavia", "av_de_mayo", "san_martin", "juan_b_justo", "cordoba", "paseo_colon", "cabildo", "pueyrredon", "alcorta"]
+  corredores = ["independencia", "Illia", "nueve_de_julio", "alem", "corrientes", \
+  "rivadavia", "av_de_mayo", "san_martin", "juan_b_justo", "cordoba", "paseo_colon", "cabildo", "pueyrredon", "alcorta", "libertador"]
 
   if len(result):
     for i in range(len(corredores)):
@@ -54,12 +54,12 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
         print "connect"
 
         estadocero = {}
-        parserEmitData(self, estadocero)
+        parserEmitDataFake(self, estadocero)
 
         while True:
 
           estadocero = getData()
-          parserEmitData(self, estadocero)
+          parserEmitDataFake(self, estadocero)
           time.sleep(300)
 
     def recv_disconnect(self):

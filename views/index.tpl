@@ -13,21 +13,19 @@
 		var socket = io.connect('/alertas', {
 			'force new connection': true
 		});
-
 		// cuando se establece la conecion, le envio un dato al server que envie estado 0
 		socket.on('connect', function() {
 		    console.log("Connected.");
 			socket.emit('receive', "Connected");
 		});
-
 		// aqui especificamos el canal para la recepcion continua de los datos
 		socket.on('independencia', function(data) {
 			console.log(data)
 		});
-		socket.on('illia', function(data) {
+		socket.on('Illia', function(data) {
 			console.log(data)
 		});
-		socket.on('nueve_de_julio', function(data) {
+		socket.on('9_de_julio', function(data) {
 			console.log(data)
 		});
 		socket.on('alem', function(data) {
@@ -62,7 +60,10 @@
 		});
 		socket.on('alcorta', function(data) {
 			console.log(data)
-		});	
+		});
+		socket.on('libertador', function(data) {
+			console.log(data)
+		});			
 		// en caso que socket disponga de un error
 		socket.on('error', function(e){
 			console.log("error")
