@@ -26,11 +26,11 @@ easy_install gevent-socketio
 
 ## Corriendo la app
 Ejecutar
-```sh
-Crea la tabla en MySQL
-$ python analisis/corredores.py
+Primero, crear tabla en MySQL
+Segundo, Instanciar Python Server
 
-Instancia la App
+```sh
+$ python analisis/corredores.py
 $ python app.py
 ```
 
