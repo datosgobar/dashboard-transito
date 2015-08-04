@@ -30,36 +30,27 @@ else:
     ip = "127.0.0.1"
     port = 8080
 
-def parserEmitData(self, result):
-  """
-    funcion que trae los datos de mongo, crea un json y emite al front segun corredor
-  """
-  corredores = ["independencia", "illia", "nueve_de_julio", "alem", "corrientes", \
-  "rivadavia", "av_de_mayo", "san_martin", "juan_b_justo", "cordoba", "paseo_colon", "cabildo", "pueyrredon", "alcorta"]
-
-  if len(result):
-    for i in range(len(corredores)):
-      self.emit(corredores[i], result['corredores'][i][result['corredores'][i].keys()[0]])
-      time.sleep(0.5)
-  else:
-    self.emit('info', "sin datos")
-
 # clase que hereda funcionalidades de socketio
 class dataSemaforos(BaseNamespace, BroadcastMixin):
+
+    def init(self):
+      with open(os.path.abspath("analisis/template.json")) as templatecorredores:
+        template_buffer = buffer(templatecorredores.read())
+        self.template = json.loads(template_buffer.__str__())
 
     # metodo que escucha on_<<CHANNELL>>(self, msg) enviado desde el front
     def on_receive(self, msg):
 
+      self.init()
+
       if msg:
+        
         print "connect"
 
-        estadocero = {}
-        parserEmitData(self, estadocero)
-
         while True:
-
-          estadocero = getData()
-          parserEmitData(self, estadocero)
+          #estadocero = getData()
+          #parserEmitDataFake(self, estadocero)
+          parserEmitData(self, self.template)
           time.sleep(300)
 
     def recv_disconnect(self):
