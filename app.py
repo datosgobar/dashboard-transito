@@ -27,7 +27,7 @@ if os.environ.get('OPENSHIFT_PYTHON_DIR'):
     port = int(os.environ['OPENSHIFT_PYTHON_PORT'])
 else:
     # caso contrario, entiendo que estoy en ambiente local
-    ip = "0.0.0.0"
+    ip = "127.0.0.1"
     port = 8080
 
 # clase que hereda funcionalidades de socketio
