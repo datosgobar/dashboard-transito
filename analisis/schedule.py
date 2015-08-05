@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import time
-#import analisis
+import analisis
 
 class setInterval:
 
@@ -92,7 +92,7 @@ class setInterval:
 			print time.strftime("%H:%M:%S")
 			print self.setTimeOut
 			print "somethings, another code"
-			#analisis.executeLoop()
+			analisis.executeLoop()
 
 			time.sleep(self.setTimeOut)
 
