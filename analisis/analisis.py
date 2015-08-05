@@ -180,7 +180,7 @@ def updateDetectionParams() :
     lastmonthrecords = getLastMonthRecords()
     newparams = AnomalyDetection.computeDetectionParams(lastmonthrecords)
     outf = open(detection_params_fn, "wb")
-    json.dump(newparams,outf)
+    outf.write(newparams)
     outf.close()
 
 """
@@ -194,7 +194,7 @@ def getCurrentSegmentState (anomalies, lastrecords) :
 Lee los parametros de deteccion de la tabla detection_params.csv
 """
 def getDetectionParams() :
-    return json.load(open(detection_params_fn))
+    return open(detection_params_fn).read()
   
 """
 Updetea una anomalia prexistente
@@ -226,6 +226,9 @@ def dailyUpdate () :
     removeOldRecords()
     updateDetectionParams()
 
+
 if __name__ == '__main__':
     setupDB()
     executeLoop()
+
+    
