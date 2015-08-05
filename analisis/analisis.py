@@ -116,7 +116,7 @@ def setupDB () :
 """
 Baja datos de nuevos de teracode y los guarda en la tabla "historical"
 """
-def updateDB(sensores, step = datetime.timedelta(days=2), desde, hasta) : 
+def updateDB(sensores, desde, hasta, step = datetime.timedelta(days=2)) : 
     conn = getDBConnection()
     result = downloadData(sensores, step, desde, hasta)
     # parsear json
@@ -148,8 +148,16 @@ def removeOldRecords() :
 """
 Este loop se va a ejecutar con la frecuencia indicada para cada momento del dia.
 """
-def executeLoop() :
-    newrecords = updateDB()
+def executeLoop(desde, hasta) :
+    """
+        traer los sensores lista de archivo configuracion
+        desde = "2015-07-01T00:00:00-00:00"
+        hasta = "2015-07-12T00:00:01-00:00"        
+    """
+    sensores = [10,12,57, 53,51,49, 40, 43, 37,36, 21, 31,33,35, 13,14, 18,17,23, \
+    24,25, 26,28, 30,32 ,45, 47, 38, 44, 48,48, 11,56, 54,55, 41, 22, 16,15, 19, 20, 10, 27,29, 34, 39, 42, 46, 50 ,52]
+    
+    newrecords = updateDB(sensores, desde, hasta)
     if newrecords : 
         performAnomalyAnalysis()
 
@@ -217,3 +225,7 @@ def performAnomalyAnalysis() :
 def dailyUpdate () :
     removeOldRecords()
     updateDetectionParams()
+
+if __name__ == '__main__':
+    setupDB()
+    executeLoop()

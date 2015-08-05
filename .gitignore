@@ -3,3 +3,4 @@ build/
 dashboard_operativo_transito.egg-info/
 *.egg-info/
 *.pyc
+analisis/config.py
