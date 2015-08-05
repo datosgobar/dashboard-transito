@@ -1,0 +1,23 @@
+@font-face {
+  font-family: 'Gotham';
+  font-style: normal;
+  font-weight: normal;
+  src: url("fonts/gotham.eot?#iefix") format("embedded-opentype"), url("fonts/gotham.woff2") format("woff2"), url("fonts/gotham.woff") format("woff"), url("fonts/gotham.ttf") format("truetype"), url("fonts/gotham.svg#Gotham") format("svg"); }
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: normal;
+  src: url("fonts/OpenSans.eot?#iefix") format("embedded-opentype"), url("fonts/OpenSans.woff2") format("woff2"), url("fonts/OpenSans.woff") format("woff"), url("fonts/OpenSans.ttf") format("truetype"), url("fonts/OpenSans.svg#Open Sans") format("svg"); }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-family: "Gotham", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-color: #FFFFFF;
+  font-size: 1em; }
+  @media (max-width: 767px) {
+    html, body {
+      margin-left: 20px; } }

@@ -1,0 +1,35 @@
+@import "../../node_modules/node-bourbon/node_modules/bourbon/app/assets/stylesheets/_bourbon.scss";
+@import "mixins/breakpoint.scss";
+@import "mixins/opacity.scss";
+@include font-face('Gotham', 'fonts/gotham');
+@include font-face('Open Sans', 'fonts/OpenSans');
+$fontset-gotham: "Gotham",
+"Helvetica Neue",
+Helvetica,
+Arial,
+sans-serif !default;
+$fontset-openSans: "Open Sans",
+"Helvetica Neue",
+Helvetica,
+Arial,
+sans-serif !default;
+
+//tamaños de dispositivos
+$screen-xs: 480px !default; // telefonos
+$screen-sm: 768px !default; //tablet
+$screen-md: 992px !default; //desktop
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: "Gotham", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background-color: #FFFFFF;
+    font-size: 1em;
+            @include breakpoint(xs) {
+                margin-left: 20px;
+            }
+}
+
