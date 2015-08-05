@@ -144,7 +144,7 @@ def updateDetectionParams() :
     lastmonthrecords = getLastMonthRecords()
     newparams = AnomalyDetection.computeDetectionParams(lastmonthrecords)
     outf = open(detection_params_fn, "wb")
-    json.dump(newparams,outf)
+    outf.write(newparams)
     outf.close()
 
 """
@@ -158,7 +158,7 @@ def getCurrentSegmentState (anomalies, lastrecords) :
 Lee los parametros de deteccion de la tabla detection_params.csv
 """
 def getDetectionParams() :
-    return json.load(open(detection_params_fn))
+    return open(detection_params_fn).read()
   
 """
 Updetea una anomalia prexistente
@@ -177,7 +177,6 @@ Si el atributo causa, causa_id y/o timestamp_end estan presentes se updetea dich
 def upsertAnomaly (newanomalydata) :
     pass
     
-
 def performAnomalyAnalysis() :
     lastrecords = getLastRecords()
     detectparams = getDetectionParams()
@@ -189,4 +188,3 @@ def performAnomalyAnalysis() :
 def dailyUpdate () :
     removeOldRecords()
     updateDetectionParams()
-    
