@@ -170,17 +170,56 @@ Esta funcion determina los parametros de deteccion de anomalias para cada segmen
 """
 def updateDetectionParams() :
     lastmonthrecords = getLastMonthRecords()
-    newparams = AnomalyDetection.computeDetectionParams(lastmonthrecords)
+    newparams = anomalyDetection.computeDetectionParams(lastmonthrecords)
     outf = open(detection_params_fn, "wb")
     outf.write(newparams)
     outf.close()
 
 """
 Esta funcion retorna la data que se va a cargar en la tabla segment_snapshot como una lista de diccionarios.
-[Lo implemento yo (Pablo)]
+Recibe:
+- Una lista con las anomalias encontradas de la forma:
+[{'timestamp': datetime.datetime(2015, 7, 12, 6, 0), 'indicador_anomalia': 2.29, 'id_segment': 10}]
+- Un listado de tuplas de la forma (id_segment, data, timestamp) con los datos de los ultimos 20 minutos
+
+Retorna:
+- Una lista con un dict tipo json por cada segmento con su estado updateado para la tabla segment_snapshot.
+  Deberia tener la siguiente estructura:
+{
+    "id" : (id del segmento),
+    "timestamp_medicion" : (timestamp de la medicion),
+    "tiempo" : (tiempo que toma atravesar el segmento segun la ultima medicion),
+    "velocidad" : (distancia del corredor / tiempo),
+    "causa" : (por ahora null, lo modifica la UI),
+    "causa_id" : (por ahora null, lo modifica la UI),
+    "duracion_anomalia" : (por ahora null),
+    "indicador_anomalia" : (porcentaje),
+    "anomalia" : True/False
+}
 """
+# TODO: Completar campos "velocidad" y "duracion_anomalia"
 def getCurrentSegmentState (anomalies, lastrecords) :
-    pass
+    segments = {}
+    for r in lastrecords :
+        if not segments.has_key(r[0]) or r[2] > segments[r[0]][2] :
+            segments[r[0]] = r
+    
+    ad = { a["id_segment"] : a for a in anomalies }
+    
+    output = []
+    for s in segments.values() :
+        output += [{
+            "id" : s[0],
+            "timestamp_medicion" : s[2],
+            "tiempo" : s[1],
+            "velocidad" : -1, #s["data"] / s["id_segment"],
+            "causa" : "",
+            "causa_id" : 0,
+            "duracion_anomalia" : 0,
+            "indicador_anomalia" : ad.get(s[0], {}).get("indicador_anomalia", 0),
+            "anomalia" : ad.has_key(s[0]),
+        }]
+    return output
 
 """
 Lee los parametros de deteccion de la tabla detection_params.csv
@@ -202,15 +241,14 @@ Los atributos id_segment y timestamp se usan para determinar si una anomalia ya 
 Si no esta presente la funcion falla
 Si el atributo causa, causa_id y/o timestamp_end estan presentes se updetea dicho campo en el registro de esa anomalia.
 """
-def upsertAnomaly (newanomalydata) :
+def upsertAnomalies (newanomalydata) :
     pass
-    
 
 def performAnomalyAnalysis() :
     lastrecords = getLastRecords()
     detectparams = getDetectionParams()
-    anomalies = detectAnomalies.detectAnomalies(detectparams, lastrecords)
-    upsertAnomaly(anomalies)
+    anomalies = anomalyDetection.detectAnomalies(detectparams, lastrecords)
+    upsertAnomalies(anomalies)
     curstate = getCurrentSegmentState(anomalies, lastrecords)
     updateSnapshot(curstate)
     
