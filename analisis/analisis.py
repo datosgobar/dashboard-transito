@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 import sqlalchemy
 import MySQLdb
 from sqlalchemy import Column, Integer, Float, String, DateTime
@@ -124,19 +125,23 @@ def updateDB(sensores, desde, hasta, step = datetime.timedelta(days=2)) :
     session = Session()
     # loopear por cada corredor
     for corredor in result:
-        for segmento in corredor["datos"]["data"]:
-            # crear nueva instancia de Historical
-            segment = segmento["iddevice"]
-            data = segmento["data"]
-            timestamp = datetime.datetime.strptime(segmento["date"], '%Y-%m-%dT%H:%M:%S-03:00')
-            segmentdb = Historical(**{
-                "segment" : segment,
-                "data" : data,
-                "timestamp" : timestamp
-                })
-            # pushear instancia de Historial a la base
-            session.add(segmentdb)
-            session.commit()
+        if corredor:
+            for segmento in corredor["datos"]["data"]:
+                print segmento
+                # crear nueva instancia de Historical
+                segment = segmento["iddevice"]
+                data = segmento["data"]
+                timestamp = datetime.datetime.strptime(segmento["date"], '%Y-%m-%dT%H:%M:%S-03:00')
+                segmentdb = Historical(**{
+                    "segment" : segment,
+                    "data" : data,
+                    "timestamp" : timestamp
+                    })
+                # pushear instancia de Historial a la base
+                session.add(segmentdb)
+                session.commit()
+        else:
+            continue
     
     
 """
