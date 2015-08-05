@@ -3,16 +3,15 @@
 @import "mixins/opacity.scss";
 @include font-face('Gotham', 'fonts/gotham');
 @include font-face('Open Sans', 'fonts/OpenSans');
-$fontset-gotham: "Gotham",
-"Helvetica Neue",
-Helvetica,
-Arial,
-sans-serif !default;
-$fontset-openSans: "Open Sans",
-"Helvetica Neue",
-Helvetica,
-Arial,
-sans-serif !default;
+$fontset-gotham: "Gotham", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$fontset-openSans: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+
+$rojo: #e53935;
+$naranja: #ff8f00;
+$amarillo: #fdd835;
+$gris: #c0c0c0;
+$doroga: #fafafa;
+$verde:#39e535;
 
 //tamaños de dispositivos
 $screen-xs: 480px !default; // telefonos
@@ -21,15 +20,87 @@ $screen-md: 992px !default; //desktop
 
 html,
 body {
-    margin: 0;
+    margin: 10px auto;
     padding: 0;
-    height: 100%;
     width: 100%;
-    font-family: "Gotham", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    background-color: #FFFFFF;
-    font-size: 1em;
+    font-family: $fontset-openSans;
+    background-color: #F2F2F2;
+    //font-size: 1.3em;
+    //font-size: 1em;
             @include breakpoint(xs) {
-                margin-left: 20px;
+                background-color: #00F2F2;
             }
 }
 
+.oculta{
+    display: none;
+}
+
+#indicador{
+    display: none;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    border-radius: 25px;
+    width: 100%;
+    height: 5px;
+    background-color: $eeeeee;
+
+}
+
+.card{
+    @include border-top-radius(5px);
+    @include border-bottom-radius(5px);
+    background-color: #ffffff;
+    width: 90%;
+    padding: 10px;
+    margin: 0 auto 20px;
+    border-left: 15px solid $gris;
+
+    .titulo{
+        font-size: 1em;
+    }
+
+    .segmentos{
+        width: 100%;
+        .contenedorSegmentos{
+            .etiquetaSegmento{
+                                
+                font-size: 1.4em;
+            }
+            .estadoSegmento{
+                height: 10px;
+                background-color: $doroga;
+
+                border: 1px solid $doroga;
+            }
+
+            .capital, .provincia, .etiquetas{
+                display: table;  
+                width: 90%;  
+            }
+            .segmento{
+                display: table-cell;
+                .rojo{
+                    background-color: $rojo;
+                }
+                .naranja{
+                    background-color: $naranja;
+                }
+                .amarillo{
+                    background-color: $amarillo;
+                }
+            }
+        }
+    }
+ }
+
+.shadow{
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 0.5);
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1);
+}
+
+.shadow:hover{
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 0.5);
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25);
+}

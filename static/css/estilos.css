@@ -11,13 +11,64 @@
   src: url("fonts/OpenSans.eot?#iefix") format("embedded-opentype"), url("fonts/OpenSans.woff2") format("woff2"), url("fonts/OpenSans.woff") format("woff"), url("fonts/OpenSans.ttf") format("truetype"), url("fonts/OpenSans.svg#Open Sans") format("svg"); }
 
 html, body {
-  margin: 0;
+  margin: 10px auto;
   padding: 0;
-  height: 100%;
   width: 100%;
-  font-family: "Gotham", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  background-color: #FFFFFF;
-  font-size: 1em; }
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-color: #F2F2F2; }
   @media (max-width: 767px) {
     html, body {
-      margin-left: 20px; } }
+      background-color: #00F2F2; } }
+
+.oculta {
+  display: none; }
+
+#indicador {
+  display: none;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  border-radius: 25px;
+  width: 100%;
+  height: 5px;
+  background-color: #c0c0c0; }
+
+.card {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background-color: #ffffff;
+  width: 90%;
+  padding: 10px;
+  margin: 0 auto 20px;
+  border-left: 15px solid #c0c0c0; }
+  .card .titulo {
+    font-size: 1em; }
+  .card .segmentos {
+    width: 100%; }
+    .card .segmentos .contenedorSegmentos .etiquetaSegmento {
+      font-size: 1.4em; }
+    .card .segmentos .contenedorSegmentos .estadoSegmento {
+      height: 10px;
+      background-color: #fafafa;
+      border: 1px solid #fafafa; }
+    .card .segmentos .contenedorSegmentos .capital, .card .segmentos .contenedorSegmentos .provincia, .card .segmentos .contenedorSegmentos .etiquetas {
+      display: table;
+      width: 90%; }
+    .card .segmentos .contenedorSegmentos .segmento {
+      display: table-cell; }
+      .card .segmentos .contenedorSegmentos .segmento .rojo {
+        background-color: #e53935; }
+      .card .segmentos .contenedorSegmentos .segmento .naranja {
+        background-color: #ff8f00; }
+      .card .segmentos .contenedorSegmentos .segmento .amarillo {
+        background-color: #fdd835; }
+
+.shadow {
+  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 0.5);
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1); }
+
+.shadow:hover {
+  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 0.5);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25); }
