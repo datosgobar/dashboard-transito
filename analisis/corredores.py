@@ -14,7 +14,7 @@ if os.environ.get('OPENSHIFT_MYSQL_DIR'):
 	pwd = os.environ.get('OPENSHIFT_MYSQL_DB_PASSWORD')
 	db = MySQLdb.connect(host=host, user=user, passwd=pwd, db="dashboardoperativo")
 else:
-	db = MySQLdb.connect(host="localhost", user="root")
+	db = MySQLdb.connect(host="localhost", passwd="password", user="root")
 	cur = db.cursor()
 	cur.execute('CREATE DATABASE IF NOT EXISTS dashboardoperativo;')
 	cur.close()
@@ -37,7 +37,7 @@ def createSegmentos():
 			print "Auto Increment ID: %s" % ID
 	finally:
 		db.close()
-		db.commit()
+		#db.commit()
   		cur.close()
 
 def readSegmentos():
@@ -55,11 +55,11 @@ def readSegmentos():
 		for row in cur.fetchall():
 			result.append(row)
 	finally:
-       	cur.close()
-        db.close()
+       		cur.close()
+        	db.close()
 		return result
 
-
+	
 def buildSegmentos(data):
 	return {
 		"id": data[0],
