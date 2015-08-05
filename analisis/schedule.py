@@ -92,8 +92,9 @@ class setInterval:
 			print time.strftime("%H:%M:%S")
 			print self.setTimeOut
 			print "somethings, another code"
-			analisis.executeLoop()
-
+			analisis.executeLoop(desde, hasta)
+			# """ desde= la ultima acutalizacion """
+			# 2015-07-01T00:00:00-00:00
 			time.sleep(self.setTimeOut)
 
 
