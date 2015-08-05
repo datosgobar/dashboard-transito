@@ -63,10 +63,10 @@ def computeDetectionParams(lastmonthrecords) :
     output = apidata.groupby(["iddevice","franja","daytype"])["data"].agg({"mean":"mean", "std":"std"}).reset_index()  
     return output.to_json(orient="records")
 
-"""
 
 """
 lastmonthrecords = [(10, 222, '2015-07-12T00:00:01-03:00'), (10, 217, '2015-07-12T01:00:00-03:00'), (10, 183, '2015-07-12T02:00:00-03:00'), (10, 248, '2015-07-12T03:00:00-03:00')]
 detectparams = computeDetectionParams(lastmonthrecords)
 lastrecords = lastmonthrecords
 anomalies = detectAnomalies(detectparams, lastrecords)
+"""
