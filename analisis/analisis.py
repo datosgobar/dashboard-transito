@@ -1,17 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+import sqlalchemy
+import MySQLdb
 from sqlalchemy import Column, Integer, Float, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
+import config
 import json
 import requests 
 import datetime
 import dateutil.parser
 import multiprocessing
 
-import AnomalyDetection
+import anomalyDetection
 
 detection_params_fn = "detection_params.json"
 
@@ -30,7 +33,7 @@ class Anomaly(Base):
     id_segment = Column(Integer, nullable=False)
     timestamp_start = Column(DateTime, nullable=False)
     timestamp_end = Column(DateTime, nullable=False)
-    causa = Column(String, nullable=False)
+    causa = Column(String(140), nullable=False)
     causa_id = Column(Integer, nullable=False)
 
 class SegmentSnapshot(Base):
@@ -39,7 +42,7 @@ class SegmentSnapshot(Base):
     timestamp_medicion = Column(DateTime, nullable=False)
     tiempo = Column(Integer, nullable=False)
     velocidad = Column(Float, nullable=False)
-    causa = Column(String, nullable=False)
+    causa = Column(String(140), nullable=False)
     causa_id = Column(Integer, nullable=False)
     duracion_anomalia = Column(Integer, nullable=False)
     indicador_anomalia = Column(Float, nullable=False)
@@ -94,7 +97,12 @@ def downloadData (sensor_ids, step, download_startdate, download_enddate, outfn=
 
 def createDBEngine () :
     #engine = sqlalchemy.create_engine("postgres://postgres@/postgres")
-    engine = sqlalchemy.create_engine("sqlite:///analysis.db")
+    # engine = sqlalchemy.create_engine("sqlite:///analysis.db")
+    user = config.mysql['user']
+    password = config.mysql['password']
+    host = config.mysql['host']
+    db = config.mysql['db']
+    engine = sqlalchemy.create_engine("mysql://"+user+":"+password+"@"+host+"/"+db)
     return engine
 
 def getDBConnection () :
@@ -108,9 +116,29 @@ def setupDB () :
 """
 Baja datos de nuevos de teracode y los guarda en la tabla "historical"
 """
-def updateDB() : 
-    pass
-
+def updateDB(sensores, step = datetime.timedelta(days=2), desde, hasta) : 
+    conn = getDBConnection()
+    result = downloadData(sensores, step, desde, hasta)
+    # parsear json
+    Session = sessionmaker(bind=conn)
+    session = Session()
+    # loopear por cada corredor
+    for corredor in result:
+        for segmento in corredor["datos"]["data"]:
+            # crear nueva instancia de Historical
+            segment = segmento["iddevice"]
+            data = segmento["data"]
+            timestamp = datetime.datetime.strptime(segmento["date"], '%Y-%m-%dT%H:%M:%S-03:00')
+            segmentdb = Historical(**{
+                "segment" : segment,
+                "data" : data,
+                "timestamp" : timestamp
+                })
+            # pushear instancia de Historial a la base
+            session.add(segmentdb)
+            session.commit()
+    
+    
 """
 Elimina registros con mas de un mes de antiguedad de la tabla "historical"
 """
@@ -189,4 +217,3 @@ def performAnomalyAnalysis() :
 def dailyUpdate () :
     removeOldRecords()
     updateDetectionParams()
-    
