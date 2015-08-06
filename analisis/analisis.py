@@ -124,30 +124,34 @@ def setupDB () :
 """
 Baja datos de nuevos de teracode y los guarda en la tabla "historical"
 """
-def updateDB(data) : 
+def updateDB(sensores, desde, hasta, step = datetime.timedelta(days=2)) : 
     conn = getDBConnection()
+    result = downloadData(sensores, step, desde, hasta)
     # parsear json
     Session = sessionmaker(bind=conn)
     session = Session()
     # loopear por cada corredor
-    for corredor in data:
-        if corredor:
-            for segmento in corredor["datos"]["data"]:
-                print segmento
-                # crear nueva instancia de Historical
-                segment = segmento["iddevice"]
-                data = segmento["data"]
-                timestamp = datetime.datetime.strptime(segmento["date"], '%Y-%m-%dT%H:%M:%S-03:00')
-                segmentdb = Historical(**{
-                    "segment" : segment,
-                    "data" : data,
-                    "timestamp" : timestamp
-                    })
-                # pushear instancia de Historial a la base
-                session.add(segmentdb)
-                session.commit()
-        else:
+    newrecords = False
+    for corredor in result:
+        if not bool(corredor):
             continue
+        for segmento in corredor["datos"]["data"]:
+            print segmento
+            # crear nueva instancia de Historical
+            segment = segmento["iddevice"]
+            data = segmento["data"]
+            timestamp = datetime.datetime.strptime(segmento["date"], '%Y-%m-%dT%H:%M:%S-03:00')
+            segmentdb = Historical(**{
+                "segment" : segment,
+                "data" : data,
+                "timestamp" : timestamp
+                })
+            # pushear instancia de Historial a la base
+            session.add(segmentdb)
+            session.commit()
+            newrecords = True
+    
+    return newrecords
     
     
 """
@@ -168,16 +172,36 @@ def executeLoop(desde, hasta) :
     sensores = [10,12,57, 53,51,49, 40, 43, 37,36, 21, 31,33,35, 13,14, 18,17,23, \
     24,25, 26,28, 30,32 ,45, 47, 38, 44, 48,48, 11,56, 54,55, 41, 22, 16,15, 19, 20, 10, 27,29, 34, 39, 42, 46, 50 ,52]
     
-    newrecords = downloadData(sensores, datetime.timedelta(days=2), desde, hasta)
-    updateDB(newrecords)
+    newrecords = updateDB(sensores, desde, hasta)
     if newrecords : 
         performAnomalyAnalysis()
 
 """
 Esta tabla retorna una lista de tuplas de la forma (id_segment, data, timestamp) con los ultimos registros agregados a la tabla "historical"
 """
-def getLastRecords() :
-    pass
+def getLastRecords(desde, hasta) :
+    conn = getDBConnection()
+    # sesion
+    Session = sessionmaker(bind=conn)
+    session = Session()
+    # realizando una consulta
+    
+    desde = datetime.datetime.strptime(desde, '%Y-%m-%dT%H:%M:%S-03:00')
+    hasta = datetime.datetime.strptime(hasta, '%Y-%m-%dT%H:%M:%S-03:00')
+    ahora = datetime.datetime.now()
+    #desde_cuando = ahora - datetime.timedelta(minutes=20)
+    
+    #results = session.query(Historical).filter(Historical.timestamp > desde_cuando  ).all()
+    results = session.query(Historical).filter(Historical.timestamp > desde).filter(Historical.timestamp < hasta).all()
+    last_records = []
+    for result in results:
+        record = [result.segment, result.data, result.timestamp]
+#        record = { "id_segment" : result.segment,
+#                    "data" : result.data,
+#                    "timestamp" : result.timestamp }
+        last_records.append(record)
+    return last_records
+    
 
 """
 Esta tabla retorna una lista de tuplas de la forma (id_segment, data, timestamp) con todos los registros agregados a la tabla "historical" en el ultimo mes
@@ -189,7 +213,7 @@ def getLastMonthRecords() :
 Esta funcion determina los parametros de deteccion de anomalias para cada segmento y los guarda en el archivo detection_params.json
 """
 def updateDetectionParams() :
-    lastmonthrecords = getLastMonthRecords()
+    lastmonthrecords = getLastRecords("2015-07-06T15:10:00-03:00","2015-08-06T16:00:00-03:00")
     newparams = anomalyDetection.computeDetectionParams(lastmonthrecords)
     outf = open(detection_params_fn, "wb")
     outf.write(newparams)
@@ -212,12 +236,13 @@ Retorna:
     "velocidad" : (distancia del corredor / tiempo),
     "causa" : (por ahora null, lo modifica la UI),
     "causa_id" : (por ahora null, lo modifica la UI),
-    "duracion_anomalia" : (por ahora null),
+    "timestamp_start" : (ts de inicio),
+    "timestamp_end" : (ts de fin),
     "indicador_anomalia" : (porcentaje),
     "anomalia" : True/False
 }
 """
-# TODO: Completar campos "velocidad" y "duracion_anomalia"
+# TODO: Completar campo "velocidad"
 def getCurrentSegmentState (anomalies, lastrecords) :
     segments = {}
     for r in lastrecords :
@@ -228,14 +253,17 @@ def getCurrentSegmentState (anomalies, lastrecords) :
     
     output = []
     for s in segments.values() :
+        duracion_anomalia = 0
+        if ad.has_key(s[0]) :
+            duracion_anomalia = ad[s[0]]["timestamp_end"] - ad[s[0]]["timestamp_start"]
         output += [{
             "id" : s[0],
             "timestamp_medicion" : s[2],
             "tiempo" : s[1],
-            "velocidad" : -1, #s["data"] / s["id_segment"],
-            "causa" : "",
-            "causa_id" : 0,
-            "duracion_anomalia" : 0,
+            #"velocidad" : -1,
+            "causa" : ad.get(s[0], {}).get("causa", ""),
+            "causa_id" : ad.get(s[0], {}).get("causa_id", 0),
+            "duracion_anomalia" : duracion_anomalia,
             "indicador_anomalia" : ad.get(s[0], {}).get("indicador_anomalia", 0),
             "anomalia" : ad.has_key(s[0]),
         }]
@@ -251,28 +279,92 @@ def getDetectionParams() :
 Updetea una anomalia prexistente
 La entrada de esta funcion es un unico diccionario que identifica a la anomalia y tiene la siguiente forma:
 {
-    "id_segment" : N,
-    "timestamp" : N,
-    "causa" : N,
-    "causa_id" : N
-    "timestamp_end" : N,
+    "id_segment" : int,
+    "timestamp" : datetime,
+    "indicador_anomalia" : float,
 }
+
+Salida: Lista de dicts con las anomalias que estan vivas en este momento. Cada elemento es de la forma:
+{
+    "id_segment" : int,
+    "timestamp_start" : datetime,
+    "timestamp_end" : datetime,
+    "causa" : str,
+    "causa_id" : int
+}
+
 Los atributos id_segment y timestamp se usan para determinar si una anomalia ya esta presente en la tabla "anomaly".
-Si no esta presente la funcion falla
-Si el atributo causa, causa_id y/o timestamp_end estan presentes se updetea dicho campo en el registro de esa anomalia.
+Las anomalias candidatas a ser mergeadas son todas aquellas cuyo timestamp_end esta dentro de los ultimos 20 minutos.
+Por cada anomalia en newanomalydata (como mucho hay una por segmento) me fijo si hay una anomalia candidata en ese segmento.
+- Si la hay seteo el campo timestamp_end de la anomalia candidata con el campo timestamp de la anomalia nueva
+- Si no la hay creo una nueva anomalia donde:
+    id_segment = timestamp_end = anomalia.id_segment
+    timestamp_start = timestamp_end = anomalia.timestamp
+    indicador_anomalia = anomalia.indicador_anomalia
+
+En este cuadro a es una anomalia ya cargada y b es un avistamiento de una anomalia
+
+a.start    a.end
+|          |           
+v          v           
++----------+           
+|          |           
++----------+           
+        +..........+   
+        ^          ^   
+        |          |   
+        b.ts-20m   b.ts
+
+=>
++------------------+   
+|                  |           
++------------------+
+^                  ^   
+|                  |   
+a.start            a.end = b.ts
 """
 def upsertAnomalies (newanomalydata) :
-    pass
-    
+    conn = getDBConnection()
+    Session = sessionmaker(bind=conn)
+    session = Session()
+    liveanomalies = []
+    for a in newanomalydata :
+        window_older = a["timestamp"] - datetime.timedelta(minutes=20)
+        candidate = session.query(Anomaly).
+            filter(Anomaly.id_segment == a.id_segment).
+            filter(Anomaly.timestamp_end >= window_older).
+            filter(Anomaly.timestamp_end <= a["timestamp"]).
+            first()
+        if candidate :
+            candidate["timestamp_end"] = a["timestamp"]
+            candidate["indicador_anomalia"] = a["indicador_anomalia"]
+            curanomaly = {}
+            for column in Anomaly.__table__.columns:
+                curanomaly[column.name] = str(getattr(candidate, column.name))
+            session.add(candidate)
+        else :
+            curanomaly = {
+                "id_segment" : a["id_segment"],
+                "timestamp_start" : a["timestamp"],
+                "timestamp_end" : a["timestamp"],
+                "indicador_anomalia" : a["indicador_anomalia"],
+                "causa" : "",
+                "causa_id" : 0,
+            }
+            session.add(Anomaly(**curanomaly))
+        session.commit()
+        liveanomalies += [curanomaly]
+    return liveanomalies
+
 def updateSnapshot(curstate):
     pass
 
 def performAnomalyAnalysis() :
-    lastrecords = getLastRecords()
+    lastrecords = getLastRecords("2015-08-06T15:10:00-03:00","2015-08-06T15:50:00-03:00")
     detectparams = getDetectionParams()
     anomalies = anomalyDetection.detectAnomalies(detectparams, lastrecords)
-    upsertAnomalies(anomalies)
-    curstate = getCurrentSegmentState(anomalies, lastrecords)
+    curanomalies = upsertAnomalies(anomalies)
+    curstate = getCurrentSegmentState(curanomalies, lastrecords)
     updateSnapshot(curstate)
     
 def dailyUpdate () :
@@ -281,5 +373,7 @@ def dailyUpdate () :
 
 
 if __name__ == '__main__':
-
     setupDB()
+    executeLoop()
+
+    
