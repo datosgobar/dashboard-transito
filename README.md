@@ -28,11 +28,16 @@ easy_install MySQL-python
 ```
 
 ## Corriendo la app
-Actualizar datos de conexion a base de datos en
+Actualizar datos de conexion a base de datos en (un modelo se puede encontrar en analisis/config.py.sample)
 
 ```sh
-analisis/config.py
+python analisis/config.py
 ```
+
+Asegurarse que MySQL está corriendo
+```
+ mysql.server start
+ ```
 
 Crear tabla en MySQL
 

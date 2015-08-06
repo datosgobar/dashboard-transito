@@ -16,6 +16,7 @@ if os.environ.get('OPENSHIFT_MYSQL_DIR'):
 else:
 	db = MySQLdb.connect(host=config.mysql["host"], passwd=config.mysql["password"], user=config.mysql["user"])
 	cur = db.cursor()
+	cur.execute('DROP DATABASE dashboardoperativo;')
 	cur.execute('CREATE DATABASE IF NOT EXISTS dashboardoperativo;')
 	cur.close()
 	db.select_db("dashboardoperativo")
@@ -32,7 +33,7 @@ def createSegmentos():
 		cur = db.cursor()
 		for ID in range(10, 58):
 			cur.execute("""INSERT INTO infosegmentos VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)""",  \
-				(ID, time.time(), random.randrange(2, 10), random.random(), "algo sucedio", random.randrange(2, 3), \
+				(ID, time.strftime('%Y-%m-%d %H:%M:%S'), random.randrange(2, 10), random.random(), "algo sucedio", random.randrange(2, 3), \
 					random.randrange(1, 50), random.random(), random.randrange(2, 15)))
 			print "Auto Increment ID: %s" % ID
 	finally:

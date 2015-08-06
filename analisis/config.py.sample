@@ -1,6 +1,6 @@
 mysql = dict(
 	user = 'root',
-	password = 'password',
+	password = '',
 	host = 'localhost',
 	db = 'dashboardoperativo'
 )
