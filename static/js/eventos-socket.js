@@ -15,9 +15,13 @@ socket.on('Illia', function(data) { // no llega el nombre en data.nombre
 	actualizacion(data);
 });
 socket.on('9_de_julio', function(data) {
-	console.log ("9dJ>" , data);
 	actualizacion(data);
 });
+
+socket.on('9_de_julio_externo', function(data) {
+	actualizacion(data);
+});
+
 socket.on('alem', function(data) {
 	actualizacion(data);
 });
@@ -67,6 +71,11 @@ socket.on('disconnect', function(e){
 	console.log("Disconnect.")
 });
 
+
+
+function esFalla(data){
+//
+}
 
 // maneja todos los corredores. Recibe un objeto se fija si ese corredor ya existe en la lista y lo agrega
 function actualizacion(data){
