@@ -72,7 +72,7 @@ def computeDetectionParams(lastmonthrecords) :
 """
 # El codigo de ejemplo que sigue funciona tanto con timestamps en forma de string como con objetos datetime
 from anomalyDetection import *
-from anolisis import * 
+from analisis import * 
 
 # Con el timestamp a modo de string
 import pandas as pd
