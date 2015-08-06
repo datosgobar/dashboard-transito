@@ -6,6 +6,7 @@ import os
 import time
 import random
 
+import config
 
 if os.environ.get('OPENSHIFT_MYSQL_DIR'):
 	host = os.environ.get('OPENSHIFT_MYSQL_DB_HOST')
@@ -14,7 +15,7 @@ if os.environ.get('OPENSHIFT_MYSQL_DIR'):
 	pwd = os.environ.get('OPENSHIFT_MYSQL_DB_PASSWORD')
 	db = MySQLdb.connect(host=host, user=user, passwd=pwd, db="dashboardoperativo")
 else:
-	db = MySQLdb.connect(host="localhost", passwd="password", user="root")
+	db = MySQLdb.connect(host=config.mysql["host"], passwd=config.mysql["password"], user=config.mysql["user"])
 	cur = db.cursor()
 	cur.execute('CREATE DATABASE IF NOT EXISTS dashboardoperativo;')
 	cur.close()
