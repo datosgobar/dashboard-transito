@@ -312,6 +312,7 @@ def upsertAnomalies (newanomalydata) :
             first()
         if candidate :
             candidate["timestamp_end"] = a["timestamp"]
+            candidate["indicador_anomalia"] = a["indicador_anomalia"]
             curanomaly = {}
             for column in Anomaly.__table__.columns:
                 curanomaly[column.name] = str(getattr(candidate, column.name))
@@ -321,6 +322,7 @@ def upsertAnomalies (newanomalydata) :
                 "id_segment" : a["id_segment"],
                 "timestamp_start" : a["timestamp"],
                 "timestamp_end" : a["timestamp"],
+                "indicador_anomalia" : a["indicador_anomalia"],
                 "causa" : "",
                 "causa_id" : 0,
             }
