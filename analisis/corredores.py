@@ -7,13 +7,8 @@ import time
 import random
 import config
 
-if os.environ.get('OPENSHIFT_MYSQL_DIR'):
-	host = os.environ.get('OPENSHIFT_MYSQL_DB_HOST')
-	port = os.environ.get('OPENSHIFT_MYSQL_DB_PORT')
-	user = os.environ.get('OPENSHIFT_MYSQL_DB_USERNAME')
-	pwd = os.environ.get('OPENSHIFT_MYSQL_DB_PASSWORD')
-	db = MySQLdb.connect(host=host, user=user, passwd=pwd, db="dashboardoperativo")
-else:
+def createSegmentos():
+
 	db = MySQLdb.connect(host=config.mysql["host"], passwd=config.mysql["password"], user=config.mysql["user"])
 	cur = db.cursor()
 	cur.execute('DROP DATABASE dashboardoperativo;')
@@ -21,7 +16,6 @@ else:
 	cur.close()
 	db.select_db("dashboardoperativo")
 
-def createSegmentos():
 	try:
 		cur = db.cursor()
 		cur.execute("""CREATE TABLE infosegmentos (id INT NOT NULL, PRIMARY KEY(id), timestamp_medicion TIMESTAMP, tiempo INT, \
@@ -37,9 +31,8 @@ def createSegmentos():
 					random.randrange(1, 50), random.random(), random.randrange(2, 15)))
 			print "Auto Increment ID: %s" % ID
 	finally:
-		db.close()
-		#db.commit()
   		cur.close()
+		db.close()
 
 def readSegmentos():
 	"""
