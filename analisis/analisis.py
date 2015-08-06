@@ -269,7 +269,7 @@ def getCurrentSegmentState (anomalies, lastrecords) :
             "id" : s[0],
             "timestamp_medicion" : s[2],
             "tiempo" : s[1],
-            #"velocidad" : -1,
+            "velocidad" : -1,
             "causa" : ad.get(s[0], {}).get("causa", ""),
             "causa_id" : ad.get(s[0], {}).get("causa_id", 0),
             "duracion_anomalia" : duracion_anomalia,
