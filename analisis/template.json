@@ -1,93 +1,109 @@
 { 
 	"corredores": {
 		"independencia" : {
-			"nombre": "independencia",
-			"velocidad_prom_cap": "",
-			"velocidad_prom_prov": "",
-			"segmentos" : []
+			"nombre": "Independencia",
+			"id": "cInd",
+			"segmentos" : [],
+			"segmentosCapital" : [],
+			"segmentosProvincia" : []
 		},
 		"Illia" : {
-			"velocidad_prom_cap": "",
-			"velocidad_prom_prov": "",
-			"segmentos" : []
+			"nombre": "Illia",
+			"id": "cIll",
+			"segmentos" : [],
+			"segmentosCapital" : [],
+			"segmentosProvincia" : []
 		},
 		"9_de_julio" : {
 			"nombre": "9 de julio",
-			"velocidad_prom_cap": "",
-			"velocidad_prom_prov": "",
-			"segmentos" : []
+			"id": "c9de",
+			"segmentos" : [],
+			"segmentosCapital" : [],
+			"segmentosProvincia" : []
 		},
 		"alem" : {
-			"nombre": "alem",
-			"velocidad_prom_cap": "",
-			"velocidad_prom_prov": "",
-			"segmentos" : []
+			"nombre": "Alem",
+			"id": "cAle",
+			"segmentos" : [],
+			"segmentosCapital" : [],
+			"segmentosProvincia" : []
 		},
 		"corrientes" : {
-			"nombre": "corrientes",
-			"velocidad_prom_cap": "",
-			"velocidad_prom_prov": "",
-			"segmentos" : []
+			"nombre": "Corrientes",
+			"id": "cCor",
+			"segmentos" : [],
+			"segmentosCapital" : [],
+			"segmentosProvincia" : []
 		},
 		"rivadavia" : {
-			"nombre": "rivadavia",
-			"velocidad_prom_cap": "",
-			"velocidad_prom_prov": "",
-			"segmentos" : []
+			"nombre": "Rivadavia",
+			"id": "cRiv",
+			"segmentos" : [],
+			"segmentosCapital" : [],
+			"segmentosProvincia" : []
 		},
 		"av_de_mayo" : {
-			"nombre": "av de mayo",
-			"velocidad_prom_cap": "",
-			"velocidad_prom_prov": "",
-			"segmentos" : []
+			"nombre": "Av. de mayo",
+			"id": "cAvm",
+			"segmentos" : [],
+			"segmentosCapital" : [],
+			"segmentosProvincia" : []
 		},
 		"san_martin" : {
-			"nombre": "san_martin",
-			"velocidad_prom_cap": "",
-			"velocidad_prom_prov": "",
-			"segmentos" : []
+			"nombre": "San Martin",
+			"id": "cSan",
+			"segmentos" : [],
+			"segmentosCapital" : [],
+			"segmentosProvincia" : []
 		},
 		"juan_b_justo" : {
-			"nombre": "Juan B Justo",
-			"velocidad_prom_cap": "",
-			"velocidad_prom_prov": "",
-			"segmentos" : []
+			"nombre": "Juan B. Justo",
+			"id": "cJua",
+			"segmentos" : [],
+			"segmentosCapital" : [],
+			"segmentosProvincia" : []
 		},
 		"cordoba" : {
-			"nombre": "cordoba",
-			"velocidad_prom_cap": "",
-			"velocidad_prom_prov": "",
-			"segmentos" : []
+			"nombre": "Córdoba",
+			"id": "cCor",
+			"segmentos" : [],
+			"segmentosCapital" : [],
+			"segmentosProvincia" : []
 		},
 		"paseo_colon" : {
-			"nombre": "paseo colon",
-			"velocidad_prom_cap": "",
-			"velocidad_prom_prov": "",
-			"segmentos" : []
+			"nombre": "Paseo Colón",
+			"id": "cPas",
+			"segmentos" : [],
+			"segmentosCapital" : [],
+			"segmentosProvincia" : []
 		},
 		"cabildo" : {
-			"nombre": "cabildo",
-			"velocidad_prom_cap": "",
-			"velocidad_prom_prov": "",
-			"segmentos" : []
+			"nombre": "Cabildo",
+			"id": "cCab",
+			"segmentos" : [],
+			"segmentosCapital" : [],
+			"segmentosProvincia" : []
 		},
 		"pueyrredon" : {
-			"nombre": "pueyrredon",
-			"velocidad_prom_cap": "",
-			"velocidad_prom_prov": "",
-			"segmentos" : []
+			"nombre": "Pueyrredón",
+			"id": "cPue",
+			"segmentos" : [],
+			"segmentosCapital" : [],
+			"segmentosProvincia" : []
 		},
 		"alcorta" : {
-			"nombre": "alcorta",
-			"velocidad_prom_cap": "",
-			"velocidad_prom_prov": "",
-			"segmentos" : []
+			"nombre": "Alcorta",
+			"id": "cAlc",
+			"segmentos" : [],
+			"segmentosCapital" : [],
+			"segmentosProvincia" : []
 		},
 		"libertador" : {
-			"nombre": "alcorta",
-			"velocidad_prom_cap": "",
-			"velocidad_prom_prov": "",
-			"segmentos" : []
+			"nombre": "Libertador",
+			"id": "cLib",
+			"segmentos" : [],
+			"segmentosCapital" : [],
+			"segmentosProvincia" : []
 		}
 	}
 }

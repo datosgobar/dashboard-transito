@@ -1,23 +1,14 @@
 //ARMA EL HTML DE LA TARJETA
-function armoTemplateCard(nombre, segmentos){
+function armoTemplateCard(data){
 
+	var card = '<div class="card shadow oculta" id="' + data.id + '"><div class="titulo">' + data.nombre + '</div><div class="segmentos"><div class="contenedorSegmentos"><div class="etiquetas">';
+	var capital = '<div class="capital">';
+	var provincia = '<div class="provincia">';
 
-	var card = '<div class="card shadow oculta" id="' + nombre + '"><div class="titulo">' + nombre + '</div><div class="segmentos"><div class="contenedorSegmentos"><div class="etiquetas">';
-
-	for (var i = 0; i < segmentos; i++){
-		card = card + '<div class="segmento"><div class="etiquetaSegmento">' + 'Segmento ' + (i+1) + '</div></div>'
+	for (var i = 0; i < data.segmentos.length; i++){
+		card = card + '<div class="segmento"><div class="etiquetaSegmento">' + 'Seg '+ (i+1) + '</div></div>'
 	}
 
-	card = card + '</div> <div class="capital">';
-
-	for (var i = 0; i < segmentos; i++){
-		card = card + '<div class="segmento"><div class="estadoSegmento"></div></div>';
-	}
-
-	card = card + '</div>  <div class="provincia">';
-	for (var i = 0; i < segmentos; i++){
-		card = card + '<div class="segmento"><div class="estadoSegmento"></div></div>';
-	}
 
 	card = card + '</div></div></div></div>';
 
@@ -26,11 +17,10 @@ function armoTemplateCard(nombre, segmentos){
 
 // Agrega una tarjeta al principio del div #cards
 function agregaCard(data){
-	if ( $("#"+data.nombre).length != 0 ){
-		$("#"+data.nombre).remove();
-
+	if ( $("#"+data.id).length != 0 ){
+		$("#"+data.id).remove();
 	}
-	var card = completoCard( armoTemplateCard(data.nombre, data.segmentos.length) );
+	var card = completoCard( armoTemplateCard(data) );
 	$("#cards").prepend(card);
 	$(".card").fadeIn();
 }
@@ -38,4 +28,3 @@ function agregaCard(data){
 function completoCard(tarjeta){
 	return tarjeta;
 }
-

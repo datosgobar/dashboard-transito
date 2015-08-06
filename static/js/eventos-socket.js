@@ -15,6 +15,7 @@ socket.on('Illia', function(data) { // no llega el nombre en data.nombre
 	actualizacion(data);
 });
 socket.on('9_de_julio', function(data) {
+	console.log ("9dJ>" , data);
 	actualizacion(data);
 });
 socket.on('alem', function(data) {
@@ -71,6 +72,5 @@ socket.on('disconnect', function(e){
 function actualizacion(data){
 	$("#indicador").fadeIn(0);
 	agregaCard(data);
-console.log ("Se agregó " , data);
 	$("#indicador").fadeOut(200);
 }
