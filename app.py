@@ -50,8 +50,10 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
         while True:
           #estadocero = getData()
           #parserEmitDataFake(self, estadocero)
+          self.init()
           parserEmitData(self, self.template)
-          time.sleep(300)
+          #time.sleep(300)
+          time.sleep(10)
 
     def recv_disconnect(self):
       print "disconnect"

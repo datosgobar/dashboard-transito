@@ -4,106 +4,106 @@
 			"nombre": "Independencia",
 			"id": "cInd",
 			"segmentos" : [],
-			"segmentosCapital" : [],
-			"segmentosProvincia" : []
+			"segmentos_capital" : [],
+			"segmentos_provincia" : []
 		},
 		"Illia" : {
 			"nombre": "Illia",
 			"id": "cIll",
 			"segmentos" : [],
-			"segmentosCapital" : [],
-			"segmentosProvincia" : []
+			"segmentos_capital" : [],
+			"segmentos_provincia" : []
 		},
 		"9_de_julio" : {
 			"nombre": "9 de julio",
 			"id": "c9de",
 			"segmentos" : [],
-			"segmentosCapital" : [],
-			"segmentosProvincia" : []
+			"segmentos_capital" : [],
+			"segmentos_provincia" : []
 		},
 		"alem" : {
 			"nombre": "Alem",
 			"id": "cAle",
 			"segmentos" : [],
-			"segmentosCapital" : [],
-			"segmentosProvincia" : []
+			"segmentos_capital" : [],
+			"segmentos_provincia" : []
 		},
 		"corrientes" : {
 			"nombre": "Corrientes",
 			"id": "cCor",
 			"segmentos" : [],
-			"segmentosCapital" : [],
-			"segmentosProvincia" : []
+			"segmentos_capital" : [],
+			"segmentos_provincia" : []
 		},
 		"rivadavia" : {
 			"nombre": "Rivadavia",
 			"id": "cRiv",
 			"segmentos" : [],
-			"segmentosCapital" : [],
-			"segmentosProvincia" : []
+			"segmentos_capital" : [],
+			"segmentos_provincia" : []
 		},
 		"av_de_mayo" : {
 			"nombre": "Av. de mayo",
 			"id": "cAvm",
 			"segmentos" : [],
-			"segmentosCapital" : [],
-			"segmentosProvincia" : []
+			"segmentos_capital" : [],
+			"segmentos_provincia" : []
 		},
 		"san_martin" : {
 			"nombre": "San Martin",
 			"id": "cSan",
 			"segmentos" : [],
-			"segmentosCapital" : [],
-			"segmentosProvincia" : []
+			"segmentos_capital" : [],
+			"segmentos_provincia" : []
 		},
 		"juan_b_justo" : {
 			"nombre": "Juan B. Justo",
 			"id": "cJua",
 			"segmentos" : [],
-			"segmentosCapital" : [],
-			"segmentosProvincia" : []
+			"segmentos_capital" : [],
+			"segmentos_provincia" : []
 		},
 		"cordoba" : {
 			"nombre": "Córdoba",
 			"id": "cCor",
 			"segmentos" : [],
-			"segmentosCapital" : [],
-			"segmentosProvincia" : []
+			"segmentos_capital" : [],
+			"segmentos_provincia" : []
 		},
 		"paseo_colon" : {
 			"nombre": "Paseo Colón",
 			"id": "cPas",
 			"segmentos" : [],
-			"segmentosCapital" : [],
-			"segmentosProvincia" : []
+			"segmentos_capital" : [],
+			"segmentos_provincia" : []
 		},
 		"cabildo" : {
 			"nombre": "Cabildo",
 			"id": "cCab",
 			"segmentos" : [],
-			"segmentosCapital" : [],
-			"segmentosProvincia" : []
+			"segmentos_capital" : [],
+			"segmentos_provincia" : []
 		},
 		"pueyrredon" : {
 			"nombre": "Pueyrredón",
 			"id": "cPue",
 			"segmentos" : [],
-			"segmentosCapital" : [],
-			"segmentosProvincia" : []
+			"segmentos_capital" : [],
+			"segmentos_provincia" : []
 		},
 		"alcorta" : {
 			"nombre": "Alcorta",
 			"id": "cAlc",
 			"segmentos" : [],
-			"segmentosCapital" : [],
-			"segmentosProvincia" : []
+			"segmentos_capital" : [],
+			"segmentos_provincia" : []
 		},
 		"libertador" : {
 			"nombre": "Libertador",
 			"id": "cLib",
 			"segmentos" : [],
-			"segmentosCapital" : [],
-			"segmentosProvincia" : []
+			"segmentos_capital" : [],
+			"segmentos_provincia" : []
 		}
 	}
 }
