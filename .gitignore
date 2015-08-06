@@ -5,3 +5,4 @@ dashboard_operativo_transito.egg-info/
 *.pyc
 analisis/raw_api_01_11.json
 analisis/config.py
+detection_params.json

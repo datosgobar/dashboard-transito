@@ -167,10 +167,31 @@ def executeLoop(desde, hasta) :
         performAnomalyAnalysis()
 
 """
-Esta tabla retorna una lista de tuplas de la forma (id_segment, data, timestamp) con los ultimos registros agregados a la tabla "historical"
+Esta tabla retorna una lista de tuplas de la forma (id_segment, data, timestamp) con los ultimos registros agregados a la tabla "historical" ultimos 20 min
 """
-def getLastRecords() :
-    pass
+def getLastRecords(desde, hasta) :
+    conn = getDBConnection()
+    # sesion
+    Session = sessionmaker(bind=conn)
+    session = Session()
+    # realizando una consulta
+    
+    desde = datetime.datetime.strptime(desde, '%Y-%m-%dT%H:%M:%S-03:00')
+    hasta = datetime.datetime.strptime(hasta, '%Y-%m-%dT%H:%M:%S-03:00')
+    ahora = datetime.datetime.now()
+    #desde_cuando = ahora - datetime.timedelta(minutes=20)
+    
+    #results = session.query(Historical).filter(Historical.timestamp > desde_cuando  ).all()
+    results = session.query(Historical).filter(Historical.timestamp > desde).filter(Historical.timestamp < hasta).all()
+    last_records = []
+    for result in results:
+        record = [result.segment, result.data, result.timestamp]
+#        record = { "id_segment" : result.segment,
+#                    "data" : result.data,
+#                    "timestamp" : result.timestamp }
+        last_records.append(record)
+    return last_records
+    
 
 """
 Esta tabla retorna una lista de tuplas de la forma (id_segment, data, timestamp) con todos los registros agregados a la tabla "historical" en el ultimo mes
@@ -182,7 +203,7 @@ def getLastMonthRecords() :
 Esta funcion determina los parametros de deteccion de anomalias para cada segmento y los guarda en el archivo detection_params.json
 """
 def updateDetectionParams() :
-    lastmonthrecords = getLastMonthRecords()
+    lastmonthrecords = getLastRecords("2015-07-06T15:10:00-03:00","2015-08-06T16:00:00-03:00")
     newparams = anomalyDetection.computeDetectionParams(lastmonthrecords)
     outf = open(detection_params_fn, "wb")
     outf.write(newparams)
@@ -261,9 +282,10 @@ def updateSnapshot(curstate):
     pass
 
 def performAnomalyAnalysis() :
-    lastrecords = getLastRecords()
+    lastrecords = getLastRecords("2015-08-06T15:10:00-03:00","2015-08-06T15:50:00-03:00")
     detectparams = getDetectionParams()
     anomalies = anomalyDetection.detectAnomalies(detectparams, lastrecords)
+    print anomalies
     upsertAnomalies(anomalies)
     curstate = getCurrentSegmentState(anomalies, lastrecords)
     updateSnapshot(curstate)
@@ -274,7 +296,5 @@ def dailyUpdate () :
 
 
 if __name__ == '__main__':
-    setupDB()
-    executeLoop()
-
-    
+    #getLastRecords("2015-08-06T15:10:00-03:00","2015-08-06T15:50:00-03:00")
+    performAnomalyAnalysis()
