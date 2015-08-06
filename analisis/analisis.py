@@ -323,10 +323,10 @@ def upsertAnomalies (newanomalydata) :
     liveanomalies = []
     for a in newanomalydata :
         window_older = a["timestamp"] - datetime.timedelta(minutes=20)
-        candidate = session.query(Anomaly).
-            filter(Anomaly.id_segment == a.id_segment).
-            filter(Anomaly.timestamp_end >= window_older).
-            filter(Anomaly.timestamp_end <= a["timestamp"]).
+        candidate = session.query(Anomaly).\
+            filter(Anomaly.id_segment == a.id_segment).\
+            filter(Anomaly.timestamp_end >= window_older).\
+            filter(Anomaly.timestamp_end <= a["timestamp"]).\
             first()
         if candidate :
             candidate["timestamp_end"] = a["timestamp"]
