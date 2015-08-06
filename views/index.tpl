@@ -26,49 +26,54 @@
 		});
 		// aqui especificamos el canal para la recepcion continua de los datos
 		socket.on('independencia', function(data) {
-			console.log(data.nombre);
+			actualizacion(data);
 		});
-		socket.on('Illia', function(data) {
-			console.log(data)
+		socket.on('Illia', function(data) { // no llega el nombre en data.nombre
+			actualizacion(data);
 		});
 		socket.on('9_de_julio', function(data) {
-			console.log(data)
+			actualizacion(data);
 		});
+
+		socket.on('9_de_julio_externo', function(data) {
+			actualizacion(data);
+		});
+
 		socket.on('alem', function(data) {
-			console.log(data.nombre);
+			actualizacion(data);
 		});
 		socket.on('corrientes', function(data) {
-			console.log(data.nombre);
+			actualizacion(data);
 		});
 		socket.on('rivadavia', function(data) {
-			console.log(data.nombre);
+			actualizacion(data);
 		});
 		socket.on('av_de_mayo', function(data) {
-			console.log(data.nombre);
+			actualizacion(data);
 		});
 		socket.on('san_martin', function(data) {
-			console.log(data.nombre);
+			actualizacion(data);
 		});
 		socket.on('juan_b_justo', function(data) {
-			console.log(data.nombre);
+			actualizacion(data);
 		});
 		socket.on('cordoba', function(data) {
-			console.log(data.nombre);
+			actualizacion(data);
 		});
 		socket.on('paseo_colon', function(data) {
-			console.log(data.nombre);
+			actualizacion(data);
 		});
 		socket.on('cabildo', function(data) {
-			console.log(data.nombre);
+			actualizacion(data);
 		});
 		socket.on('pueyrredon', function(data) {
-			console.log(data.nombre);
+			actualizacion(data);
 		});
 		socket.on('alcorta', function(data) {
-			console.log(data)
+			actualizacion(data);
 		});
 		socket.on('libertador', function(data) {
-			console.log(data)
+			actualizacion(data);
 		});			
 		// en caso que socket disponga de un error
 		socket.on('error', function(e){
@@ -82,6 +87,10 @@
 		socket.on('disconnect', function(e){
 			console.log("Disconnect.")
 		});
+
+		var actualizacion = function(data){
+			console.log(data)
+		}
 
 
 
