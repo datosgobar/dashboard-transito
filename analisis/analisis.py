@@ -256,6 +256,9 @@ Si el atributo causa, causa_id y/o timestamp_end estan presentes se updetea dich
 """
 def upsertAnomalies (newanomalydata) :
     pass
+    
+def updateSnapshot(curstate):
+    pass
 
 def performAnomalyAnalysis() :
     lastrecords = getLastRecords()
