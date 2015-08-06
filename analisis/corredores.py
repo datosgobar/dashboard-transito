@@ -5,7 +5,6 @@ import MySQLdb
 import os
 import time
 import random
-
 import config
 
 if os.environ.get('OPENSHIFT_MYSQL_DIR'):
@@ -111,12 +110,10 @@ def parserEmitData(self, template):
 				if update[i][0] in segmentosids:
 					if update[i][0] in referencia['centro']:
 						#print update[i][0], c, 'centro'
-						template['corredores'][corredor]['segmentos'].append({"id": \
-							update[i][0], "capital": buildSegmentos(update[i])})
+						template['corredores'][corredor]['segmentos_capital'].append(buildSegmentos(update[i]))
 					else:
 						#print update[i][0], c, 'prov'
-						template['corredores'][corredor]['segmentos'].append({"id": \
-							update[i][0], "provincia": buildSegmentos(update[i])})
+						template['corredores'][corredor]['segmentos_provincia'].append(buildSegmentos(update[i]))
 				else:
 					continue
 

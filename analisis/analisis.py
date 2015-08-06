@@ -99,12 +99,19 @@ def downloadData (sensor_ids, step, download_startdate, download_enddate, outfn=
 def createDBEngine () :
     #engine = sqlalchemy.create_engine("postgres://postgres@/postgres")
     # engine = sqlalchemy.create_engine("sqlite:///analysis.db")
-    user = config.mysql['user']
-    password = config.mysql['password']
-    host = config.mysql['host']
-    db = config.mysql['db']
-    engine = sqlalchemy.create_engine("mysql://"+user+":"+password+"@"+host+"/"+db)
-    return engine
+    if os.environ.get('OPENSHIFT_MYSQL_DIR'):
+        host = os.environ.get('OPENSHIFT_MYSQL_DB_HOST')
+        user = os.environ.get('OPENSHIFT_MYSQL_DB_USERNAME')
+        password = os.environ.get('OPENSHIFT_MYSQL_DB_PASSWORD')
+        engine = sqlalchemy.create_engine("mysql://"+user+":"+password+"@"+host+"/dashboardoperativo")
+        return engine
+    else:
+        user = config.mysql['user']
+        password = config.mysql['password']
+        host = config.mysql['host']
+        db = config.mysql['db']
+        engine = sqlalchemy.create_engine("mysql://"+user+":"+password+"@"+host+"/"+db)
+        return engine
 
 def getDBConnection () :
     conn = createDBEngine().connect()
@@ -296,5 +303,10 @@ def dailyUpdate () :
 
 
 if __name__ == '__main__':
+
     #getLastRecords("2015-08-06T15:10:00-03:00","2015-08-06T15:50:00-03:00")
     performAnomalyAnalysis()
+
+
+
+
