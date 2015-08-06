@@ -1,20 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import sqlalchemy
 import MySQLdb
+import sqlalchemy
 from sqlalchemy import Column, Integer, Float, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-import config
 import json
 import requests 
 import datetime
 import dateutil.parser
 import multiprocessing
+import os
 
+import config
 import anomalyDetection
 
 detection_params_fn = "detection_params.json"
@@ -36,6 +37,7 @@ class Anomaly(Base):
     timestamp_end = Column(DateTime, nullable=False)
     causa = Column(String(140), nullable=False)
     causa_id = Column(Integer, nullable=False)
+    indicador_anomalia = Column(Float, nullable=False)
 
 class SegmentSnapshot(Base):
     __tablename__ = 'segment_snapshot'
@@ -222,8 +224,15 @@ def updateDetectionParams() :
 """
 Esta funcion retorna la data que se va a cargar en la tabla segment_snapshot como una lista de diccionarios.
 Recibe:
-- Una lista con las anomalias encontradas de la forma:
-[{'timestamp': datetime.datetime(2015, 7, 12, 6, 0), 'indicador_anomalia': 2.29, 'id_segment': 10}]
+- Lista de dicts con las anomalias que estan vivas en este momento. Cada elemento sigue la forma de los registros de la tabla anomaly:
+{
+    "id_segment" : int,
+    "timestamp_start" : datetime,
+    "timestamp_end" : datetime,
+    "causa" : str,
+    "causa_id" : int
+}
+
 - Un listado de tuplas de la forma (id_segment, data, timestamp) con los datos de los ultimos 20 minutos
 
 Retorna:
@@ -330,14 +339,10 @@ def upsertAnomalies (newanomalydata) :
     liveanomalies = []
     for a in newanomalydata :
         window_older = a["timestamp"] - datetime.timedelta(minutes=20)
-        candidate = session.query(Anomaly).
-            filter(Anomaly.id_segment == a.id_segment).
-            filter(Anomaly.timestamp_end >= window_older).
-            filter(Anomaly.timestamp_end <= a["timestamp"]).
-            first()
+        candidate = session.query(Anomaly).filter(Anomaly.id_segment == a["id_segment"]).filter(Anomaly.timestamp_end >= window_older).filter(Anomaly.timestamp_end <= a["timestamp"]).first()
         if candidate :
-            candidate["timestamp_end"] = a["timestamp"]
-            candidate["indicador_anomalia"] = a["indicador_anomalia"]
+            candidate.timestamp_end = a["timestamp"]
+            candidate.indicador_anomalia = a["indicador_anomalia"]
             curanomaly = {}
             for column in Anomaly.__table__.columns:
                 curanomaly[column.name] = str(getattr(candidate, column.name))
@@ -354,10 +359,17 @@ def upsertAnomalies (newanomalydata) :
             session.add(Anomaly(**curanomaly))
         session.commit()
         liveanomalies += [curanomaly]
+    conn.close()
     return liveanomalies
 
 def updateSnapshot(curstate):
-    pass
+    conn = getDBConnection()
+    Session = sessionmaker(bind=conn)
+    sess = Session()
+    for segstate in curstate :
+        sess.add(SegmentSnapshot(**segstate))
+        sess.commit()
+    conn.close()
 
 def performAnomalyAnalysis() :
     lastrecords = getLastRecords("2015-08-06T15:10:00-03:00","2015-08-06T15:50:00-03:00")
@@ -366,7 +378,7 @@ def performAnomalyAnalysis() :
     curanomalies = upsertAnomalies(anomalies)
     curstate = getCurrentSegmentState(curanomalies, lastrecords)
     updateSnapshot(curstate)
-    
+
 def dailyUpdate () :
     removeOldRecords()
     updateDetectionParams()
