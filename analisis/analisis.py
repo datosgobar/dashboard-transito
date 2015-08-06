@@ -99,12 +99,19 @@ def downloadData (sensor_ids, step, download_startdate, download_enddate, outfn=
 def createDBEngine () :
     #engine = sqlalchemy.create_engine("postgres://postgres@/postgres")
     # engine = sqlalchemy.create_engine("sqlite:///analysis.db")
-    user = config.mysql['user']
-    password = config.mysql['password']
-    host = config.mysql['host']
-    db = config.mysql['db']
-    engine = sqlalchemy.create_engine("mysql://"+user+":"+password+"@"+host+"/"+db)
-    return engine
+    if os.environ.get('OPENSHIFT_MYSQL_DIR'):
+        host = os.environ.get('OPENSHIFT_MYSQL_DB_HOST')
+        user = os.environ.get('OPENSHIFT_MYSQL_DB_USERNAME')
+        password = os.environ.get('OPENSHIFT_MYSQL_DB_PASSWORD')
+        engine = sqlalchemy.create_engine("mysql://"+user+":"+password+"@"+host+"/dashboardoperativo")
+        return engine
+    else:
+        user = config.mysql['user']
+        password = config.mysql['password']
+        host = config.mysql['host']
+        db = config.mysql['db']
+        engine = sqlalchemy.create_engine("mysql://"+user+":"+password+"@"+host+"/"+db)
+        return engine
 
 def getDBConnection () :
     conn = createDBEngine().connect()
@@ -169,8 +176,29 @@ def executeLoop(desde, hasta) :
 """
 Esta tabla retorna una lista de tuplas de la forma (id_segment, data, timestamp) con los ultimos registros agregados a la tabla "historical"
 """
-def getLastRecords() :
-    pass
+def getLastRecords(desde, hasta) :
+    conn = getDBConnection()
+    # sesion
+    Session = sessionmaker(bind=conn)
+    session = Session()
+    # realizando una consulta
+    
+    desde = datetime.datetime.strptime(desde, '%Y-%m-%dT%H:%M:%S-03:00')
+    hasta = datetime.datetime.strptime(hasta, '%Y-%m-%dT%H:%M:%S-03:00')
+    ahora = datetime.datetime.now()
+    #desde_cuando = ahora - datetime.timedelta(minutes=20)
+    
+    #results = session.query(Historical).filter(Historical.timestamp > desde_cuando  ).all()
+    results = session.query(Historical).filter(Historical.timestamp > desde).filter(Historical.timestamp < hasta).all()
+    last_records = []
+    for result in results:
+        record = [result.segment, result.data, result.timestamp]
+#        record = { "id_segment" : result.segment,
+#                    "data" : result.data,
+#                    "timestamp" : result.timestamp }
+        last_records.append(record)
+    return last_records
+    
 
 """
 Esta tabla retorna una lista de tuplas de la forma (id_segment, data, timestamp) con todos los registros agregados a la tabla "historical" en el ultimo mes
@@ -182,7 +210,7 @@ def getLastMonthRecords() :
 Esta funcion determina los parametros de deteccion de anomalias para cada segmento y los guarda en el archivo detection_params.json
 """
 def updateDetectionParams() :
-    lastmonthrecords = getLastMonthRecords()
+    lastmonthrecords = getLastRecords("2015-07-06T15:10:00-03:00","2015-08-06T16:00:00-03:00")
     newparams = anomalyDetection.computeDetectionParams(lastmonthrecords)
     outf = open(detection_params_fn, "wb")
     outf.write(newparams)
@@ -191,14 +219,8 @@ def updateDetectionParams() :
 """
 Esta funcion retorna la data que se va a cargar en la tabla segment_snapshot como una lista de diccionarios.
 Recibe:
-- Lista de dicts con las anomalias que estan vivas en este momento. Cada elemento es de la forma:
-{
-    "id_segment" : int,
-    "timestamp_start" : datetime,
-    "timestamp_end" : datetime,
-    "causa" : str,
-    "causa_id" : int
-}
+- Una lista con las anomalias encontradas de la forma:
+[{'timestamp': datetime.datetime(2015, 7, 12, 6, 0), 'indicador_anomalia': 2.29, 'id_segment': 10}]
 - Un listado de tuplas de la forma (id_segment, data, timestamp) con los datos de los ultimos 20 minutos
 
 Retorna:
@@ -335,7 +357,7 @@ def updateSnapshot(curstate):
     pass
 
 def performAnomalyAnalysis() :
-    lastrecords = getLastRecords()
+    lastrecords = getLastRecords("2015-08-06T15:10:00-03:00","2015-08-06T15:50:00-03:00")
     detectparams = getDetectionParams()
     anomalies = anomalyDetection.detectAnomalies(detectparams, lastrecords)
     curanomalies = upsertAnomalies(anomalies)
