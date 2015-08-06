@@ -6,19 +6,11 @@ import os
 import time
 import random
 
-
-if os.environ.get('OPENSHIFT_MYSQL_DIR'):
-	host = os.environ.get('OPENSHIFT_MYSQL_DB_HOST')
-	port = os.environ.get('OPENSHIFT_MYSQL_DB_PORT')
-	user = os.environ.get('OPENSHIFT_MYSQL_DB_USERNAME')
-	pwd = os.environ.get('OPENSHIFT_MYSQL_DB_PASSWORD')
-	db = MySQLdb.connect(host=host, user=user, passwd=pwd, db="dashboardoperativo")
-else:
-	db = MySQLdb.connect(host="localhost", passwd="password", user="root")
-	cur = db.cursor()
-	cur.execute('CREATE DATABASE IF NOT EXISTS dashboardoperativo;')
-	cur.close()
-	db.select_db("dashboardoperativo")
+db = MySQLdb.connect(host="localhost", passwd="password", user="root")
+cur = db.cursor()
+cur.execute('CREATE DATABASE IF NOT EXISTS dashboardoperativo;')
+cur.close()
+db.select_db("dashboardoperativo")
 
 def createSegmentos():
 	try:
@@ -110,12 +102,10 @@ def parserEmitData(self, template):
 				if update[i][0] in segmentosids:
 					if update[i][0] in referencia['centro']:
 						#print update[i][0], c, 'centro'
-						template['corredores'][corredor]['segmentos'].append({"id": \
-							update[i][0], "capital": buildSegmentos(update[i])})
+						template['corredores'][corredor]['segmentos_capital'].append(buildSegmentos(update[i]))
 					else:
 						#print update[i][0], c, 'prov'
-						template['corredores'][corredor]['segmentos'].append({"id": \
-							update[i][0], "provincia": buildSegmentos(update[i])})
+						template['corredores'][corredor]['segmentos_provincia'].append(buildSegmentos(update[i]))
 				else:
 					continue
 

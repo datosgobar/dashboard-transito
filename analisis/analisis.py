@@ -121,10 +121,10 @@ def setupDB () :
     engine = createDBEngine()
     Base.metadata.create_all(engine)
  
-"""
-Baja datos de nuevos de teracode y los guarda en la tabla "historical"
-"""
 def updateDB(sensores, desde, hasta, step = datetime.timedelta(days=2)) : 
+    """
+    Baja datos de nuevos de teracode y los guarda en la tabla "historical"
+    """
     conn = getDBConnection()
     result = downloadData(sensores, step, desde, hasta)
     # parsear json
@@ -240,7 +240,5 @@ def dailyUpdate () :
 
 
 if __name__ == '__main__':
+
     setupDB()
-    desde = "2015-08-01T00:00:00-00:00"
-    hasta = "2015-08-04T00:00:01-00:00"
-    executeLoop(desde, hasta)
