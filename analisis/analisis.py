@@ -191,8 +191,14 @@ def updateDetectionParams() :
 """
 Esta funcion retorna la data que se va a cargar en la tabla segment_snapshot como una lista de diccionarios.
 Recibe:
-- Una lista con las anomalias encontradas de la forma:
-[{'timestamp': datetime.datetime(2015, 7, 12, 6, 0), 'indicador_anomalia': 2.29, 'id_segment': 10}]
+- Lista de dicts con las anomalias que estan vivas en este momento. Cada elemento es de la forma:
+{
+    "id_segment" : int,
+    "timestamp_start" : datetime,
+    "timestamp_end" : datetime,
+    "causa" : str,
+    "causa_id" : int
+}
 - Un listado de tuplas de la forma (id_segment, data, timestamp) con los datos de los ultimos 20 minutos
 
 Retorna:
@@ -225,10 +231,10 @@ def getCurrentSegmentState (anomalies, lastrecords) :
             "id" : s[0],
             "timestamp_medicion" : s[2],
             "tiempo" : s[1],
-            "velocidad" : -1, #s["data"] / s["id_segment"],
-            "causa" : "",
-            "causa_id" : 0,
-            "duracion_anomalia" : 0,
+            #"velocidad" : -1,
+            "causa" : ad.get(s[0], {}).get("causa", ""),
+            "causa_id" : ad.get(s[0], {}).get("causa_id", 0),
+            "duracion_anomalia" : ad.get(s[0], {}).get("duracion_anomalia", 0),
             "indicador_anomalia" : ad.get(s[0], {}).get("indicador_anomalia", 0),
             "anomalia" : ad.has_key(s[0]),
         }]
@@ -244,19 +250,81 @@ def getDetectionParams() :
 Updetea una anomalia prexistente
 La entrada de esta funcion es un unico diccionario que identifica a la anomalia y tiene la siguiente forma:
 {
-    "id_segment" : N,
-    "timestamp" : N,
-    "causa" : N,
-    "causa_id" : N
-    "timestamp_end" : N,
+    "id_segment" : int,
+    "timestamp" : datetime,
+    "indicador_anomalia" : float,
 }
+
+Salida: Lista de dicts con las anomalias que estan vivas en este momento. Cada elemento es de la forma:
+{
+    "id_segment" : int,
+    "timestamp_start" : datetime,
+    "timestamp_end" : datetime,
+    "causa" : str,
+    "causa_id" : int
+}
+
 Los atributos id_segment y timestamp se usan para determinar si una anomalia ya esta presente en la tabla "anomaly".
-Si no esta presente la funcion falla
-Si el atributo causa, causa_id y/o timestamp_end estan presentes se updetea dicho campo en el registro de esa anomalia.
+Las anomalias candidatas a ser mergeadas son todas aquellas cuyo timestamp_end esta dentro de los ultimos 20 minutos.
+Por cada anomalia en newanomalydata (como mucho hay una por segmento) me fijo si hay una anomalia candidata en ese segmento.
+- Si la hay seteo el campo timestamp_end de la anomalia candidata con el campo timestamp de la anomalia nueva
+- Si no la hay creo una nueva anomalia donde:
+    id_segment = timestamp_end = anomalia.id_segment
+    timestamp_start = timestamp_end = anomalia.timestamp
+    indicador_anomalia = anomalia.indicador_anomalia
+
+En este cuadro a es una anomalia ya cargada y b es un avistamiento de una anomalia
+
+a.start    a.end
+|          |           
+v          v           
++----------+           
+|          |           
++----------+           
+        +..........+   
+        ^          ^   
+        |          |   
+        b.ts-20m   b.ts
+
+=>
++------------------+   
+|                  |           
++------------------+
+^                  ^   
+|                  |   
+a.start            a.end = b.ts
 """
 def upsertAnomalies (newanomalydata) :
-    pass
-    
+    conn = getDBConnection()
+    Session = sessionmaker(bind=conn)
+    session = Session()
+    liveanomalies = []
+    for a in newanomalydata :
+        window_older = a["timestamp"] - datetime.timedelta(minutes=20)
+        candidate = session.query(Anomaly).
+            filter(Anomaly.id_segment == a.id_segment).
+            filter(Anomaly.timestamp_end >= window_older).
+            filter(Anomaly.timestamp_end <= a["timestamp"]).
+            first()
+        if candidate :
+            candidate["timestamp_end"] = a["timestamp"]
+            curanomaly = {}
+            for column in Anomaly.__table__.columns:
+                curanomaly[column.name] = str(getattr(candidate, column.name))
+            session.add(candidate)
+        else :
+            curanomaly = {
+                "id_segment" : a["id_segment"],
+                "timestamp_start" : a["timestamp"],
+                "timestamp_end" : a["timestamp"],
+                "causa" : "",
+                "causa_id" : 0,
+            }
+            session.add(Anomaly(**curanomaly))
+        session.commit()
+        liveanomalies += [curanomaly]
+    return liveanomalies
+
 def updateSnapshot(curstate):
     pass
 
@@ -264,8 +332,8 @@ def performAnomalyAnalysis() :
     lastrecords = getLastRecords()
     detectparams = getDetectionParams()
     anomalies = anomalyDetection.detectAnomalies(detectparams, lastrecords)
-    upsertAnomalies(anomalies)
-    curstate = getCurrentSegmentState(anomalies, lastrecords)
+    curanomalies = upsertAnomalies(anomalies)
+    curstate = getCurrentSegmentState(curanomalies, lastrecords)
     updateSnapshot(curstate)
     
 def dailyUpdate () :
