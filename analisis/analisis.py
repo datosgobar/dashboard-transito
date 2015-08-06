@@ -131,24 +131,27 @@ def updateDB(sensores, desde, hasta, step = datetime.timedelta(days=2)) :
     Session = sessionmaker(bind=conn)
     session = Session()
     # loopear por cada corredor
+    newrecords = False
     for corredor in result:
-        if corredor:
-            for segmento in corredor["datos"]["data"]:
-                print segmento
-                # crear nueva instancia de Historical
-                segment = segmento["iddevice"]
-                data = segmento["data"]
-                timestamp = datetime.datetime.strptime(segmento["date"], '%Y-%m-%dT%H:%M:%S-03:00')
-                segmentdb = Historical(**{
-                    "segment" : segment,
-                    "data" : data,
-                    "timestamp" : timestamp
-                    })
-                # pushear instancia de Historial a la base
-                session.add(segmentdb)
-                session.commit()
-        else:
+        if not bool(corredor):
             continue
+        for segmento in corredor["datos"]["data"]:
+            print segmento
+            # crear nueva instancia de Historical
+            segment = segmento["iddevice"]
+            data = segmento["data"]
+            timestamp = datetime.datetime.strptime(segmento["date"], '%Y-%m-%dT%H:%M:%S-03:00')
+            segmentdb = Historical(**{
+                "segment" : segment,
+                "data" : data,
+                "timestamp" : timestamp
+                })
+            # pushear instancia de Historial a la base
+            session.add(segmentdb)
+            session.commit()
+            newrecords = True
+    
+    return newrecords
     
     
 """
