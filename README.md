@@ -28,6 +28,12 @@ easy_install MySQL-python
 ```
 
 ## Corriendo la app
+Actualizar datos de conexion a base de datos en
+
+```sh
+analisis/config.py
+```
+
 Crear tabla en MySQL
 
 ```sh
