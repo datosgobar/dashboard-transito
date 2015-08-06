@@ -211,12 +211,13 @@ Retorna:
     "velocidad" : (distancia del corredor / tiempo),
     "causa" : (por ahora null, lo modifica la UI),
     "causa_id" : (por ahora null, lo modifica la UI),
-    "duracion_anomalia" : (por ahora null),
+    "timestamp_start" : (ts de inicio),
+    "timestamp_end" : (ts de fin),
     "indicador_anomalia" : (porcentaje),
     "anomalia" : True/False
 }
 """
-# TODO: Completar campos "velocidad" y "duracion_anomalia"
+# TODO: Completar campo "velocidad"
 def getCurrentSegmentState (anomalies, lastrecords) :
     segments = {}
     for r in lastrecords :
@@ -227,6 +228,9 @@ def getCurrentSegmentState (anomalies, lastrecords) :
     
     output = []
     for s in segments.values() :
+        duracion_anomalia = 0
+        if ad.has_key(s[0]) :
+            duracion_anomalia = ad[s[0]]["timestamp_end"] - ad[s[0]]["timestamp_start"]
         output += [{
             "id" : s[0],
             "timestamp_medicion" : s[2],
@@ -234,7 +238,7 @@ def getCurrentSegmentState (anomalies, lastrecords) :
             #"velocidad" : -1,
             "causa" : ad.get(s[0], {}).get("causa", ""),
             "causa_id" : ad.get(s[0], {}).get("causa_id", 0),
-            "duracion_anomalia" : ad.get(s[0], {}).get("duracion_anomalia", 0),
+            "duracion_anomalia" : duracion_anomalia,
             "indicador_anomalia" : ad.get(s[0], {}).get("indicador_anomalia", 0),
             "anomalia" : ad.has_key(s[0]),
         }]
