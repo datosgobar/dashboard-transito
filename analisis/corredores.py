@@ -35,6 +35,7 @@ def createSegmentos():
 					random.random(), random.randrange(0, 4)))
 			print "Auto Increment ID: %s" % ID
 	finally:
+		db.commit()
   		cur.close()
 		db.close()
 
@@ -55,6 +56,7 @@ def readSegmentos():
 		for row in cur.fetchall():
 			result.append(row)
 	finally:
+		db.commit()
 		cur.close()
 		db.close()
 		return result
@@ -97,9 +99,9 @@ def parserEmitData(self, template):
 	}
 
 	referencia  = {
-		"centro" : [10, 12, 57, 53, 51, 49, 40, 43, 37, 36, 21, 31, 33, 35, 13, 14, 18, 17, 23, \
-		24, 25, 26, 28, 30, 32, 45, 47, 38, 44],
-		"provincia" : [11, 56, 54, 55, 41, 22, 16, 15, 19, 20, 10, 27, 29, 34, 39, 42, 46, 50 ,52, 48]
+		"centro" : [10, 12, 57, 53, 51, 49, 40, 43, 37, 36, 21, 31, 35, 13, 14, 18, 17, 23, \
+		24, 25, 26, 28, 32, 45, 47, 38, 44],
+		"provincia" : [11, 56, 54, 55, 41, 22, 16, 15, 19, 20, 10, 27, 29, 34, 39, 42, 46, 50 ,52, 48, 30, 33]
 	}
 
 	update = readSegmentos()

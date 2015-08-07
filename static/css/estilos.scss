@@ -33,7 +33,7 @@ body {
     //font-size: 1.3em;
     //font-size: 1em;
             @include breakpoint(xs) {
-                background-color: #00F2F2;
+                background-color: #ffffff;
             }
 }
 
@@ -59,23 +59,21 @@ body {
     @include border-bottom-radius(5px);
     background-color: #ffffff;
     width: 90%;
-    padding: 10px;
+    padding: 20px;
     margin: 0 auto 20px;
-    border-left: 15px solid $gris;
-
     .titulo{
-        font-size: 1em;
+        font-size: 1.4em;
+        font-weight: bold;
     }
 
     .segmentos{
         width: 100%;
         .contenedorSegmentos{
             .etiquetaSegmento{
-                                
-                font-size: 1.4em;
+                font-size: 1em;
             }
             .estadoSegmento{
-                height: 10px;
+                height: 20px;
                 background-color: $fondoAnomalia;
                 border: 1px solid $blanco;
             }
@@ -86,13 +84,13 @@ body {
             }
             .segmento{
                 display: table-cell;
-                .rojo{
+                .rojo, .estado3{
                     background-color: $rojo;
                 }
-                .naranja{
+                .naranja, .estado2{
                     background-color: $naranja;
                 }
-                .amarillo{
+                .amarillo, .estado1{
                     background-color: $amarillo;
                 }
             }
@@ -114,6 +112,23 @@ body {
     }
 
  }
+
+.estadoBorde0{
+    border-left: 15px solid $gris;        
+}
+.estadoBorde1{
+    border-left: 15px solid $amarillo;        
+}
+.estadoBorde2{
+    border-left: 15px solid $naranja;        
+}
+.estadoBorde3{
+    border-left: 15px solid $rojo;        
+}
+
+    
+
+
 
 .shadow{
     transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 0.5);

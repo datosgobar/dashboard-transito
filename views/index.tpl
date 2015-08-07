@@ -9,7 +9,7 @@
 
 	<script type="text/javascript" src="_static/js/socket.io.js"></script>
 	<script type="text/javascript" src="_static/js/jquery-2.1.3.min.js"></script>
-	<script type="text/javascript" src="_static/js/app.min.js"></script>
+	<script type="text/javascript" src="_static/js/app.js"></script>
 	<script type="text/javascript" src="_static/js/settings-map.js"></script>
 
 	<link rel="stylesheet" href="_static/css/estilos.min.css" />

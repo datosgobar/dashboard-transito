@@ -24,7 +24,7 @@ html, body {
   background-color: #F2F2F2; }
   @media (max-width: 767px) {
     html, body {
-      background-color: #00F2F2; } }
+      background-color: #ffffff; } }
 
 .oculta {
   display: none; }
@@ -47,17 +47,17 @@ html, body {
   border-bottom-right-radius: 5px;
   background-color: #ffffff;
   width: 90%;
-  padding: 10px;
-  margin: 0 auto 20px;
-  border-left: 15px solid #c0c0c0; }
+  padding: 20px;
+  margin: 0 auto 20px; }
   .card .titulo {
-    font-size: 1em; }
+    font-size: 1.4em;
+    font-weight: bold; }
   .card .segmentos {
     width: 100%; }
     .card .segmentos .contenedorSegmentos .etiquetaSegmento {
-      font-size: 1.4em; }
+      font-size: 1em; }
     .card .segmentos .contenedorSegmentos .estadoSegmento {
-      height: 10px;
+      height: 20px;
       background-color: #eeeeee;
       border: 1px solid #fafafa; }
     .card .segmentos .contenedorSegmentos .capital, .card .segmentos .contenedorSegmentos .provincia, .card .segmentos .contenedorSegmentos .etiquetas {
@@ -65,11 +65,11 @@ html, body {
       width: 90%; }
     .card .segmentos .contenedorSegmentos .segmento {
       display: table-cell; }
-      .card .segmentos .contenedorSegmentos .segmento .rojo {
+      .card .segmentos .contenedorSegmentos .segmento .rojo, .card .segmentos .contenedorSegmentos .segmento .estado3 {
         background-color: #e53935; }
-      .card .segmentos .contenedorSegmentos .segmento .naranja {
+      .card .segmentos .contenedorSegmentos .segmento .naranja, .card .segmentos .contenedorSegmentos .segmento .estado2 {
         background-color: #ff8f00; }
-      .card .segmentos .contenedorSegmentos .segmento .amarillo {
+      .card .segmentos .contenedorSegmentos .segmento .amarillo, .card .segmentos .contenedorSegmentos .segmento .estado1 {
         background-color: #fdd835; }
   .card .icono {
     position: absolute;
@@ -81,6 +81,18 @@ html, body {
     background-color: #fafafa;
     border-radius: 25px;
     border: 2px solid #eeeeee; }
+
+.estadoBorde0 {
+  border-left: 15px solid #c0c0c0; }
+
+.estadoBorde1 {
+  border-left: 15px solid #fdd835; }
+
+.estadoBorde2 {
+  border-left: 15px solid #ff8f00; }
+
+.estadoBorde3 {
+  border-left: 15px solid #e53935; }
 
 .shadow {
   transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 0.5);
