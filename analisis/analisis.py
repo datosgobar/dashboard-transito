@@ -14,6 +14,7 @@ import requests
 import datetime
 import dateutil.parser
 import multiprocessing
+import os
 
 import anomalyDetection
 
@@ -36,6 +37,7 @@ class Anomaly(Base):
     timestamp_end = Column(DateTime, nullable=False)
     causa = Column(String(140), nullable=False)
     causa_id = Column(Integer, nullable=False)
+    indicador_anomalia = Column(Float, nullable=False)
 
 class SegmentSnapshot(Base):
     __tablename__ = 'segment_snapshot'
@@ -72,16 +74,17 @@ def downloadData (sensor_ids, step, download_startdate, download_enddate, outfn=
     #vsensids = virtsens["id_sensor"].unique()
     urltpl = "https://apisensores.buenosaires.gob.ar/api/data/%s?token=%s&fecha_desde=%s&fecha_hasta=%s"
     
-    end = dateutil.parser.parse(download_enddate)
+    #end = dateutil.parser.parse(download_enddate)
+    start = download_startdate
+    end = download_enddate
     urls = []
-    for sensor_id in sensor_ids :
-        start = dateutil.parser.parse(download_startdate)
-        while start <= end :
-            startdate, enddate = start, start + step
+    while start <= end :
+        startdate, enddate = start, start + step
+        for sensor_id in sensor_ids :
             print startdate, enddate, sensor_id
             url = urltpl % (sensor_id, token, startdate.strftime("%Y-%m-%dT%H:%M:%S-03:00"), enddate.strftime("%Y-%m-%dT%H:%M:%S-03:00"))
             urls += [url]
-            start += step
+        start += step
     
     #alldata = map(getData, urls)
     alldata = pool.map(getData, urls)
@@ -99,12 +102,19 @@ def downloadData (sensor_ids, step, download_startdate, download_enddate, outfn=
 def createDBEngine () :
     #engine = sqlalchemy.create_engine("postgres://postgres@/postgres")
     # engine = sqlalchemy.create_engine("sqlite:///analysis.db")
-    user = config.mysql['user']
-    password = config.mysql['password']
-    host = config.mysql['host']
-    db = config.mysql['db']
-    engine = sqlalchemy.create_engine("mysql://"+user+":"+password+"@"+host+"/"+db)
-    return engine
+    if os.environ.get('OPENSHIFT_MYSQL_DIR'):
+        host = os.environ.get('OPENSHIFT_MYSQL_DB_HOST')
+        user = os.environ.get('OPENSHIFT_MYSQL_DB_USERNAME')
+        password = os.environ.get('OPENSHIFT_MYSQL_DB_PASSWORD')
+        engine = sqlalchemy.create_engine("mysql://"+user+":"+password+"@"+host+"/dashboardoperativo")
+        return engine
+    else:
+        user = config.mysql['user']
+        password = config.mysql['password']
+        host = config.mysql['host']
+        db = config.mysql['db']
+        engine = sqlalchemy.create_engine("mysql://"+user+":"+password+"@"+host+"/"+db)
+        return engine
 
 def getDBConnection () :
     conn = createDBEngine().connect()
@@ -167,7 +177,7 @@ def executeLoop(desde, hasta) :
     
     newrecords = updateDB(sensores, desde, hasta)
     if newrecords : 
-        performAnomalyAnalysis()
+        performAnomalyAnalysis(hasta)
 
 """
 Esta tabla retorna una lista de tuplas de la forma (id_segment, data, timestamp) con los ultimos registros agregados a la tabla "historical"
@@ -179,9 +189,9 @@ def getLastRecords(desde, hasta) :
     session = Session()
     # realizando una consulta
     
-    desde = datetime.datetime.strptime(desde, '%Y-%m-%dT%H:%M:%S-03:00')
-    hasta = datetime.datetime.strptime(hasta, '%Y-%m-%dT%H:%M:%S-03:00')
-    ahora = datetime.datetime.now()
+    #desde = datetime.datetime.strptime(desde, '%Y-%m-%dT%H:%M:%S-03:00')
+    #hasta = datetime.datetime.strptime(hasta, '%Y-%m-%dT%H:%M:%S-03:00')
+    #ahora = datetime.datetime.now()
     #desde_cuando = ahora - datetime.timedelta(minutes=20)
     
     #results = session.query(Historical).filter(Historical.timestamp > desde_cuando  ).all()
@@ -205,8 +215,13 @@ def getLastMonthRecords() :
 """
 Esta funcion determina los parametros de deteccion de anomalias para cada segmento y los guarda en el archivo detection_params.json
 """
-def updateDetectionParams() :
-    lastmonthrecords = getLastRecords("2015-07-06T15:10:00-03:00","2015-08-06T16:00:00-03:00")
+def updateDetectionParams (desde=None, hasta=None) :
+    if hasta == None :
+        hasta = datetime.datetime.now()
+    if desde == None :
+        desde = hasta - datetime.timedelta(weeks=4)
+    #lastmonthrecords = getLastRecords("2015-07-06T15:10:00-03:00","2015-08-06T16:00:00-03:00")
+    lastmonthrecords = getLastRecords(desde,hasta)
     newparams = anomalyDetection.computeDetectionParams(lastmonthrecords)
     outf = open(detection_params_fn, "wb")
     outf.write(newparams)
@@ -215,8 +230,15 @@ def updateDetectionParams() :
 """
 Esta funcion retorna la data que se va a cargar en la tabla segment_snapshot como una lista de diccionarios.
 Recibe:
-- Una lista con las anomalias encontradas de la forma:
-[{'timestamp': datetime.datetime(2015, 7, 12, 6, 0), 'indicador_anomalia': 2.29, 'id_segment': 10}]
+- Lista de dicts con las anomalias que estan vivas en este momento. Cada elemento sigue la forma de los registros de la tabla anomaly:
+{
+    "id_segment" : int,
+    "timestamp_start" : datetime,
+    "timestamp_end" : datetime,
+    "causa" : str,
+    "causa_id" : int
+}
+
 - Un listado de tuplas de la forma (id_segment, data, timestamp) con los datos de los ultimos 20 minutos
 
 Retorna:
@@ -323,14 +345,10 @@ def upsertAnomalies (newanomalydata) :
     liveanomalies = []
     for a in newanomalydata :
         window_older = a["timestamp"] - datetime.timedelta(minutes=20)
-        candidate = session.query(Anomaly).\
-            filter(Anomaly.id_segment == a.id_segment).\
-            filter(Anomaly.timestamp_end >= window_older).\
-            filter(Anomaly.timestamp_end <= a["timestamp"]).\
-            first()
+        candidate = session.query(Anomaly).filter(Anomaly.id_segment == a["id_segment"]).filter(Anomaly.timestamp_end >= window_older).filter(Anomaly.timestamp_end <= a["timestamp"]).first()
         if candidate :
-            candidate["timestamp_end"] = a["timestamp"]
-            candidate["indicador_anomalia"] = a["indicador_anomalia"]
+            candidate.timestamp_end = a["timestamp"]
+            candidate.indicador_anomalia = a["indicador_anomalia"]
             curanomaly = {}
             for column in Anomaly.__table__.columns:
                 curanomaly[column.name] = str(getattr(candidate, column.name))
@@ -347,13 +365,29 @@ def upsertAnomalies (newanomalydata) :
             session.add(Anomaly(**curanomaly))
         session.commit()
         liveanomalies += [curanomaly]
+    conn.close()
     return liveanomalies
 
 def updateSnapshot(curstate):
-    pass
+    conn = getDBConnection()
+    Session = sessionmaker(bind=conn)
+    sess = Session()
+    for segstate in curstate :
+        curstate = sess.query(SegmentSnapshot).get(segstate["id"])
+        if curstate == None :
+            curstate = SegmentSnapshot(**segstate)
+        else :
+            for (k,v) in segstate.items() :
+                setattr(curstate, k , v)
+        sess.add(curstate)
+        sess.commit()
+    conn.close()
 
-def performAnomalyAnalysis() :
-    lastrecords = getLastRecords("2015-08-06T15:10:00-03:00","2015-08-06T15:50:00-03:00")
+def performAnomalyAnalysis(ahora=None) :
+    if ahora == None :
+        ahora = datetime.datetime.now()
+    #lastrecords = getLastRecords("2015-08-06T15:10:00-03:00","2015-08-06T15:50:00-03:00")
+    lastrecords = getLastRecords(ahora - datetime.timedelta(minutes=20), ahora)
     detectparams = getDetectionParams()
     anomalies = anomalyDetection.detectAnomalies(detectparams, lastrecords)
     curanomalies = upsertAnomalies(anomalies)

@@ -10,6 +10,7 @@ import config
 
 def createSegmentos():
 
+
 	db = MySQLdb.connect(host=config.mysql["host"], passwd=config.mysql["password"], user=config.mysql["user"])
 	cur = db.cursor()
 	cur.execute('DROP DATABASE dashboardoperativo;')
@@ -95,9 +96,9 @@ def parserEmitData(self, template):
 		buildCorredores(corredores=corredores, template=template, update=result)
 		evaluar si el segmentos corresponde a un corredor y si ese mismo es para prov o capi
 	"""
-
 	corredores = {
-	 '9_de_julio': [13, 14, 15, 16, 17, 18, 19, 20],
+	 '9_de_julio': [13,  15, 17, 19],
+	 '9_de_julio_externo': [14, 16, 18, 20],
 	 'Illia': [11],
 	 'alcorta': [54, 55],
 	 'alem': [21, 22],
