@@ -74,16 +74,17 @@ def downloadData (sensor_ids, step, download_startdate, download_enddate, outfn=
     #vsensids = virtsens["id_sensor"].unique()
     urltpl = "https://apisensores.buenosaires.gob.ar/api/data/%s?token=%s&fecha_desde=%s&fecha_hasta=%s"
     
-    end = dateutil.parser.parse(download_enddate)
+    #end = dateutil.parser.parse(download_enddate)
+    start = download_startdate
+    end = download_enddate
     urls = []
-    for sensor_id in sensor_ids :
-        start = dateutil.parser.parse(download_startdate)
-        while start <= end :
-            startdate, enddate = start, start + step
+    while start <= end :
+        startdate, enddate = start, start + step
+        for sensor_id in sensor_ids :
             print startdate, enddate, sensor_id
             url = urltpl % (sensor_id, token, startdate.strftime("%Y-%m-%dT%H:%M:%S-03:00"), enddate.strftime("%Y-%m-%dT%H:%M:%S-03:00"))
             urls += [url]
-            start += step
+        start += step
     
     #alldata = map(getData, urls)
     alldata = pool.map(getData, urls)
@@ -176,7 +177,7 @@ def executeLoop(desde, hasta) :
     
     newrecords = updateDB(sensores, desde, hasta)
     if newrecords : 
-        performAnomalyAnalysis()
+        performAnomalyAnalysis(hasta)
 
 """
 Esta tabla retorna una lista de tuplas de la forma (id_segment, data, timestamp) con los ultimos registros agregados a la tabla "historical"
@@ -188,12 +189,13 @@ def getLastRecords(desde, hasta) :
     session = Session()
     # realizando una consulta
     
-    desde = datetime.datetime.strptime(desde, '%Y-%m-%dT%H:%M:%S-03:00')
-    hasta = datetime.datetime.strptime(hasta, '%Y-%m-%dT%H:%M:%S-03:00')
-    ahora = datetime.datetime.now()
+    #desde = datetime.datetime.strptime(desde, '%Y-%m-%dT%H:%M:%S-03:00')
+    #hasta = datetime.datetime.strptime(hasta, '%Y-%m-%dT%H:%M:%S-03:00')
+    #ahora = datetime.datetime.now()
     #desde_cuando = ahora - datetime.timedelta(minutes=20)
     
     #results = session.query(Historical).filter(Historical.timestamp > desde_cuando  ).all()
+    #results = session.query(Historical).filter(Historical.timestamp > desde).filter(Historical.timestamp < hasta).all()
     results = session.query(Historical).filter(Historical.timestamp > desde).filter(Historical.timestamp < hasta).all()
     last_records = []
     for result in results:
@@ -206,16 +208,15 @@ def getLastRecords(desde, hasta) :
     
 
 """
-Esta tabla retorna una lista de tuplas de la forma (id_segment, data, timestamp) con todos los registros agregados a la tabla "historical" en el ultimo mes
-"""
-def getLastMonthRecords() :
-    pass
-
-"""
 Esta funcion determina los parametros de deteccion de anomalias para cada segmento y los guarda en el archivo detection_params.json
 """
-def updateDetectionParams() :
-    lastmonthrecords = getLastRecords("2015-07-06T15:10:00-03:00","2015-08-06T16:00:00-03:00")
+def updateDetectionParams (desde=None, hasta=None) :
+    if hasta == None :
+        hasta = datetime.datetime.now()
+    if desde == None :
+        desde = hasta - datetime.timedelta(weeks=4)
+    #lastmonthrecords = getLastRecords("2015-07-06T15:10:00-03:00","2015-08-06T16:00:00-03:00")
+    lastmonthrecords = getLastRecords(desde,hasta)
     newparams = anomalyDetection.computeDetectionParams(lastmonthrecords)
     outf = open(detection_params_fn, "wb")
     outf.write(newparams)
@@ -377,8 +378,11 @@ def updateSnapshot(curstate):
         sess.commit()
     conn.close()
 
-def performAnomalyAnalysis() :
-    lastrecords = getLastRecords("2015-08-06T15:10:00-03:00","2015-08-06T15:50:00-03:00")
+def performAnomalyAnalysis(ahora=None) :
+    if ahora == None :
+        ahora = datetime.datetime.now()
+    #lastrecords = getLastRecords("2015-08-06T15:10:00-03:00","2015-08-06T15:50:00-03:00")
+    lastrecords = getLastRecords(ahora - datetime.timedelta(minutes=20), ahora)
     detectparams = getDetectionParams()
     anomalies = anomalyDetection.detectAnomalies(detectparams, lastrecords)
     curanomalies = upsertAnomalies(anomalies)
