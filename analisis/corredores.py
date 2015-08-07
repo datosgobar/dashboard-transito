@@ -22,7 +22,7 @@ def createSegmentos():
 
 	try:
 		cur = db.cursor()
-		cur.execute("""CREATE TABLE snapshot (id INT NOT NULL, PRIMARY KEY(id), timestamp_medicion TIMESTAMP, tiempo INT, \
+		cur.execute("""CREATE TABLE segment_snapshot (id INT NOT NULL, PRIMARY KEY(id), timestamp_medicion TIMESTAMP, tiempo INT, \
 		velocidad FLOAT,causa TEXT,causa_id INT,duracion_anomalia INT,indicador_anomalia FLOAT,anomalia INT);""")
 		cur.close()
 	except Exception, ex:
@@ -30,7 +30,7 @@ def createSegmentos():
 	else:
 		cur = db.cursor()
 		for ID in range(10, 58):
-			cur.execute("""INSERT INTO snapshot VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)""",  \
+			cur.execute("""INSERT INTO segment_snapshot VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)""",  \
 				(ID, time.strftime('%Y-%m-%d %H:%M:%S'), random.randrange(5, 21), \
 					random.randrange(0, 101), causas[random.randrange(0, 3)], random.randrange(0, 21), random.randrange(1, 120), \
 					random.random(), random.randrange(0, 4)))
@@ -49,10 +49,11 @@ def readSegmentos():
 		db = MySQLdb.connect(host=config.mysql["host"], passwd=config.mysql["password"], user=config.mysql["user"])
 		db.select_db("dashboardoperativo")
 		cur = db.cursor()
-	except:
+	except Exception, ex:
+		print ex
 		result = []
 	else:
-		cur.execute("SELECT * FROM snapshot")
+		cur.execute("SELECT * FROM segment_snapshot")
 		for row in cur.fetchall():
 			result.append(row)
 	finally:
@@ -65,17 +66,18 @@ def readSnapshot():
 		readSnapshot()
 	"""
 	result = []
-
+	select_table = {}
 	try:
 		conn = getDBConnection()
-	except:
+	except Exception, ex:
+		print ex
 		result = []
 	else:
-		select_table = conn.execute("SELECT * FROM snapshot")
-		assert int(select_table.rowcount) == 48
+		select_table = conn.execute("SELECT * FROM segment_snapshot")
 		result = select_table.fetchall()
 	finally:
-		select_table.close()
+		if hasattr(select_table, "close"):
+			select_table.close()
 		return result
 
 def buildSegmentos(data):
@@ -91,7 +93,7 @@ def buildSegmentos(data):
 		"anomalia" : int(data['anomalia'])
 	}
 
-def parserEmitData(template):
+def parserEmitData(self, template):
 	"""
 		buildCorredores(corredores=corredores, template=template, update=result)
 		evaluar si el segmentos corresponde a un corredor y si ese mismo es para prov o capi
@@ -146,7 +148,7 @@ def parserEmitData(template):
 
 
 if __name__ == '__main__':
-	
+
 	with open(os.path.abspath("template.json")) as templatecorredores:
 		template_buffer = buffer(templatecorredores.read())
 		template = json.loads(template_buffer.__str__())

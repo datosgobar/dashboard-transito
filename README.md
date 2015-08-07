@@ -12,7 +12,10 @@ Tener instalado MySQL 5.1
 ```sh
 $ apt-get install mysql-server
 ```
-Instalar Dependencias
+Instalar Dependencias, en openshift correr
+```sh
+$ source app-root/runtime/dependencies/python/virtenv/bin/activate
+```
 ```sh
 $ sudo python setup install
 ```
