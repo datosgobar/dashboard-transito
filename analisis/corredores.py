@@ -21,7 +21,7 @@ def createSegmentos():
 
 	try:
 		cur = db.cursor()
-		cur.execute("""CREATE TABLE infosegmentos2 (id INT NOT NULL, PRIMARY KEY(id), timestamp_medicion TIMESTAMP, tiempo INT, \
+		cur.execute("""CREATE TABLE infosegmentos (id INT NOT NULL, PRIMARY KEY(id), timestamp_medicion TIMESTAMP, tiempo INT, \
 		velocidad FLOAT,causa TEXT,causa_id INT,duracion_anomalia INT,indicador_anomalia FLOAT,anomalia INT);""")
 		cur.close()
 	except Exception, ex:
@@ -51,7 +51,7 @@ def readSegmentos():
 	except:
 		result = []
 	else:
-		cur.execute("SELECT * FROM infosegmentos2")
+		cur.execute("SELECT * FROM infosegmentos")
 		for row in cur.fetchall():
 			result.append(row)
 	finally:
