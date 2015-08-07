@@ -367,7 +367,13 @@ def updateSnapshot(curstate):
     Session = sessionmaker(bind=conn)
     sess = Session()
     for segstate in curstate :
-        sess.add(SegmentSnapshot(**segstate))
+        curstate = sess.query(SegmentSnapshot).get(segstate["id"])
+        if curstate == None :
+            curstate = SegmentSnapshot(**segstate)
+        else :
+            for (k,v) in segstate.items() :
+                setattr(curstate, k , v)
+        sess.add(curstate)
         sess.commit()
     conn.close()
 
