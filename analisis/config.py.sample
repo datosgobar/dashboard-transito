@@ -10,7 +10,7 @@ if os.environ.get('OPENSHIFT_MYSQL_DIR'):
 else:
 	mysql = dict(
 		user = 'root',
-		password = '',
+		password = 'password',
 		host = 'localhost',
 		db = 'dashboardoperativo'
 	)
