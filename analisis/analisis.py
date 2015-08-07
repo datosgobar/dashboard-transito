@@ -126,7 +126,7 @@ def setupDB () :
 """
 Baja datos de nuevos de teracode y los guarda en la tabla "historical"
 """
-def updateDB(sensores, desde, hasta, step = datetime.timedelta(days=2)) : 
+def updateDB(data) : 
     conn = getDBConnection()
     result = downloadData(sensores, step, desde, hasta)
     # parsear json
@@ -134,7 +134,7 @@ def updateDB(sensores, desde, hasta, step = datetime.timedelta(days=2)) :
     session = Session()
     # loopear por cada corredor
     newrecords = False
-    for corredor in result:
+    for corredor in data:
         if not bool(corredor):
             continue
         try :
@@ -154,7 +154,8 @@ def updateDB(sensores, desde, hasta, step = datetime.timedelta(days=2)) :
                 session.commit()
                 newrecords = True
         except :
-            pass    
+            pass
+    conn.close()
     return newrecords
     
     
@@ -167,7 +168,7 @@ def removeOldRecords() :
 """
 Este loop se va a ejecutar con la frecuencia indicada para cada momento del dia.
 """
-def executeLoop(desde, hasta) :
+def executeLoop(desde, hasta, dontdownload=False) :
     """
         traer los sensores lista de archivo configuracion
         desde = "2015-07-01T00:00:00-00:00"
@@ -176,8 +177,12 @@ def executeLoop(desde, hasta) :
     sensores = [10,12,57, 53,51,49, 40, 43, 37,36, 21, 31,33,35, 13,14, 18,17,23, \
     24,25, 26,28, 30,32 ,45, 47, 38, 44, 48,48, 11,56, 54,55, 41, 22, 16,15, 19, 20, 10, 27,29, 34, 39, 42, 46, 50 ,52]
     
-    newrecords = updateDB(sensores, desde, hasta)
-    if newrecords : 
+	if dontdownload :
+		has_new_records = True
+	else : 
+    	raw_data = downloadData(sensores, datetime.timedelta(days=2), desde, hasta)
+    	has_new_records = updateDB(raw_data)
+    if has_new_records : 
         performAnomalyAnalysis(hasta)
 
 """
@@ -204,6 +209,7 @@ def getLastRecords(desde, hasta) :
 #                    "data" : result.data,
 #                    "timestamp" : result.timestamp }
         last_records.append(record)
+    conn.close()
     return last_records
     
 
@@ -369,11 +375,11 @@ def upsertAnomalies (newanomalydata) :
     conn.close()
     return liveanomalies
 
-def updateSnapshot(curstate):
+def updateSnapshot(newstates):
     conn = getDBConnection()
     Session = sessionmaker(bind=conn)
     sess = Session()
-    for segstate in curstate :
+    for segstate in newstates :
         curstate = sess.query(SegmentSnapshot).get(segstate["id"])
         if curstate == None :
             curstate = SegmentSnapshot(**segstate)
@@ -381,7 +387,9 @@ def updateSnapshot(curstate):
             for (k,v) in segstate.items() :
                 setattr(curstate, k , v)
         sess.add(curstate)
-        sess.commit()
+        sess.flush()
+    
+    sess.commit()
     conn.close()
 
 def performAnomalyAnalysis(ahora=None) :
