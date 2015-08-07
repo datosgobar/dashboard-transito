@@ -37,6 +37,8 @@ Retorna una lista con las anomalias encontradas de la forma:
 [{'timestamp': datetime.datetime(2015, 7, 12, 6, 0), 'indicador_anomalia': 2.29, 'id_segment': 10}]
 """
 def detectAnomalies(detectparams, lastrecords) :
+    if len(lastrecords) == 0 :
+        return []
     detectparams = pd.read_json(detectparams, orient="records")
     lastrecords = pd.DataFrame(lastrecords, columns=["iddevice", "data", "date"])
     lastrecords = lastrecords.groupby('iddevice').apply(lambda df: df[df.date == df.date.max()].iloc[0])

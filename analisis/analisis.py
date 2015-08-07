@@ -137,22 +137,24 @@ def updateDB(data) :
     for corredor in data:
         if not bool(corredor):
             continue
-        for segmento in corredor["datos"]["data"]:
-            print segmento
-            # crear nueva instancia de Historical
-            segment = segmento["iddevice"]
-            data = segmento["data"]
-            timestamp = datetime.datetime.strptime(segmento["date"], '%Y-%m-%dT%H:%M:%S-03:00')
-            segmentdb = Historical(**{
-                "segment" : segment,
-                "data" : data,
-                "timestamp" : timestamp
-                })
-            # pushear instancia de Historial a la base
-            session.add(segmentdb)
-            session.commit()
-            newrecords = True
-    
+        try :
+            for segmento in corredor["datos"].get("data"):
+                print segmento
+                # crear nueva instancia de Historical
+                segment = segmento["iddevice"]
+                data = segmento["data"]
+                timestamp = datetime.datetime.strptime(segmento["date"], '%Y-%m-%dT%H:%M:%S-03:00')
+                segmentdb = Historical(**{
+                    "segment" : segment,
+                    "data" : data,
+                    "timestamp" : timestamp
+                    })
+                # pushear instancia de Historial a la base
+                session.add(segmentdb)
+                session.commit()
+                newrecords = True
+        except :
+            pass    
     return newrecords
     
     
@@ -275,7 +277,7 @@ def getCurrentSegmentState (anomalies, lastrecords) :
             "id" : s[0],
             "timestamp_medicion" : s[2],
             "tiempo" : s[1],
-            #"velocidad" : -1,
+            "velocidad" : -1,
             "causa" : ad.get(s[0], {}).get("causa", ""),
             "causa_id" : ad.get(s[0], {}).get("causa_id", 0),
             "duracion_anomalia" : duracion_anomalia,
@@ -399,8 +401,8 @@ def dailyUpdate () :
     updateDetectionParams()
 
 
-if __name__ == '__main__':
-    setupDB()
-    executeLoop()
+#if __name__ == '__main__':
+#    setupDB()
+#    executeLoop()
 
     
