@@ -24,7 +24,6 @@
 
 	<div id="mapa"> </div>
 
-
 	<script type="text/javascript" src="_static/js/eventos-socket.js"></script>
 	<script type="text/javascript">
 		var map = new google.maps.Map(document.getElementById('mapa'), settingsItemsMap ); // Cargo mapa	

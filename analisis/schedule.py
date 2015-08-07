@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import datetime
 import time
 import analisis
 
 class setInterval:
 
 	def __init__(self):
-		self.__cfg = {}
+
 		self.setTimeOut = 0
 		self.dawn = range(7, 24)
 		self.dawn.reverse() # 17 extraccion lun/dom, 
@@ -16,7 +17,6 @@ class setInterval:
 		self.afternoon = range(18, 21) # 36 extraccion lun/vier, 18 extraciones sab, 9 extraciones dom
 		self.night = range(21, 23) # 12 extraccion lun/sab, 6 extraciones dom
 		self.daily = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-		#self.setCfg()
 
 	def setCfg(self):
 		"""
@@ -83,17 +83,23 @@ class setInterval:
 		"""
 			hacer resta segun pase el tiempo
 		"""
-		#mytime = strftime("%b %d %Y %H:%M:%S")
-		#self.init(mytime)
+
 
 		while True:
 
 			self.setCfg()
-			print time.strftime("%H:%M:%S")
-			print self.setTimeOut
-			print "somethings, another code"
-			analisis.executeLoop()
+			#print time.strftime("%H:%M:%S")
+			#print self.setTimeOut
+			#print "somethings, another code"
+			
+			# le resto 20 minutos desde la fecha actual
+			# desde, hasta formato de fecha ISO-8601
 
+			hasta = datetime.datetime.now()
+			desde = hasta - datetime.timedelta(minutes=20)
+			analisis.executeLoop(desde, hasta)
+
+			#print "somethings, another code"
 			time.sleep(self.setTimeOut)
 
 

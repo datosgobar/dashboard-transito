@@ -3,3 +3,4 @@
 
 from getDataFake import getData, parserEmitDataFake
 from corredores import parserEmitData
+import config
