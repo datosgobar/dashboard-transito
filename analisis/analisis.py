@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import MySQLdb
 import sqlalchemy
+import MySQLdb
 from sqlalchemy import Column, Integer, Float, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+import config
 import json
 import requests 
 import datetime
@@ -15,7 +16,6 @@ import dateutil.parser
 import multiprocessing
 import os
 
-import config
 import anomalyDetection
 
 detection_params_fn = "detection_params.json"
@@ -195,7 +195,6 @@ def getLastRecords(desde, hasta) :
     #desde_cuando = ahora - datetime.timedelta(minutes=20)
     
     #results = session.query(Historical).filter(Historical.timestamp > desde_cuando  ).all()
-    #results = session.query(Historical).filter(Historical.timestamp > desde).filter(Historical.timestamp < hasta).all()
     results = session.query(Historical).filter(Historical.timestamp > desde).filter(Historical.timestamp < hasta).all()
     last_records = []
     for result in results:
@@ -206,6 +205,12 @@ def getLastRecords(desde, hasta) :
         last_records.append(record)
     return last_records
     
+
+"""
+Esta tabla retorna una lista de tuplas de la forma (id_segment, data, timestamp) con todos los registros agregados a la tabla "historical" en el ultimo mes
+"""
+def getLastMonthRecords() :
+    pass
 
 """
 Esta funcion determina los parametros de deteccion de anomalias para cada segmento y los guarda en el archivo detection_params.json
@@ -270,7 +275,7 @@ def getCurrentSegmentState (anomalies, lastrecords) :
             "id" : s[0],
             "timestamp_medicion" : s[2],
             "tiempo" : s[1],
-            "velocidad" : -1,
+            #"velocidad" : -1,
             "causa" : ad.get(s[0], {}).get("causa", ""),
             "causa_id" : ad.get(s[0], {}).get("causa_id", 0),
             "duracion_anomalia" : duracion_anomalia,
@@ -388,7 +393,7 @@ def performAnomalyAnalysis(ahora=None) :
     curanomalies = upsertAnomalies(anomalies)
     curstate = getCurrentSegmentState(curanomalies, lastrecords)
     updateSnapshot(curstate)
-
+    
 def dailyUpdate () :
     removeOldRecords()
     updateDetectionParams()

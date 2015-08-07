@@ -4,6 +4,8 @@
 import json
 import time
 import os
+import config
+import MySQLdb
 
 def getData():
 	
@@ -30,15 +32,19 @@ def parserEmitDataFake(self, result):
 
 def updateSegmentos():
 
+  db = MySQLdb.connect(host=config.mysql["host"], passwd=config.mysql["password"], user=config.mysql["user"])
   causas = ["Choque", "Manifestacion", "Animales sueltos"]
-  query = """UPDATE infosegmentos2 SET timestamp_medicion = %s, tiempo = %s, velocidad = %s, causa = %s, causa_id = %s, duracion_anomalia = %s, \
+  query = """UPDATE infosegmentos SET timestamp_medicion = %s, tiempo = %s, velocidad = %s, causa = %s, causa_id = %s, duracion_anomalia = %s, \
   indicador_anomalia =%s, anomalia = %s WHERE id = %s"""
-  
+  db.select_db("dashboardoperativo")
+
   cur = db.cursor()
   for ID in range(1, 57):
     # timestamp_medicion, tiempo, velocidad, causa, causa_id, duracion_anomalia, indicador_anomalia, anomalia, id
-    update = (time.time(), 1, random.randrange(0, 101), causas[random.randrange(0, 3)], random.randrange(0, 21), random.randrange(1, 120), \
+    update = (time.strftime('%Y-%m-%d %H:%M:%S'), 1, random.randrange(0, 101), causas[random.randrange(0, 3)], \
+      random.randrange(0, 21), random.randrange(1, 120), \
       random.random(), random.randrange(0, 101), ID)
+    print update
     cur.execute(query, update)
 
   db.close()

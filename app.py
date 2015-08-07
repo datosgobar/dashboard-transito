@@ -38,6 +38,12 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
         template_buffer = buffer(templatecorredores.read())
         self.template = json.loads(template_buffer.__str__())
 
+    def clean(self):
+
+      for key, value in self.template['corredores'].iteritems():
+        self.template['corredores'][key]['segmentos_provincia'] = []
+        self.template['corredores'][key]['segmentos_capital'] = []
+
     # metodo que escucha on_<<CHANNELL>>(self, msg) enviado desde el front
     def on_receive(self, msg):
 
@@ -46,10 +52,9 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
       if msg:
         
         print "connect"
-
         while True:
-          #estadocero = getData()
-          #parserEmitDataFake(self, estadocero)
+
+          self.clean()
           parserEmitData(self, self.template)
           time.sleep(300)
 

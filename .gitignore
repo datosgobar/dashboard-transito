@@ -1,6 +1,7 @@
 dist/
 build/
 dashboard_operativo_transito.egg-info/
+node_modules/
 *.egg-info/
 *.pyc
 analisis/raw_api_01_11.json

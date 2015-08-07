@@ -7,20 +7,17 @@ import time
 import random
 import config
 
-if os.environ.get('OPENSHIFT_MYSQL_DIR'):
-	host = os.environ.get('OPENSHIFT_MYSQL_DB_HOST')
-	port = os.environ.get('OPENSHIFT_MYSQL_DB_PORT')
-	user = os.environ.get('OPENSHIFT_MYSQL_DB_USERNAME')
-	pwd = os.environ.get('OPENSHIFT_MYSQL_DB_PASSWORD')
-	db = MySQLdb.connect(host=host, user=user, passwd=pwd, db="dashboardoperativo")
-else:
+def createSegmentos():
+
 	db = MySQLdb.connect(host=config.mysql["host"], passwd=config.mysql["password"], user=config.mysql["user"])
 	cur = db.cursor()
+	cur.execute('DROP DATABASE dashboardoperativo;')
 	cur.execute('CREATE DATABASE IF NOT EXISTS dashboardoperativo;')
 	cur.close()
 	db.select_db("dashboardoperativo")
+	
+	causas = ["Choque", "Manifestacion", "Animales sueltos"]
 
-def createSegmentos():
 	try:
 		cur = db.cursor()
 		cur.execute("""CREATE TABLE infosegmentos (id INT NOT NULL, PRIMARY KEY(id), timestamp_medicion TIMESTAMP, tiempo INT, \
@@ -32,13 +29,13 @@ def createSegmentos():
 		cur = db.cursor()
 		for ID in range(10, 58):
 			cur.execute("""INSERT INTO infosegmentos VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)""",  \
-				(ID, time.time(), random.randrange(2, 10), random.random(), "algo sucedio", random.randrange(2, 3), \
-					random.randrange(1, 50), random.random(), random.randrange(2, 15)))
+				(ID, time.strftime('%Y-%m-%d %H:%M:%S'), random.randrange(5, 21), \
+					random.randrange(0, 101), causas[random.randrange(0, 3)], random.randrange(0, 21), random.randrange(1, 120), \
+					random.random(), random.randrange(0, 4)))
 			print "Auto Increment ID: %s" % ID
 	finally:
-		db.close()
-		#db.commit()
   		cur.close()
+		db.close()
 
 def readSegmentos():
 	"""
@@ -47,6 +44,8 @@ def readSegmentos():
 	result = []
 
 	try:
+		db = MySQLdb.connect(host=config.mysql["host"], passwd=config.mysql["password"], user=config.mysql["user"])
+		db.select_db("dashboardoperativo")
 		cur = db.cursor()
 	except:
 		result = []
@@ -55,21 +54,22 @@ def readSegmentos():
 		for row in cur.fetchall():
 			result.append(row)
 	finally:
-       		cur.close()
-        	db.close()
-		return result
+			cur.close()
+			db.close()
+			return result
 
 	
 def buildSegmentos(data):
 	return {
-		"id": data[0],
-		"anomalia" : data[1],
-		"timestamp_medicion": data[2],
-		"tiempo": data[3],
-		"velocidad": data[4],
-		"causa" : data[5],
-		"duracion_anomalia": data[6],
-		"indicador_anomalia": data[7]
+		"id": int(data[0]),
+		"timestamp_medicion": str(data[1]),
+		"tiempo": int(data[2]),
+		"velocidad": int(data[3]),
+		"causa" : str(data[4]),
+		"causa_id" : int(data[5]),
+		"duracion_anomalia": int(data[6]),
+		"indicador_anomalia": float(data[7]),
+		"anomalia" : int(data[8])
 	}
 
 def parserEmitData(self, template):
@@ -97,9 +97,9 @@ def parserEmitData(self, template):
 	}
 
 	referencia  = {
-		"centro" : [10,12,57, 53,51,49, 40, 43, 37,36, 21, 31,33,35, 13,14, 18,17,23, \
-		24,25, 26,28, 30,32 ,45, 47, 38, 44, 48,48],
-		"provincia" : [11,56, 54,55, 41, 22, 16,15, 19, 20, 10, 27,29, 34, 39, 42, 46, 50 ,52]
+		"centro" : [10, 12, 57, 53, 51, 49, 40, 43, 37, 36, 21, 31, 33, 35, 13, 14, 18, 17, 23, \
+		24, 25, 26, 28, 30, 32, 45, 47, 38, 44],
+		"provincia" : [11, 56, 54, 55, 41, 22, 16, 15, 19, 20, 10, 27, 29, 34, 39, 42, 46, 50 ,52, 48]
 	}
 
 	update = readSegmentos()

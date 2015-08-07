@@ -1,5 +1,11 @@
 # Dashboard Operativo Transito
 
+Desde el Centro de Control de Tránsito los operadores monitorean el sistema de tránsito y toman decisiones en tiempo real con el objetivo de descomprimir el tránsito.
+Este dashboard muestra las anomalías de diferentes corredores prioritarios de la ciudad de acuerdo a un análisis periódico basado en información histórica
+
+La vista principal estará siempre visible en un videowall.
+El dashboard también se accede desde las computadoras de los operarios para visualizar en detalle la anomalía, comparar los datos con la vista de tráfico de Google Maps y asignarles una causa. Esta data se recolectará para ser usada en un análisis posterior.
+
 ## Instalacion bajo Mac y Linux
 
 Tener instalado MySQL 5.1
@@ -28,11 +34,16 @@ easy_install MySQL-python
 ```
 
 ## Corriendo la app
-Actualizar datos de conexion a base de datos en
+Actualizar datos de conexion a base de datos en (un modelo se puede encontrar en analisis/config.py.sample)
 
 ```sh
-analisis/config.py
+python analisis/config.py
 ```
+
+Asegurarse que MySQL está corriendo
+```
+ mysql.server start
+ ```
 
 Crear tabla en MySQL
 
