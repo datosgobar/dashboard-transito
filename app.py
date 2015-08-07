@@ -36,7 +36,7 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
     def init(self):
       with open(os.path.abspath("analisis/template.json")) as templatecorredores:
         template_buffer = buffer(templatecorredores.read())
-        self.template = json.loads(template_buffer.__str__())
+        template = json.loads(template_buffer.__str__())
 
     def clean(self):
 

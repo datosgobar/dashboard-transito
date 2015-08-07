@@ -75,8 +75,8 @@ def readSnapshot():
 		assert int(select_table.rowcount) == 48
 		result = select_table.fetchall()
 	finally:
-			select_table.close()
-			return result
+		select_table.close()
+		return result
 
 def buildSegmentos(data):
 	return {
@@ -91,7 +91,7 @@ def buildSegmentos(data):
 		"anomalia" : int(data['anomalia'])
 	}
 
-def parserEmitData(self, template):
+def parserEmitData(template):
 	"""
 		buildCorredores(corredores=corredores, template=template, update=result)
 		evaluar si el segmentos corresponde a un corredor y si ese mismo es para prov o capi
@@ -121,7 +121,7 @@ def parserEmitData(self, template):
 		"provincia" : [11, 56, 54, 55, 41, 22, 16, 15, 19, 20, 10, 27, 29, 34, 39, 42, 46, 50 ,52, 48]
 	}
 
-	update = readSegmentos()
+	update = readSnapshot()
 
 	if len(update):
 		for i in range(len(update)):
@@ -137,12 +137,18 @@ def parserEmitData(self, template):
 					continue
 
 		for channell in corredores.keys():
-		  self.emit(channell, template['corredores'][channell])
-		  time.sleep(0.5)
+			print channell, template['corredores'][channell]
+			self.emit(channell, template['corredores'][channell])
+			time.sleep(0.5)
 	else:
+		print "sin datos"
 		self.emit('info', "sin datos")
 
 
 if __name__ == '__main__':
-
-	createSegmentos()
+	
+	with open(os.path.abspath("template.json")) as templatecorredores:
+		template_buffer = buffer(templatecorredores.read())
+		template = json.loads(template_buffer.__str__())
+	parserEmitData(template)
+	#createSegmentos()
