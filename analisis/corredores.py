@@ -5,9 +5,11 @@ import MySQLdb
 import os
 import time
 import random
+from analisis import getDBConnection
 import config
 
 def createSegmentos():
+
 
 	db = MySQLdb.connect(host=config.mysql["host"], passwd=config.mysql["password"], user=config.mysql["user"])
 	cur = db.cursor()
@@ -20,7 +22,7 @@ def createSegmentos():
 
 	try:
 		cur = db.cursor()
-		cur.execute("""CREATE TABLE infosegmentos (id INT NOT NULL, PRIMARY KEY(id), timestamp_medicion TIMESTAMP, tiempo INT, \
+		cur.execute("""CREATE TABLE snapshot (id INT NOT NULL, PRIMARY KEY(id), timestamp_medicion TIMESTAMP, tiempo INT, \
 		velocidad FLOAT,causa TEXT,causa_id INT,duracion_anomalia INT,indicador_anomalia FLOAT,anomalia INT);""")
 		cur.close()
 	except Exception, ex:
@@ -28,7 +30,7 @@ def createSegmentos():
 	else:
 		cur = db.cursor()
 		for ID in range(10, 58):
-			cur.execute("""INSERT INTO infosegmentos VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)""",  \
+			cur.execute("""INSERT INTO snapshot VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)""",  \
 				(ID, time.strftime('%Y-%m-%d %H:%M:%S'), random.randrange(5, 21), \
 					random.randrange(0, 101), causas[random.randrange(0, 3)], random.randrange(0, 21), random.randrange(1, 120), \
 					random.random(), random.randrange(0, 4)))
@@ -50,7 +52,7 @@ def readSegmentos():
 	except:
 		result = []
 	else:
-		cur.execute("SELECT * FROM infosegmentos")
+		cur.execute("SELECT * FROM snapshot")
 		for row in cur.fetchall():
 			result.append(row)
 	finally:
@@ -58,18 +60,35 @@ def readSegmentos():
 			db.close()
 			return result
 
-	
+def readSnapshot():
+	"""
+		readSnapshot()
+	"""
+	result = []
+
+	try:
+		conn = getDBConnection()
+	except:
+		result = []
+	else:
+		select_table = conn.execute("SELECT * FROM snapshot")
+		assert int(select_table.rowcount) == 48
+		result = select_table.fetchall()
+	finally:
+			select_table.close()
+			return result
+
 def buildSegmentos(data):
 	return {
-		"id": int(data[0]),
-		"timestamp_medicion": str(data[1]),
-		"tiempo": int(data[2]),
-		"velocidad": int(data[3]),
-		"causa" : str(data[4]),
-		"causa_id" : int(data[5]),
-		"duracion_anomalia": int(data[6]),
-		"indicador_anomalia": float(data[7]),
-		"anomalia" : int(data[8])
+		"id": int(data['id']),
+		"timestamp_medicion": str(data['timestamp_medicion']),
+		"tiempo": int(data['tiempo']),
+		"velocidad": int(data['velocidad']),
+		"causa" : str(data['causa']),
+		"causa_id" : int(data['causa_id']),
+		"duracion_anomalia": int(data['duracion_anomalia']),
+		"indicador_anomalia": float(data['indicador_anomalia']),
+		"anomalia" : int(data['anomalia'])
 	}
 
 def parserEmitData(self, template):
@@ -77,9 +96,9 @@ def parserEmitData(self, template):
 		buildCorredores(corredores=corredores, template=template, update=result)
 		evaluar si el segmentos corresponde a un corredor y si ese mismo es para prov o capi
 	"""
-
 	corredores = {
-	 '9_de_julio': [13, 14, 15, 16, 17, 18, 19, 20],
+	 '9_de_julio': [13,  15, 17, 19],
+	 '9_de_julio_externo': [14, 16, 18, 20],
 	 'Illia': [11],
 	 'alcorta': [54, 55],
 	 'alem': [21, 22],

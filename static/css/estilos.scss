@@ -1,0 +1,140 @@
+@import "../../node_modules/node-bourbon/node_modules/bourbon/app/assets/stylesheets/_bourbon.scss";
+@import "mixins/breakpoint.scss";
+@import "mixins/opacity.scss";
+@include font-face('Gotham', 'fonts/gotham');
+@include font-face('Open Sans', 'fonts/OpenSans');
+@include font-face('Avenir', 'fonts/AvenirNextLTPro-Regular');
+$fontset-gotham: "Gotham", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$fontset-openSans: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$fontset-avenir: "Avenir", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+
+$rojo: #e53935;
+$naranja: #ff8f00;
+$amarillo: #fdd835;
+
+$negro: #333333;
+$gris: #c0c0c0;
+$fondoAnomalia: #eeeeee;
+$verde:#39e535;
+$blanco: #fafafa;
+
+//tamaños de dispositivos
+$screen-xs: 480px !default; // telefonos
+$screen-sm: 768px !default; //tablet
+$screen-md: 992px !default; //desktop
+
+html,
+body {
+    margin: 10px auto;
+    padding: 0;
+    width: 100%;
+    font-family: $fontset-avenir;
+    background-color: #F2F2F2;
+    //font-size: 1.3em;
+    //font-size: 1em;
+            @include breakpoint(xs) {
+                background-color: #00F2F2;
+            }
+}
+
+.oculta{
+    display: none;
+}
+
+#indicador{
+    display: none;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    border-radius: 25px;
+    width: 100%;
+    height: 5px;
+    background-color: $negro;
+
+}
+
+.card{
+    position: relative;
+    @include border-top-radius(5px);
+    @include border-bottom-radius(5px);
+    background-color: #ffffff;
+    width: 90%;
+    padding: 10px;
+    margin: 0 auto 20px;
+    border-left: 15px solid $gris;
+
+    .titulo{
+        font-size: 1em;
+    }
+
+    .segmentos{
+        width: 100%;
+        .contenedorSegmentos{
+            .etiquetaSegmento{
+                                
+                font-size: 1.4em;
+            }
+            .estadoSegmento{
+                height: 10px;
+                background-color: $fondoAnomalia;
+                border: 1px solid $blanco;
+            }
+
+            .capital, .provincia, .etiquetas{
+                display: table;  
+                width: 90%;  
+            }
+            .segmento{
+                display: table-cell;
+                .rojo{
+                    background-color: $rojo;
+                }
+                .naranja{
+                    background-color: $naranja;
+                }
+                .amarillo{
+                    background-color: $amarillo;
+                }
+            }
+        }
+    }
+
+    .icono {
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+
+        height: 15px;
+        width: 15px;
+        margin: 0 auto;
+
+        background-color: $blanco;
+        border-radius: 25px;
+        border: 2px solid $fondoAnomalia;
+    }
+
+ }
+
+.shadow{
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 0.5);
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1);
+}
+
+.shadow:hover{
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 0.5);
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25);
+}
+
+#navegacion{
+    height: 100%;
+    width: 50px;
+    background-color: $negro;
+}
+
+#mapa{
+    // Este estilo es provisorio
+    display: none;
+    width: 90%;
+    height: 300px;
+    margin: 0 auto;
+}

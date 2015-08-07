@@ -53,7 +53,6 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
         
         print "connect"
         while True:
-
           self.clean()
           parserEmitData(self, self.template)
           time.sleep(300)
