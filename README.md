@@ -50,10 +50,10 @@ Asegurarse que MySQL está corriendo
  mysql.server start
  ```
 
-Crear tabla en MySQL
+Crear tabla Fake en MySQL
 
 ```sh
-$ python analisis/corredores.py
+$ python analisis/getDataFake.py
 ```
 
 Instanciar Python Server

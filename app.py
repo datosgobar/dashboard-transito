@@ -48,11 +48,16 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
             self.template['corredores'][key]['segmentos_capital'] = []
 
     # metodo que escucha on_<<CHANNELL>>(self, msg) enviado desde el front
-    def recv_connect(self, msg):
+    def on_receive(self, msg):
+
+        if msg:
+            print msg
+
+    def recv_connect(self):
 
         self.init()
 
-        print "connect"
+        print "connect, emit data"
         while True:
             self.clean()
             parserEmitData(self, self.template)
