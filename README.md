@@ -20,7 +20,7 @@ $ source app-root/runtime/dependencies/python/virtenv/bin/activate
 $ sudo python setup install
 ```
 O instalamos las dependecias a mano de la siguiente manera:
-```
+```sh
 $ sudo easy_install bottle
 $ sudo easy_install gevent
 $ sudo easy_install gevent-socketio
@@ -30,7 +30,7 @@ $ easy_install supervisor
 ```
 
 ## Instalacion bajo Mac
-```
+```sh
 brew install mysql-server
 mysql.server start
 ```
@@ -42,7 +42,7 @@ Instalar las dependencias mencionadas en el archivo setup.py con pip
 ## Instalacion bajo Windows
 Bajar e instalar [Visual C++ for Python 2.7](http://download.microsoft.com/download/7/9/6/796EF2E4-801B-4FC4-AB28-B59FBF6D907B/VCForPython27.msi) y [MySQL for Python](https://github.com/farcepest/MySQLdb1)
 
-```
+```sh
 easy_install bottle
 easy_install gevent
 easy_install gevent-socketio
@@ -63,12 +63,12 @@ supervisord -c supervisord.config
 ## Corriendo la app
 Actualizar datos de conexion a base de datos en (un modelo se puede encontrar en analisis/config.py.sample)
 
-```
+```sh
 python analisis/config.py
 ```
 
 Asegurarse que MySQL está corriendo
-```
+```sh
  mysql.server start
  ```
 
@@ -79,7 +79,7 @@ $ python analisis/getDataFake.py
 ```
 
 Setup Database
-```
+```sh
 python analisis/analisis.py --setup
 
 
@@ -90,14 +90,14 @@ Se puede hacer de dos maneras
 1. Cargando Modelo de prueba
 
 2. Generando un Modelo Nuevo
-```
+```sh
 python analisis/analisis.py --generate_detection_params
 ```
 
 
 
 Instanciar Python Server
-```
+```sh
 $ python app.py
 ```
 
