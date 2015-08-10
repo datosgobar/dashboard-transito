@@ -504,11 +504,9 @@ def dailyUpdate():
     # 24,25, 26,28, 30,32 ,45, 47, 38, 44, 48,48, 11,56, 54,55, 41, 22, 16,15,
     # 19, 20, 10, 27,29, 34, 39, 42, 46, 50 ,52]
     # dailyUpdate()
-
     # executeLoop(datetime.datetime.strptime("2015-08-10T15:00:00-03:00", '%Y-%m-%dT%H:%M:%S-03:00'),
     # datetime.datetime.strptime("2015-08-10T16:00:00-03:00",
     # '%Y-%m-%dT%H:%M:%S-03:00'))
-
     #    raw_data = downloadData(sensores, datetime.timedelta(minutes=20), datetime.datetime.strptime(
     #        "2015-08-06T15:10:00-03:00", '%Y-%m-%dT%H:%M:%S-03:00'), datetime.datetime.strptime("2015-08-06T15:30:00-03:00", '%Y-%m-%dT%H:%M:%S-03:00'))
     #    print raw_data
