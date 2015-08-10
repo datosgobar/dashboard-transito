@@ -9,3 +9,4 @@ node_modules/
 analisis/raw_api_01_11.json
 analisis/config.py
 detection_params.json
+supervisord.conf
