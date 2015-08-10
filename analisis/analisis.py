@@ -170,19 +170,12 @@ def removeOldRecords() :
 Este loop se va a ejecutar con la frecuencia indicada para cada momento del dia.
 """
 def executeLoop(desde, hasta, dontdownload=False) :
-    """
-        traer los sensores lista de archivo configuracion
-        desde = "2015-07-01T00:00:00-00:00"
-        hasta = "2015-07-12T00:00:01-00:00"        
-    """
-    sensores = [10,12,57, 53,51,49, 40, 43, 37,36, 21, 31,33,35, 13,14, 18,17,23, \
-    24,25, 26,28, 30,32 ,45, 47, 38, 44, 48,48, 11,56, 54,55, 41, 22, 16,15, 19, 20, 10, 27,29, 34, 39, 42, 46, 50 ,52]
-    
-	if dontdownload :
-		has_new_records = True
-	else : 
-    	raw_data = downloadData(sensores, datetime.timedelta(days=2), desde, hasta)
-    	has_new_records = updateDB(raw_data)
+    sensores = [10,12,57, 53,51,49, 40, 43, 37,36, 21, 31,33,35, 13,14, 18,17,23, 24,25, 26,28, 30,32 ,45, 47, 38, 44, 48,48, 11,56, 54,55, 41, 22, 16,15, 19, 20, 10, 27,29, 34, 39, 42, 46, 50 ,52]
+    if dontdownload :
+        has_new_records = True
+    else : 
+        raw_data = downloadData(sensores, datetime.timedelta(days=2), desde, hasta)
+        has_new_records = updateDB(raw_data)
     if has_new_records : 
         performAnomalyAnalysis(hasta)
 
@@ -393,11 +386,13 @@ def updateSnapshot(newstates):
     sess.commit()
     conn.close()
 
-def performAnomalyAnalysis(ahora=None) :
+def performAnomalyAnalysis(ahora=None, lookbackwindow=None) :
     if ahora == None :
         ahora = datetime.datetime.now()
+    if lookbackwindow == None :
+        lookbackwindow = datetime.timedelta(minutes=20)
     #lastrecords = getLastRecords("2015-08-06T15:10:00-03:00","2015-08-06T15:50:00-03:00")
-    lastrecords = getLastRecords(ahora - datetime.timedelta(minutes=20), ahora)
+    lastrecords = getLastRecords(ahora - lookbackwindow, ahora)
     detectparams = getDetectionParams()
     anomalies = anomalyDetection.detectAnomalies(detectparams, lastrecords)
     curanomalies = upsertAnomalies(anomalies)
