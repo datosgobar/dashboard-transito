@@ -7,6 +7,7 @@ import time
 import random
 from analisis import getDBConnection
 import config
+import json
 
 
 def createSegmentos():
@@ -102,7 +103,8 @@ def buildSegmentos(data):
 
 def parserEmitData(self, template):
     """
-            buildCorredores(corredores=corredores, template=template, update=result)
+            buildCorredores(
+                corredores=corredores, template=template, update=result)
             evaluar si el segmentos corresponde a un corredor y si ese mismo es para prov o capi
     """
     corredores = {
@@ -158,8 +160,11 @@ def parserEmitData(self, template):
 
 if __name__ == '__main__':
 
-    with open(os.path.abspath("template.json")) as templatecorredores:
+    templatefilepath = os.path.dirname(
+        os.path.realpath(__file__)) + "/template.json"
+
+    with open(templatefilepath) as templatecorredores:
         template_buffer = buffer(templatecorredores.read())
         template = json.loads(template_buffer.__str__())
-    parserEmitData(template)
+    self.parserEmitData(template)
     # createSegmentos()

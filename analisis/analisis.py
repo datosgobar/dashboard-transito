@@ -17,6 +17,8 @@ import multiprocessing
 import os
 
 import anomalyDetection
+import argparse
+
 
 detection_params_fn = os.path.dirname(
     os.path.realpath(__file__)) + "/detection_params.json"
@@ -446,6 +448,18 @@ def dailyUpdate():
     updateDetectionParams()
 
 
-# if __name__ == '__main__':
-#    setupDB()
-#    executeLoop()
+if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser(description='Módulo de Análisis')
+    parser.add_argument(
+        '--setup_database', action='store_true', help='Setup de base de datos')
+    parser.add_argument(
+        '--generate_detection_params', action='store_true', help='Generar modelo para análisis de anomalías')
+
+    args = parser.parse_args()
+
+    if (args.setup_database):
+        setupDB()
+
+    if (args.generate_detection_params):
+        updateDetectionParams()
