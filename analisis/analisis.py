@@ -127,34 +127,35 @@ def setupDB () :
 """
 Baja datos de nuevos de teracode y los guarda en la tabla "historical"
 """
-def updateDB(data) : 
+def updateDB(newdata) : 
     conn = getDBConnection()
     # parsear json
     Session = sessionmaker(bind=conn)
     session = Session()
     # loopear por cada corredor
+
     newrecords = False
-    for corredor in data:
+    for corredor in newdata:
         if not bool(corredor):
             continue
-        try :
-            for segmento in corredor["datos"].get("data"):
-                print segmento
-                # crear nueva instancia de Historical
-                segment = segmento["iddevice"]
-                data = segmento["data"]
-                timestamp = datetime.datetime.strptime(segmento["date"], '%Y-%m-%dT%H:%M:%S-03:00')
-                segmentdb = Historical(**{
-                    "segment" : segment,
-                    "data" : data,
-                    "timestamp" : timestamp
-                    })
-                # pushear instancia de Historial a la base
-                session.add(segmentdb)
-                session.commit()
-                newrecords = True
-        except :
-            pass    
+        for segmento in corredor["datos"]["data"]:
+            print segmento
+            # crear nueva instancia de Historical
+            segment = segmento["iddevice"]
+            data = segmento["data"]
+            timestamp = datetime.datetime.strptime(segmento["date"], '%Y-%m-%dT%H:%M:%S-03:00')
+
+
+            segmentdb = Historical(**{
+                "segment" : segment,
+                "data" : data,
+                "timestamp" : timestamp
+                })
+            # pushear instancia de Historial a la base
+            session.add(segmentdb)
+            session.commit()
+            newrecords = True
+    
     return newrecords
     
     
@@ -163,6 +164,59 @@ Elimina registros con mas de un mes de antiguedad de la tabla "historical"
 """
 def removeOldRecords() :
     pass
+
+
+"""
+Filtro los registros para no duplicar datos en la base de datos
+"""
+def filterDuplicateRecords(data, desde, hasta) :
+    conn = getDBConnection()
+    # parsear json
+    Session = sessionmaker(bind=conn)
+    session = Session()
+    # loopear por cada corredor
+    results = session.query(Historical).filter(Historical.timestamp >= desde).filter(Historical.timestamp <= hasta).all()
+
+    prevrecords_unique = []
+    for result in results:
+        prevrecords_unique.append([result.segment, datetime.datetime.strftime(result.timestamp, '%Y-%m-%dT%H:%M:%S-03:00')])
+    
+    print prevrecords_unique
+
+    filtered_data = []    
+
+
+    for corredor in data:
+        if not bool(corredor):
+            continue
+        for segmento in corredor["datos"]["data"]:
+            # crear nueva instancia de Historical
+            segment = segmento["iddevice"]
+            data = segmento["data"]
+            timestamp = segmento["date"]
+            
+            #print timestamp
+
+            if [segment, timestamp] in prevrecords_unique :
+                print "----------------------"
+                print "LOS QUE SI EXISTEN"
+                print segment
+                print timestamp
+                print "----------------------"
+                continue
+            print "LOS QUE NO EXISTEN================="
+            print segment
+            print timestamp
+            print "================="
+            filtered_data.append(Historical(**{
+                "segment" : segment,
+                "data" : data,
+                "timestamp" : timestamp
+                }))
+    
+    print filtered_data        
+
+    
 
 """
 Este loop se va a ejecutar con la frecuencia indicada para cada momento del dia.
@@ -177,6 +231,9 @@ def executeLoop(desde, hasta) :
     24,25, 26,28, 30,32 ,45, 47, 38, 44, 48,48, 11,56, 54,55, 41, 22, 16,15, 19, 20, 10, 27,29, 34, 39, 42, 46, 50 ,52]
     
     raw_data = downloadData(sensores, datetime.timedelta(days=2), desde, hasta)
+    
+
+
     has_new_records = updateDB(raw_data)
     if has_new_records : 
         performAnomalyAnalysis(hasta)
@@ -400,9 +457,13 @@ def dailyUpdate () :
     removeOldRecords()
     updateDetectionParams()
 
-
-#if __name__ == '__main__':
-#    setupDB()
-#    executeLoop()
-
+if __name__ == '__main__':
     
+#    executeLoop()
+#    sensores = [10,12,57, 53,51,49, 40, 43, 37,36, 21, 31,33,35, 13,14, 18,17,23, \
+#    24,25, 26,28, 30,32 ,45, 47, 38, 44, 48,48, 11,56, 54,55, 41, 22, 16,15, 19, 20, 10, 27,29, 34, 39, 42, 46, 50 ,52]
+    sensores = [10,12,57]
+    
+    raw_data = downloadData(sensores, datetime.timedelta(minutes=20), datetime.datetime.strptime("2015-08-06T15:10:00-03:00", '%Y-%m-%dT%H:%M:%S-03:00'),datetime.datetime.strptime("2015-08-06T15:30:00-03:00", '%Y-%m-%dT%H:%M:%S-03:00'))
+    print raw_data
+    filterDuplicateRecords(raw_data, "2015-08-06T15:10:00-03:00","2015-08-06T15:30:00-03:00")
