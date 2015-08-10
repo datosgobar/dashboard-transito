@@ -8,7 +8,7 @@ import os
 def run():
     """
         sudo crontab -e
-        0 0 * * * /usr/bin/python2.7 /tu_home/tu_user/script-dashboardcivico/dailyUpdate.py
+        0 0 * * * /usr/bin/python2.7 /tu_home/tu_user/dashboard-operativo-transito/analisis/dailyUpdate.py
     """
     if os.environ.get('OPENSHIFT_PYTHON_DIR'):
         # en caso de estarlo, activo entorno virtual y agarro las variables de

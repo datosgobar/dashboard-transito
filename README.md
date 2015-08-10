@@ -26,6 +26,7 @@ $ sudo easy_install gevent
 $ sudo easy_install gevent-socketio
 $ sudo easy_install MySQL-python
 $ sudo easy_install sqlalchemy
+$ easy_install supervisor
 ```
 ## Instalacion bajo Windows
 Bajar e instalar [Visual C++ for Python 2.7](http://download.microsoft.com/download/7/9/6/796EF2E4-801B-4FC4-AB28-B59FBF6D907B/VCForPython27.msi) y [MySQL for Python](https://github.com/farcepest/MySQLdb1)
@@ -37,7 +38,16 @@ easy_install gevent-socketio
 easy_install MySQL-python
 easy_install sqlalchemy
 ```
-
+## Configurar script en cron, que se ejecuta una ves a la 00hs cada dia
+```sh
+sudo crontab -e
+0 0 * * * /usr/bin/python2.7 /tu_home/tu_user/dashboard-operativo-transito/analisis/dailyUpdate.py
+```
+## Ejectuar Schedule con funcion executeLoop() en Demonio
+configurar Variables de configuracion en archivo supervisord.conf,  command, stdout_logfile, stderr_logfile, y user
+```sh
+supervisord -c supervisord.config
+```
 ## Corriendo la app
 Actualizar datos de conexion a base de datos en (un modelo se puede encontrar en analisis/config.py.sample)
 
@@ -69,6 +79,7 @@ Abrir el navegador en [http://127.0.0.1:8080/](http://127.0.0.1:8080/)
   - [bottle](http://bottlepy.org/docs/dev/index.html)
   - [gevent](http://gevent.org/intro.html)
   - [gevent-socketio](https://gevent-socketio.readthedocs.org/en/latest/)
+  - [supervisor](http://supervisord.org/configuration.html)
 
 ## Licencia
 [MIT](http://opensource.org/licenses/MIT)
