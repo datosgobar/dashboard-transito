@@ -18,7 +18,8 @@ import os
 
 import anomalyDetection
 
-detection_params_fn = "detection_params.json"
+detection_params_fn = os.path.dirname(
+    os.path.realpath(__file__)) + "/detection_params.json"
 
 
 Base = declarative_base()
@@ -457,6 +458,8 @@ def dailyUpdate():
     updateDetectionParams()
 
 
-# if __name__ == '__main__':
+#if __name__ == '__main__':
 #    setupDB()
 #    executeLoop()
+
+    
