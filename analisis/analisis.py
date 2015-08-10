@@ -142,8 +142,9 @@ def setupDB():
     engine = createDBEngine()
     Base.metadata.create_all(engine)
 
+
 """
-Baja datos de nuevos de teracode y los guarda en la tabla "historical"
+Guarda datos recibidos por parámetro en la tabla "historical"
 """
 
 
@@ -509,7 +510,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--generate_detection_params', action='store_true', help='Generar modelo para análisis de anomalías')
     parser.add_argument(
-        '--execute_loop_now', action='store_true', help='Correr un solo ciclo del loop ')
+        '--download_last_month', action='store_true', help='Bajar la data del último mes de Teracode')
 
     args = parser.parse_args()
 
