@@ -78,6 +78,8 @@ def downloadData (sensor_ids, step, download_startdate, download_enddate, outfn=
     start = download_startdate
     end = download_enddate
     urls = []
+    if step > (download_enddate - download_startdate) :
+        step = download_enddate - download_startdate
     while start <= end :
         startdate, enddate = start, start + step
         for sensor_id in sensor_ids :
@@ -129,7 +131,6 @@ Baja datos de nuevos de teracode y los guarda en la tabla "historical"
 """
 def updateDB(data) : 
     conn = getDBConnection()
-    result = downloadData(sensores, step, desde, hasta)
     # parsear json
     Session = sessionmaker(bind=conn)
     session = Session()
