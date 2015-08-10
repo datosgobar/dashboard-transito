@@ -515,10 +515,6 @@ def dailyUpdate():
     #    filterDuplicateRecords(
     # raw_data, "2015-08-06T15:10:00-03:00", "2015-08-06T15:30:00-03:00")
 
-    # if __name__ == '__main__':
-    #    setupDB()
-    #
-    #    executeLoop()
 
 if __name__ == '__main__':
 
