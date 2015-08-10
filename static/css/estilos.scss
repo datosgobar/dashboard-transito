@@ -3,10 +3,14 @@
 @import "mixins/opacity.scss";
 @include font-face('Gotham', 'fonts/gotham');
 @include font-face('Open Sans', 'fonts/OpenSans');
-@include font-face('Avenir', 'fonts/AvenirNextLTPro-Regular');
+@include font-face('AvenirNext-Bold', 'fonts/AvenirNextLTPro-Bold');
+@include font-face('AvenirNext-Condensed', 'fonts/AvenirNextLTPro-Cn');
+
+
 $fontset-gotham: "Gotham", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
 $fontset-openSans: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
-$fontset-avenir: "Avenir", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$fontset-avenir-bold: "AvenirNext-bold", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$fontset-avenir-condensed: "AvenirNext-condensed", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
 
 $rojo: #e53935;
 $naranja: #ff8f00;
@@ -14,7 +18,7 @@ $amarillo: #fdd835;
 
 $negro: #333333;
 $gris: #c0c0c0;
-$fondoAnomalia: #eeeeee;
+$fondoAnomalia: #e5e5e5;
 $verde:#39e535;
 $blanco: #fafafa;
 
@@ -28,13 +32,12 @@ body {
     margin: 10px auto;
     padding: 0;
     width: 100%;
-    font-family: $fontset-avenir;
     background-color: #F2F2F2;
     //font-size: 1.3em;
     //font-size: 1em;
-            @include breakpoint(xs) {
-                background-color: #ffffff;
-            }
+    @include breakpoint(xs) {
+        background-color: #ffffff;
+    }
 }
 
 .oculta{
@@ -62,15 +65,18 @@ body {
     padding: 20px;
     margin: 0 auto 20px;
     .titulo{
-        font-size: 1.4em;
-        font-weight: bold;
+        font-size: 1.5em;
+        padding-bottom: 10px;
+        font-family: $fontset-avenir-bold;
     }
 
     .segmentos{
         width: 100%;
+        font-family: $fontset-avenir-condensed;
         .contenedorSegmentos{
             .etiquetaSegmento{
-                font-size: 1em;
+                font-size: 1.5em;
+                padding-bottom: 10px;
             }
             .estadoSegmento{
                 height: 20px;
@@ -79,8 +85,9 @@ body {
             }
 
             .capital, .provincia, .etiquetas{
-                display: table;  
-                width: 90%;  
+                display: table;
+                table-layout: fixed;
+                width: 90%;
             }
             .segmento{
                 display: table-cell;
