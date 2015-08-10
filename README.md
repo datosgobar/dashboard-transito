@@ -25,6 +25,7 @@ $ sudo easy_install bottle
 $ sudo easy_install gevent
 $ sudo easy_install gevent-socketio
 $ sudo easy_install MySQL-python
+$ sudo easy_install sqlalchemy
 ```
 ## Instalacion bajo Windows
 Bajar e instalar [Visual C++ for Python 2.7](http://download.microsoft.com/download/7/9/6/796EF2E4-801B-4FC4-AB28-B59FBF6D907B/VCForPython27.msi) y [MySQL for Python](https://github.com/farcepest/MySQLdb1)

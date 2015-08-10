@@ -10,7 +10,7 @@ from sqlalchemy.orm import sessionmaker
 
 import config
 import json
-import requests 
+import requests
 import datetime
 import dateutil.parser
 import multiprocessing
@@ -18,15 +18,19 @@ import os
 
 import anomalyDetection
 
-detection_params_fn = os.path.dirname(os.path.realpath(__file__)) + "/detection_params.json"
+detection_params_fn = os.path.dirname(
+    os.path.realpath(__file__)) + "/detection_params.json"
 
 Base = declarative_base()
+
+
 class Historical(Base):
     __tablename__ = 'historical'
     id = Column(Integer, primary_key=True)
     segment = Column(Integer, nullable=False)
     data = Column(Integer, nullable=False)
     timestamp = Column(DateTime, nullable=False)
+
 
 class Anomaly(Base):
     __tablename__ = 'anomaly'
@@ -38,9 +42,10 @@ class Anomaly(Base):
     causa_id = Column(Integer, nullable=False)
     indicador_anomalia = Column(Float, nullable=False)
 
+
 class SegmentSnapshot(Base):
     __tablename__ = 'segment_snapshot'
-    id = Column(Integer, primary_key=True)  
+    id = Column(Integer, primary_key=True)
     timestamp_medicion = Column(DateTime, nullable=False)
     tiempo = Column(Integer, nullable=False)
     velocidad = Column(Float, nullable=False)
@@ -51,11 +56,11 @@ class SegmentSnapshot(Base):
     anomalia = Column(Integer, nullable=False)
 
 
-def getData(url) :
+def getData(url):
     print url
-    try :
+    try:
         return requests.get(url).json()
-    except :
+    except:
         return None
 
 
@@ -68,65 +73,74 @@ download_enddate = "2015-07-12T00:00:01-00:00"
 step = datetime.timedelta(days=2)
 newdata = downloadData (sensor_ids, step, download_startdate, download_enddate, outfn="raw_api_01_11.json")
 """
-def downloadData (sensor_ids, step, download_startdate, download_enddate, outfn=None, token="superadmin.") :    
+
+
+def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=None, token="superadmin."):
     pool = multiprocessing.Pool(5)
     #vsensids = virtsens["id_sensor"].unique()
     urltpl = "https://apisensores.buenosaires.gob.ar/api/data/%s?token=%s&fecha_desde=%s&fecha_hasta=%s"
-    
+
     #end = dateutil.parser.parse(download_enddate)
     start = download_startdate
     end = download_enddate
     urls = []
-    while start <= end :
+    while start <= end:
         startdate, enddate = start, start + step
-        for sensor_id in sensor_ids :
+        for sensor_id in sensor_ids:
             print startdate, enddate, sensor_id
-            url = urltpl % (sensor_id, token, startdate.strftime("%Y-%m-%dT%H:%M:%S-03:00"), enddate.strftime("%Y-%m-%dT%H:%M:%S-03:00"))
+            url = urltpl % (sensor_id, token, startdate.strftime(
+                "%Y-%m-%dT%H:%M:%S-03:00"), enddate.strftime("%Y-%m-%dT%H:%M:%S-03:00"))
             urls += [url]
         start += step
-    
+
     #alldata = map(getData, urls)
     alldata = pool.map(getData, urls)
     pool.close()
     pool.terminate()
     pool.join()
-    if outfn != None :
-        outf = open(outfn,"wb")
+    if outfn != None:
+        outf = open(outfn, "wb")
         json.dump(alldata, outf)
         outf.close()
-    
+
     return alldata
 
 
-def createDBEngine () :
+def createDBEngine():
     #engine = sqlalchemy.create_engine("postgres://postgres@/postgres")
     # engine = sqlalchemy.create_engine("sqlite:///analysis.db")
     if os.environ.get('OPENSHIFT_MYSQL_DIR'):
         host = os.environ.get('OPENSHIFT_MYSQL_DB_HOST')
         user = os.environ.get('OPENSHIFT_MYSQL_DB_USERNAME')
         password = os.environ.get('OPENSHIFT_MYSQL_DB_PASSWORD')
-        engine = sqlalchemy.create_engine("mysql://"+user+":"+password+"@"+host+"/dashboardoperativo")
+        engine = sqlalchemy.create_engine(
+            "mysql://" + user + ":" + password + "@" + host + "/dashboardoperativo")
         return engine
     else:
         user = config.mysql['user']
         password = config.mysql['password']
         host = config.mysql['host']
         db = config.mysql['db']
-        engine = sqlalchemy.create_engine("mysql://"+user+":"+password+"@"+host+"/"+db)
+        engine = sqlalchemy.create_engine(
+            "mysql://" + user + ":" + password + "@" + host + "/" + db)
         return engine
 
-def getDBConnection () :
+
+def getDBConnection():
     conn = createDBEngine().connect()
     return conn
 
-def setupDB () :
+
+def setupDB():
     engine = createDBEngine()
     Base.metadata.create_all(engine)
- 
+
 """
 Baja datos de nuevos de teracode y los guarda en la tabla "historical"
 """
-def updateDB(data) : 
+
+
+def updateDB(data):
     conn = getDBConnection()
     result = downloadData(sensores, step, desde, hasta)
     # parsear json
@@ -137,71 +151,80 @@ def updateDB(data) :
     for corredor in data:
         if not bool(corredor):
             continue
-        try :
+        try:
             for segmento in corredor["datos"].get("data"):
                 print segmento
                 # crear nueva instancia de Historical
                 segment = segmento["iddevice"]
                 data = segmento["data"]
-                timestamp = datetime.datetime.strptime(segmento["date"], '%Y-%m-%dT%H:%M:%S-03:00')
+                timestamp = datetime.datetime.strptime(
+                    segmento["date"], '%Y-%m-%dT%H:%M:%S-03:00')
                 segmentdb = Historical(**{
-                    "segment" : segment,
-                    "data" : data,
-                    "timestamp" : timestamp
-                    })
+                    "segment": segment,
+                    "data": data,
+                    "timestamp": timestamp
+                })
                 # pushear instancia de Historial a la base
                 session.add(segmentdb)
                 session.commit()
                 newrecords = True
-        except :
+        except:
             pass
     conn.close()
     return newrecords
-    
-    
+
+
 """
 Elimina registros con mas de un mes de antiguedad de la tabla "historical"
 """
-def removeOldRecords() :
+
+
+def removeOldRecords():
     pass
 
 """
 Este loop se va a ejecutar con la frecuencia indicada para cada momento del dia.
 """
-def executeLoop(desde, hasta, dontdownload=False) :
+
+
+def executeLoop(desde, hasta, dontdownload=False):
     """
         traer los sensores lista de archivo configuracion
         desde = "2015-07-01T00:00:00-00:00"
         hasta = "2015-07-12T00:00:01-00:00"        
     """
-    sensores = [10,12,57, 53,51,49, 40, 43, 37,36, 21, 31,33,35, 13,14, 18,17,23, \
-    24,25, 26,28, 30,32 ,45, 47, 38, 44, 48,48, 11,56, 54,55, 41, 22, 16,15, 19, 20, 10, 27,29, 34, 39, 42, 46, 50 ,52]
-    
-    if dontdownload :
+    sensores = [10, 12, 57, 53, 51, 49, 40, 43, 37, 36, 21, 31, 33, 35, 13, 14, 18, 17, 23,
+                24, 25, 26, 28, 30, 32, 45, 47, 38, 44, 48, 48, 11, 56, 54, 55, 41, 22, 16, 15, 19, 20, 10, 27, 29, 34, 39, 42, 46, 50, 52]
+
+    if dontdownload:
         has_new_records = True
-    else : 
-        raw_data = downloadData(sensores, datetime.timedelta(days=2), desde, hasta)
+    else:
+        raw_data = downloadData(
+            sensores, datetime.timedelta(days=2), desde, hasta)
         has_new_records = updateDB(raw_data)
-    if has_new_records : 
+    if has_new_records:
         performAnomalyAnalysis(hasta)
 
 """
 Esta tabla retorna una lista de tuplas de la forma (id_segment, data, timestamp) con los ultimos registros agregados a la tabla "historical"
 """
-def getLastRecords(desde, hasta) :
+
+
+def getLastRecords(desde, hasta):
     conn = getDBConnection()
     # sesion
     Session = sessionmaker(bind=conn)
     session = Session()
     # realizando una consulta
-    
+
     #desde = datetime.datetime.strptime(desde, '%Y-%m-%dT%H:%M:%S-03:00')
     #hasta = datetime.datetime.strptime(hasta, '%Y-%m-%dT%H:%M:%S-03:00')
     #ahora = datetime.datetime.now()
     #desde_cuando = ahora - datetime.timedelta(minutes=20)
-    
+
     #results = session.query(Historical).filter(Historical.timestamp > desde_cuando  ).all()
-    results = session.query(Historical).filter(Historical.timestamp > desde).filter(Historical.timestamp < hasta).all()
+    results = session.query(Historical).filter(
+        Historical.timestamp > desde).filter(Historical.timestamp < hasta).all()
     last_records = []
     for result in results:
         record = [result.segment, result.data, result.timestamp]
@@ -211,24 +234,28 @@ def getLastRecords(desde, hasta) :
         last_records.append(record)
     conn.close()
     return last_records
-    
+
 
 """
 Esta tabla retorna una lista de tuplas de la forma (id_segment, data, timestamp) con todos los registros \ agregados a la tabla "historical" en el ultimo mes
 """
-def getLastMonthRecords() :
+
+
+def getLastMonthRecords():
     pass
 
 """
 Esta funcion determina los parametros de deteccion de anomalias para cada segmento y los guarda en el archivo detection_params.json
 """
-def updateDetectionParams (desde=None, hasta=None) :
-    if hasta == None :
+
+
+def updateDetectionParams(desde=None, hasta=None):
+    if hasta == None:
         hasta = datetime.datetime.now()
-    if desde == None :
+    if desde == None:
         desde = hasta - datetime.timedelta(weeks=4)
     #lastmonthrecords = getLastRecords("2015-07-06T15:10:00-03:00","2015-08-06T16:00:00-03:00")
-    lastmonthrecords = getLastRecords(desde,hasta)
+    lastmonthrecords = getLastRecords(desde, hasta)
     newparams = anomalyDetection.computeDetectionParams(lastmonthrecords)
     outf = open(detection_params_fn, "wb")
     outf.write(newparams)
@@ -265,38 +292,43 @@ Retorna:
 }
 """
 # TODO: Completar campo "velocidad"
-def getCurrentSegmentState (anomalies, lastrecords) :
+
+
+def getCurrentSegmentState(anomalies, lastrecords):
     segments = {}
-    for r in lastrecords :
-        if not segments.has_key(r[0]) or r[2] > segments[r[0]][2] :
+    for r in lastrecords:
+        if not segments.has_key(r[0]) or r[2] > segments[r[0]][2]:
             segments[r[0]] = r
-    
-    ad = { a["id_segment"] : a for a in anomalies }
-    
+
+    ad = {a["id_segment"]: a for a in anomalies}
+
     output = []
-    for s in segments.values() :
+    for s in segments.values():
         duracion_anomalia = 0
-        if ad.has_key(s[0]) :
-            duracion_anomalia = ad[s[0]]["timestamp_end"] - ad[s[0]]["timestamp_start"]
+        if ad.has_key(s[0]):
+            duracion_anomalia = ad[s[0]][
+                "timestamp_end"] - ad[s[0]]["timestamp_start"]
         output += [{
-            "id" : s[0],
-            "timestamp_medicion" : s[2],
-            "tiempo" : s[1],
-            "velocidad" : -1,
-            "causa" : ad.get(s[0], {}).get("causa", ""),
-            "causa_id" : ad.get(s[0], {}).get("causa_id", 0),
-            "duracion_anomalia" : duracion_anomalia,
-            "indicador_anomalia" : ad.get(s[0], {}).get("indicador_anomalia", 0),
-            "anomalia" : ad.has_key(s[0]),
+            "id": s[0],
+            "timestamp_medicion": s[2],
+            "tiempo": s[1],
+            "velocidad": -1,
+            "causa": ad.get(s[0], {}).get("causa", ""),
+            "causa_id": ad.get(s[0], {}).get("causa_id", 0),
+            "duracion_anomalia": duracion_anomalia,
+            "indicador_anomalia": ad.get(s[0], {}).get("indicador_anomalia", 0),
+            "anomalia": ad.has_key(s[0]),
         }]
     return output
 
 """
 Lee los parametros de deteccion de la tabla detection_params.csv
 """
-def getDetectionParams() :
+
+
+def getDetectionParams():
     return open(detection_params_fn).read()
-  
+
 """
 Updetea una anomalia prexistente
 La entrada de esta funcion es un unico diccionario que identifica a la anomalia y tiene la siguiente forma:
@@ -345,29 +377,32 @@ v          v           
 |                  |   
 a.start            a.end = b.ts
 """
-def upsertAnomalies (newanomalydata) :
+
+
+def upsertAnomalies(newanomalydata):
     conn = getDBConnection()
     Session = sessionmaker(bind=conn)
     session = Session()
     liveanomalies = []
-    for a in newanomalydata :
+    for a in newanomalydata:
         window_older = a["timestamp"] - datetime.timedelta(minutes=20)
-        candidate = session.query(Anomaly).filter(Anomaly.id_segment == a["id_segment"]).filter(Anomaly.timestamp_end >= window_older).filter(Anomaly.timestamp_end <= a["timestamp"]).first()
-        if candidate :
+        candidate = session.query(Anomaly).filter(Anomaly.id_segment == a["id_segment"]).filter(
+            Anomaly.timestamp_end >= window_older).filter(Anomaly.timestamp_end <= a["timestamp"]).first()
+        if candidate:
             candidate.timestamp_end = a["timestamp"]
             candidate.indicador_anomalia = a["indicador_anomalia"]
             curanomaly = {}
             for column in Anomaly.__table__.columns:
                 curanomaly[column.name] = str(getattr(candidate, column.name))
             session.add(candidate)
-        else :
+        else:
             curanomaly = {
-                "id_segment" : a["id_segment"],
-                "timestamp_start" : a["timestamp"],
-                "timestamp_end" : a["timestamp"],
-                "indicador_anomalia" : a["indicador_anomalia"],
-                "causa" : "",
-                "causa_id" : 0,
+                "id_segment": a["id_segment"],
+                "timestamp_start": a["timestamp"],
+                "timestamp_end": a["timestamp"],
+                "indicador_anomalia": a["indicador_anomalia"],
+                "causa": "",
+                "causa_id": 0,
             }
             session.add(Anomaly(**curanomaly))
         session.commit()
@@ -375,25 +410,27 @@ def upsertAnomalies (newanomalydata) :
     conn.close()
     return liveanomalies
 
+
 def updateSnapshot(newstates):
     conn = getDBConnection()
     Session = sessionmaker(bind=conn)
     sess = Session()
-    for segstate in newstates :
+    for segstate in newstates:
         curstate = sess.query(SegmentSnapshot).get(segstate["id"])
-        if curstate == None :
+        if curstate == None:
             curstate = SegmentSnapshot(**segstate)
-        else :
-            for (k,v) in segstate.items() :
-                setattr(curstate, k , v)
+        else:
+            for (k, v) in segstate.items():
+                setattr(curstate, k, v)
         sess.add(curstate)
         sess.flush()
-    
+
     sess.commit()
     conn.close()
 
-def performAnomalyAnalysis(ahora=None) :
-    if ahora == None :
+
+def performAnomalyAnalysis(ahora=None):
+    if ahora == None:
         ahora = datetime.datetime.now()
     #lastrecords = getLastRecords("2015-08-06T15:10:00-03:00","2015-08-06T15:50:00-03:00")
     lastrecords = getLastRecords(ahora - datetime.timedelta(minutes=20), ahora)
@@ -402,14 +439,13 @@ def performAnomalyAnalysis(ahora=None) :
     curanomalies = upsertAnomalies(anomalies)
     curstate = getCurrentSegmentState(curanomalies, lastrecords)
     updateSnapshot(curstate)
-    
-def dailyUpdate () :
+
+
+def dailyUpdate():
     removeOldRecords()
     updateDetectionParams()
 
 
-#if __name__ == '__main__':
+# if __name__ == '__main__':
 #    setupDB()
 #    executeLoop()
-
-    
