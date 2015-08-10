@@ -48,6 +48,7 @@ easy_install gevent
 easy_install gevent-socketio
 easy_install MySQL-python
 easy_install sqlalchemy
+$ easy_install supervisor
 ```
 ## Configurar script en cron, que se ejecuta una ves a la 00hs cada dia
 ```sh
@@ -75,7 +76,6 @@ Generación de data fake
 
 ```sh
 $ python analisis/getDataFake.py
->>>>>>> 7a0e70d615433847b64d871abd09792fee7c11dd
 ```
 
 Setup Database
