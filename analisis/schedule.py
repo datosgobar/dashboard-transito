@@ -5,6 +5,15 @@ import datetime
 import time
 import analisis
 
+if os.environ.get('OPENSHIFT_PYTHON_DIR'):
+    # en caso de estarlo, activo entorno virtual y agarro las variables de
+    # entorno para ip y puerto
+    zvirtenv = os.path.join(os.environ['OPENSHIFT_PYTHON_DIR'],
+                            'virtenv', 'bin', 'activate_this.py')
+    execfile(zvirtenv, dict(__file__=zvirtenv))
+    ip = os.environ['OPENSHIFT_PYTHON_IP']
+    port = int(os.environ['OPENSHIFT_PYTHON_PORT'])
+
 
 class setInterval:
 

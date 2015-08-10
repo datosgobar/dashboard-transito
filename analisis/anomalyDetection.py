@@ -40,7 +40,7 @@ Retorna una lista con las anomalias encontradas de la forma:
 """
 
 
-def detectAnomalies(detectparams, lastrecords):
+def detectAnomalies(detectparams, lastrecords, dontfilter=False):
     if len(lastrecords) == 0:
         return []
     detectparams = pd.read_json(detectparams, orient="records")
@@ -55,15 +55,24 @@ def detectAnomalies(detectparams, lastrecords):
     marginfield = "std"
     resultsdf = pd.merge(
         lastrecords, detectparams, on=["iddevice", "franja", "daytype"]).sort("date")
-    anomalies = resultsdf[
-        resultsdf[evalfield] > (resultsdf[basefield] + resultsdf[marginfield])]
+    #anomalies = resultsdf[resultsdf[evalfield]>(resultsdf[basefield]+resultsdf[marginfield])]
+    #resultsdf["threshold"] = resultsdf[basefield]
+    resultsdf["threshold"] = resultsdf[basefield] + resultsdf[marginfield]
+    resultsdf["isanomaly"] = resultsdf[evalfield] > resultsdf["threshold"]
+    if dontfilter:
+        anomalies = resultsdf
+    else:
+        anomalies = resultsdf[resultsdf["isanomaly"]]
 
     def formatOutput(anomaly):
         anomaly = anomaly[1]
         return {
             "id_segment": anomaly["iddevice"],
             "timestamp": anomaly["date"].to_pydatetime(),
-            "indicador_anomalia": round((anomaly["data"] - anomaly["mean"]) / anomaly["std"], 2)
+            "indicador_anomalia": round((anomaly["data"] - anomaly["mean"]) / anomaly["std"], 2),
+            "threshold": anomaly["threshold"],
+            "evalfield": anomaly[evalfield],
+            "isanomaly": anomaly["isanomaly"],
         }
     output = map(formatOutput, anomalies.iterrows())
     return output

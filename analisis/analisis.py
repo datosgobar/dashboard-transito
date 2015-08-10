@@ -23,6 +23,7 @@ import argparse
 detection_params_fn = os.path.dirname(
     os.path.realpath(__file__)) + "/detection_params.json"
 
+
 Base = declarative_base()
 
 
@@ -60,10 +61,14 @@ class SegmentSnapshot(Base):
 
 def getData(url):
     print url
-    try:
-        return requests.get(url).json()
-    except:
-        return None
+    for i in xrange(3):
+        try:
+            return requests.get(url).json()
+        except requests.exceptions.Timeout:
+            pass
+        except:
+            return None
+    return None
 
 
 """
@@ -86,6 +91,8 @@ def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=N
     start = download_startdate
     end = download_enddate
     urls = []
+    if step > (download_enddate - download_startdate):
+        step = download_enddate - download_startdate
     while start <= end:
         startdate, enddate = start, start + step
         for sensor_id in sensor_ids:
@@ -144,7 +151,6 @@ Baja datos de nuevos de teracode y los guarda en la tabla "historical"
 
 def updateDB(data):
     conn = getDBConnection()
-    result = downloadData(sensores, step, desde, hasta)
     # parsear json
     Session = sessionmaker(bind=conn)
     session = Session()
@@ -190,14 +196,8 @@ Este loop se va a ejecutar con la frecuencia indicada para cada momento del dia.
 
 
 def executeLoop(desde, hasta, dontdownload=False):
-    """
-        traer los sensores lista de archivo configuracion
-        desde = "2015-07-01T00:00:00-00:00"
-        hasta = "2015-07-12T00:00:01-00:00"        
-    """
-    sensores = [10, 12, 57, 53, 51, 49, 40, 43, 37, 36, 21, 31, 33, 35, 13, 14, 18, 17, 23,
-                24, 25, 26, 28, 30, 32, 45, 47, 38, 44, 48, 48, 11, 56, 54, 55, 41, 22, 16, 15, 19, 20, 10, 27, 29, 34, 39, 42, 46, 50, 52]
-
+    sensores = [10, 12, 57, 53, 51, 49, 40, 43, 37, 36, 21, 31, 33, 35, 13, 14, 18, 17, 23, 24, 25, 26, 28, 30,
+                32, 45, 47, 38, 44, 48, 48, 11, 56, 54, 55, 41, 22, 16, 15, 19, 20, 10, 27, 29, 34, 39, 42, 46, 50, 52]
     if dontdownload:
         has_new_records = True
     else:
@@ -239,7 +239,7 @@ def getLastRecords(desde, hasta):
 
 
 """
-Esta tabla retorna una lista de tuplas de la forma (id_segment, data, timestamp) con todos los registros \ agregados a la tabla "historical" en el ultimo mes
+Esta tabla retorna una lista de tuplas de la forma (id_segment, data, timestamp) con todos los registros agregados a la tabla "historical" en el ultimo mes
 """
 
 
@@ -431,16 +431,28 @@ def updateSnapshot(newstates):
     conn.close()
 
 
-def performAnomalyAnalysis(ahora=None):
+def performAnomalyAnalysis(ahora=None, lookbackwindow=None):
     if ahora == None:
         ahora = datetime.datetime.now()
+    if lookbackwindow == None:
+        lookbackwindow = datetime.timedelta(minutes=20)
     #lastrecords = getLastRecords("2015-08-06T15:10:00-03:00","2015-08-06T15:50:00-03:00")
-    lastrecords = getLastRecords(ahora - datetime.timedelta(minutes=20), ahora)
+    lastrecords = getLastRecords(ahora - lookbackwindow, ahora)
     detectparams = getDetectionParams()
     anomalies = anomalyDetection.detectAnomalies(detectparams, lastrecords)
     curanomalies = upsertAnomalies(anomalies)
     curstate = getCurrentSegmentState(curanomalies, lastrecords)
     updateSnapshot(curstate)
+
+
+def downloadAndLoadLastMonth():
+    sensores = [10, 12, 57, 53, 51, 49, 40, 43, 37, 36, 21, 31, 33, 35, 13, 14, 18, 17, 23, 24, 25, 26, 28, 30,
+                32, 45, 47, 38, 44, 48, 48, 11, 56, 54, 55, 41, 22, 16, 15, 19, 20, 10, 27, 29, 34, 39, 42, 46, 50, 52]
+    hasta = datetime.datetime.now()
+    desde = hasta - datetime.timedelta(days=28)
+    raw_data = downloadData(
+        sensores, datetime.timedelta(days=2), desde, hasta)
+    has_new_records = updateDB(raw_data)
 
 
 def dailyUpdate():

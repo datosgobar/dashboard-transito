@@ -10,63 +10,6 @@ import config
 import json
 
 
-def createSegmentos():
-
-    db = MySQLdb.connect(host=config.mysql["host"], passwd=config.mysql[
-                         "password"], user=config.mysql["user"])
-    cur = db.cursor()
-    cur.execute('DROP DATABASE dashboardoperativo;')
-    cur.execute('CREATE DATABASE IF NOT EXISTS dashboardoperativo;')
-    cur.close()
-    db.select_db("dashboardoperativo")
-
-    causas = ["Choque", "Manifestacion", "Animales sueltos"]
-
-    try:
-        cur = db.cursor()
-        cur.execute("""CREATE TABLE segment_snapshot (id INT NOT NULL, PRIMARY KEY(id), timestamp_medicion TIMESTAMP, tiempo INT, \
-		velocidad FLOAT,causa TEXT,causa_id INT,duracion_anomalia INT,indicador_anomalia FLOAT,anomalia INT);""")
-        cur.close()
-    except Exception, ex:
-        return ex
-    else:
-        cur = db.cursor()
-        for ID in range(10, 58):
-            cur.execute("""INSERT INTO segment_snapshot VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
-                        (ID, time.strftime('%Y-%m-%d %H:%M:%S'), random.randrange(5, 21),
-                         random.randrange(0, 101), causas[random.randrange(0, 3)], random.randrange(
-                             0, 21), random.randrange(1, 120),
-                         random.random(), random.randrange(0, 4)))
-            print "Auto Increment ID: %s" % ID
-    finally:
-        cur.close()
-        db.close()
-
-
-def readSegmentos():
-    """
-            readSegmentos()
-    """
-    result = []
-
-    try:
-        db = MySQLdb.connect(host=config.mysql["host"], passwd=config.mysql[
-                             "password"], user=config.mysql["user"])
-        db.select_db("dashboardoperativo")
-        cur = db.cursor()
-    except Exception, ex:
-        print ex
-        result = []
-    else:
-        cur.execute("SELECT * FROM segment_snapshot")
-        for row in cur.fetchall():
-            result.append(row)
-    finally:
-        cur.close()
-        db.close()
-        return result
-
-
 def readSnapshot():
     """
             readSnapshot()
@@ -156,15 +99,3 @@ def parserEmitData(self, template):
     else:
         print "sin datos"
         self.emit('info', "sin datos")
-
-
-if __name__ == '__main__':
-
-    templatefilepath = os.path.dirname(
-        os.path.realpath(__file__)) + "/template.json"
-
-    with open(templatefilepath) as templatecorredores:
-        template_buffer = buffer(templatecorredores.read())
-        template = json.loads(template_buffer.__str__())
-    self.parserEmitData(template)
-    # createSegmentos()

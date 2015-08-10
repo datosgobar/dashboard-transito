@@ -26,6 +26,7 @@ $ sudo easy_install gevent
 $ sudo easy_install gevent-socketio
 $ sudo easy_install MySQL-python
 $ sudo easy_install sqlalchemy
+$ easy_install supervisor
 ```
 
 ## Instalacion bajo Mac
@@ -48,7 +49,16 @@ easy_install gevent-socketio
 easy_install MySQL-python
 easy_install sqlalchemy
 ```
-
+## Configurar script en cron, que se ejecuta una ves a la 00hs cada dia
+```sh
+sudo crontab -e
+0 0 * * * /usr/bin/python2.7 /tu_home/tu_user/dashboard-operativo-transito/analisis/dailyUpdate.py
+```
+## Ejectuar Schedule con funcion executeLoop() en Demonio
+configurar Variables de configuracion en archivo supervisord.conf,  command, stdout_logfile, stderr_logfile, y user
+```sh
+supervisord -c supervisord.config
+```
 ## Corriendo la app
 Actualizar datos de conexion a base de datos en (un modelo se puede encontrar en analisis/config.py.sample)
 
@@ -61,11 +71,17 @@ Asegurarse que MySQL está corriendo
  mysql.server start
  ```
 
+Generación de data fake
+
+```sh
+$ python analisis/getDataFake.py
+>>>>>>> 7a0e70d615433847b64d871abd09792fee7c11dd
+```
 
 Setup Database
 ```
 python analisis/analisis.py --setup
-```
+
 
 Generar Modelo para detección de anomalías
 
@@ -93,6 +109,7 @@ Abrir el navegador en [http://127.0.0.1:8080/](http://127.0.0.1:8080/)
   - [bottle](http://bottlepy.org/docs/dev/index.html)
   - [gevent](http://gevent.org/intro.html)
   - [gevent-socketio](https://gevent-socketio.readthedocs.org/en/latest/)
+  - [supervisor](http://supervisord.org/configuration.html)
 
 ## Licencia
 [MIT](http://opensource.org/licenses/MIT)
