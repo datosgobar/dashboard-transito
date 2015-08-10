@@ -466,12 +466,17 @@ if __name__ == '__main__':
     parser.add_argument(
         '--setup_database', action='store_true', help='Setup de base de datos')
     parser.add_argument(
+        '--download_lastmonth', action='store_true', help='Bajar y cargar la informacion del ultimo mes')
+    parser.add_argument(
         '--generate_detection_params', action='store_true', help='Generar modelo para análisis de anomalías')
 
     args = parser.parse_args()
 
-    if (args.setup_database):
+    if args.setup_database:
         setupDB()
 
-    if (args.generate_detection_params):
+    if args.download_lastmonth:
+        downloadAndLoadLastMonth()
+
+    if args.generate_detection_params:
         updateDetectionParams()
