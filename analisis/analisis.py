@@ -58,10 +58,14 @@ class SegmentSnapshot(Base):
 
 def getData(url):
     print url
-    try:
-        return requests.get(url).json()
-    except:
-        return None
+    for i in xrange(3):
+        try:
+            return requests.get(url).json()
+        except requests.exceptions.Timeout:
+            pass
+        except:
+            return None
+    return None
 
 
 """
