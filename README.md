@@ -49,6 +49,7 @@ easy_install gevent
 easy_install gevent-socketio
 easy_install MySQL-python
 easy_install sqlalchemy
+$ easy_install supervisor
 ```
 
 ## Corriendo la app 

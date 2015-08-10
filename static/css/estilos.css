@@ -11,20 +11,25 @@
   src: url("fonts/OpenSans.eot?#iefix") format("embedded-opentype"), url("fonts/OpenSans.woff2") format("woff2"), url("fonts/OpenSans.woff") format("woff"), url("fonts/OpenSans.ttf") format("truetype"), url("fonts/OpenSans.svg#Open Sans") format("svg"); }
 
 @font-face {
-  font-family: 'Avenir';
+  font-family: 'AvenirNext-Bold';
   font-style: normal;
   font-weight: normal;
-  src: url("fonts/AvenirNextLTPro-Regular.eot?#iefix") format("embedded-opentype"), url("fonts/AvenirNextLTPro-Regular.woff2") format("woff2"), url("fonts/AvenirNextLTPro-Regular.woff") format("woff"), url("fonts/AvenirNextLTPro-Regular.ttf") format("truetype"), url("fonts/AvenirNextLTPro-Regular.svg#Avenir") format("svg"); }
+  src: url("fonts/AvenirNextLTPro-Bold.eot?#iefix") format("embedded-opentype"), url("fonts/AvenirNextLTPro-Bold.woff2") format("woff2"), url("fonts/AvenirNextLTPro-Bold.woff") format("woff"), url("fonts/AvenirNextLTPro-Bold.ttf") format("truetype"), url("fonts/AvenirNextLTPro-Bold.svg#AvenirNext-Bold") format("svg"); }
+
+@font-face {
+  font-family: 'AvenirNext-Condensed';
+  font-style: normal;
+  font-weight: normal;
+  src: url("fonts/AvenirNextLTPro-Cn.eot?#iefix") format("embedded-opentype"), url("fonts/AvenirNextLTPro-Cn.woff2") format("woff2"), url("fonts/AvenirNextLTPro-Cn.woff") format("woff"), url("fonts/AvenirNextLTPro-Cn.ttf") format("truetype"), url("fonts/AvenirNextLTPro-Cn.svg#AvenirNext-Condensed") format("svg"); }
 
 html, body {
   margin: 10px auto;
   padding: 0;
   width: 100%;
-  font-family: "Avenir", "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-color: #F2F2F2; }
   @media (max-width: 767px) {
     html, body {
-      background-color: #00F2F2; } }
+      background-color: #ffffff; } }
 
 .oculta {
   display: none; }
@@ -47,29 +52,33 @@ html, body {
   border-bottom-right-radius: 5px;
   background-color: #ffffff;
   width: 90%;
-  padding: 10px;
-  margin: 0 auto 20px;
-  border-left: 15px solid #c0c0c0; }
+  padding: 20px;
+  margin: 0 auto 20px; }
   .card .titulo {
-    font-size: 1em; }
+    font-size: 1.5em;
+    padding-bottom: 10px;
+    font-family: "AvenirNext-bold", "Helvetica Neue", Helvetica, Arial, sans-serif; }
   .card .segmentos {
-    width: 100%; }
+    width: 100%;
+    font-family: "AvenirNext-condensed", "Helvetica Neue", Helvetica, Arial, sans-serif; }
     .card .segmentos .contenedorSegmentos .etiquetaSegmento {
-      font-size: 1.4em; }
+      font-size: 1.5em;
+      padding-bottom: 10px; }
     .card .segmentos .contenedorSegmentos .estadoSegmento {
-      height: 10px;
-      background-color: #eeeeee;
+      height: 20px;
+      background-color: #e5e5e5;
       border: 1px solid #fafafa; }
     .card .segmentos .contenedorSegmentos .capital, .card .segmentos .contenedorSegmentos .provincia, .card .segmentos .contenedorSegmentos .etiquetas {
       display: table;
+      table-layout: fixed;
       width: 90%; }
     .card .segmentos .contenedorSegmentos .segmento {
       display: table-cell; }
-      .card .segmentos .contenedorSegmentos .segmento .rojo {
+      .card .segmentos .contenedorSegmentos .segmento .rojo, .card .segmentos .contenedorSegmentos .segmento .estado3 {
         background-color: #e53935; }
-      .card .segmentos .contenedorSegmentos .segmento .naranja {
+      .card .segmentos .contenedorSegmentos .segmento .naranja, .card .segmentos .contenedorSegmentos .segmento .estado2 {
         background-color: #ff8f00; }
-      .card .segmentos .contenedorSegmentos .segmento .amarillo {
+      .card .segmentos .contenedorSegmentos .segmento .amarillo, .card .segmentos .contenedorSegmentos .segmento .estado1 {
         background-color: #fdd835; }
   .card .icono {
     position: absolute;
@@ -80,7 +89,19 @@ html, body {
     margin: 0 auto;
     background-color: #fafafa;
     border-radius: 25px;
-    border: 2px solid #eeeeee; }
+    border: 2px solid #e5e5e5; }
+
+.estadoBorde0 {
+  border-left: 15px solid #c0c0c0; }
+
+.estadoBorde1 {
+  border-left: 15px solid #fdd835; }
+
+.estadoBorde2 {
+  border-left: 15px solid #ff8f00; }
+
+.estadoBorde3 {
+  border-left: 15px solid #e53935; }
 
 .shadow {
   transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 0.5);

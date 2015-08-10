@@ -1,5 +1,5 @@
-[
-  {
+{
+  "10":{
     "seg_id":"1",
     "corredor":"Independencia",
     "sentido": "provincia",
@@ -7,10 +7,9 @@
     "desde": "Paseo Colón",
     "hasta": "9 de Julio",
     "desde_corto": "P. Colón",
-    "hasta_corto": "9 de Julio",
-    "sub_seg_id": 10
+    "hasta_corto": "9 de Julio" 
   },
-  {
+  "11":{
     "seg_id":"1",
     "corredor":"Illia",
     "sentido": "provincia",    
@@ -18,10 +17,9 @@
     "desde": "Sarmiento",
     "hasta": "General Paz",
     "desde_corto": "Sarm.",
-    "hasta_corto": "G. Paz",
-    "sub_seg_id": 11
+    "hasta_corto": "G. Paz" 
   },
-  {
+  "12":{
     "seg_id":"1",
     "corredor":"illia",
     "sentido": "capital",    
@@ -29,10 +27,9 @@
     "desde": "General Paz",
     "hasta": "Sarmiento",
     "desde_corto": "G. Paz",
-    "hasta_corto": "Sarm.",
-    "sub_seg_id": 12
+    "hasta_corto": "Sarm." 
   },
-  {
+  "13":{
     "seg_id":"1",
     "corredor":"9 de julio",
     "sentido": "capital",    
@@ -40,10 +37,9 @@
     "desde": "Arroyo",
     "hasta": "Corrientes",
     "desde_corto": "Arroyo",
-    "hasta_corto": "Corrientes",
-    "sub_seg_id": 13
+    "hasta_corto": "Corrientes" 
   },
-  {
+  "14":{
     "seg_id":"1",
     "corredor":"9 de julio",
     "sentido": "capital",
@@ -51,10 +47,9 @@
     "desde": "Arroyo",
     "hasta": "Corrientes",
     "desde_corto": "Arroyo",
-    "hasta_corto": "Corrientes",
-    "sub_seg_id": 14
+    "hasta_corto": "Corrientes" 
   },
-  {
+  "15":{
     "seg_id":"1",
     "corredor":"9 de Julio",
     "sentido": "provincia",
@@ -62,10 +57,9 @@
     "desde": "Corrientes",
     "hasta": "Arroyo",
     "desde_corto": "Corrientes",
-    "hasta_corto": "Arroyo",
-    "sub_seg_id": 15
+    "hasta_corto": "Arroyo" 
   },
-  {
+  "16":{
     "seg_id":"1",
     "corredor":"9 de Julio",
     "sentido": "provincia",
@@ -73,10 +67,9 @@
     "desde": "Corrientes",
     "hasta": "Arroyo",
     "desde_corto": "Corrientes",
-    "hasta_corto": "Arroyo",
-    "sub_seg_id": 16
+    "hasta_corto": "Arroyo" 
   },
-  {
+  "17":{
     "seg_id":"2",
     "corredor":"9 de Julio",
     "sentido": "capital",
@@ -84,10 +77,9 @@
     "desde": "San Juan",
     "hasta": "Corrientes",
     "desde_corto": "S. Juan",
-    "hasta_corto": "Corrientes",
-    "sub_seg_id": 17
+    "hasta_corto": "Corrientes" 
   },
-  {
+  "18":{
     "seg_id":"2",
     "corredor":"9 de Julio",
     "sentido": "capital",
@@ -95,10 +87,9 @@
     "desde": "San Juan",
     "hasta": "Corrientes",
     "desde_corto": "S. Juan",
-    "hasta_corto": "Corrientes",
-    "sub_seg_id": 18
+    "hasta_corto": "Corrientes" 
   },
-  {
+  "19":{
     "seg_id":"2",
     "corredor":"9 de Julio",
     "sentido": "provincia",
@@ -106,10 +97,9 @@
     "desde": "Corrientes",
     "hasta": "San Juan",
     "desde_corto": "Corrientes",
-    "hasta_corto": "S. Juan",
-    "sub_seg_id": 19
+    "hasta_corto": "S. Juan" 
   },
-  {
+  "20":{
     "seg_id":"2",
     "corredor":"9 de julio",
     "sentido": "provincia",
@@ -117,10 +107,9 @@
     "desde": "Corrientes",
     "hasta": "San Juan",
     "desde_corto": "Corrientes",
-    "hasta_corto": "S. Juan",
-    "sub_seg_id": 20
+    "hasta_corto": "S. Juan" 
   },
-  {
+  "21":{
     "seg_id":"1",
     "corredor":"alem",
     "sentido": "capital",
@@ -128,10 +117,9 @@
     "desde": "Rojas",
     "hasta": "Casa Rosada",
     "desde_corto": "Rojas",
-    "hasta_corto": "C. Rosada",
-    "sub_seg_id": 21
+    "hasta_corto": "C. Rosada" 
   },
-  {
+  "22":{
     "seg_id":"1",
     "corredor":"alem",
     "sentido": "provincia",
@@ -139,10 +127,9 @@
     "desde": "Casa Rosada",
     "hasta": "Rojas",
     "desde_corto": "C. Rosada",
-    "hasta_corto": "Rojas",
-    "sub_seg_id": 22
+    "hasta_corto": "Rojas" 
   },
-  {
+  "23":{
     "seg_id":"",
     "corredor":"corrientes",
     "sentido": "capital",
@@ -150,10 +137,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 23
+    "hasta_corto": "" 
   },
-  {
+  "24":{
     "seg_id":"",
     "corredor":"rivadavia",
     "sentido": "capital",
@@ -161,10 +147,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 24
+    "hasta_corto": "" 
   },
-  {
+  "25":{
     "seg_id":"",
     "corredor":"av de mayo",
     "sentido": "capital",
@@ -172,10 +157,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 25
+    "hasta_corto": "" 
   },
-  {
+  "26":{
     "seg_id":"",
     "corredor":"san martin",
     "sentido": "capital",
@@ -183,10 +167,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 26
+    "hasta_corto": "" 
   },
-  {
+  "27":{
     "seg_id":"",
     "corredor":"san martin",
     "sentido": "provincia",
@@ -194,10 +177,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 27
+    "hasta_corto": "" 
   },
-  {
+  "28":{
     "seg_id":"",
     "corredor":"san martin",
     "sentido": "capital",
@@ -205,10 +187,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 28
+    "hasta_corto": "" 
   },
-  {
+  "29":{
     "seg_id":"",
     "corredor":"san martin",
     "sentido": "provincia",
@@ -216,10 +197,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 29
+    "hasta_corto": "" 
   },
-  {
+  "30":{
     "seg_id":"",
     "corredor":"juan b justo",
     "sentido": "capital",
@@ -227,10 +207,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 30
+    "hasta_corto": "" 
   },
-  {
+  "31":{
     "seg_id":"",
     "corredor":"juan b justo",
     "sentido": "capital",
@@ -238,10 +217,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 31
+    "hasta_corto": "" 
   },
-  {
+  "32":{
     "seg_id":"",
     "corredor":"juan b justo",
     "sentido": "capital",
@@ -249,10 +227,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 32
+    "hasta_corto": "" 
   },
-  {
+  "33":{
     "seg_id":"",
     "corredor":"juan b justo",
     "sentido": "capital",
@@ -260,10 +237,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 33
+    "hasta_corto": "" 
   },
-  {
+  "34":{
     "seg_id":"",
     "corredor":"juan b justo",
     "sentido": "provincia",
@@ -271,10 +247,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 34
+    "hasta_corto": "" 
   },
-  {
+  "35":{
     "seg_id":"",
     "corredor":"juan b justo",
     "sentido": "capital",
@@ -282,10 +257,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 35
+    "hasta_corto": "" 
   },
-  {
+  "36":{
     "seg_id":"",
     "corredor":"cordoba",
     "sentido": "capital",
@@ -293,10 +267,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 36
+    "hasta_corto": "" 
   },
-  {
+  "37":{
     "seg_id":"",
     "corredor":"cordoba",
     "sentido": "capital",
@@ -304,10 +277,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 37
+    "hasta_corto": "" 
   },
-  {
+  "38":{
     "seg_id":"",
     "corredor":"cordoba",
     "sentido": "capital",
@@ -315,10 +287,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 38
+    "hasta_corto": "" 
   },
-  {
+  "39":{
     "seg_id":"",
     "corredor":"paseo colon",
     "sentido": "provincia",
@@ -326,10 +297,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 39
+    "hasta_corto": "" 
   },
-  {
+  "40":{
     "seg_id":"",
     "corredor":"",
     "sentido": "capital",
@@ -337,10 +307,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 40
+    "hasta_corto": "" 
   },
-  {
+  "41":{
     "seg_id":"",
     "corredor":"cabildo",
     "sentido": "provincia",
@@ -348,10 +317,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 41
+    "hasta_corto": "" 
   },
-  {
+  "42":{
     "seg_id":"",
     "corredor":"cabildo",
     "sentido": "provincia",
@@ -359,10 +327,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 42
+    "hasta_corto": "" 
   },
-  {
+  "43":{
     "seg_id":"",
     "corredor":"",
     "sentido": "capital",
@@ -370,10 +337,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 43
+    "hasta_corto": "" 
   },
-  {
+  "44":{
     "seg_id":"",
     "corredor":"cabildo",
     "sentido": "capital",
@@ -381,10 +347,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 44
+    "hasta_corto": "" 
   },
-  {
+  "45":{
     "seg_id":"",
     "corredor":"cabildo",
     "sentido": "capital",
@@ -392,10 +357,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 45
+    "hasta_corto": "" 
   },
-  {
+  "46":{
     "seg_id":"",
     "corredor":"pueyrredon",
     "sentido": "provincia",
@@ -403,10 +367,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 46
+    "hasta_corto": "" 
   },
-  {
+  "47":{
     "seg_id":"",
     "corredor":"pueyrredon",
     "sentido": "capital",
@@ -414,10 +377,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 47
+    "hasta_corto": "" 
   },
-  {
+  "48":{
     "seg_id":"",
     "corredor":"libertador",
     "sentido": "capital",
@@ -425,10 +387,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 48
+    "hasta_corto": "" 
   },
-  {
+  "49":{
     "seg_id":"",
     "corredor":"libertador",
     "sentido": "capital",
@@ -436,10 +397,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 49
+    "hasta_corto": "" 
   },
-  {
+  "50":{
     "seg_id":"",
     "corredor":"libertador",
     "sentido": "provincia",
@@ -447,10 +407,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 50
+    "hasta_corto": "" 
   },
-  {
+  "51":{
     "seg_id":"",
     "corredor":"libertador",
     "sentido": "capital",
@@ -458,10 +417,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 51
+    "hasta_corto": "" 
   },
-  {
+  "52":{
     "seg_id":"",
     "corredor":"libertador",
     "sentido": "provincia",
@@ -469,10 +427,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 52
+    "hasta_corto": "" 
   },
-  {
+  "53":{
     "seg_id":"",
     "corredor":"libertador",
     "sentido": "capital",
@@ -480,10 +437,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 53
+    "hasta_corto": "" 
   },
-  {
+  "54":{
     "seg_id":"",
     "corredor":"alcorta",
     "sentido": "provincia",
@@ -491,10 +447,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 54
+    "hasta_corto": "" 
   },
-  {
+  "55":{
     "seg_id":"",
     "corredor":"alcorta",
     "sentido": "provincia",
@@ -502,10 +457,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 55
+    "hasta_corto": "" 
   },
-  {
+  "56":{
     "seg_id":"",
     "corredor":"illia",
     "sentido": "provincia",
@@ -513,10 +467,9 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 56
+    "hasta_corto": "" 
   },
-  {
+  "57":{
     "seg_id":"",
     "corredor":"illia",
     "sentido": "capital",
@@ -524,7 +477,6 @@
     "desde": "",
     "hasta": "",
     "desde_corto": "",
-    "hasta_corto": "",
-    "sub_seg_id": 57
+    "hasta_corto": "" 
   }
-]
+}

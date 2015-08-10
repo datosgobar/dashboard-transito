@@ -15,14 +15,12 @@ import datetime
 import dateutil.parser
 import multiprocessing
 import os
-
-import anomalyDetection
 import argparse
 
+import anomalyDetection
 
 detection_params_fn = os.path.dirname(
     os.path.realpath(__file__)) + "/detection_params.json"
-
 
 Base = declarative_base()
 
@@ -68,6 +66,7 @@ def getData(url):
             pass
         except:
             return None
+
     return None
 
 
@@ -78,21 +77,20 @@ sensor_ids = [...] # Sacar de waypoints.py
 download_startdate = "2015-07-01T00:00:00-00:00"
 download_enddate = "2015-07-12T00:00:01-00:00"
 step = datetime.timedelta(days=2)
-newdata = downloadData (sensor_ids, step, download_startdate, download_enddate, outfn="raw_api_01_11.json")
+newdata = downloadData (
+    sensor_ids, step, download_startdate, download_enddate, outfn="raw_api_01_11.json")
 """
 
 
 def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=None, token="superadmin."):
     pool = multiprocessing.Pool(5)
-    #vsensids = virtsens["id_sensor"].unique()
+    # vsensids = virtsens["id_sensor"].unique()
     urltpl = "https://apisensores.buenosaires.gob.ar/api/data/%s?token=%s&fecha_desde=%s&fecha_hasta=%s"
 
-    #end = dateutil.parser.parse(download_enddate)
+    # end = dateutil.parser.parse(download_enddate)
     start = download_startdate
     end = download_enddate
     urls = []
-    if step > (download_enddate - download_startdate):
-        step = download_enddate - download_startdate
     while start <= end:
         startdate, enddate = start, start + step
         for sensor_id in sensor_ids:
@@ -102,7 +100,7 @@ def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=N
             urls += [url]
         start += step
 
-    #alldata = map(getData, urls)
+    # alldata = map(getData, urls)
     alldata = pool.map(getData, urls)
     pool.close()
     pool.terminate()
@@ -116,7 +114,7 @@ def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=N
 
 
 def createDBEngine():
-    #engine = sqlalchemy.create_engine("postgres://postgres@/postgres")
+    # engine = sqlalchemy.create_engine("postgres://postgres@/postgres")
     # engine = sqlalchemy.create_engine("sqlite:///analysis.db")
     if os.environ.get('OPENSHIFT_MYSQL_DIR'):
         host = os.environ.get('OPENSHIFT_MYSQL_DB_HOST')
@@ -150,36 +148,25 @@ Guarda datos recibidos por parámetro en la tabla "historical"
 """
 
 
-def updateDB(data):
+def updateDB(newdata):
+
     conn = getDBConnection()
+
     # parsear json
     Session = sessionmaker(bind=conn)
     session = Session()
     # loopear por cada corredor
+
     newrecords = False
-    for corredor in data:
-        if not bool(corredor):
-            continue
-        try:
-            for segmento in corredor["datos"].get("data"):
-                print segmento
-                # crear nueva instancia de Historical
-                segment = segmento["iddevice"]
-                data = segmento["data"]
-                timestamp = datetime.datetime.strptime(
-                    segmento["date"], '%Y-%m-%dT%H:%M:%S-03:00')
-                segmentdb = Historical(**{
-                    "segment": segment,
-                    "data": data,
-                    "timestamp": timestamp
-                })
-                # pushear instancia de Historial a la base
-                session.add(segmentdb)
-                session.commit()
-                newrecords = True
-        except:
-            pass
+    for historical in newdata:
+
+        # pushear instancia de Historial a la base
+        session.add(historical)
+        session.commit()
+        newrecords = True
+
     conn.close()
+
     return newrecords
 
 
@@ -191,20 +178,73 @@ Elimina registros con mas de un mes de antiguedad de la tabla "historical"
 def removeOldRecords():
     pass
 
+
+"""
+Filtro los registros para no duplicar datos en la base de datos
+"""
+
+
+def filterDuplicateRecords(data, desde, hasta):
+    conn = getDBConnection()
+    # parsear json
+    Session = sessionmaker(bind=conn)
+    session = Session()
+    # loopear por cada corredor
+    results = session.query(Historical).filter(
+        Historical.timestamp >= desde).filter(Historical.timestamp <= hasta).all()
+
+    prevrecords_unique = []
+    for result in results:
+        prevrecords_unique.append([result.segment, datetime.datetime.strftime(
+            result.timestamp, '%Y-%m-%dT%H:%M:%S-03:00')])
+
+    filtered_data = []
+
+    for corredor in data:
+        if not bool(corredor):
+            continue
+        for segmento in corredor["datos"]["data"]:
+            # crear nueva instancia de Historical
+            segment = segmento["iddevice"]
+            data = segmento["data"]
+            timestamp = segmento["date"]
+
+            # print timestamp
+
+            if [segment, timestamp] in prevrecords_unique:
+                continue
+
+            filtered_data.append(Historical(**{
+                "segment": segment,
+                "data": data,
+                "timestamp": timestamp
+            }))
+
+    return filtered_data
+
+
 """
 Este loop se va a ejecutar con la frecuencia indicada para cada momento del dia.
 """
 
 
 def executeLoop(desde, hasta, dontdownload=False):
-    sensores = [10, 12, 57, 53, 51, 49, 40, 43, 37, 36, 21, 31, 33, 35, 13, 14, 18, 17, 23, 24, 25, 26, 28, 30,
-                32, 45, 47, 38, 44, 48, 48, 11, 56, 54, 55, 41, 22, 16, 15, 19, 20, 10, 27, 29, 34, 39, 42, 46, 50, 52]
+    """
+        traer los sensores lista de archivo configuracion
+        desde = "2015-07-01T00:00:00-00:00"
+        hasta = "2015-07-12T00:00:01-00:00"
+    """
+
+    sensores = [10, 12, 57, 53, 51, 49, 40, 43, 37, 36, 21, 31, 33, 35, 13, 14, 18, 17, 23,
+                24, 25, 26, 28, 30, 32, 45, 47, 38, 44, 48, 48, 11, 56, 54, 55, 41, 22, 16, 15, 19, 20, 10, 27, 29, 34, 39, 42, 46, 50, 52]
+
     if dontdownload:
         has_new_records = True
     else:
         raw_data = downloadData(
             sensores, datetime.timedelta(days=2), desde, hasta)
-        has_new_records = updateDB(raw_data)
+        filtered_data = filterDuplicateRecords(raw_data, desde, hasta)
+        has_new_records = updateDB(filtered_data)
     if has_new_records:
         performAnomalyAnalysis(hasta)
 
@@ -220,12 +260,13 @@ def getLastRecords(desde, hasta):
     session = Session()
     # realizando una consulta
 
-    #desde = datetime.datetime.strptime(desde, '%Y-%m-%dT%H:%M:%S-03:00')
-    #hasta = datetime.datetime.strptime(hasta, '%Y-%m-%dT%H:%M:%S-03:00')
-    #ahora = datetime.datetime.now()
-    #desde_cuando = ahora - datetime.timedelta(minutes=20)
+    # desde = datetime.datetime.strptime(desde, '%Y-%m-%dT%H:%M:%S-03:00')
+    # hasta = datetime.datetime.strptime(hasta, '%Y-%m-%dT%H:%M:%S-03:00')
+    # ahora = datetime.datetime.now()
+    # desde_cuando = ahora - datetime.timedelta(minutes=20)
 
-    #results = session.query(Historical).filter(Historical.timestamp > desde_cuando  ).all()
+    # results = session.query(Historical).filter(Historical.timestamp >
+    # desde_cuando  ).all()
     results = session.query(Historical).filter(
         Historical.timestamp > desde).filter(Historical.timestamp < hasta).all()
     last_records = []
@@ -240,7 +281,7 @@ def getLastRecords(desde, hasta):
 
 
 """
-Esta tabla retorna una lista de tuplas de la forma (id_segment, data, timestamp) con todos los registros agregados a la tabla "historical" en el ultimo mes
+Esta tabla retorna una lista de tuplas de la forma (id_segment, data, timestamp) con todos los registros \ agregados a la tabla "historical" en el ultimo mes
 """
 
 
@@ -257,7 +298,8 @@ def updateDetectionParams(desde=None, hasta=None):
         hasta = datetime.datetime.now()
     if desde == None:
         desde = hasta - datetime.timedelta(weeks=4)
-    #lastmonthrecords = getLastRecords("2015-07-06T15:10:00-03:00","2015-08-06T16:00:00-03:00")
+    # lastmonthrecords =
+    # getLastRecords("2015-07-06T15:10:00-03:00","2015-08-06T16:00:00-03:00")
     lastmonthrecords = getLastRecords(desde, hasta)
     newparams = anomalyDetection.computeDetectionParams(lastmonthrecords)
     outf = open(detection_params_fn, "wb")
@@ -432,13 +474,10 @@ def updateSnapshot(newstates):
     conn.close()
 
 
-def performAnomalyAnalysis(ahora=None, lookbackwindow=None):
+def performAnomalyAnalysis(ahora=None):
     if ahora == None:
         ahora = datetime.datetime.now()
-    if lookbackwindow == None:
-        lookbackwindow = datetime.timedelta(minutes=20)
-    #lastrecords = getLastRecords("2015-08-06T15:10:00-03:00","2015-08-06T15:50:00-03:00")
-    lastrecords = getLastRecords(ahora - lookbackwindow, ahora)
+    lastrecords = getLastRecords(ahora - datetime.timedelta(minutes=20), ahora)
     detectparams = getDetectionParams()
     anomalies = anomalyDetection.detectAnomalies(detectparams, lastrecords)
     curanomalies = upsertAnomalies(anomalies)
@@ -460,6 +499,25 @@ def dailyUpdate():
     removeOldRecords()
     updateDetectionParams()
 
+    #    executeLoop()
+    #    sensores = [10,12,57, 53,51,49, 40, 43, 37,36, 21, 31,33,35, 13,14, 18,17,23, \
+    # 24,25, 26,28, 30,32 ,45, 47, 38, 44, 48,48, 11,56, 54,55, 41, 22, 16,15,
+    # 19, 20, 10, 27,29, 34, 39, 42, 46, 50 ,52]
+    # dailyUpdate()
+
+    # executeLoop(datetime.datetime.strptime("2015-08-10T15:00:00-03:00", '%Y-%m-%dT%H:%M:%S-03:00'),
+    # datetime.datetime.strptime("2015-08-10T16:00:00-03:00",
+    # '%Y-%m-%dT%H:%M:%S-03:00'))
+
+    #    raw_data = downloadData(sensores, datetime.timedelta(minutes=20), datetime.datetime.strptime(
+    #        "2015-08-06T15:10:00-03:00", '%Y-%m-%dT%H:%M:%S-03:00'), datetime.datetime.strptime("2015-08-06T15:30:00-03:00", '%Y-%m-%dT%H:%M:%S-03:00'))
+    #    print raw_data
+    #    filterDuplicateRecords(
+    # raw_data, "2015-08-06T15:10:00-03:00", "2015-08-06T15:30:00-03:00")
+
+    # if __name__ == '__main__':
+    #    setupDB()
+    #    executeLoop()
 
 if __name__ == '__main__':
 
@@ -467,16 +525,21 @@ if __name__ == '__main__':
     parser.add_argument(
         '--setup_database', action='store_true', help='Setup de base de datos')
     parser.add_argument(
+        '--download_lastmonth', action='store_true', help='Bajar y cargar la informacion del ultimo mes')
+    parser.add_argument(
         '--generate_detection_params', action='store_true', help='Generar modelo para análisis de anomalías')
     parser.add_argument(
         '--download_last_month', action='store_true', help='Bajar la data del último mes de Teracode')
 
     args = parser.parse_args()
 
-    if (args.setup_database):
+    if args.setup_database:
         setupDB()
 
-    if (args.generate_detection_params):
+    if args.download_lastmonth:
+        downloadAndLoadLastMonth()
+
+    if args.generate_detection_params:
         updateDetectionParams()
 
     if (args.download_last_month):
