@@ -4,6 +4,7 @@
 import datetime
 import time
 import analisis
+import os
 
 if os.environ.get('OPENSHIFT_PYTHON_DIR'):
     # en caso de estarlo, activo entorno virtual y agarro las variables de

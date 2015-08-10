@@ -9,16 +9,17 @@ El dashboard también se accede desde las computadoras de los operarios para vis
 ## Instalacion bajo Linux
 
 Tener instalado MySQL 5.1
-```
+
+```sh
 $ apt-get install mysql-server
 ```
+
 Instalar Dependencias, en openshift correr
-```
+```sh
 $ source app-root/runtime/dependencies/python/virtenv/bin/activate
-```
-```
 $ sudo python setup install
 ```
+
 O instalamos las dependecias a mano de la siguiente manera:
 ```sh
 $ sudo easy_install bottle
@@ -50,57 +51,89 @@ easy_install MySQL-python
 easy_install sqlalchemy
 $ easy_install supervisor
 ```
-## Configurar script en cron, que se ejecuta una ves a la 00hs cada dia
-```sh
-sudo crontab -e
-0 0 * * * /usr/bin/python2.7 /tu_home/tu_user/dashboard-operativo-transito/analisis/dailyUpdate.py
-```
-## Ejectuar Schedule con funcion executeLoop() en Demonio
-configurar Variables de configuracion en archivo supervisord.conf,  command, stdout_logfile, stderr_logfile, y user
-```sh
-supervisord -c supervisord.config
-```
-## Corriendo la app
-Actualizar datos de conexion a base de datos en (un modelo se puede encontrar en analisis/config.py.sample)
 
-```sh
-python analisis/config.py
-```
+## Corriendo la app 
 
-Asegurarse que MySQL está corriendo
+* Actualizar datos de conexion a base de datos en (un modelo se puede encontrar en analisis/config.py.sample)
+
+
+* Asegurarse que MySQL está corriendo
+
 ```sh
  mysql.server start
  ```
 
-Generación de data fake
+* Configuración de la Base de Datos
+
+  * Creación de las tablas
+
+```sh
+python analisis/analisis.py --setup_database
+```
+
+  * Generación de data fake
 
 ```sh
 $ python analisis/getDataFake.py
 ```
 
-Setup Database
+  * Configuración del modelo. 
+
+    Para esto hay dos alternativas:
+
+    1. Copiar un modelo existente creando un archivo detection_params.json en el directorio ./analisis
+    Un modelo se puede encontrar en ./analisis/detection_params.json.sample
+
+    2. Crear un nuevo modelo
+
+        Cargar datos:
+
+            Una forma es bajando datos de Teracode
+
+            $ python analisis.py --download_last_month
+
+            Otra forma forma podría ser cargar un dump de la base, pero no está implementado todavía.
+
+            $ python analisis.py --load_historico historico.json
+
+        Generar Modelo:
+
+            ```sh
+            $ python analisis.py --generate_detection_params
+            ```
+
+
+
+  * Instanciar Python Server
+
+    ```sh
+    $ python app.py
+    ```
+
+
+## Configurar script en cron, que se ejecuta una vez a la 00hs cada dia
+
 ```sh
-python analisis/analisis.py --setup
-
-
-Generar Modelo para detección de anomalías
-
-Se puede hacer de dos maneras
-
-1. Cargando Modelo de prueba
-
-2. Generando un Modelo Nuevo
-```sh
-python analisis/analisis.py --generate_detection_params
+sudo crontab -e
+0 0 * * * /usr/bin/python2.7 /tu_home/tu_user/dashboard-operativo-transito/analisis/dailyUpdate.py
 ```
 
+## Ejectuar Schedule con funcion executeLoop() en Demonio
+configurar Variables de configuracion en archivo supervisord.conf (al final del archivo)
+* command
+* stdout_logfile
+* stderr_logfile
+* user
 
-
-Instanciar Python Server
+Correr los procesos
 ```sh
-$ python app.py
+$ supervisord -c supervisord.conf
 ```
 
+Para parar los procesos
+```sh
+$ supervisorctl stop all
+```
 
 Abrir el navegador en [http://127.0.0.1:8080/](http://127.0.0.1:8080/)
 
