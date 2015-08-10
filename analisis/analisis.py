@@ -510,7 +510,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--generate_detection_params', action='store_true', help='Generar modelo para análisis de anomalías')
     parser.add_argument(
-        '--download_last_month', action='store_true', help='Bajar la data del último mes de Teracode')
+        '--execute_loop_now', action='store_true', help='Ejecuta un unico ciclo de loop')
 
     args = parser.parse_args()
 
