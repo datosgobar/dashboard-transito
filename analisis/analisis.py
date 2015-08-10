@@ -498,25 +498,6 @@ def dailyUpdate():
     removeOldRecords()
     updateDetectionParams()
 
-    #    executeLoop()
-    #    sensores = [10,12,57, 53,51,49, 40, 43, 37,36, 21, 31,33,35, 13,14, 18,17,23, \
-    # 24,25, 26,28, 30,32 ,45, 47, 38, 44, 48,48, 11,56, 54,55, 41, 22, 16,15,
-    # 19, 20, 10, 27,29, 34, 39, 42, 46, 50 ,52]
-    # dailyUpdate()
-
-    # executeLoop(datetime.datetime.strptime("2015-08-10T15:00:00-03:00", '%Y-%m-%dT%H:%M:%S-03:00'),
-    # datetime.datetime.strptime("2015-08-10T16:00:00-03:00",
-    # '%Y-%m-%dT%H:%M:%S-03:00'))
-
-    #    raw_data = downloadData(sensores, datetime.timedelta(minutes=20), datetime.datetime.strptime(
-    #        "2015-08-06T15:10:00-03:00", '%Y-%m-%dT%H:%M:%S-03:00'), datetime.datetime.strptime("2015-08-06T15:30:00-03:00", '%Y-%m-%dT%H:%M:%S-03:00'))
-    #    print raw_data
-    #    filterDuplicateRecords(
-    # raw_data, "2015-08-06T15:10:00-03:00", "2015-08-06T15:30:00-03:00")
-
-    # if __name__ == '__main__':
-    #    setupDB()
-    #    executeLoop()
 
 if __name__ == '__main__':
 
@@ -527,6 +508,8 @@ if __name__ == '__main__':
         '--download_lastmonth', action='store_true', help='Bajar y cargar la informacion del ultimo mes')
     parser.add_argument(
         '--generate_detection_params', action='store_true', help='Generar modelo para análisis de anomalías')
+    parser.add_argument(
+        '--execute_loop_now', action='store_true', help='Correr un solo ciclo del loop ')
 
     args = parser.parse_args()
 
@@ -538,3 +521,7 @@ if __name__ == '__main__':
 
     if args.generate_detection_params:
         updateDetectionParams()
+
+    if args.execute_loop_now:
+        executeLoop(datetime.datetime.now() -
+                    datetime.timedelta(minutes=20), datetime.datetime.now())
