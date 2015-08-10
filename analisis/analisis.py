@@ -15,6 +15,7 @@ import datetime
 import dateutil.parser
 import multiprocessing
 import os
+import argparse
 
 import anomalyDetection
 
@@ -71,16 +72,17 @@ sensor_ids = [...] # Sacar de waypoints.py
 download_startdate = "2015-07-01T00:00:00-00:00"
 download_enddate = "2015-07-12T00:00:01-00:00"
 step = datetime.timedelta(days=2)
-newdata = downloadData (sensor_ids, step, download_startdate, download_enddate, outfn="raw_api_01_11.json")
+newdata = downloadData (
+    sensor_ids, step, download_startdate, download_enddate, outfn="raw_api_01_11.json")
 """
 
 
 def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=None, token="superadmin."):
     pool = multiprocessing.Pool(5)
-    #vsensids = virtsens["id_sensor"].unique()
+    # vsensids = virtsens["id_sensor"].unique()
     urltpl = "https://apisensores.buenosaires.gob.ar/api/data/%s?token=%s&fecha_desde=%s&fecha_hasta=%s"
 
-    #end = dateutil.parser.parse(download_enddate)
+    # end = dateutil.parser.parse(download_enddate)
     start = download_startdate
     end = download_enddate
     urls = []
@@ -93,7 +95,7 @@ def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=N
             urls += [url]
         start += step
 
-    #alldata = map(getData, urls)
+    # alldata = map(getData, urls)
     alldata = pool.map(getData, urls)
     pool.close()
     pool.terminate()
@@ -107,7 +109,7 @@ def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=N
 
 
 def createDBEngine():
-    #engine = sqlalchemy.create_engine("postgres://postgres@/postgres")
+    # engine = sqlalchemy.create_engine("postgres://postgres@/postgres")
     # engine = sqlalchemy.create_engine("sqlite:///analysis.db")
     if os.environ.get('OPENSHIFT_MYSQL_DIR'):
         host = os.environ.get('OPENSHIFT_MYSQL_DB_HOST')
@@ -224,7 +226,7 @@ def executeLoop(desde, hasta, dontdownload=False):
     """
         traer los sensores lista de archivo configuracion
         desde = "2015-07-01T00:00:00-00:00"
-        hasta = "2015-07-12T00:00:01-00:00"        
+        hasta = "2015-07-12T00:00:01-00:00"
     """
 
     sensores = [10, 12, 57, 53, 51, 49, 40, 43, 37, 36, 21, 31, 33, 35, 13, 14, 18, 17, 23,
@@ -252,12 +254,13 @@ def getLastRecords(desde, hasta):
     session = Session()
     # realizando una consulta
 
-    #desde = datetime.datetime.strptime(desde, '%Y-%m-%dT%H:%M:%S-03:00')
-    #hasta = datetime.datetime.strptime(hasta, '%Y-%m-%dT%H:%M:%S-03:00')
-    #ahora = datetime.datetime.now()
-    #desde_cuando = ahora - datetime.timedelta(minutes=20)
+    # desde = datetime.datetime.strptime(desde, '%Y-%m-%dT%H:%M:%S-03:00')
+    # hasta = datetime.datetime.strptime(hasta, '%Y-%m-%dT%H:%M:%S-03:00')
+    # ahora = datetime.datetime.now()
+    # desde_cuando = ahora - datetime.timedelta(minutes=20)
 
-    #results = session.query(Historical).filter(Historical.timestamp > desde_cuando  ).all()
+    # results = session.query(Historical).filter(Historical.timestamp >
+    # desde_cuando  ).all()
     results = session.query(Historical).filter(
         Historical.timestamp > desde).filter(Historical.timestamp < hasta).all()
     last_records = []
@@ -289,7 +292,8 @@ def updateDetectionParams(desde=None, hasta=None):
         hasta = datetime.datetime.now()
     if desde == None:
         desde = hasta - datetime.timedelta(weeks=4)
-    #lastmonthrecords = getLastRecords("2015-07-06T15:10:00-03:00","2015-08-06T16:00:00-03:00")
+    # lastmonthrecords =
+    # getLastRecords("2015-07-06T15:10:00-03:00","2015-08-06T16:00:00-03:00")
     lastmonthrecords = getLastRecords(desde, hasta)
     newparams = anomalyDetection.computeDetectionParams(lastmonthrecords)
     outf = open(detection_params_fn, "wb")
@@ -467,7 +471,8 @@ def updateSnapshot(newstates):
 def performAnomalyAnalysis(ahora=None):
     if ahora == None:
         ahora = datetime.datetime.now()
-    #lastrecords = getLastRecords("2015-08-06T15:10:00-03:00","2015-08-06T15:50:00-03:00")
+    # lastrecords =
+    # getLastRecords("2015-08-06T15:10:00-03:00","2015-08-06T15:50:00-03:00")
     lastrecords = getLastRecords(ahora - datetime.timedelta(minutes=20), ahora)
     detectparams = getDetectionParams()
     anomalies = anomalyDetection.detectAnomalies(detectparams, lastrecords)
@@ -475,7 +480,15 @@ def performAnomalyAnalysis(ahora=None):
     curstate = getCurrentSegmentState(curanomalies, lastrecords)
     updateSnapshot(curstate)
 
-
+ def downloadAndLoadLastMonth():
+     sensores = [10, 12, 57, 53, 51, 49, 40, 43, 37, 36, 21, 31, 33, 35, 13, 14, 18, 17, 23, 24, 25, 26, 28, 30,
+                 32, 45, 47, 38, 44, 48, 48, 11, 56, 54, 55, 41, 22, 16, 15, 19, 20, 10, 27, 29, 34, 39, 42, 46, 50, 52]
+     hasta = datetime.datetime.now()
+     desde = hasta - datetime.timedelta(days=28)
+     raw_data = downloadData(
+         sensores, datetime.timedelta(days=2), desde, hasta)
+     has_new_records = updateDB(raw_data)
+ 
 def dailyUpdate():
     removeOldRecords()
     updateDetectionParams()
