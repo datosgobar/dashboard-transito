@@ -1,3 +1,4 @@
+:blue_car: :red_car:
 # Dashboard Operativo Transito
 
 Desde el Centro de Control de Tránsito los operadores monitorean el sistema de tránsito y toman decisiones en tiempo real con el objetivo de descomprimir el tránsito.
