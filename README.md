@@ -132,13 +132,13 @@ sudo crontab -e
 Estos procesos son los encargados para extracción y carga de datos de Teracode de acuerdo a la frecuencia establecida.
 La función que se llama periódicamente es executeLoop()
 
-# A mano:
+### A mano:
 
 ```sh
 $ python analisis/schedule.py
 ```
 
-# Como Demonio:
+### Como Demonio:
 
 
 1. configurar Variables de configuracion en archivo supervisord.conf (al final del archivo)
