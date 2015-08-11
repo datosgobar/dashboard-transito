@@ -118,21 +118,22 @@ def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=N
 def createDBEngine():
     # engine = sqlalchemy.create_engine("postgres://postgres@/postgres")
     # engine = sqlalchemy.create_engine("sqlite:///analysis.db")
-    if os.environ.get('OPENSHIFT_MYSQL_DIR'):
-        host = os.environ.get('OPENSHIFT_MYSQL_DB_HOST')
-        user = os.environ.get('OPENSHIFT_MYSQL_DB_USERNAME')
-        password = os.environ.get('OPENSHIFT_MYSQL_DB_PASSWORD')
-        engine = sqlalchemy.create_engine(
-            "mysql://" + user + ":" + password + "@" + host + "/dashboardoperativo")
-        return engine
-    else:
-        user = config.mysql['user']
-        password = config.mysql['password']
-        host = config.mysql['host']
-        db = config.mysql['db']
-        engine = sqlalchemy.create_engine(
-            "mysql://" + user + ":" + password + "@" + host + "/" + db)
-        return engine
+
+    user = config.mysql['user']
+    password = config.mysql['password']
+    host = config.mysql['host']
+    db_name = config.mysql['db']
+
+    db = MySQLdb.connect(
+        host=host, passwd=password, user=user)
+    cur = db.cursor()
+    cur.execute(
+        'CREATE DATABASE IF NOT EXISTS {0};'.format(db_name))
+    cur.close()
+
+    engine = sqlalchemy.create_engine(
+        "mysql://" + user + ":" + password + "@" + host + "/" + db_name)
+    return engine
 
 
 def getDBConnection():
@@ -141,6 +142,7 @@ def getDBConnection():
 
 
 def setupDB():
+
     engine = createDBEngine()
     Base.metadata.create_all(engine)
 

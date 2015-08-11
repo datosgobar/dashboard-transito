@@ -6,6 +6,7 @@ import time
 import os
 import config
 import MySQLdb
+import random
 
 
 def readSegmentos():
@@ -37,22 +38,11 @@ def createSegmentos():
     db = MySQLdb.connect(host=config.mysql["host"], passwd=config.mysql[
                          "password"], user=config.mysql["user"])
     cur = db.cursor()
-    cur.execute('DROP DATABASE dashboardoperativo;')
-    cur.execute('CREATE DATABASE IF NOT EXISTS dashboardoperativo;')
-    cur.close()
-    db.select_db("dashboardoperativo")
+    db.select_db(config.mysql["db"])
 
     causas = ["Choque", "Manifestacion", "Animales sueltos"]
 
     try:
-        cur = db.cursor()
-        cur.execute("""CREATE TABLE segment_snapshot (id INT NOT NULL, PRIMARY KEY(id), timestamp_medicion TIMESTAMP, tiempo INT, \
-    velocidad FLOAT,causa TEXT,causa_id INT,duracion_anomalia INT,indicador_anomalia FLOAT,anomalia INT);""")
-        cur.close()
-    except Exception, ex:
-        return ex
-    else:
-        cur = db.cursor()
         for ID in range(10, 58):
             cur.execute("""INSERT INTO segment_snapshot VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
                         (ID, time.strftime('%Y-%m-%d %H:%M:%S'), random.randrange(5, 21),
@@ -60,8 +50,11 @@ def createSegmentos():
                              0, 21), random.randrange(1, 120),
                          random.random(), random.randrange(0, 4)))
             print "Auto Increment ID: %s" % ID
+    except Exception, ex:
+        print(ex)
     finally:
         cur.close()
+        db.commit()
         db.close()
 
 
@@ -95,28 +88,28 @@ def updateSegmentos():
     db = MySQLdb.connect(host=config.mysql["host"], passwd=config.mysql[
                          "password"], user=config.mysql["user"])
     causas = ["Choque", "Manifestacion", "Animales sueltos"]
-    query = """UPDATE infosegmentos SET timestamp_medicion = %s, tiempo = %s, velocidad = %s, causa = %s, causa_id = %s, duracion_anomalia = %s, \
+    query = """UPDATE segment_snapshot SET timestamp_medicion = %s, tiempo = %s, velocidad = %s, causa = %s, causa_id = %s, duracion_anomalia = %s, \
   indicador_anomalia =%s, anomalia = %s WHERE id = %s"""
-    db.select_db("dashboardoperativo")
+    db.select_db(config.mysql["db"])
 
     cur = db.cursor()
     for ID in range(1, 57):
         # timestamp_medicion, tiempo, velocidad, causa, causa_id, duracion_anomalia, indicador_anomalia, anomalia, id
-        update = (time.strftime('%Y-%m-%d %H:%M:%S'), 1, random.randrange(0, 101), causas[random.randrange(0, 3)],
+        update = (time.strftime('%Y-%m-%d %H:%M:%S'), random.randrange(5, 21), random.randrange(0, 101), causas[random.randrange(0, 3)],
                   random.randrange(0, 21), random.randrange(1, 120),
-                  random.random(), random.randrange(0, 101), ID)
+                  random.random(), random.randrange(0, 4), ID)
         print update
         cur.execute(query, update)
 
-    db.close()
     cur.close()
+    db.commit()
+    db.close()
 
 
 if __name__ == '__main__':
-    templatefilepath = os.path.dirname(
-        os.path.realpath(__file__)) + "/template.json"
-    with open(templatefilepath) as templatecorredores:
-        template_buffer = buffer(templatecorredores.read())
-        template = json.loads(template_buffer.__str__())
-    parserEmitData(template)
-    # createSegmentos()
+    createSegmentos()
+
+    while(True):
+        updateSegmentos()
+        print("Generando nuevos datos")
+        time.sleep(60)

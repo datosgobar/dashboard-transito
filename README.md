@@ -126,10 +126,18 @@ sudo crontab -e
 0 0 * * * /usr/bin/python2.7 /tu_home/tu_user/dashboard-operativo-transito/analisis/dailyUpdate.py
 ```
 
-## Ejectuar Schedule en Demonio.
+## Ejectuar Schedule 
 
 Estos procesos son los encargados para extracción y carga de datos de Teracode de acuerdo a la frecuencia establecida.
 La función que se llama periódicamente es executeLoop()
+
+# A mano:
+
+```sh
+$ python analisis/schedule.py
+```
+
+# Como Demonio:
 
 
 1. configurar Variables de configuracion en archivo supervisord.conf (al final del archivo)
