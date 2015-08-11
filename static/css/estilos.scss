@@ -5,12 +5,14 @@
 @include font-face('Open Sans', 'fonts/OpenSans');
 @include font-face('AvenirNext-Bold', 'fonts/AvenirNextLTPro-Bold');
 @include font-face('AvenirNext-Condensed', 'fonts/AvenirNextLTPro-Cn');
+@include font-face('AvenirNext-Demi', 'fonts/AvenirNextLTPro-Demi');
 
 
 $fontset-gotham: "Gotham", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
 $fontset-openSans: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
-$fontset-avenir-bold: "AvenirNext-bold", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
-$fontset-avenir-condensed: "AvenirNext-condensed", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$fontset-avenir-bold: "AvenirNext-Bold", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$fontset-avenir-condensed: "AvenirNext-Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$fontset-avenir-demi: "AvenirNext-Demi", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
 
 $rojo: #e53935;
 $naranja: #ff8f00;
@@ -84,11 +86,20 @@ body {
                 border: 1px solid $blanco;
                 color: $fondoAnomalia;
             }
+            .sentido{
+                font-family: $fontset-avenir-demi;
+                font-size: 20px;
+                text-transform: uppercase;
+                position: relative;
+                height: 1px;
+                left: 81%;
+                top: -31px;
+            }
 
             .capital, .provincia, .etiquetas{
                 display: table;
                 table-layout: fixed;
-                width: 90%;
+                width: 80%;
             }
             .segmento{
                 display: table-cell;

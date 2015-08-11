@@ -51,7 +51,7 @@ function armoTemplateCard(data){
 				estado = data.segmentos_capital[p].anomalia;
 			}
 		}
-		card = card + '</div>' 
+        card = card + '</div><div class="sentido">Capital</div>' 
 	}
 
 	if (data.segmentos_provincia.length > 0){ // hay de provincia
@@ -62,7 +62,7 @@ function armoTemplateCard(data){
 				estado = data.segmentos_provincia[q].anomalia;
 			}
 		}
-		card = card + '</div>' 
+        card = card + '</div><div class="sentido">Provincia</div>' 
 	}
 
 
