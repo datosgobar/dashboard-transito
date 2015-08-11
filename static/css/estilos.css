@@ -55,19 +55,20 @@ html, body {
   padding: 20px;
   margin: 0 auto 20px; }
   .card .titulo {
-    font-size: 1.5em;
+    font-size: 45px;
     padding-bottom: 10px;
     font-family: "AvenirNext-bold", "Helvetica Neue", Helvetica, Arial, sans-serif; }
   .card .segmentos {
     width: 100%;
     font-family: "AvenirNext-condensed", "Helvetica Neue", Helvetica, Arial, sans-serif; }
     .card .segmentos .contenedorSegmentos .etiquetaSegmento {
-      font-size: 1.5em;
+      font-size: 45px;
       padding-bottom: 10px; }
     .card .segmentos .contenedorSegmentos .estadoSegmento {
-      height: 20px;
+      height: 35px;
       background-color: #e5e5e5;
-      border: 1px solid #fafafa; }
+      border: 1px solid #fafafa;
+      color: #e5e5e5; }
     .card .segmentos .contenedorSegmentos .capital, .card .segmentos .contenedorSegmentos .provincia, .card .segmentos .contenedorSegmentos .etiquetas {
       display: table;
       table-layout: fixed;
@@ -75,11 +76,14 @@ html, body {
     .card .segmentos .contenedorSegmentos .segmento {
       display: table-cell; }
       .card .segmentos .contenedorSegmentos .segmento .rojo, .card .segmentos .contenedorSegmentos .segmento .estado3 {
-        background-color: #e53935; }
+        background-color: #e53935;
+        color: #e53935; }
       .card .segmentos .contenedorSegmentos .segmento .naranja, .card .segmentos .contenedorSegmentos .segmento .estado2 {
-        background-color: #ff8f00; }
+        background-color: #ff8f00;
+        color: #ff8f00; }
       .card .segmentos .contenedorSegmentos .segmento .amarillo, .card .segmentos .contenedorSegmentos .segmento .estado1 {
-        background-color: #fdd835; }
+        background-color: #fdd835;
+        color: #fdd835; }
   .card .icono {
     position: absolute;
     right: 10px;

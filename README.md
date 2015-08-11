@@ -1,3 +1,4 @@
+:blue_car: :red_car:
 # Dashboard Operativo Transito
 
 Desde el Centro de Control de Tránsito los operadores monitorean el sistema de tránsito y toman decisiones en tiempo real con el objetivo de descomprimir el tránsito.
@@ -85,7 +86,7 @@ $ python analisis/getDataFake.py
     Para esto hay dos alternativas:
 
     1. Copiar un modelo existente creando un archivo detection_params.json en el directorio ./analisis
-    Un modelo se puede encontrar en ./analisis/detection_params.json.sample
+    Un modelo se puede encontrar en /analisis/detection_params.json.sample
 
     2. Crear un nuevo modelo
 
@@ -126,10 +127,18 @@ sudo crontab -e
 0 0 * * * /usr/bin/python2.7 /tu_home/tu_user/dashboard-operativo-transito/analisis/dailyUpdate.py
 ```
 
-## Ejectuar Schedule en Demonio.
+## Ejectuar Schedule 
 
 Estos procesos son los encargados para extracción y carga de datos de Teracode de acuerdo a la frecuencia establecida.
 La función que se llama periódicamente es executeLoop()
+
+### A mano:
+
+```sh
+$ python analisis/schedule.py
+```
+
+### Como Demonio:
 
 
 1. configurar Variables de configuracion en archivo supervisord.conf (al final del archivo)
