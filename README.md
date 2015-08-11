@@ -15,12 +15,14 @@ $ apt-get install mysql-server
 ```
 
 Instalar Dependencias, en openshift correr
+
 ```sh
 $ source app-root/runtime/dependencies/python/virtenv/bin/activate
 $ sudo python setup install
 ```
 
 O instalamos las dependecias a mano de la siguiente manera:
+
 ```sh
 $ sudo easy_install bottle
 $ sudo easy_install gevent
@@ -31,6 +33,7 @@ $ easy_install supervisor
 ```
 
 ## Instalacion bajo Mac
+
 ```sh
 brew install mysql-server
 mysql.server start
@@ -110,32 +113,43 @@ $ python analisis/getDataFake.py
     $ python app.py
     ```
 
+  * Abrir el navegador en [http://127.0.0.1:8080/](http://127.0.0.1:8080/)
 
-## Configurar script en cron, que se ejecuta una vez a la 00hs cada dia
+
+
+## Configurar script para actualizacón de modelo en cron. 
+
+Se ejecuta una vez al día a las 00hs.
 
 ```sh
 sudo crontab -e
 0 0 * * * /usr/bin/python2.7 /tu_home/tu_user/dashboard-operativo-transito/analisis/dailyUpdate.py
 ```
 
-## Ejectuar Schedule con funcion executeLoop() en Demonio
-configurar Variables de configuracion en archivo supervisord.conf (al final del archivo)
-* command
-* stdout_logfile
-* stderr_logfile
-* user
+## Ejectuar Schedule en Demonio.
 
-Correr los procesos
+Estos procesos son los encargados para extracción y carga de datos de Teracode de acuerdo a la frecuencia establecida.
+La función que se llama periódicamente es executeLoop()
+
+
+1. configurar Variables de configuracion en archivo supervisord.conf (al final del archivo)
+  * command
+  * stdout_logfile
+  * stderr_logfile
+  * user
+
+2. Correr los procesos. Esto levanta 5 procesos en paralelo de extracción de datos de Teracode
+
 ```sh
 $ supervisord -c supervisord.conf
 ```
 
-Para parar los procesos
+Para parar todos los procesos procesos correr
+
 ```sh
 $ supervisorctl stop all
 ```
 
-Abrir el navegador en [http://127.0.0.1:8080/](http://127.0.0.1:8080/)
 
 ## Documentación 
 
