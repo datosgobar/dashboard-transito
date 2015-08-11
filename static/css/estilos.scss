@@ -65,7 +65,7 @@ body {
     padding: 20px;
     margin: 0 auto 20px;
     .titulo{
-        font-size: 1.5em;
+        font-size: 45px;
         padding-bottom: 10px;
         font-family: $fontset-avenir-bold;
     }
@@ -75,13 +75,14 @@ body {
         font-family: $fontset-avenir-condensed;
         .contenedorSegmentos{
             .etiquetaSegmento{
-                font-size: 1.5em;
+                font-size: 45px;
                 padding-bottom: 10px;
             }
             .estadoSegmento{
-                height: 20px;
+                height: 35px;
                 background-color: $fondoAnomalia;
                 border: 1px solid $blanco;
+                color: $fondoAnomalia;
             }
 
             .capital, .provincia, .etiquetas{
@@ -93,12 +94,15 @@ body {
                 display: table-cell;
                 .rojo, .estado3{
                     background-color: $rojo;
+                    color: $rojo;
                 }
                 .naranja, .estado2{
                     background-color: $naranja;
+                    color: $naranja;
                 }
                 .amarillo, .estado1{
                     background-color: $amarillo;
+                    color: $amarillo;
                 }
             }
         }
