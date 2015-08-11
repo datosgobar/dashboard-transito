@@ -46,7 +46,7 @@ function armoTemplateCard(data){
 	if (data.segmentos_capital.length > 0){ // hay de capital
 		card = card + capital;
 		for (var p = 0 ; p < segmentos ; p++){
-			card = card + '<div class="segmento"><div class="estadoSegmento estado'+data.segmentos_capital[p].anomalia+'"></div></div>';
+			card = card + '<div class="segmento"><div class="estadoSegmento estado'+data.segmentos_capital[p].anomalia+'">'+ data.segmentos_capital[p].id+'</div></div>';
 			if (data.segmentos_capital[p].anomalia > estado){
 				estado = data.segmentos_capital[p].anomalia;
 			}
@@ -57,7 +57,7 @@ function armoTemplateCard(data){
 	if (data.segmentos_provincia.length > 0){ // hay de provincia
 		card = card + provincia;
 		for (var q = 0 ; q < segmentos ; q++){
-			card = card + '<div class="segmento"><div class="estadoSegmento estado'+data.segmentos_provincia[q].anomalia+'"></div></div>';
+			card = card + '<div class="segmento"><div class="estadoSegmento estado'+data.segmentos_provincia[q].anomalia+'">'+ data.segmentos_provincia[q].id+'</div></div>';
 			if (data.segmentos_provincia[q].anomalia > estado){
 				estado = data.segmentos_provincia[q].anomalia;
 			}
@@ -68,6 +68,8 @@ function armoTemplateCard(data){
 
 	card = card + '</div></div><div class="icono"> </div></div></div>';
 	card = card.replace('estadoBorde', 'estadoBorde'+estado);
+    
+    //si no hay falla entonces no mando nada.
     if (estado === 0){
         card = "";
     }
