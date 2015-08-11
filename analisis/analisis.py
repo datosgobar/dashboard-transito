@@ -195,7 +195,7 @@ def filterDuplicateRecords(data, desde=None, hasta=None):
     query = session.query(Historical)
     if desde != None:
         query = query.filter(Historical.timestamp >= desde)
-    if query != None:
+    if hasta != None:
         query = query.filter(Historical.timestamp <= hasta)
     results = query.all()
 
