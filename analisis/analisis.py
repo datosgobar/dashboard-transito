@@ -506,7 +506,8 @@ def downloadAndLoadLastMonth():
     desde = hasta - datetime.timedelta(days=28)
     raw_data = downloadData(
         sensores, datetime.timedelta(days=2), desde, hasta)
-    has_new_records = updateDB(raw_data)
+    filtered_data = filterDuplicateRecords(raw_data, desde, hasta)
+    has_new_records = updateDB(filtered_data)
 
 
 def dailyUpdate():
