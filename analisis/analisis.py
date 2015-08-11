@@ -151,24 +151,22 @@ Guarda datos recibidos por parámetro en la tabla "historical"
 
 
 def updateDB(newdata):
-
+    print "Updating database"
     conn = getDBConnection()
-
-    # parsear json
     Session = sessionmaker(bind=conn)
     session = Session()
-    # loopear por cada corredor
-
     newrecords = False
-    for historical in newdata:
-
-        # pushear instancia de Historial a la base
-        session.add(historical)
+    if len(newdata) > 0:
+        session.bulk_save_objects(newdata)
         session.commit()
         newrecords = True
+    # for historical in newdata:
+    # pushear instancia de Historial a la base
+    #    session.add(historical)
+    #    session.commit()
+    #    newrecords = True
 
     conn.close()
-
     return newrecords
 
 
@@ -187,6 +185,7 @@ Filtro los registros para no duplicar datos en la base de datos
 
 
 def filterDuplicateRecords(data, desde=None, hasta=None):
+    print "Removing duplicates"
     conn = getDBConnection()
     # parsear json
     Session = sessionmaker(bind=conn)
@@ -201,11 +200,11 @@ def filterDuplicateRecords(data, desde=None, hasta=None):
 
     prevrecords_unique = []
     for result in results:
-        prevrecords_unique.append([result.segment, datetime.datetime.strftime(
-            result.timestamp, '%Y-%m-%dT%H:%M:%S-03:00')])
+        prevrecords_unique.append((result.segment, datetime.datetime.strftime(
+            result.timestamp, '%Y-%m-%dT%H:%M:%S-03:00')))
 
+    prevrecords_unique = set(prevrecords_unique)
     filtered_data = []
-
     for corredor in data:
         if not bool(corredor):
             continue
@@ -219,7 +218,7 @@ def filterDuplicateRecords(data, desde=None, hasta=None):
 
             # print timestamp
 
-            if [segment, timestamp] in prevrecords_unique:
+            if (segment, timestamp) in prevrecords_unique:
                 continue
 
             filtered_data.append(Historical(**{
