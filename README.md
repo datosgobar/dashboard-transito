@@ -86,7 +86,7 @@ $ python analisis/getDataFake.py
     Para esto hay dos alternativas:
 
     1. Copiar un modelo existente creando un archivo detection_params.json en el directorio ./analisis
-    Un modelo se puede encontrar en ./analisis/detection_params.json.sample
+    Un modelo se puede encontrar en /analisis/detection_params.json.sample
 
     2. Crear un nuevo modelo
 
