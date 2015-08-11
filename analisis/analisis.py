@@ -209,7 +209,9 @@ def filterDuplicateRecords(data, desde=None, hasta=None):
     for corredor in data:
         if not bool(corredor):
             continue
-        for segmento in corredor["datos"]["data"]:
+        if len(corredor["datos"]) == 0:
+            continue
+        for segmento in corredor["datos"].get("data", []):
             # crear nueva instancia de Historical
             segment = segmento["iddevice"]
             data = segmento["data"]
