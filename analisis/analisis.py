@@ -91,6 +91,8 @@ def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=N
     start = download_startdate
     end = download_enddate
     urls = []
+    if step > (download_enddate - download_startdate):
+        step = download_enddate - download_startdate
     while start <= end:
         startdate, enddate = start, start + step
         for sensor_id in sensor_ids:
@@ -184,14 +186,18 @@ Filtro los registros para no duplicar datos en la base de datos
 """
 
 
-def filterDuplicateRecords(data, desde, hasta):
+def filterDuplicateRecords(data, desde=None, hasta=None):
     conn = getDBConnection()
     # parsear json
     Session = sessionmaker(bind=conn)
     session = Session()
     # loopear por cada corredor
-    results = session.query(Historical).filter(
-        Historical.timestamp >= desde).filter(Historical.timestamp <= hasta).all()
+    query = session.query(Historical)
+    if desde != None:
+        query = query.filter(Historical.timestamp >= desde)
+    if query != None:
+        query = query.filter(Historical.timestamp <= hasta)
+    results = query.all()
 
     prevrecords_unique = []
     for result in results:
@@ -203,7 +209,9 @@ def filterDuplicateRecords(data, desde, hasta):
     for corredor in data:
         if not bool(corredor):
             continue
-        for segmento in corredor["datos"]["data"]:
+        if len(corredor["datos"]) == 0:
+            continue
+        for segmento in corredor["datos"].get("data", []):
             # crear nueva instancia de Historical
             segment = segmento["iddevice"]
             data = segmento["data"]
@@ -222,6 +230,11 @@ def filterDuplicateRecords(data, desde, hasta):
 
     return filtered_data
 
+
+def loadApiDump(fn):
+    raw_data = json.load(open(fn))
+    filtered_data = filterDuplicateRecords(raw_data)
+    has_new_records = updateDB(filtered_data)
 
 """
 Este loop se va a ejecutar con la frecuencia indicada para cada momento del dia.
@@ -434,7 +447,8 @@ def upsertAnomalies(newanomalydata):
         candidate = session.query(Anomaly).filter(Anomaly.id_segment == a["id_segment"]).filter(
             Anomaly.timestamp_end >= window_older).filter(Anomaly.timestamp_end <= a["timestamp"]).first()
         if candidate:
-            candidate.timestamp_end = a["timestamp"]
+            candidate.timestamp_end = max(
+                a["timestamp"], candidate.timestamp_end)
             candidate.indicador_anomalia = a["indicador_anomalia"]
             curanomaly = {}
             for column in Anomaly.__table__.columns:
@@ -493,26 +507,13 @@ def downloadAndLoadLastMonth():
     desde = hasta - datetime.timedelta(days=28)
     raw_data = downloadData(
         sensores, datetime.timedelta(days=2), desde, hasta)
-    has_new_records = updateDB(raw_data)
+    filtered_data = filterDuplicateRecords(raw_data, desde, hasta)
+    has_new_records = updateDB(filtered_data)
 
 
 def dailyUpdate():
     removeOldRecords()
     updateDetectionParams()
-
-    #    executeLoop()
-    #    sensores = [10,12,57, 53,51,49, 40, 43, 37,36, 21, 31,33,35, 13,14, 18,17,23, \
-    # 24,25, 26,28, 30,32 ,45, 47, 38, 44, 48,48, 11,56, 54,55, 41, 22, 16,15,
-    # 19, 20, 10, 27,29, 34, 39, 42, 46, 50 ,52]
-    # dailyUpdate()
-    # executeLoop(datetime.datetime.strptime("2015-08-10T15:00:00-03:00", '%Y-%m-%dT%H:%M:%S-03:00'),
-    # datetime.datetime.strptime("2015-08-10T16:00:00-03:00",
-    # '%Y-%m-%dT%H:%M:%S-03:00'))
-    #    raw_data = downloadData(sensores, datetime.timedelta(minutes=20), datetime.datetime.strptime(
-    #        "2015-08-06T15:10:00-03:00", '%Y-%m-%dT%H:%M:%S-03:00'), datetime.datetime.strptime("2015-08-06T15:30:00-03:00", '%Y-%m-%dT%H:%M:%S-03:00'))
-    #    print raw_data
-    #    filterDuplicateRecords(
-    # raw_data, "2015-08-06T15:10:00-03:00", "2015-08-06T15:30:00-03:00")
 
 
 if __name__ == '__main__':
@@ -523,20 +524,25 @@ if __name__ == '__main__':
     parser.add_argument(
         '--download_lastmonth', action='store_true', help='Bajar y cargar la informacion del ultimo mes')
     parser.add_argument(
+        '--load_apidump', metavar="dump.json", action='store', default=None, help='Cargar informacion historica desde un json con los resultados de las llamadas a Teracode')
+    parser.add_argument(
         '--generate_detection_params', action='store_true', help='Generar modelo para análisis de anomalías')
     parser.add_argument(
-        '--download_last_month', action='store_true', help='Bajar la data del último mes de Teracode')
+        '--execute_loop_now', action='store_true', help='Ejecuta un unico ciclo de loop')
 
     args = parser.parse_args()
-
     if args.setup_database:
         setupDB()
 
     if args.download_lastmonth:
         downloadAndLoadLastMonth()
 
+    if args.load_apidump:
+        loadApiDump(args.load_apidump)
+
     if args.generate_detection_params:
         updateDetectionParams()
 
-    if (args.download_last_month):
-        downloadAndLoadLastMonth()
+    if args.execute_loop_now:
+        executeLoop(datetime.datetime.now() -
+                    datetime.timedelta(minutes=20), datetime.datetime.now())

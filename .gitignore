@@ -13,3 +13,4 @@ supervisord.conf
 .analisis/detection_params.json
 logs/
 README.html
+.DS_Store
