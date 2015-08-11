@@ -68,7 +68,9 @@ function armoTemplateCard(data){
 
 	card = card + '</div></div><div class="icono"> </div></div></div>';
 	card = card.replace('estadoBorde', 'estadoBorde'+estado);
-
+    if (estado === 0){
+        card = "";
+    }
 	return card;
 }
 
