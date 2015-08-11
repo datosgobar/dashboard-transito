@@ -184,14 +184,18 @@ Filtro los registros para no duplicar datos en la base de datos
 """
 
 
-def filterDuplicateRecords(data, desde, hasta):
+def filterDuplicateRecords(data, desde=None, hasta=None):
     conn = getDBConnection()
     # parsear json
     Session = sessionmaker(bind=conn)
     session = Session()
     # loopear por cada corredor
-    results = session.query(Historical).filter(
-        Historical.timestamp >= desde).filter(Historical.timestamp <= hasta).all()
+    query = session.query(Historical)
+    if desde != None:
+        query = query.filter(Historical.timestamp >= desde)
+    if query != None:
+        query = query.filter(Historical.timestamp <= hasta)
+    results = query.all()
 
     prevrecords_unique = []
     for result in results:
@@ -222,6 +226,11 @@ def filterDuplicateRecords(data, desde, hasta):
 
     return filtered_data
 
+
+def loadApiDump(fn):
+    raw_data = json.load(open(fn))
+    filtered_data = filterDuplicateRecords(raw_data)
+    has_new_records = updateDB(filtered_data)
 
 """
 Este loop se va a ejecutar con la frecuencia indicada para cada momento del dia.
@@ -434,7 +443,8 @@ def upsertAnomalies(newanomalydata):
         candidate = session.query(Anomaly).filter(Anomaly.id_segment == a["id_segment"]).filter(
             Anomaly.timestamp_end >= window_older).filter(Anomaly.timestamp_end <= a["timestamp"]).first()
         if candidate:
-            candidate.timestamp_end = a["timestamp"]
+            candidate.timestamp_end = max(
+                a["timestamp"], candidate.timestamp_end)
             candidate.indicador_anomalia = a["indicador_anomalia"]
             curanomaly = {}
             for column in Anomaly.__table__.columns:
@@ -508,17 +518,21 @@ if __name__ == '__main__':
     parser.add_argument(
         '--download_lastmonth', action='store_true', help='Bajar y cargar la informacion del ultimo mes')
     parser.add_argument(
+        '--load_apidump', metavar="dump.json", action='store', default=None, help='Cargar informacion historica desde un json con los resultados de las llamadas a Teracode')
+    parser.add_argument(
         '--generate_detection_params', action='store_true', help='Generar modelo para análisis de anomalías')
     parser.add_argument(
         '--execute_loop_now', action='store_true', help='Ejecuta un unico ciclo de loop')
 
     args = parser.parse_args()
-
     if args.setup_database:
         setupDB()
 
     if args.download_lastmonth:
         downloadAndLoadLastMonth()
+
+    if args.load_apidump:
+        loadApiDump(args.load_apidump)
 
     if args.generate_detection_params:
         updateDetectionParams()
