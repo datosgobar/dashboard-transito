@@ -91,6 +91,8 @@ def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=N
     start = download_startdate
     end = download_enddate
     urls = []
+    if step > (download_enddate - download_startdate):
+        step = download_enddate - download_startdate
     while start <= end:
         startdate, enddate = start, start + step
         for sensor_id in sensor_ids:
