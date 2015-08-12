@@ -7,6 +7,7 @@ from sqlalchemy import Column, Integer, Float, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy import exc
 
 import config
 import json
@@ -159,14 +160,19 @@ def updateDB(newdata):
     session = Session()
     newrecords = False
     if len(newdata) > 0:
-        session.bulk_save_objects(newdata)
-        session.commit()
-        newrecords = True
-    # for historical in newdata:
-    # pushear instancia de Historial a la base
-    #    session.add(historical)
-    #    session.commit()
-    #    newrecords = True
+        try:
+            session.bulk_save_objects(newdata)
+            session.commit()
+            newrecords = True
+        except exc.SQLAlchemyError:
+            print "Encountered SQLAlchemyError"
+            pass
+
+            # for historical in newdata:
+            # pushear instancia de Historial a la base
+            #    session.add(historical)
+            #    session.commit()
+            #    newrecords = True
 
     conn.close()
     return newrecords
@@ -226,7 +232,7 @@ def filterDuplicateRecords(data, desde=None, hasta=None):
             filtered_data.append(Historical(**{
                 "segment": segment,
                 "data": data,
-                "timestamp": timestamp
+                "timestamp": datetime.datetime.strptime(timestamp, '%Y-%m-%dT%H:%M:%S-03:00')
             }))
 
     return filtered_data
