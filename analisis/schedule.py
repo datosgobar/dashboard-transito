@@ -111,8 +111,10 @@ class setInterval:
             # le resto el tiempo del a ventana que falta ejecutar
             # desde, hasta formato de fecha ISO-8601
             hasta = datetime.datetime.now()
-            desde = hasta - datetime.timedelta(minutes=20)
-            analisis.executeLoop(desde, hasta, dontdownload=True)
+            desde = hasta - datetime.timedelta(minutes=self.setTimeOut / 60)
+            print self.setTimeOut / 60
+            print hasta, desde
+            #analisis.executeLoop(desde, hasta, dontdownload=True)
             # print "somethings, another code"
             time.sleep(self.setTimeOut)
 
