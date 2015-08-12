@@ -114,7 +114,7 @@ class setInterval:
             desde = hasta - datetime.timedelta(minutes=self.setTimeOut / 60)
             print self.setTimeOut / 60
             print hasta, desde
-            #analisis.executeLoop(desde, hasta, dontdownload=True)
+            analisis.executeLoop(desde, hasta, dontdownload=True)
             # print "somethings, another code"
             time.sleep(self.setTimeOut)
 
