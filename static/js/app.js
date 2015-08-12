@@ -26,7 +26,7 @@ function armoTemplateCard(data){
 
 	var card = '<div class="card shadow oculta estadoBorde" id="' +
 		data.id + '"><div class="titulo">' + data.nombre +
-		'</div><div class="segmentos"><div class="contenedorSegmentos"><div class="etiquetas">';
+		'<span class="icono"></span></div><div class="segmentos"><div class="contenedorSegmentos"><div class="etiquetas">';
 
 
 	for (var i = 0; i < segmentos ; i++){
@@ -66,7 +66,7 @@ function armoTemplateCard(data){
 	}
 
 
-	card = card + '</div></div><div class="icono"> </div></div></div>';
+	card = card + '</div></div></div></div>';
 	card = card.replace('estadoBorde', 'estadoBorde'+estado);
     
     //si no hay falla entonces no mando nada.

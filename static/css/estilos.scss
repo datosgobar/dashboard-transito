@@ -7,7 +7,6 @@
 @include font-face('AvenirNext-Condensed', 'fonts/AvenirNextLTPro-Cn');
 @include font-face('AvenirNext-Demi', 'fonts/AvenirNextLTPro-Demi');
 
-
 $fontset-gotham: "Gotham", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
 $fontset-openSans: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
 $fontset-avenir-bold: "AvenirNext-Bold", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
@@ -122,8 +121,9 @@ body {
 
     .icono {
         position: absolute;
-        right: 125px;
+        left: 91%;
         top: 30px;
+
         height: 52px;
         width: 52px;
         margin: 0 auto;
@@ -145,10 +145,6 @@ body {
 .estadoBorde3{
     border-left: 15px solid $rojo;        
 }
-
-    
-
-
 
 .shadow{
     transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 0.5);

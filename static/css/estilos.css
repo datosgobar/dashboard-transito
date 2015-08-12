@@ -101,7 +101,7 @@ html, body {
         color: #fdd835; }
   .card .icono {
     position: absolute;
-    right: 125px;
+    left: 91%;
     top: 30px;
     height: 52px;
     width: 52px;
