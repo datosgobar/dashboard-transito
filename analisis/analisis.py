@@ -184,6 +184,10 @@ Elimina registros con mas de un mes de antiguedad de la tabla "historical"
 
 
 def removeOldRecords():
+    conn = getDBConnection()
+    Session = sessionmaker(bind=conn)
+    session = Session()
+    
     pass
 
 
