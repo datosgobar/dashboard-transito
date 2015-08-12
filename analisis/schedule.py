@@ -3,7 +3,7 @@
 
 import datetime
 import time
-import analisis
+#import analisis
 import os
 
 if os.environ.get('OPENSHIFT_PYTHON_DIR'):
@@ -12,8 +12,8 @@ if os.environ.get('OPENSHIFT_PYTHON_DIR'):
     zvirtenv = os.path.join(os.environ['OPENSHIFT_PYTHON_DIR'],
                             'virtenv', 'bin', 'activate_this.py')
     execfile(zvirtenv, dict(__file__=zvirtenv))
-    ip = os.environ['OPENSHIFT_PYTHON_IP']
-    port = int(os.environ['OPENSHIFT_PYTHON_PORT'])
+else:
+    pass
 
 
 class setInterval:
@@ -108,13 +108,13 @@ class setInterval:
             # print self.setTimeOut
             # print "somethings, another code"
 
-            # le resto 20 minutos desde la fecha actual
+            # le resto el tiempo del a ventana que falta ejecutar
             # desde, hasta formato de fecha ISO-8601
-
             hasta = datetime.datetime.now()
-            desde = hasta - datetime.timedelta(minutes=20)
-            analisis.executeLoop(desde, hasta)
-
+            desde = hasta - datetime.timedelta(minutes=self.setTimeOut / 60)
+            print self.setTimeOut / 60
+            print hasta, desde
+            analisis.executeLoop(desde, hasta, dontdownload=True)
             # print "somethings, another code"
             time.sleep(self.setTimeOut)
 

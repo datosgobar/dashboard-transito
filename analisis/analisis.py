@@ -254,6 +254,7 @@ Este loop se va a ejecutar con la frecuencia indicada para cada momento del dia.
 
 def executeLoop(desde, hasta, dontdownload=False):
     """
+        datetime.datetime.strptime("2015-07-15T18:00:00-00:00"[:-6], '%Y-%m-%dT%H:%M:%S')
         traer los sensores lista de archivo configuracion
         desde = "2015-07-01T00:00:00-00:00"
         hasta = "2015-07-12T00:00:01-00:00"
