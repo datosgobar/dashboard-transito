@@ -83,8 +83,8 @@ newdata = downloadData (
 """
 
 
-def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=None, token="superadmin."):
-    pool = multiprocessing.Pool(5)
+def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=None, token="superadmin.", pool_len=5):
+
     # vsensids = virtsens["id_sensor"].unique()
     urltpl = "https://apisensores.buenosaires.gob.ar/api/data/%s?token=%s&fecha_desde=%s&fecha_hasta=%s"
 
@@ -94,16 +94,18 @@ def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=N
     urls = []
     if step > (download_enddate - download_startdate):
         step = download_enddate - download_startdate
-    while start <= end:
+    while start < end:
         startdate, enddate = start, start + step
         for sensor_id in sensor_ids:
             print startdate, enddate, sensor_id
             url = urltpl % (sensor_id, token, startdate.strftime(
                 "%Y-%m-%dT%H:%M:%S-03:00"), enddate.strftime("%Y-%m-%dT%H:%M:%S-03:00"))
-            urls += [url]
+            if not url in urls:
+                urls.append(url)
         start += step
 
     # alldata = map(getData, urls)
+    pool = multiprocessing.Pool(pool_len)
     alldata = pool.map(getData, urls)
     pool.close()
     pool.terminate()
@@ -131,6 +133,7 @@ def createDBEngine():
     cur.execute(
         'CREATE DATABASE IF NOT EXISTS {0};'.format(db_name))
     cur.close()
+    db.close()
 
     engine = sqlalchemy.create_engine(
         "mysql://" + user + ":" + password + "@" + host + "/" + db_name)
@@ -187,7 +190,7 @@ def removeOldRecords():
     conn = getDBConnection()
     Session = sessionmaker(bind=conn)
     session = Session()
-    
+
     pass
 
 
