@@ -520,9 +520,9 @@ def downloadAndLoadLastMonth():
                 32, 45, 47, 38, 44, 48, 48, 11, 56, 54, 55, 41, 22, 16, 15, 19, 20, 10, 27, 29, 34, 39, 42, 46, 50, 52]
 
     hasta = datetime.datetime.now()
-    desde = hasta - datetime.timedelta(days=1)
+    desde = hasta - datetime.timedelta(days=28)
     raw_data = downloadData(
-        sensores, datetime.timedelta(days=2), desde, hasta, len(sensores))
+        sensores, datetime.timedelta(days=2), desde, hasta, pool_len=len(sensores))
     filtered_data = filterDuplicateRecords(raw_data, desde, hasta)
     has_new_records = updateDB(filtered_data)
 
