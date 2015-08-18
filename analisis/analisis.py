@@ -62,8 +62,14 @@ def getData(url):
     print url
     for i in xrange(3):
         try:
-            return requests.get(url).json()
+            response = requests.get(url)
+            if (response.status_code == 200):
+                return response.json()
+            else:
+                print("hubo timeout de teracode en {0}".format(url))
+                pass
         except requests.exceptions.Timeout:
+            print("hubo timeout del request en {0}".format(url))
             pass
         except:
             return None
