@@ -1,50 +1,194 @@
 {
-	"10": {"corredor" : "Independencia","nombreSegmento" : "Paseo Colón - 9 de julio"},
-    "11": {"corredor" : "Illia" , "nombreSegmento" : "Sarmiento - General Paz"},
-    "12": {"corredor" : "Illia" , "nombreSegmento" : "General paz - Sarmiento"},
-    "13": {"corredor" : "9 de julio" , "nombreSegmento" : "Corrientes - Arroyo"},
-    "14": {"corredor" : "9 de julio - Externa" , "nombreSegmento" : "Arroyo - Corrientes"},
-    "15": {"corredor" : "9 de julio" , "nombreSegmento" : "Corrientes - Arroyo"},
-    "16": {"corredor" : "9 de julio - Externa" , "nombreSegmento" : "Arroyo - Corrientes"},
-    "17": {"corredor" : "9 de julio" , "nombreSegmento" : "San Juan - Corrientes"},
-    "18": {"corredor" : "9 de julio - Externa" , "nombreSegmento" : "Corrientes - San Juan"},
-    "19": {"corredor" : "9 de julio" , "nombreSegmento" : "San Juan - Corrientes"},
-    "20": {"corredor" : "9 de julio - Externa" , "nombreSegmento" : "Corrientes - San Juan"},
-    "21": {"corredor" : "Alem" , "nombreSegmento" : "Rojas - Casa Rosada"},
-    "22": {"corredor" : "Alem" , "nombreSegmento" : "Casa Rosada - Rojas"},
-    "23": {"corredor" : "Corrientes" , "nombreSegmento" : "Medrano - Obelisco"},
-    "24": {"corredor" : "Rivadavia" , "nombreSegmento" : "Pueyrredón - Montevideo"},
-    "25": {"corredor" : "Av. de mayo" , "nombreSegmento" : "Montevideo - Plaza de mayo"},
-    "26": {"corredor" : "San Martín" , "nombreSegmento" : "General Paz - Beiró"},
-    "27": {"corredor" : "San Martín" , "nombreSegmento" : "Beiró - General Paz"},
-    "28": {"corredor" : "San Martín" , "nombreSegmento" : "Beiró - Juan B. Justo"},
-    "29": {"corredor" : "San Martín" , "nombreSegmento" : "Juan B. Justo - Beiró"},
-    "30": {"corredor" : "Juan B. Justo" , "nombreSegmento" : "Santa Fé - Corrientes"},
-    "31": {"corredor" : "Juan B. Justo" , "nombreSegmento" : "Santa Fé - Corrientes"},
-    "32": {"corredor" : "Juan B. Justo" , "nombreSegmento" : "Corrientes - Nazca"},
-    "33": {"corredor" : "Juan B. Justo" , "nombreSegmento" : "Nazca - Corrientes"},
-    "34": {"corredor" : "Juan B. Justo" , "nombreSegmento" : "General Paz - Nazca"},
-    "35": {"corredor" : "Juan B. Justo" , "nombreSegmento" : "Nazca - General Paz"},
-    "36": {"corredor" : "Córdoba" , "nombreSegmento" : "9 de julio - Estado de Israel"},
-    "37": {"corredor" : "Córdoba" , "nombreSegmento" : "Estado de Israel - Dorrego"},
-    "38": {"corredor" : "Paseo Colón" , "nombreSegmento" : "San Juan - Casa Rosada"},
-    "39": {"corredor" : "Paseo Colón" , "nombreSegmento" : "Casa Rosada - San Juan"},
-    "40": {"corredor" : "Cabildo" , "nombreSegmento" : "General Paz - Congreso"},
-    "41": {"corredor" : "Cabildo" , "nombreSegmento" : "Congreso - General Paz"},
-    "42": {"corredor" : "Cabildo" , "nombreSegmento" : "Lacroze - Congreso"},
-    "43": {"corredor" : "Cabildo" , "nombreSegmento" : "Congreso - Lacroze"},
-    "44": {"corredor" : "Cabildo" , "nombreSegmento" : "Lacroze - Juan B. Justo"},
-    "45": {"corredor" : "Cabildo" , "nombreSegmento" : "Juan B. Justo - Lacroze"},
-    "46": {"corredor" : "Pueyrredón" , "nombreSegmento" : "Mitre - Córdoba"},
-    "47": {"corredor" : "Pueyrredón" , "nombreSegmento" : "Córdoba - Mitre"},
-    "48": {"corredor" : "Libertador" , "nombreSegmento" : "Cerrito - Sarmiento"},
-    "49": {"corredor" : "Libertador" , "nombreSegmento" : "Sarmiento - Cerrito"},
-    "50": {"corredor" : "Libertador" , "nombreSegmento" : "Sarmiento - La Pampa"},
-    "51": {"corredor" : "Libertador" , "nombreSegmento" : "La Pampa - Sarmiento"},
-    "52": {"corredor" : "Libertador" , "nombreSegmento" : "La Pampa - General Paz"},
-    "53": {"corredor" : "Libertador" , "nombreSegmento" : "General Paz - La Pampa"},
-    "54": {"corredor" : "Alcorta" , "nombreSegmento" : "Cerrito - Sarmiento"},
-    "55": {"corredor" : "Alcorta" , "nombreSegmento" : "Sarmiento - Udaondo"},
-    "56": {"corredor" : "Illia" , "nombreSegmento" : "9 de julio - Sarmiento"},
-    "57": {"corredor" : "Illia" , "nombreSegmento" : "Sarmiento - 9 de julio"}
+    "10": {
+        "corredor": "Independencia",
+        "nombreSegmento": "Paseo Colón - 9 de julio"
+    },
+    "11": {
+        "corredor": "Illia",
+        "nombreSegmento": "Sarmiento - General Paz"
+    },
+    "12": {
+        "corredor": "Illia",
+        "nombreSegmento": "General paz - Sarmiento"
+    },
+    "13": {
+        "corredor": "9 de julio",
+        "nombreSegmento": "Corrientes - Arroyo"
+    },
+    "14": {
+        "corredor": "9 de julio - Externa",
+        "nombreSegmento": "Arroyo - Corrientes"
+    },
+    "15": {
+        "corredor": "9 de julio",
+        "nombreSegmento": "Corrientes - Arroyo"
+    },
+    "16": {
+        "corredor": "9 de julio - Externa",
+        "nombreSegmento": "Arroyo - Corrientes"
+    },
+    "17": {
+        "corredor": "9 de julio",
+        "nombreSegmento": "San Juan - Corrientes"
+    },
+    "18": {
+        "corredor": "9 de julio - Externa",
+        "nombreSegmento": "Corrientes - San Juan"
+    },
+    "19": {
+        "corredor": "9 de julio",
+        "nombreSegmento": "San Juan - Corrientes"
+    },
+    "20": {
+        "corredor": "9 de julio - Externa",
+        "nombreSegmento": "Corrientes - San Juan"
+    },
+    "21": {
+        "corredor": "Alem",
+        "nombreSegmento": "Rojas - Casa Rosada"
+    },
+    "22": {
+        "corredor": "Alem",
+        "nombreSegmento": "Casa Rosada - Rojas"
+    },
+    "23": {
+        "corredor": "Corrientes",
+        "nombreSegmento": "Medrano - Obelisco"
+    },
+    "24": {
+        "corredor": "Rivadavia",
+        "nombreSegmento": "Pueyrredón - Montevideo"
+    },
+    "25": {
+        "corredor": "Av. de mayo",
+        "nombreSegmento": "Montevideo - Plaza de mayo"
+    },
+    "26": {
+        "corredor": "San Martín",
+        "nombreSegmento": "General Paz - Beiró"
+    },
+    "27": {
+        "corredor": "San Martín",
+        "nombreSegmento": "Beiró - General Paz"
+    },
+    "28": {
+        "corredor": "San Martín",
+        "nombreSegmento": "Beiró - Juan B. Justo"
+    },
+    "29": {
+        "corredor": "San Martín",
+        "nombreSegmento": "Juan B. Justo - Beiró"
+    },
+    "30": {
+        "corredor": "Juan B. Justo",
+        "nombreSegmento": "Santa Fé - Corrientes"
+    },
+    "31": {
+        "corredor": "Juan B. Justo",
+        "nombreSegmento": "Santa Fé - Corrientes"
+    },
+    "32": {
+        "corredor": "Juan B. Justo",
+        "nombreSegmento": "Corrientes - Nazca"
+    },
+    "33": {
+        "corredor": "Juan B. Justo",
+        "nombreSegmento": "Nazca - Corrientes"
+    },
+    "34": {
+        "corredor": "Juan B. Justo",
+        "nombreSegmento": "General Paz - Nazca"
+    },
+    "35": {
+        "corredor": "Juan B. Justo",
+        "nombreSegmento": "Nazca - General Paz"
+    },
+    "36": {
+        "corredor": "Córdoba",
+        "nombreSegmento": "9 de julio - Estado de Israel"
+    },
+    "37": {
+        "corredor": "Córdoba",
+        "nombreSegmento": "Estado de Israel - Dorrego"
+    },
+    "38": {
+        "corredor": "Paseo Colón",
+        "nombreSegmento": "San Juan - Casa Rosada"
+    },
+    "39": {
+        "corredor": "Paseo Colón",
+        "nombreSegmento": "Casa Rosada - San Juan"
+    },
+    "40": {
+        "corredor": "Cabildo",
+        "nombreSegmento": "General Paz - Congreso"
+    },
+    "41": {
+        "corredor": "Cabildo",
+        "nombreSegmento": "Congreso - General Paz"
+    },
+    "42": {
+        "corredor": "Cabildo",
+        "nombreSegmento": "Lacroze - Congreso"
+    },
+    "43": {
+        "corredor": "Cabildo",
+        "nombreSegmento": "Congreso - Lacroze"
+    },
+    "44": {
+        "corredor": "Cabildo",
+        "nombreSegmento": "Lacroze - Juan B. Justo"
+    },
+    "45": {
+        "corredor": "Cabildo",
+        "nombreSegmento": "Juan B. Justo - Lacroze"
+    },
+    "46": {
+        "corredor": "Pueyrredón",
+        "nombreSegmento": "Mitre - Córdoba"
+    },
+    "47": {
+        "corredor": "Pueyrredón",
+        "nombreSegmento": "Córdoba - Mitre"
+    },
+    "48": {
+        "corredor": "Libertador",
+        "nombreSegmento": "Cerrito - Sarmiento"
+    },
+    "49": {
+        "corredor": "Libertador",
+        "nombreSegmento": "Sarmiento - Cerrito"
+    },
+    "50": {
+        "corredor": "Libertador",
+        "nombreSegmento": "Sarmiento - La Pampa"
+    },
+    "51": {
+        "corredor": "Libertador",
+        "nombreSegmento": "La Pampa - Sarmiento"
+    },
+    "52": {
+        "corredor": "Libertador",
+        "nombreSegmento": "La Pampa - General Paz"
+    },
+    "53": {
+        "corredor": "Libertador",
+        "nombreSegmento": "General Paz - La Pampa"
+    },
+    "54": {
+        "corredor": "Alcorta",
+        "nombreSegmento": "Cerrito - Sarmiento"
+    },
+    "55": {
+        "corredor": "Alcorta",
+        "nombreSegmento": "Sarmiento - Udaondo"
+    },
+    "56": {
+        "corredor": "Illia",
+        "nombreSegmento": "9 de julio - Sarmiento"
+    },
+    "57": {
+        "corredor": "Illia",
+        "nombreSegmento": "Sarmiento - 9 de julio"
+    }
 }

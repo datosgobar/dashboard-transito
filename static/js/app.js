@@ -16,9 +16,10 @@ var nombresDeCorredores = (function () {
 
 //ARMA EL HTML DE LA TARJETA
 function armoTemplateCard(data){
+    console.log (data);
 
+    var causaPendiente = false;
 	var estado = 0;
-
 
 	var segmentos = Math.max(data.segmentos_capital.length, data.segmentos_provincia.length); ;
 	var capital = '<div class="capital">';
@@ -26,7 +27,7 @@ function armoTemplateCard(data){
 
 	var card = '<div class="card shadow oculta estadoBorde" id="' +
 		data.id + '"><div class="titulo">' + data.nombre +
-		'<span class="icono"></span></div><div class="segmentos"><div class="contenedorSegmentos"><div class="etiquetas">';
+		'<span class="icono visto"></span></div><div class="segmentos"><div class="contenedorSegmentos"><div class="etiquetas">';
 
 
 	for (var i = 0; i < segmentos ; i++){
@@ -47,8 +48,11 @@ function armoTemplateCard(data){
 		card = card + capital;
 		for (var p = 0 ; p < segmentos ; p++){
 			card = card + '<div class="segmento"><div class="estadoSegmento estado'+data.segmentos_capital[p].anomalia+'">'+ data.segmentos_capital[p].id+'</div></div>';
-			if (data.segmentos_capital[p].anomalia > estado){
-				estado = data.segmentos_capital[p].anomalia;
+            if (data.segmentos_capital[p].anomalia > estado){
+                estado = data.segmentos_capital[p].anomalia;
+                if (data.segmentos_capital[p].causa_id === 0){ //hay probelmas pero no hay causa
+                    causaPendiente = true;
+                }
 			}
 		}
         card = card + '</div><div class="sentido">Capital</div>' 
@@ -60,6 +64,9 @@ function armoTemplateCard(data){
 			card = card + '<div class="segmento"><div class="estadoSegmento estado'+data.segmentos_provincia[q].anomalia+'">'+ data.segmentos_provincia[q].id+'</div></div>';
 			if (data.segmentos_provincia[q].anomalia > estado){
 				estado = data.segmentos_provincia[q].anomalia;
+                if (data.segmentos_provincia[q].causa_id === 0){ //hay probelmas pero no hay causa
+                    causaPendiente = true;
+                }
 			}
 		}
         card = card + '</div><div class="sentido">Provincia</div>' 
@@ -67,8 +74,13 @@ function armoTemplateCard(data){
 
 
 	card = card + '</div></div></div></div>';
-	card = card.replace('estadoBorde', 'estadoBorde'+estado);
-    
+    card = card.replace('estadoBorde', 'estadoBorde'+estado);
+
+    if (causaPendiente){
+        card = card.replace('visto', 'noVisto');        
+    }
+
+
     //si no hay falla entonces no mando nada.
     if (estado === 0){
         card = "";
@@ -82,7 +94,13 @@ function agregaCard(data){
 		$("#"+data.id).remove();
 	}
 	var card = armoTemplateCard(data);
-	$("#cards").prepend(card);
+
+    if ( card.indexOf("noVisto") > 0 ){
+        $("#noResueltos").prepend(card);
+    }else{
+        $("#resueltos").prepend(card);
+    }
+	
 	$(".card").fadeIn();
 }
 

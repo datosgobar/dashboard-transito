@@ -73,6 +73,11 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
 def root():
     return bottle.template('index')
 
+
+@app.get('/desktop')
+def root():
+    return bottle.template('desktop')
+
 # path para datos estaticos en el front
 
 
