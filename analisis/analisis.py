@@ -40,7 +40,7 @@ class Anomaly(Base):
     id_segment = Column(Integer, nullable=False)
     timestamp_start = Column(DateTime, nullable=False)
     timestamp_end = Column(DateTime, nullable=False)
-    causa = Column(String(140), nullable=False)
+    comentario_causa = Column(String(140), nullable=False)
     causa_id = Column(Integer, nullable=False)
     indicador_anomalia = Column(Float, nullable=False)
 
@@ -51,11 +51,17 @@ class SegmentSnapshot(Base):
     timestamp_medicion = Column(DateTime, nullable=False)
     tiempo = Column(Integer, nullable=False)
     velocidad = Column(Float, nullable=False)
-    causa = Column(String(140), nullable=False)
+    comentario_causa = Column(String(140), nullable=False)
     causa_id = Column(Integer, nullable=False)
     duracion_anomalia = Column(Integer, nullable=False)
     indicador_anomalia = Column(Float, nullable=False)
     anomalia = Column(Integer, nullable=False)
+
+
+class Causa(Base):
+    __tablename__ = 'causa'
+    id = Column(Integer, primary_key=True)
+    descripcion = Column(String(140), nullable=False)
 
 
 def getData(url):
@@ -349,7 +355,7 @@ Recibe:
     "id_segment" : int,
     "timestamp_start" : datetime,
     "timestamp_end" : datetime,
-    "causa" : str,
+    "comentario_causa" : str,
     "causa_id" : int
 }
 
@@ -363,7 +369,7 @@ Retorna:
     "timestamp_medicion" : (timestamp de la medicion),
     "tiempo" : (tiempo que toma atravesar el segmento segun la ultima medicion),
     "velocidad" : (distancia del corredor / tiempo),
-    "causa" : (por ahora null, lo modifica la UI),
+    "comentario_causa" : (por ahora null, lo modifica la UI),
     "causa_id" : (por ahora null, lo modifica la UI),
     "timestamp_start" : (ts de inicio),
     "timestamp_end" : (ts de fin),
@@ -393,7 +399,7 @@ def getCurrentSegmentState(anomalies, lastrecords):
             "timestamp_medicion": s[2],
             "tiempo": s[1],
             "velocidad": -1,
-            "causa": ad.get(s[0], {}).get("causa", ""),
+            "comentario_causa": ad.get(s[0], {}).get("comentario_causa", ""),
             "causa_id": ad.get(s[0], {}).get("causa_id", 0),
             "duracion_anomalia": duracion_anomalia,
             "indicador_anomalia": ad.get(s[0], {}).get("indicador_anomalia", 0),
@@ -423,7 +429,7 @@ Salida: Lista de dicts con las anomalias que estan vivas en este momento. Cada e
     "id_segment" : int,
     "timestamp_start" : datetime,
     "timestamp_end" : datetime,
-    "causa" : str,
+    "comentario_causa" : str,
     "causa_id" : int
 }
 
@@ -482,7 +488,7 @@ def upsertAnomalies(newanomalydata):
                 "timestamp_start": a["timestamp"],
                 "timestamp_end": a["timestamp"],
                 "indicador_anomalia": a["indicador_anomalia"],
-                "causa": "",
+                "comentario_causa": "",
                 "causa_id": 0,
             }
             session.add(Anomaly(**curanomaly))
