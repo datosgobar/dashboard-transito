@@ -51,22 +51,22 @@ def parserEmitData(self, template):
             evaluar si el segmentos corresponde a un corredor y si ese mismo es para prov o capi
     """
     corredores = {
-        '9_de_julio': [13,  15, 17, 19],
-        '9_de_julio_externo': [14, 16, 18, 20],
-        'Illia': [11],
+        '9_de_julio': [13, 17, 15, 19],
+        '9_de_julio_externo': [14, 18, 16, 20],
+        'Illia': [12, 57, 11, 56],
         'alcorta': [54, 55],
         'alem': [21, 22],
         'av_de_mayo': [25],
-        'cabildo': [41, 42, 44, 45],
-        'cordoba': [36, 37, 38],
+        'cabildo': [40, 42, 45, 41, 43, 44],
+        'cordoba': [36, 37],
         'corrientes': [23],
         'independencia': [10],
-        'juan_b_justo': [30, 31, 32, 33, 34, 35],
-        'libertador': [48, 49, 50, 51, 52, 53],
+        'juan_b_justo': [31, 32, 35, 30, 33, 34],
+        'libertador': [49, 51, 53, 48, 50, 52],
         'paseo_colon': [39],
-        'pueyrredon': [46, 47],
+        'pueyrredon': [47, 46],
         'rivadavia': [24],
-        'san_martin': [26, 27, 28, 29]
+        'san_martin': [26, 28, 27, 29]
     }
 
     referencia = {
