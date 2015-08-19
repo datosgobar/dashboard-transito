@@ -5,7 +5,8 @@ module.exports = function (grunt) {
         sass: {
             dist: {
                 files: {
-                    'static/css/estilos.css': 'static/css/estilos.scss'
+                    'static/css/estilos.css': 'static/css/estilos.scss',
+                    'static/css/estilos-desktop.css': 'static/css/estilos-desktop.scss'
                 }
             }
         },
@@ -15,14 +16,15 @@ module.exports = function (grunt) {
                 tasks: ['sass','cssmin','beep:2']
             },
             js: {
-                files: 'static/js/app.js',
+                files: ['static/js/app.js','static/js/appDesktop.js'],
                 tasks: ['uglify','beep:2']
             }
         },
         cssmin: {
             target:{
                 files:{
-                'static/css/estilos.min.css': 'static/css/estilos.css'
+                'static/css/estilos.min.css': 'static/css/estilos.css',
+                'static/css/estilos-desktop.min.css': 'static/css/estilos-desktop.css'
                 }
             }
         },
@@ -30,7 +32,8 @@ module.exports = function (grunt) {
         uglify: {
             dist: {
               files: {
-                'static/js/app.min.js': 'static/js/app.js'
+                'static/js/app.min.js': 'static/js/app.js',
+                'static/js/appDesktop.min.js': 'static/js/appDesktop.js',
               }
             }
         }

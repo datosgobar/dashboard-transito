@@ -1,0 +1,88 @@
+@import "../../node_modules/node-bourbon/node_modules/bourbon/app/assets/stylesheets/_bourbon.scss";
+@import "mixins/breakpoint.scss";
+@import "mixins/opacity.scss";
+@include font-face('Gotham', 'fonts/gotham');
+@include font-face('Open Sans', 'fonts/OpenSans');
+@include font-face('AvenirNext-Bold', 'fonts/AvenirNextLTPro-Bold');
+@include font-face('AvenirNext-Condensed', 'fonts/AvenirNextLTPro-Cn');
+@include font-face('AvenirNext-Demi', 'fonts/AvenirNextLTPro-Demi');
+
+$fontset-gotham: "Gotham", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$fontset-openSans: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$fontset-avenir-bold: "AvenirNext-Bold", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$fontset-avenir-condensed: "AvenirNext-Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$fontset-avenir-demi: "AvenirNext-Demi", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+
+$rojo: #e53935;
+$naranja: #ff8f00;
+$amarillo: #fdd835;
+
+$negro: #333333;
+$gris: #c0c0c0;
+$fondoAnomalia: #e5e5e5;
+$verde:#39e535;
+$blanco: #fafafa;
+
+//tamaños de dispositivos
+$screen-xs: 480px !default; // telefonos
+$screen-sm: 768px !default; //tablet
+$screen-md: 992px !default; //desktop
+
+html,
+body {
+    margin: 0px auto;
+    padding: 0;
+    width: 100%;
+    background-color: #F2F2F2;
+    font-size: 1em;
+    @include breakpoint(xs) {
+        background-color: #ffffff;
+    }
+}
+
+
+#listadoCorredores{
+    z-index: 999;
+    width: 200px;
+    font-family: $fontset-avenir-demi;
+    .corredor{
+        cursor: pointer;
+        background-color: #ffffff;
+        font-size: 1em;
+        padding: 10px;
+        margin-bottom: 1px;
+    }
+    .corredor:hover{
+        background-color: $gris;
+    }
+    .tiempo{
+        font-family: $fontset-avenir-bold;
+        float: right;
+    }
+
+}
+
+#detalleCorredores{
+    z-index: 500;
+    position: absolute;
+    width: 500px;
+    height: 100%;
+    right: 0px;
+    top:0px;
+    #mapa{
+        // Este estilo es provisorio
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.shadow{
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 0.5);
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1);
+}
+
+.shadow:hover{
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 0.5);
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25);
+}
+
