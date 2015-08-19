@@ -6,7 +6,7 @@ import json
 import StringIO
 
 
-def prepareDataFrame(df):
+def prepareDataFrame(df, timeadjust=None, doimputation=False):
     franjas = [
         ("00:00:00", "07:00:00"),
         ("07:00:00", "10:00:00"),
@@ -14,15 +14,67 @@ def prepareDataFrame(df):
         ("17:00:00", "20:00:00"),
         ("20:00:00", "23:59:00"),
     ]
+    dfdaytype = pd.DataFrame([
+        "workingday",
+        "workingday",
+        "workingday",
+        "workingday",
+        "workingday",
+        "saturday",
+        "sunday",
+    ])
     df.date = pd.to_datetime(df.date)
+
+    # Ajuste del timezone
+    if timeadjust:
+        df.date += timeadjust
+
+    df["weekday"] = df.date.dt.weekday
+    df["daytype"] = dfdaytype.loc[df.weekday].values[:, 0]
+
+    # Imputacion de datos faltantes
+    if doimputation:
+        # Datos para completar los faltantes
+        filler_data = df.groupby(
+            [df.date.dt.hour, df.daytype, df.iddevice]).mean()["data"]
+        newrecords = []
+        for iddevice in df.iddevice.unique():
+            work = df[df.iddevice == iddevice].sort("date")
+            diff = work.date.shift(periods=-1) - work.date
+            diff = diff[diff > pd.Timedelta(hours=1, minutes=10)]
+            for idx in diff.index:
+                # if d.iloc[0] == pd.NaT or d.iloc[1] == pd.NaT:
+                #    continue
+                r = pd.date_range(
+                    start=work.loc[idx].date, end=work.loc[idx].date + diff.loc[idx], freq="h")
+                filler_values = filler_data.loc[
+                    zip(r.hour, dfdaytype.loc[r.weekday].values[:, 0], [iddevice] * len(r))].reset_index(drop=True).values
+                newrecord_data = {
+                    "iddevice": [iddevice] * len(r),
+                    "data": filler_values,
+                    "date": r
+                }
+                newrecord = pd.DataFrame(
+                    newrecord_data, columns=['iddevice', u'data', u'date'])
+                newrecords += [newrecord]
+
+    df = pd.concat([df] + newrecords)
+
+    # Normalizacion de intervalos a 5min
     df.index = df.date
     df = df.groupby("iddevice").resample(
         "5Min", how='mean').interpolate(method='linear').reset_index()
     df.index = df.date
-    df["weekday"] = df.date.apply(lambda e: e.weekday())
-    df.loc[df.weekday.isin([0, 1, 2, 3, 4]), "daytype"] = "workingday"
-    df.loc[df.weekday == 5, "daytype"] = "saturday"
-    df.loc[df.weekday == 6, "daytype"] = "sunday"
+
+    # Agregado de dia tipo de dia
+    #df["weekday"] = df.date.apply(lambda e: e.weekday())
+    df["weekday"] = df.date.dt.weekday
+    df["daytype"] = dfdaytype.loc[df.weekday].values[:, 0]
+    #df.loc[df.weekday.isin([0, 1, 2, 3, 4]), "daytype"] = "workingday"
+    #df.loc[df.weekday == 5, "daytype"] = "saturday"
+    #df.loc[df.weekday == 6, "daytype"] = "sunday"
+
+    # Agregado de franjas horarias
     for (i, (begin, end)) in enumerate(franjas):
         df.ix[df.index.indexer_between_time(
             start_time=begin, end_time=end), "franja"] = i
@@ -50,15 +102,8 @@ def detectAnomalies(detectparams, lastrecords, dontfilter=False):
         lambda df: df[df.date == df.date.max()].iloc[0])
     lastrecords = prepareDataFrame(lastrecords)
 
-    evalfield = "data"
-    basefield = "mean"
-    marginfield = "std"
-    resultsdf = pd.merge(
-        lastrecords, detectparams, on=["iddevice", "franja", "daytype"]).sort("date")
-    #anomalies = resultsdf[resultsdf[evalfield]>(resultsdf[basefield]+resultsdf[marginfield])]
-    #resultsdf["threshold"] = resultsdf[basefield]
-    resultsdf["threshold"] = resultsdf[basefield] + resultsdf[marginfield]
-    resultsdf["isanomaly"] = resultsdf[evalfield] > resultsdf["threshold"]
+    resultsdf = _detectAnomalies(detectparams, lastrecords)
+
     if dontfilter:
         anomalies = resultsdf
     else:
@@ -71,11 +116,24 @@ def detectAnomalies(detectparams, lastrecords, dontfilter=False):
             "timestamp": anomaly["date"].to_pydatetime(),
             "indicador_anomalia": round((anomaly["data"] - anomaly["mean"]) / anomaly["std"], 2),
             "threshold": anomaly["threshold"],
-            "evalfield": anomaly[evalfield],
+            "evalfield": anomaly["data"],
             "isanomaly": anomaly["isanomaly"],
         }
     output = map(formatOutput, anomalies.iterrows())
     return output
+
+
+def _detectAnomalies(detectparams, lastrecords):
+    evalfield = "data"
+    basefield = "mean"
+    marginfield = "std"
+    resultsdf = pd.merge(
+        lastrecords, detectparams, on=["iddevice", "franja", "daytype"]).sort("date")
+    #anomalies = resultsdf[resultsdf[evalfield]>(resultsdf[basefield]+resultsdf[marginfield])]
+    #resultsdf["threshold"] = resultsdf[basefield]
+    resultsdf["threshold"] = resultsdf[basefield] + resultsdf[marginfield] * 2
+    resultsdf["isanomaly"] = resultsdf[evalfield] > resultsdf["threshold"]
+    return resultsdf
 
 
 """
@@ -86,10 +144,15 @@ Recibe un listado de tuplas de la forma (id_segment, data, timestamp)
 def computeDetectionParams(lastmonthrecords):
     apidata = pd.DataFrame(
         lastmonthrecords, columns=["iddevice", "data", "date"])
-    apidata = prepareDataFrame(apidata)
-    output = apidata.groupby(["iddevice", "franja", "daytype"])["data"].agg(
-        {"mean": "mean", "std": "std"}).reset_index()
+    apidata = prepareDataFrame(apidata, doimputation=True)
+    output = _computeDetectionParams(apidata)
     return output.to_json(orient="records")
+
+
+def _computeDetectionParams(lastmonthrecords):
+    output = lastmonthrecords.groupby(["iddevice", "franja", "daytype"])["data"].agg(
+        {"mean": "mean", "std": "std"}).reset_index()
+    return output
 
 
 """
