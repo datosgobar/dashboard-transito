@@ -5,9 +5,10 @@ import MySQLdb
 import os
 import time
 import random
-from analisis import getDBConnection
+#from analisis import getDBConnection
 import config
 import json
+from getDataFake import readSegmentos
 
 
 def readSnapshot():
@@ -32,15 +33,15 @@ def readSnapshot():
 
 def buildSegmentos(data):
     return {
-        "id": int(data['id']),
-        "timestamp_medicion": str(data['timestamp_medicion']),
-        "tiempo": int(data['tiempo']),
-        "velocidad": int(data['velocidad']),
-        "causa": str(data['causa']),
-        "causa_id": int(data['causa_id']),
-        "duracion_anomalia": int(data['duracion_anomalia']),
-        "indicador_anomalia": float(data['indicador_anomalia']),
-        "anomalia": int(data['anomalia'])
+        "id": int(data[0]),
+        "timestamp_medicion": str(data[1]),
+        "tiempo": int(data[2]),
+        "velocidad": int(data[3]),
+        "causa": str(data[4]),
+        "causa_id": int(data[5]),
+        "duracion_anomalia": int(data[6]),
+        "indicador_anomalia": float(data[7]),
+        "anomalia": int(data[8])
     }
 
 
@@ -70,12 +71,13 @@ def parserEmitData(self, template):
     }
 
     referencia = {
-        "centro": [10, 12, 57, 53, 51, 49, 40, 43, 37, 36, 21, 31, 35, 13, 14, 18, 17, 23,
-                   24, 25, 26, 28, 32, 45, 47, 38, 44],
-        "provincia": [11, 56, 54, 55, 41, 22, 16, 15, 19, 20, 10, 27, 29, 34, 39, 42, 46, 50, 52, 48, 30, 33]
+        "centro": [10, 12, 57, 53, 51, 49, 40, 37, 36, 21, 31, 35, 13, 14, 18, 17, 23,
+                   24, 25, 26, 28, 32, 45, 47, 38, 42],
+        "provincia": [11, 56, 54, 55, 41, 22, 16, 15, 19, 20, 10, 27, 29, 34, 39, 46, 50, 52, 48, 30, 33, 43, 44]
     }
 
-    update = readSnapshot()
+    #update = readSnapshot()
+    update = readSegmentos()
 
     if len(update):
         for i in range(len(update)):

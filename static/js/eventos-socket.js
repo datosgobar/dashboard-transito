@@ -8,6 +8,7 @@ socket.on('connect', function() {
 	socket.emit('receive', "Connected");
 });
 // aqui especificamos el canal para la recepcion continua de los datos
+
 socket.on('independencia', function(data) {
 	actualizacion(data);
 });
@@ -26,14 +27,17 @@ socket.on('alem', function(data) {
 	actualizacion(data);
 });
 socket.on('corrientes', function(data) {
-	actualizacion(data);
+	actualizacion(data); 
 });
 socket.on('rivadavia', function(data) {
 	actualizacion(data);
 });
+
 socket.on('av_de_mayo', function(data) {
 	actualizacion(data);
 });
+
+
 socket.on('san_martin', function(data) {
 	actualizacion(data);
 });
@@ -46,9 +50,11 @@ socket.on('cordoba', function(data) {
 socket.on('paseo_colon', function(data) {
 	actualizacion(data);
 });
+
 socket.on('cabildo', function(data) {
 	actualizacion(data);
 });
+
 socket.on('pueyrredon', function(data) {
 	actualizacion(data);
 });
@@ -58,6 +64,7 @@ socket.on('alcorta', function(data) {
 socket.on('libertador', function(data) {
 	actualizacion(data);
 });			
+
 // en caso que socket disponga de un error
 socket.on('error', function(e){
 	console.log("error")

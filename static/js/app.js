@@ -83,7 +83,7 @@ function armoTemplateCard(data){
 
     //si no hay falla entonces no mando nada.
     if (estado === 0){
-        card = "";
+        //card = "";
     }
 	return card;
 }
