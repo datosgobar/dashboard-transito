@@ -88,6 +88,13 @@ def get_static(filepath):
 # resuelve errores 404 y 500, en un decorador, para rutear a la funcion handler
 
 
+@app.post("/")
+def send_data():
+    print request.forms.get('anomaly_id')
+    print request.forms.get("causa_id")
+    print request.forms.get("comentario")
+
+
 @error(404)
 @error(500)
 def handler_error(error):

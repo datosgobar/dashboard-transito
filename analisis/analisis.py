@@ -95,7 +95,7 @@ newdata = downloadData (
 """
 
 
-def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=None, token="superadmin.", pool_len=5):
+def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=None, token="superadmin.", pool_len=48):
 
     # vsensids = virtsens["id_sensor"].unique()
     urltpl = "https://apisensores.buenosaires.gob.ar/api/data/%s?token=%s&fecha_desde=%s&fecha_hasta=%s"
