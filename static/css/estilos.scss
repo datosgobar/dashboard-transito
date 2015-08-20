@@ -127,8 +127,12 @@ body {
         height: 52px;
         width: 52px;
         margin: 0 auto;
-        //background-color: $blanco;
+    }
+    .visto {
         background-image: url("img/visto.svg");
+    }
+    .noVisto {
+        background-image: url("img/novisto.svg");
     }
 
  }
