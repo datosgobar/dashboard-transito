@@ -45,6 +45,7 @@ socket.on('juan_b_justo', function(data) {
 	actualizacion(data);
 });
 socket.on('cordoba', function(data) {
+
 	actualizacion(data);
 });
 socket.on('paseo_colon', function(data) {
