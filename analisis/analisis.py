@@ -3,7 +3,7 @@
 
 import sqlalchemy
 import MySQLdb
-from sqlalchemy import Column, Integer, Float, String, DateTime
+from sqlalchemy import Column, Integer, Float, String, DateTime, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -56,6 +56,7 @@ class SegmentSnapshot(Base):
     duracion_anomalia = Column(Integer, nullable=False)
     indicador_anomalia = Column(Float, nullable=False)
     anomalia = Column(Integer, nullable=False)
+    anomalia_id = Column(Integer, ForeignKey('anomaly.id'))
 
 
 class Causa(Base):
