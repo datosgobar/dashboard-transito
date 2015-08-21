@@ -7,12 +7,14 @@ import os
 import bottle
 import time
 
+
 from analisis import *
 from bottle import error
 from socketio import socketio_manage
 from socketio.mixins import BroadcastMixin
 from socketio.namespace import BaseNamespace
 from gevent import monkey
+from dashboard_logging import setup_logging
 
 monkey.patch_all()
 app = bottle.Bottle()
@@ -108,8 +110,14 @@ def socketio_service(path):
     socketio_manage(
         bottle.request.environ, {'/alertas': dataSemaforos}, bottle.request)
 
+
 if __name__ == '__main__':
-    print 'Listening on port {0} ip {1}'.format(ip, port)
+
+    setup_logging()
+    logger = logging.getLogger(__name__)
+
+    logger.info("Listening on port {0} ip {1}".format(ip, port))
+
     # inicia la server python
     bottle.run(app=app,
                host=ip,
