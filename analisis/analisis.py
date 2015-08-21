@@ -3,11 +3,11 @@
 
 import sqlalchemy
 import MySQLdb
-from sqlalchemy import Column, Integer, Float, String, DateTime
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import exc
+from sqlalchemy.ext.automap import automap_base
+from sqlalchemy.orm import Session
 
 import config
 import json
@@ -23,45 +23,23 @@ import anomalyDetection
 detection_params_fn = os.path.dirname(
     os.path.realpath(__file__)) + "/detection_params.json"
 
-Base = declarative_base()
+# Schema reflection! Para que las clases esten
+# Actualizadas con las migraciones de la DB
+Base = automap_base()
+# Base = declarative_base()
 
+db_url = config.db_url
+engine = create_engine(db_url)
 
-class Historical(Base):
-    __tablename__ = 'historical'
-    id = Column(Integer, primary_key=True)
-    segment = Column(Integer, nullable=False)
-    data = Column(Integer, nullable=False)
-    timestamp = Column(DateTime, nullable=False)
+# reflect the tables
+Base.prepare(engine, reflect=True)
 
+Historical = Base.classes.historical
+Anomaly = Base.classes.anomaly
+SegmentSnapshot = Base.classes.segment_snapshot
+Causa = Base.classes.causa
 
-class Anomaly(Base):
-    __tablename__ = 'anomaly'
-    id = Column(Integer, primary_key=True)
-    id_segment = Column(Integer, nullable=False)
-    timestamp_start = Column(DateTime, nullable=False)
-    timestamp_end = Column(DateTime, nullable=False)
-    comentario_causa = Column(String(140), nullable=False)
-    causa_id = Column(Integer, nullable=False)
-    indicador_anomalia = Column(Float, nullable=False)
-
-
-class SegmentSnapshot(Base):
-    __tablename__ = 'segment_snapshot'
-    id = Column(Integer, primary_key=True)
-    timestamp_medicion = Column(DateTime, nullable=False)
-    tiempo = Column(Integer, nullable=False)
-    velocidad = Column(Float, nullable=False)
-    comentario_causa = Column(String(140), nullable=False)
-    causa_id = Column(Integer, nullable=False)
-    duracion_anomalia = Column(Integer, nullable=False)
-    indicador_anomalia = Column(Float, nullable=False)
-    anomalia = Column(Integer, nullable=False)
-
-
-class Causa(Base):
-    __tablename__ = 'causa'
-    id = Column(Integer, primary_key=True)
-    descripcion = Column(String(140), nullable=False)
+session = Session(engine)
 
 
 def getData(url):
@@ -158,9 +136,16 @@ def getDBConnection():
 
 
 def setupDB():
-
-    engine = createDBEngine()
-    Base.metadata.create_all(engine)
+    """
+    Guarda el enum de causas de una anomalia
+    """
+    with open('../static/data/causas.json') as causas_data:
+        causas = json.load(causas_data)
+    for causa in causas['causas']:
+        if not session.query(Causa).filter(Causa.id == causa['id']).count():
+            session.add(
+                Causa(descripcion=causa['descripcion'], id=causa['id']))
+            session.commit()
 
 
 """
@@ -545,7 +530,6 @@ def dailyUpdate():
 
 
 if __name__ == '__main__':
-
     parser = argparse.ArgumentParser(description='Módulo de Análisis')
     parser.add_argument(
         '--setup_database', action='store_true', help='Setup de base de datos')

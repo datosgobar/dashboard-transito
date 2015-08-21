@@ -70,13 +70,12 @@ $ easy_install supervisor
 * Configuración de la Base de Datos
 
   * Creación de las tablas
-
+    Ir a /db_repository y leer README correspondiente
+  * Generación de data de causas
 ```sh
-python analisis/analisis.py --setup_database
+$ python analisis.py --setup_database
 ```
-
   * Generación de data fake
-
 ```sh
 $ python analisis/getDataFake.py
 ```

@@ -9,9 +9,11 @@ if os.environ.get('OPENSHIFT_MYSQL_DIR'):
     )
 else:
     db = dict(
-        engine='mysql'
+        engine='mysql',
         user='root',
         password='password',
         host='localhost',
         db='dashboardoperativo'
     )
+    db_url = db['engine'] + "://" + db['user'] + ":" + \
+        db['password'] + "@" + db['host'] + "/" + db['db']
