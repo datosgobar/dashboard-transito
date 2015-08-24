@@ -109,25 +109,24 @@ def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=N
 
 
 def createDBEngine():
-    #engine = sqlalchemy.create_engine("postgres://postgres@/postgres")
+    # engine = sqlalchemy.create_engine("postgres://postgres@/postgres")
     # engine = sqlalchemy.create_engine("sqlite:///analysis.db")
 
-    # user = config.mysql['user']
-    # password = config.mysql['password']
-    # host = config.mysql['host']
-    # db_name = config.mysql['db']
+    user = config.mysql['user']
+    password = config.mysql['password']
+    host = config.mysql['host']
+    db_name = config.mysql['db']
 
-    # db = MySQLdb.connect(
-    #     host=host, passwd=password, user=user)
-    # cur = db.cursor()
-    # cur.execute(
-    #     'CREATE DATABASE IF NOT EXISTS {0};'.format(db_name))
-    # cur.close()
+    db = MySQLdb.connect(
+        host=host, passwd=password, user=user)
+    cur = db.cursor()
+    cur.execute(
+        'CREATE DATABASE IF NOT EXISTS {0};'.format(db_name))
+    cur.close()
+    db.close()
 
     engine = sqlalchemy.create_engine(
-        'postgresql+psycopg2://lmokto:hacura@localhost/dashboardoperativo')
-    # engine = sqlalchemy.create_engine(
-    #    "postgres://" + user + ":" + password + "@" + host + "/" + db_name)
+        "mysql://" + user + ":" + password + "@" + host + "/" + db_name)
     return engine
 
 
