@@ -8,6 +8,28 @@ import config
 import MySQLdb
 import random
 
+from sqlalchemy import create_engine
+from sqlalchemy.ext.automap import automap_base
+from sqlalchemy.orm import Session
+
+# Schema reflection! Para que las clases esten
+# Actualizadas con las migraciones de la DB
+Base = automap_base()
+# Base = declarative_base()
+
+db_url = config.db_url
+engine = create_engine(db_url)
+
+# reflect the tables
+Base.prepare(engine, reflect=True)
+
+Historical = Base.classes.historical
+Anomaly = Base.classes.anomaly
+SegmentSnapshot = Base.classes.segment_snapshot
+Causa = Base.classes.causa
+
+session = Session(engine)
+
 
 def readSegmentos():
     """
