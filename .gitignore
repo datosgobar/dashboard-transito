@@ -8,9 +8,11 @@ node_modules/
 *.pyc
 analisis/raw_api_01_11.json
 analisis/config.py
+db_repository/config.py
 detection_params.json
 supervisord.conf
 .analisis/detection_params.json
 logs/
 README.html
 .DS_Store
+manage.py
