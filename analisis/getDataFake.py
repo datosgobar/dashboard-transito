@@ -8,6 +8,9 @@ import config
 import MySQLdb
 import random
 
+from dateutil import parser
+import datetime
+import urlparse
 from sqlalchemy import create_engine
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
@@ -78,6 +81,38 @@ def createSegmentos():
         cur.close()
         db.commit()
         db.close()
+
+
+def api_sensores_fake(url):
+
+    sensor = urlparse.urlsplit(url).path.split("/")[3]
+
+    dato = {
+        "_id": {"$id": "55dca5f7312e783b74c62b9d"},
+        "date": datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%dT%H:%M:%S-03:00'),
+        "iddevice": 10,
+        "data": random.randrange(100, 1500),
+        "id_data_type": 13,
+        "migrated": "false"
+    }
+
+    res = {
+        "codigo": "200",
+        "error": [],
+        "datos": {
+            "id": sensor,
+            "date_beg": "nulL",
+            "date_end": "null",
+            "duration": "null",
+            "datatype": "null",
+            "count": "null",
+            "data": []
+        },
+        "mensaje": "Operación exitosa"
+    }
+
+    res['datos']['data'].append(dato)
+    return res
 
 
 def getData():

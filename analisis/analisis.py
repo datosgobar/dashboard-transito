@@ -9,6 +9,7 @@ from sqlalchemy import exc
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 
+from getDataFake import api_sensores_fake
 import config
 import json
 import requests
@@ -94,7 +95,8 @@ def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=N
                 urls.append(url)
         start += step
 
-    # alldata = map(getData, urls)
+    """ cambiar funcion map por api_sensores_fake"""
+    #alldata = map(api_sensores_fake, urls)
     pool = multiprocessing.Pool(pool_len)
     alldata = pool.map(getData, urls)
     pool.close()
