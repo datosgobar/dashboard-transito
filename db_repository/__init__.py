@@ -5,8 +5,8 @@ import config
 db_url = config.db_url
 
 # Setup versioning para la base de datos
-cmd_version = "python db_repository/manage.py version_control " + \
-    db_url + " db_repository"
+cmd_version = "python db_repository/manage.py version_control --url=" + \
+    db_url + "--repository=db_repository"
 call(cmd_version, shell=True)
 
 # Crear shortcut para los commands de migrate

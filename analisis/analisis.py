@@ -44,17 +44,17 @@ session = Session(engine)
 
 
 def getData(url):
-    print url
+    # url
     for i in xrange(3):
         try:
             response = requests.get(url)
             if (response.status_code == 200):
                 return response.json()
             else:
-                print("hubo timeout de teracode en {0}".format(url))
+                #("hubo timeout de teracode en {0}".format(url))
                 pass
         except requests.exceptions.Timeout:
-            print("hubo timeout del request en {0}".format(url))
+            #("hubo timeout del request en {0}".format(url))
             pass
         except:
             return None
@@ -88,14 +88,14 @@ def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=N
     while start < end:
         startdate, enddate = start, start + step
         for sensor_id in sensor_ids:
-            print startdate, enddate, sensor_id
+            # startdate, enddate, sensor_id
             url = urltpl % (sensor_id, token, startdate.strftime(
                 "%Y-%m-%dT%H:%M:%S-03:00"), enddate.strftime("%Y-%m-%dT%H:%M:%S-03:00"))
             if not url in urls:
                 urls.append(url)
         start += step
 
-    """ cambiar funcion map por api_sensores_fake"""
+    """cambiar funcion map por api_sensores_fake"""
     #alldata = map(api_sensores_fake, urls)
     pool = multiprocessing.Pool(pool_len)
     alldata = pool.map(getData, urls)
@@ -114,22 +114,7 @@ def createDBEngine():
     # engine = sqlalchemy.create_engine("postgres://postgres@/postgres")
     # engine = sqlalchemy.create_engine("sqlite:///analysis.db")
 
-    user = config.mysql['user']
-    password = config.mysql['password']
-    host = config.mysql['host']
-    db_name = config.mysql['db']
-
-    db = MySQLdb.connect(
-        host=host, passwd=password, user=user)
-    cur = db.cursor()
-    cur.execute(
-        'CREATE DATABASE IF NOT EXISTS {0};'.format(db_name))
-    cur.close()
-    db.close()
-
-    engine = sqlalchemy.create_engine(
-        "mysql://" + user + ":" + password + "@" + host + "/" + db_name)
-    return engine
+    return create_engine(config.db_url)
 
 
 def getDBConnection():
@@ -146,7 +131,7 @@ def setupDB():
     for causa in causas['causas']:
         if not session.query(Causa).filter(Causa.id == causa['id']).count():
             session.add(
-                Causa(descripcion=causa['descripcion'], id=causa['id']))
+                Causa(descripcion=causa['descripcion'].encode('utf-8'), id=causa['id']))
             session.commit()
 
 
@@ -156,7 +141,7 @@ Guarda datos recibidos por parámetro en la tabla "historical"
 
 
 def updateDB(newdata):
-    print "Updating database"
+    # "Updating database"
     conn = getDBConnection()
     Session = sessionmaker(bind=conn)
     session = Session()
@@ -167,7 +152,7 @@ def updateDB(newdata):
             session.commit()
             newrecords = True
         except exc.SQLAlchemyError:
-            print "Encountered SQLAlchemyError"
+            # "Encountered SQLAlchemyError"
             pass
 
             # for historical in newdata:
@@ -199,7 +184,7 @@ Filtro los registros para no duplicar datos en la base de datos
 
 
 def filterDuplicateRecords(data, desde=None, hasta=None):
-    print "Removing duplicates"
+    # "Removing duplicates"
     conn = getDBConnection()
     # parsear json
     Session = sessionmaker(bind=conn)
@@ -230,7 +215,7 @@ def filterDuplicateRecords(data, desde=None, hasta=None):
             data = segmento["data"]
             timestamp = segmento["date"]
 
-            # print timestamp
+            # timestamp
 
             if (segment, timestamp) in prevrecords_unique:
                 continue
@@ -490,6 +475,7 @@ def updateSnapshot(newstates):
     Session = sessionmaker(bind=conn)
     sess = Session()
     for segstate in newstates:
+        segstate['anomalia'] = 0
         curstate = sess.query(SegmentSnapshot).get(segstate["id"])
         if curstate == None:
             curstate = SegmentSnapshot(**segstate)

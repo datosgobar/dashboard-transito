@@ -1,33 +1,35 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import MySQLdb
 import os
 import time
 import random
-#from analisis import getDBConnection
 import config
 import json
 from getDataFake import readSegmentos
+from sqlalchemy import create_engine
+
+db_url = config.db_url
+engine = create_engine(db_url)
 
 
 def readSnapshot():
     """
-            readSnapshot()
+            readSegmentos()
     """
     result = []
-    select_table = {}
+
     try:
-        conn = getDBConnection()
+        cur = engine.connect()
     except Exception, ex:
         print ex
         result = []
     else:
-        select_table = conn.execute("SELECT * FROM segment_snapshot")
-        result = select_table.fetchall()
+        cur.execute("SELECT * FROM segment_snapshot")
+        for row in cur.fetchall():
+            result.append(row)
     finally:
-        if hasattr(select_table, "close"):
-            select_table.close()
+        cur.close()
         return result
 
 
