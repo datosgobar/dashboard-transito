@@ -15,3 +15,5 @@ else:
         host='localhost',
         db='dashboardoperativo'
     )
+    db_url = db['engine'] + "://" + db['user'] + ":" + \
+        db['password'] + "@" + db['host'] + "/" + db['db']

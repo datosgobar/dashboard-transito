@@ -6,6 +6,8 @@ import gevent
 import os
 import bottle
 import time
+import logging
+
 
 from analisis import *
 from bottle import error
@@ -13,6 +15,7 @@ from socketio import socketio_manage
 from socketio.mixins import BroadcastMixin
 from socketio.namespace import BaseNamespace
 from gevent import monkey
+from dashboard_logging import setup_logging
 
 monkey.patch_all()
 app = bottle.Bottle()
@@ -73,6 +76,11 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
 def root():
     return bottle.template('index')
 
+
+@app.get('/desktop')
+def root():
+    return bottle.template('desktop')
+
 # path para datos estaticos en el front
 
 
@@ -81,6 +89,13 @@ def get_static(filepath):
     return bottle.static_file(filepath, root='./static/')
 
 # resuelve errores 404 y 500, en un decorador, para rutear a la funcion handler
+
+
+@app.post("/")
+def send_data():
+    print request.forms.get('anomaly_id')
+    print request.forms.get("causa_id")
+    print request.forms.get("comentario")
 
 
 @error(404)
@@ -96,8 +111,14 @@ def socketio_service(path):
     socketio_manage(
         bottle.request.environ, {'/alertas': dataSemaforos}, bottle.request)
 
+
 if __name__ == '__main__':
-    print 'Listening on port {0} ip {1}'.format(ip, port)
+
+    setup_logging()
+    logger = logging.getLogger(__name__)
+
+    logger.info("Listening on port {0} ip {1}".format(ip, port))
+
     # inicia la server python
     bottle.run(app=app,
                host=ip,

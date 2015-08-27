@@ -3,12 +3,13 @@
 
 import sqlalchemy
 import MySQLdb
-from sqlalchemy import Column, Integer, Float, String, DateTime
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import exc
+from sqlalchemy.ext.automap import automap_base
+from sqlalchemy.orm import Session
 
+from getDataFake import api_sensores_fake
 import config
 import json
 import requests
@@ -23,47 +24,37 @@ import anomalyDetection
 detection_params_fn = os.path.dirname(
     os.path.realpath(__file__)) + "/detection_params.json"
 
-Base = declarative_base()
+# Schema reflection! Para que las clases esten
+# Actualizadas con las migraciones de la DB
+Base = automap_base()
+# Base = declarative_base()
 
+db_url = config.db_url
+engine = create_engine(db_url)
 
-class Historical(Base):
-    __tablename__ = 'historical'
-    id = Column(Integer, primary_key=True)
-    segment = Column(Integer, nullable=False)
-    data = Column(Integer, nullable=False)
-    timestamp = Column(DateTime, nullable=False)
+# reflect the tables
+Base.prepare(engine, reflect=True)
 
+Historical = Base.classes.historical
+Anomaly = Base.classes.anomaly
+SegmentSnapshot = Base.classes.segment_snapshot
+Causa = Base.classes.causa
 
-class Anomaly(Base):
-    __tablename__ = 'anomaly'
-    id = Column(Integer, primary_key=True)
-    id_segment = Column(Integer, nullable=False)
-    timestamp_start = Column(DateTime, nullable=False)
-    timestamp_end = Column(DateTime, nullable=False)
-    causa = Column(String(140), nullable=False)
-    causa_id = Column(Integer, nullable=False)
-    indicador_anomalia = Column(Float, nullable=False)
-
-
-class SegmentSnapshot(Base):
-    __tablename__ = 'segment_snapshot'
-    id = Column(Integer, primary_key=True)
-    timestamp_medicion = Column(DateTime, nullable=False)
-    tiempo = Column(Integer, nullable=False)
-    velocidad = Column(Float, nullable=False)
-    causa = Column(String(140), nullable=False)
-    causa_id = Column(Integer, nullable=False)
-    duracion_anomalia = Column(Integer, nullable=False)
-    indicador_anomalia = Column(Float, nullable=False)
-    anomalia = Column(Integer, nullable=False)
+session = Session(engine)
 
 
 def getData(url):
-    print url
+    # url
     for i in xrange(3):
         try:
-            return requests.get(url).json()
+            response = requests.get(url)
+            if (response.status_code == 200):
+                return response.json()
+            else:
+                #("hubo timeout de teracode en {0}".format(url))
+                pass
         except requests.exceptions.Timeout:
+            #("hubo timeout del request en {0}".format(url))
             pass
         except:
             return None
@@ -83,8 +74,8 @@ newdata = downloadData (
 """
 
 
-def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=None, token="superadmin."):
-    pool = multiprocessing.Pool(5)
+def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=None, token="superadmin.", pool_len=48):
+
     # vsensids = virtsens["id_sensor"].unique()
     urltpl = "https://apisensores.buenosaires.gob.ar/api/data/%s?token=%s&fecha_desde=%s&fecha_hasta=%s"
 
@@ -94,16 +85,19 @@ def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=N
     urls = []
     if step > (download_enddate - download_startdate):
         step = download_enddate - download_startdate
-    while start <= end:
+    while start < end:
         startdate, enddate = start, start + step
         for sensor_id in sensor_ids:
-            print startdate, enddate, sensor_id
+            # startdate, enddate, sensor_id
             url = urltpl % (sensor_id, token, startdate.strftime(
                 "%Y-%m-%dT%H:%M:%S-03:00"), enddate.strftime("%Y-%m-%dT%H:%M:%S-03:00"))
-            urls += [url]
+            if not url in urls:
+                urls.append(url)
         start += step
 
-    # alldata = map(getData, urls)
+    """cambiar funcion map por api_sensores_fake"""
+    #alldata = map(api_sensores_fake, urls)
+    pool = multiprocessing.Pool(pool_len)
     alldata = pool.map(getData, urls)
     pool.close()
     pool.terminate()
@@ -120,21 +114,7 @@ def createDBEngine():
     # engine = sqlalchemy.create_engine("postgres://postgres@/postgres")
     # engine = sqlalchemy.create_engine("sqlite:///analysis.db")
 
-    user = config.mysql['user']
-    password = config.mysql['password']
-    host = config.mysql['host']
-    db_name = config.mysql['db']
-
-    db = MySQLdb.connect(
-        host=host, passwd=password, user=user)
-    cur = db.cursor()
-    cur.execute(
-        'CREATE DATABASE IF NOT EXISTS {0};'.format(db_name))
-    cur.close()
-
-    engine = sqlalchemy.create_engine(
-        "mysql://" + user + ":" + password + "@" + host + "/" + db_name)
-    return engine
+    return create_engine(config.db_url)
 
 
 def getDBConnection():
@@ -143,9 +123,16 @@ def getDBConnection():
 
 
 def setupDB():
-
-    engine = createDBEngine()
-    Base.metadata.create_all(engine)
+    """
+    Guarda el enum de causas de una anomalia
+    """
+    with open('../static/data/causas.json') as causas_data:
+        causas = json.load(causas_data)
+    for causa in causas['causas']:
+        if not session.query(Causa).filter(Causa.id == causa['id']).count():
+            session.add(
+                Causa(descripcion=causa['descripcion'].encode('utf-8'), id=causa['id']))
+            session.commit()
 
 
 """
@@ -154,7 +141,7 @@ Guarda datos recibidos por parámetro en la tabla "historical"
 
 
 def updateDB(newdata):
-    print "Updating database"
+    # "Updating database"
     conn = getDBConnection()
     Session = sessionmaker(bind=conn)
     session = Session()
@@ -165,7 +152,7 @@ def updateDB(newdata):
             session.commit()
             newrecords = True
         except exc.SQLAlchemyError:
-            print "Encountered SQLAlchemyError"
+            # "Encountered SQLAlchemyError"
             pass
 
             # for historical in newdata:
@@ -187,7 +174,7 @@ def removeOldRecords():
     conn = getDBConnection()
     Session = sessionmaker(bind=conn)
     session = Session()
-    
+
     pass
 
 
@@ -197,7 +184,7 @@ Filtro los registros para no duplicar datos en la base de datos
 
 
 def filterDuplicateRecords(data, desde=None, hasta=None):
-    print "Removing duplicates"
+    # "Removing duplicates"
     conn = getDBConnection()
     # parsear json
     Session = sessionmaker(bind=conn)
@@ -228,7 +215,7 @@ def filterDuplicateRecords(data, desde=None, hasta=None):
             data = segmento["data"]
             timestamp = segmento["date"]
 
-            # print timestamp
+            # timestamp
 
             if (segment, timestamp) in prevrecords_unique:
                 continue
@@ -254,7 +241,8 @@ Este loop se va a ejecutar con la frecuencia indicada para cada momento del dia.
 
 def executeLoop(desde, hasta, dontdownload=False):
     """
-        datetime.datetime.strptime("2015-07-15T18:00:00-00:00"[:-6], '%Y-%m-%dT%H:%M:%S')
+        datetime.datetime.strptime(
+            "2015-07-15T18:00:00-00:00"[:-6], '%Y-%m-%dT%H:%M:%S')
         traer los sensores lista de archivo configuracion
         desde = "2015-07-01T00:00:00-00:00"
         hasta = "2015-07-12T00:00:01-00:00"
@@ -339,7 +327,7 @@ Recibe:
     "id_segment" : int,
     "timestamp_start" : datetime,
     "timestamp_end" : datetime,
-    "causa" : str,
+    "comentario_causa" : str,
     "causa_id" : int
 }
 
@@ -353,7 +341,7 @@ Retorna:
     "timestamp_medicion" : (timestamp de la medicion),
     "tiempo" : (tiempo que toma atravesar el segmento segun la ultima medicion),
     "velocidad" : (distancia del corredor / tiempo),
-    "causa" : (por ahora null, lo modifica la UI),
+    "comentario_causa" : (por ahora null, lo modifica la UI),
     "causa_id" : (por ahora null, lo modifica la UI),
     "timestamp_start" : (ts de inicio),
     "timestamp_end" : (ts de fin),
@@ -383,7 +371,7 @@ def getCurrentSegmentState(anomalies, lastrecords):
             "timestamp_medicion": s[2],
             "tiempo": s[1],
             "velocidad": -1,
-            "causa": ad.get(s[0], {}).get("causa", ""),
+            "comentario_causa": ad.get(s[0], {}).get("comentario_causa", ""),
             "causa_id": ad.get(s[0], {}).get("causa_id", 0),
             "duracion_anomalia": duracion_anomalia,
             "indicador_anomalia": ad.get(s[0], {}).get("indicador_anomalia", 0),
@@ -413,7 +401,7 @@ Salida: Lista de dicts con las anomalias que estan vivas en este momento. Cada e
     "id_segment" : int,
     "timestamp_start" : datetime,
     "timestamp_end" : datetime,
-    "causa" : str,
+    "comentario_causa" : str,
     "causa_id" : int
 }
 
@@ -472,7 +460,7 @@ def upsertAnomalies(newanomalydata):
                 "timestamp_start": a["timestamp"],
                 "timestamp_end": a["timestamp"],
                 "indicador_anomalia": a["indicador_anomalia"],
-                "causa": "",
+                "comentario_causa": "",
                 "causa_id": 0,
             }
             session.add(Anomaly(**curanomaly))
@@ -487,6 +475,7 @@ def updateSnapshot(newstates):
     Session = sessionmaker(bind=conn)
     sess = Session()
     for segstate in newstates:
+        segstate['anomalia'] = 0
         curstate = sess.query(SegmentSnapshot).get(segstate["id"])
         if curstate == None:
             curstate = SegmentSnapshot(**segstate)
@@ -518,7 +507,7 @@ def downloadAndLoadLastMonth():
     hasta = datetime.datetime.now()
     desde = hasta - datetime.timedelta(days=28)
     raw_data = downloadData(
-        sensores, datetime.timedelta(days=2), desde, hasta)
+        sensores, datetime.timedelta(days=2), desde, hasta, pool_len=len(sensores))
     filtered_data = filterDuplicateRecords(raw_data, desde, hasta)
     has_new_records = updateDB(filtered_data)
 
@@ -529,7 +518,6 @@ def dailyUpdate():
 
 
 if __name__ == '__main__':
-
     parser = argparse.ArgumentParser(description='Módulo de Análisis')
     parser.add_argument(
         '--setup_database', action='store_true', help='Setup de base de datos')

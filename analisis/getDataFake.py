@@ -5,8 +5,32 @@ import json
 import time
 import os
 import config
-import MySQLdb
 import random
+
+from dateutil import parser
+import datetime
+import urlparse
+from sqlalchemy import create_engine
+from sqlalchemy.ext.automap import automap_base
+from sqlalchemy.orm import Session
+
+# Schema reflection! Para que las clases esten
+# Actualizadas con las migraciones de la DB
+Base = automap_base()
+# Base = declarative_base()
+
+db_url = config.db_url
+engine = create_engine(db_url)
+
+# reflect the tables
+Base.prepare(engine, reflect=True)
+
+Historical = Base.classes.historical
+Anomaly = Base.classes.anomaly
+SegmentSnapshot = Base.classes.segment_snapshot
+Causa = Base.classes.causa
+
+session = Session(engine)
 
 
 def readSegmentos():
@@ -16,10 +40,7 @@ def readSegmentos():
     result = []
 
     try:
-        db = MySQLdb.connect(host=config.mysql["host"], passwd=config.mysql[
-                             "password"], user=config.mysql["user"])
-        db.select_db("dashboardoperativo")
-        cur = db.cursor()
+        cur = engine.connect()
     except Exception, ex:
         print ex
         result = []
@@ -29,33 +50,57 @@ def readSegmentos():
             result.append(row)
     finally:
         cur.close()
-        db.close()
         return result
 
 
 def createSegmentos():
 
-    db = MySQLdb.connect(host=config.mysql["host"], passwd=config.mysql[
-                         "password"], user=config.mysql["user"])
-    cur = db.cursor()
-    db.select_db(config.mysql["db"])
-
     causas = ["Choque", "Manifestacion", "Animales sueltos"]
-
+    cur = engine.connect()
     try:
         for ID in range(10, 58):
             cur.execute("""INSERT INTO segment_snapshot VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
                         (ID, time.strftime('%Y-%m-%d %H:%M:%S'), random.randrange(5, 21),
-                         random.randrange(0, 101), causas[random.randrange(0, 3)], random.randrange(
-                             0, 21), random.randrange(1, 120),
-                         random.random(), random.randrange(0, 4)))
+                            random.randrange(0, 101), causas[random.randrange(0, 3)], random.randrange(
+                            0, 21), random.randrange(1, 120),
+                            random.random(), random.randrange(0, 4)))
             print "Auto Increment ID: %s" % ID
     except Exception, ex:
         print(ex)
     finally:
         cur.close()
-        db.commit()
-        db.close()
+
+
+def api_sensores_fake(url):
+
+    sensor = urlparse.urlsplit(url).path.split("/")[3]
+
+    dato = {
+        "_id": {"$id": "55dca5f7312e783b74c62b9d"},
+        "date": datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%dT%H:%M:%S-03:00'),
+        "iddevice": 10,
+        "data": random.randrange(100, 1500),
+        "id_data_type": 13,
+        "migrated": "false"
+    }
+
+    res = {
+        "codigo": "200",
+        "error": [],
+        "datos": {
+            "id": sensor,
+            "date_beg": "nulL",
+            "date_end": "null",
+            "duration": "null",
+            "datatype": "null",
+            "count": "null",
+            "data": []
+        },
+        "mensaje": "Operación exitosa"
+    }
+
+    res['datos']['data'].append(dato)
+    return res
 
 
 def getData():
@@ -85,14 +130,12 @@ def parserEmitDataFake(self, result):
 
 def updateSegmentos():
 
-    db = MySQLdb.connect(host=config.mysql["host"], passwd=config.mysql[
-                         "password"], user=config.mysql["user"])
-    causas = ["Choque", "Manifestacion", "Animales sueltos"]
-    query = """UPDATE segment_snapshot SET timestamp_medicion = %s, tiempo = %s, velocidad = %s, causa = %s, causa_id = %s, duracion_anomalia = %s, \
-  indicador_anomalia =%s, anomalia = %s WHERE id = %s"""
-    db.select_db(config.mysql["db"])
+    cur = engine.connect()
 
-    cur = db.cursor()
+    causas = ["Choque", "Manifestacion", "Animales sueltos"]
+    query = """UPDATE segment_snapshot SET timestamp_medicion = %s, tiempo = %s, velocidad = %s, comentario_causa = %s, causa_id = %s, duracion_anomalia = %s, \
+  indicador_anomalia =%s, anomalia = %s WHERE id = %s"""
+
     for ID in range(1, 57):
         # timestamp_medicion, tiempo, velocidad, causa, causa_id, duracion_anomalia, indicador_anomalia, anomalia, id
         update = (time.strftime('%Y-%m-%d %H:%M:%S'), random.randrange(5, 21), random.randrange(0, 101), causas[random.randrange(0, 3)],
@@ -102,8 +145,6 @@ def updateSegmentos():
         cur.execute(query, update)
 
     cur.close()
-    db.commit()
-    db.close()
 
 
 if __name__ == '__main__':

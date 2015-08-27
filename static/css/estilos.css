@@ -105,8 +105,11 @@ html, body {
     top: 30px;
     height: 52px;
     width: 52px;
-    margin: 0 auto;
+    margin: 0 auto; }
+  .card .visto {
     background-image: url("img/visto.svg"); }
+  .card .noVisto {
+    background-image: url("img/novisto.svg"); }
 
 .estadoBorde0 {
   border-left: 15px solid #c0c0c0; }

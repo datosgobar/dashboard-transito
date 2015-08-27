@@ -21,8 +21,7 @@ class setInterval:
     def __init__(self):
 
         self.setTimeOut = 0
-        self.dawn = range(7, 24)
-        self.dawn.reverse()  # 17 extraccion lun/dom,
+        self.dawn = [23, 00, 1, 2, 3, 4, 5, 6, 7]
         # 36 extraccion lun/vier, 9 extraciones sab/dom
         self.morning = range(8, 11)
         # 42 extraccion lun/vier, 21 extraciones sab/dom
@@ -114,7 +113,7 @@ class setInterval:
             desde = hasta - datetime.timedelta(minutes=self.setTimeOut / 60)
             print self.setTimeOut / 60
             print hasta, desde
-            analisis.executeLoop(desde, hasta, dontdownload=True)
+            analisis.executeLoop(desde, hasta, dontdownload=False)
             # print "somethings, another code"
             time.sleep(self.setTimeOut)
 
