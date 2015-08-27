@@ -15,16 +15,18 @@ franjas = [
 ]
 
 
+dfdaytype = pd.DataFrame([
+    "workingday",
+    "workingday",
+    "workingday",
+    "workingday",
+    "workingday",
+    "saturday",
+    "sunday",
+])
+
+
 def prepareDataFrame(df, timeadjust=None, doimputation=False):
-    dfdaytype = pd.DataFrame([
-        "workingday",
-        "workingday",
-        "workingday",
-        "workingday",
-        "workingday",
-        "saturday",
-        "sunday",
-    ])
     df.date = pd.to_datetime(df.date)
 
     # Ajuste del timezone
