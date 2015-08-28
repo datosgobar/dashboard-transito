@@ -7,6 +7,7 @@ import os
 import config
 import random
 
+
 from dateutil import parser
 import datetime
 import urlparse
@@ -38,19 +39,13 @@ def readSegmentos():
             readSegmentos()
     """
     result = []
-
-    try:
-        cur = engine.connect()
-    except Exception, ex:
-        print ex
-        result = []
-    else:
-        cur.execute("SELECT * FROM segment_snapshot")
-        for row in cur.fetchall():
-            result.append(row)
-    finally:
-        cur.close()
-        return result
+    cur = engine.connect()
+    segment_total = cur.execute("SELECT * FROM segment_snapshot")
+    for row in segment_total.fetchall():
+        print row
+        result.append(row)
+    cur.close()
+    return result
 
 
 def createSegmentos():
@@ -148,9 +143,11 @@ def updateSegmentos():
 
 
 if __name__ == '__main__':
-    createSegmentos()
+    result = readSegmentos()
+    print result
+#    createSegmentos()
 
-    while(True):
-        updateSegmentos()
-        print("Generando nuevos datos")
-        time.sleep(60)
+# while(True):
+#    updateSegmentos()
+#    print("Generando nuevos datos")
+#    time.sleep(60)
