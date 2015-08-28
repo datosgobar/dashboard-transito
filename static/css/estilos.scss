@@ -6,170 +6,167 @@
 @include font-face('AvenirNext-Bold', 'fonts/AvenirNextLTPro-Bold');
 @include font-face('AvenirNext-Condensed', 'fonts/AvenirNextLTPro-Cn');
 @include font-face('AvenirNext-Demi', 'fonts/AvenirNextLTPro-Demi');
-
-$fontset-gotham: "Gotham", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
-$fontset-openSans: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
-$fontset-avenir-bold: "AvenirNext-Bold", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
-$fontset-avenir-condensed: "AvenirNext-Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
-$fontset-avenir-demi: "AvenirNext-Demi", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
-
+$fontset-gotham: "Gotham",
+"Helvetica Neue",
+Helvetica,
+Arial,
+sans-serif !default;
+$fontset-openSans: "Open Sans",
+"Helvetica Neue",
+Helvetica,
+Arial,
+sans-serif !default;
+$fontset-avenir-bold: "AvenirNext-Bold",
+"Helvetica Neue",
+Helvetica,
+Arial,
+sans-serif !default;
+$fontset-avenir-condensed: "AvenirNext-Condensed",
+"Helvetica Neue",
+Helvetica,
+Arial,
+sans-serif !default;
+$fontset-avenir-demi: "AvenirNext-Demi",
+"Helvetica Neue",
+Helvetica,
+Arial,
+sans-serif !default;
+// colores
+$fondo-landing: #282D33;
+$fondo-tarjeta: #1C2023;
+$texto-tarjeta: #CFD1D1;
+$fondo-anomalia: #3C434D;
 $rojo: #e53935;
 $naranja: #ff8f00;
 $amarillo: #fdd835;
-
-$negro: #333333;
-$gris: #c0c0c0;
-$fondoAnomalia: #e5e5e5;
-$verde:#39e535;
-$blanco: #fafafa;
-
 //tamaños de dispositivos
 $screen-xs: 480px !default; // telefonos
 $screen-sm: 768px !default; //tablet
 $screen-md: 992px !default; //desktop
-
 html,
 body {
     margin: 10px auto;
     padding: 0;
     width: 100%;
-    background-color: #F2F2F2;
-    //font-size: 1.3em;
-    //font-size: 1em;
+    background-color: $fondo-landing;
     @include breakpoint(xs) {
         background-color: #ffffff;
     }
 }
 
-.oculta{
+.oculta {
     display: none;
 }
 
-#indicador{
+#indicador {
     display: none;
     position: fixed;
     top: 0px;
     left: 0px;
-    border-radius: 25px;
     width: 100%;
     height: 5px;
-    background-color: $negro;
-
+    background-color: $texto-tarjeta;
 }
 
-.card{
-    position: relative;
+.card {
+    color: $texto-tarjeta;
     @include border-top-radius(5px);
     @include border-bottom-radius(5px);
-    background-color: #ffffff;
+    background-color: $fondo-tarjeta;
+    font-size: 45px;
+    font-family: $fontset-avenir-bold;
     width: 90%;
     padding: 20px;
     margin: 0 auto 20px;
     overflow: hidden;
-    .titulo{
-        font-size: 45px;
-        padding-bottom: 10px;
-        font-family: $fontset-avenir-bold;
-    }
-
-    .segmentos{
-        width: 100%;
-        font-family: $fontset-avenir-condensed;
-        .contenedorSegmentos{
-            .etiquetaSegmento{
-                font-size: 45px;
-                padding-bottom: 10px;
-            }
-            .estadoSegmento{
-                height: 35px;
-                background-color: $fondoAnomalia;
-                border: 1px solid $blanco;
-                color: $fondoAnomalia;
-            }
-            .sentido{
-                font-family: $fontset-avenir-demi;
-                font-size: 20px;
-                text-transform: uppercase;
-                position: relative;
-                height: 1px;
-                left: 91%;
-                top: -31px;
-            }
-
-            .capital, .provincia, .etiquetas{
-                display: table;
-                table-layout: fixed;
-                width: 90%;
-            }
-            .segmento{
-                display: table-cell;
-                .rojo, .estado3{
-                    background-color: $rojo;
-                    color: $rojo;
-                }
-                .naranja, .estado2{
-                    background-color: $naranja;
-                    color: $naranja;
-                }
-                .amarillo, .estado1{
-                    background-color: $amarillo;
-                    color: $amarillo;
-                }
-            }
-        }
-    }
-
-    .icono {
-        position: absolute;
-        left: 91%;
-        top: 30px;
-
-        height: 52px;
-        width: 52px;
-        margin: 0 auto;
-    }
-    .visto {
-        background-image: url("img/visto.svg");
-    }
-    .noVisto {
-        background-image: url("img/novisto.svg");
-    }
-
- }
-
-.estadoBorde0{
-    border-left: 15px solid $gris;        
-}
-.estadoBorde1{
-    border-left: 15px solid $amarillo;        
-}
-.estadoBorde2{
-    border-left: 15px solid $naranja;        
-}
-.estadoBorde3{
-    border-left: 15px solid $rojo;        
 }
 
-.shadow{
-    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 0.5);
-    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1);
+.capital,
+.provincia,
+.etiquetas {
+    margin: 0px 100px 0px auto;
+    display: table;
+    table-layout: fixed;    
+    width: 70%;
+    border-collapse: separate;
+    border-spacing: 5px;
 }
 
-.shadow:hover{
-    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 0.5);
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25);
+.flechaCap,
+.flechaPro {
+    float: right;
+    position: relative;
+    top: -34px;
+    right: 20px;
+    width: 44px;
+    height: 27px;
+
+}
+.flechaCap {
+    background-image: url("img/capital.svg");
 }
 
-#navegacion{
-    height: 100%;
-    width: 50px;
-    background-color: $negro;
+.flechaPro {
+    background-image: url("img/provincia.svg");
 }
 
-#mapa{
-    // Este estilo es provisorio
-    display: none;
-    width: 90%;
-    height: 300px;
-    margin: 0 auto;
+.segmento {
+    display: table-cell;
+    height: 35px;
+    font-family: $fontset-avenir-demi;
+    font-size: 40px;
 }
+
+
+.corredor {
+    float: left;
+}
+
+.izquierda {
+    text-align: left;
+}
+
+.centro {
+    text-align: center;
+}
+
+.derecha {
+    text-align: right;
+}
+
+.icono {
+    position: relative;
+    top: 20px;
+    height: 52px;
+    width: 52px;
+    margin-bottom: 20px;
+}
+
+.visto {
+    background-image: url("img/visto.svg");
+}
+
+.enProceso {
+    background-image: url("img/enproceso.svg");
+}
+
+.noVisto {
+    background-image: url("img/novisto.svg");
+}
+
+.estado0 {
+    background-color: $fondo-anomalia;
+}
+
+.estado1 {
+    background-color: $amarillo;
+}
+
+.estado2 {
+    background-color: $naranja;
+}
+
+.estado3 {
+    background-color: $rojo;
+}
+
