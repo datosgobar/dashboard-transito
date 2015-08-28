@@ -32,7 +32,7 @@ html, body {
   margin: 10px auto;
   padding: 0;
   width: 100%;
-  background-color: #F2F2F2; }
+  background-color: #282D33; }
   @media (max-width: 767px) {
     html, body {
       background-color: #ffffff; } }
@@ -45,99 +45,88 @@ html, body {
   position: fixed;
   top: 0px;
   left: 0px;
-  border-radius: 25px;
   width: 100%;
   height: 5px;
-  background-color: #333333; }
+  background-color: #CFD1D1; }
 
 .card {
-  position: relative;
+  color: #CFD1D1;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-  background-color: #ffffff;
+  background-color: #1C2023;
+  font-size: 45px;
+  font-family: "AvenirNext-Bold", "Helvetica Neue", Helvetica, Arial, sans-serif;
   width: 90%;
   padding: 20px;
   margin: 0 auto 20px;
   overflow: hidden; }
-  .card .titulo {
-    font-size: 45px;
-    padding-bottom: 10px;
-    font-family: "AvenirNext-Bold", "Helvetica Neue", Helvetica, Arial, sans-serif; }
-  .card .segmentos {
-    width: 100%;
-    font-family: "AvenirNext-Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif; }
-    .card .segmentos .contenedorSegmentos .etiquetaSegmento {
-      font-size: 45px;
-      padding-bottom: 10px; }
-    .card .segmentos .contenedorSegmentos .estadoSegmento {
-      height: 35px;
-      background-color: #e5e5e5;
-      border: 1px solid #fafafa;
-      color: #e5e5e5; }
-    .card .segmentos .contenedorSegmentos .sentido {
-      font-family: "AvenirNext-Demi", "Helvetica Neue", Helvetica, Arial, sans-serif;
-      font-size: 20px;
-      text-transform: uppercase;
-      position: relative;
-      height: 1px;
-      left: 91%;
-      top: -31px; }
-    .card .segmentos .contenedorSegmentos .capital, .card .segmentos .contenedorSegmentos .provincia, .card .segmentos .contenedorSegmentos .etiquetas {
-      display: table;
-      table-layout: fixed;
-      width: 90%; }
-    .card .segmentos .contenedorSegmentos .segmento {
-      display: table-cell; }
-      .card .segmentos .contenedorSegmentos .segmento .rojo, .card .segmentos .contenedorSegmentos .segmento .estado3 {
-        background-color: #e53935;
-        color: #e53935; }
-      .card .segmentos .contenedorSegmentos .segmento .naranja, .card .segmentos .contenedorSegmentos .segmento .estado2 {
-        background-color: #ff8f00;
-        color: #ff8f00; }
-      .card .segmentos .contenedorSegmentos .segmento .amarillo, .card .segmentos .contenedorSegmentos .segmento .estado1 {
-        background-color: #fdd835;
-        color: #fdd835; }
-  .card .icono {
-    position: absolute;
-    left: 91%;
-    top: 30px;
-    height: 52px;
-    width: 52px;
-    margin: 0 auto; }
-  .card .visto {
-    background-image: url("img/visto.svg"); }
-  .card .noVisto {
-    background-image: url("img/novisto.svg"); }
 
-.estadoBorde0 {
-  border-left: 15px solid #c0c0c0; }
+.capital, .provincia, .etiquetas {
+  margin: 0px 100px 0px auto;
+  display: table;
+  table-layout: fixed;
+  width: 70%;
+  border-collapse: separate;
+  border-spacing: 5px; }
 
-.estadoBorde1 {
-  border-left: 15px solid #fdd835; }
+.flechaCap, .flechaPro {
+  float: right;
+  position: relative;
+  top: -34px;
+  right: 20px;
+  width: 44px;
+  height: 27px; }
 
-.estadoBorde2 {
-  border-left: 15px solid #ff8f00; }
+.flechaCap {
+  background-image: url("img/capital.svg"); }
 
-.estadoBorde3 {
-  border-left: 15px solid #e53935; }
+.flechaPro {
+  background-image: url("img/provincia.svg"); }
 
-.shadow {
-  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 0.5);
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1); }
+.segmento {
+  display: table-cell;
+  height: 35px;
+  font-family: "AvenirNext-Demi", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 40px; }
 
-.shadow:hover {
-  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 0.5);
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25); }
+.corredor {
+  float: left; }
 
-#navegacion {
-  height: 100%;
-  width: 50px;
-  background-color: #333333; }
+.izquierda {
+  text-align: left; }
 
-#mapa {
-  display: none;
-  width: 90%;
-  height: 300px;
-  margin: 0 auto; }
+.centro {
+  text-align: center; }
+
+.derecha {
+  text-align: right; }
+
+.icono {
+  position: relative;
+  top: 20px;
+  height: 52px;
+  width: 52px;
+  margin-bottom: 20px; }
+
+.visto {
+  background-image: url("img/visto.svg"); }
+
+.enProceso {
+  background-image: url("img/enproceso.svg"); }
+
+.noVisto {
+  background-image: url("img/novisto.svg"); }
+
+.estado0 {
+  background-color: #3C434D; }
+
+.estado1 {
+  background-color: #fdd835; }
+
+.estado2 {
+  background-color: #ff8f00; }
+
+.estado3 {
+  background-color: #e53935; }
