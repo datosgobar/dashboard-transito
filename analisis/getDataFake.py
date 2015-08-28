@@ -45,8 +45,8 @@ def readSegmentos():
         print ex
         result = []
     else:
-        cur.execute("SELECT * FROM segment_snapshot")
-        for row in cur.fetchall():
+        segment_snapshot = cur.execute("SELECT * FROM segment_snapshot")
+        for row in segment_snapshot.fetchall():
             result.append(row)
     finally:
         cur.close()
