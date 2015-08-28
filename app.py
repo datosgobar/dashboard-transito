@@ -7,6 +7,7 @@ import os
 import bottle
 import time
 import datetime
+import logging
 
 from analisis import *
 from bottle import error, request
