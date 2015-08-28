@@ -6,7 +6,7 @@ import gevent
 import os
 import bottle
 import time
-
+import datetime
 
 from analisis import *
 from bottle import error, request
@@ -115,7 +115,8 @@ def send_data():
             if queryAnomaly.count():
                 queryAnomaly.update({
                     'causa_id': causa_id,
-                    'comentario_causa': comentario
+                    'comentario_causa': comentario,
+                    'timestamp_asignacion': datetime.datetime.now()
                 })
                 session.commit()
                 session.close()
