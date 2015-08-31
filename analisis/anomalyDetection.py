@@ -37,11 +37,11 @@ def prepareDataFrame(df, timeadjust=None, doimputation=False):
     df["daytype"] = dfdaytype.loc[df.weekday].values[:, 0]
 
     # Imputacion de datos faltantes
+    newrecords = []
     if doimputation:
         # Datos para completar los faltantes
         filler_data = df.groupby(
             [df.date.dt.hour, df.daytype, df.iddevice]).mean()["data"]
-        newrecords = []
         for iddevice in df.iddevice.unique():
             work = df[df.iddevice == iddevice].sort("date")
             diff = work.date.shift(periods=-1) - work.date
@@ -217,12 +217,12 @@ def _computeDetectionParams(lastmonthrecords):
         a = a.reset_index()
         a.set_index(["iddevice", "daytype"], inplace=True)
 
-        resampled_detectparams.loc[(iddevice, "workingday"), "mean"] = a.loc[
-            (iddevice, "workingday"), "mean"]
-        resampled_detectparams.loc[(iddevice, "saturday"), "mean"] = a.loc[
-            (iddevice, "saturday"), "mean"]
-        resampled_detectparams.loc[(iddevice, "sunday"), "mean"] = a.loc[
-            (iddevice, "sunday"), "mean"]
+        for daytype in ["workingday", "saturday", "sunday"]:
+            try:
+                resampled_detectparams.loc[(iddevice, daytype), "mean"] = a.loc[
+                    (iddevice, daytype), "mean"]
+            except:
+                pass
 
     return resampled_detectparams.reset_index()
 

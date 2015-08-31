@@ -52,10 +52,10 @@ def getData(url):
             if (response.status_code == 200):
                 return response.json()
             else:
-                print ("hubo timeout de teracode en {0}".format(url))
+                print("hubo timeout de teracode en {0}".format(url))
                 pass
         except requests.exceptions.Timeout:
-            print ("hubo timeout del request en {0}".format(url))
+            print("hubo timeout del request en {0}".format(url))
             pass
         except:
             return None
@@ -389,7 +389,7 @@ def getCurrentSegmentState(anomalies, lastrecords):
             "causa_id": ad.get(str(s[0]), {}).get("causa_id", 0),
             "duracion_anomalia": duracion_anomalia,
             "indicador_anomalia": ad.get(s[0], {}).get("indicador_anomalia", 0),
-            "anomalia": ad.has_key(s[0], {}).get("nivel_anomalia", 0),
+            "anomalia": ad.get(s[0], {}).get("nivel_anomalia", 0),
         }]
     return output
 
