@@ -127,7 +127,10 @@ def setupDB():
     """
     Guarda el enum de causas de una anomalia
     """
-    with open('../static/data/causas.json') as causas_data:
+    # pdb.set_trace()
+    file_causas = os.path.realpath(
+        "../dashboard-operativo-transito/static/data/causas.json")
+    with open(file_causas) as causas_data:
         causas = json.load(causas_data)
     for causa in causas['causas']:
         if not session.query(Causa).filter(Causa.id == causa['id']).count():
@@ -361,7 +364,7 @@ def getCurrentSegmentState(anomalies, lastrecords):
 
         lastrecords index 0 [57, 611, datetime.datetime(2015, 8, 27, 13, 40, 9)]
     """
-    pdb.set_trace()
+    # pdb.set_trace()
     segments = {}
     for r in lastrecords:
         if not segments.has_key(r[0]) or r[2] > segments[r[0]][2]:

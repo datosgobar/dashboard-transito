@@ -126,8 +126,6 @@ def send_data():
                 return "no encontre anomaly {}".format(anomaly_id)
         else:
             return "no encontre valor en campos anomaly_id y causa_id"
-    else:
-        return "el post fue mal armado"
 
 
 @error(404)
