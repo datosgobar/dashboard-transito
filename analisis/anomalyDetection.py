@@ -116,10 +116,14 @@ def detectAnomalies(detectparams, lastrecords, dontfilter=False):
 
     def formatOutput(anomaly):
         anomaly = anomaly[1]
+        indicador = round(
+            (anomaly["data"] - anomaly["mean"]) / anomaly["mean"], 2)
+        level = (2 if indicador > .25 else 1) if anomaly["isanomaly"] else 0
         return {
             "id_segment": anomaly["iddevice"],
             "timestamp": anomaly["date"].to_pydatetime(),
-            "indicador_anomalia": round((anomaly["data"] - anomaly["mean"]) / anomaly["std"], 2),
+            "indicador_anomalia": indicador,
+            "nivel_anomalia": level,
             "threshold": anomaly["threshold"],
             "evalfield": anomaly["data"],
             "isanomaly": anomaly["isanomaly"],

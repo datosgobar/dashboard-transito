@@ -346,7 +346,7 @@ Retorna:
     "timestamp_start" : (ts de inicio),
     "timestamp_end" : (ts de fin),
     "indicador_anomalia" : (porcentaje),
-    "anomalia" : True/False
+    "anomalia" : int
 }
 """
 # TODO: Completar campo "velocidad"
@@ -375,7 +375,7 @@ def getCurrentSegmentState(anomalies, lastrecords):
             "causa_id": ad.get(s[0], {}).get("causa_id", 0),
             "duracion_anomalia": duracion_anomalia,
             "indicador_anomalia": ad.get(s[0], {}).get("indicador_anomalia", 0),
-            "anomalia": ad.has_key(s[0]),
+            "anomalia": ad.has_key(s[0], {}).get("nivel_anomalia", 0),
         }]
     return output
 
@@ -460,6 +460,7 @@ def upsertAnomalies(newanomalydata):
                 "timestamp_start": a["timestamp"],
                 "timestamp_end": a["timestamp"],
                 "indicador_anomalia": a["indicador_anomalia"],
+                "nivel_anomalia": a["nivel_anomalia"],
                 "comentario_causa": "",
                 "causa_id": 0,
             }
