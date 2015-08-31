@@ -39,13 +39,18 @@ def readSegmentos():
             readSegmentos()
     """
     result = []
-    cur = engine.connect()
-    segment_total = cur.execute("SELECT * FROM segment_snapshot")
-    for row in segment_total.fetchall():
-        print row
-        result.append(row)
-    cur.close()
-    return result
+    try:
+        cur = engine.connect()
+    except Exception, ex:
+        print ex
+        result = []
+    else:
+        segment_snapshot = cur.execute("SELECT * FROM segment_snapshot")
+        for row in segment_snapshot.fetchall():
+            result.append(row)
+    finally:
+        cur.close()
+        return result
 
 
 def createSegmentos():
@@ -73,7 +78,7 @@ def api_sensores_fake(url):
     dato = {
         "_id": {"$id": "55dca5f7312e783b74c62b9d"},
         "date": datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%dT%H:%M:%S-03:00'),
-        "iddevice": 10,
+        "iddevice": sensor,
         "data": random.randrange(100, 1500),
         "id_data_type": 13,
         "migrated": "false"
@@ -132,7 +137,8 @@ def updateSegmentos():
   indicador_anomalia =%s, anomalia = %s WHERE id = %s"""
 
     for ID in range(1, 57):
-        # timestamp_medicion, tiempo, velocidad, causa, causa_id, duracion_anomalia, indicador_anomalia, anomalia, id
+        # timestamp_medicion, tiempo, velocidad, causa, causa_id,
+        # duracion_anomalia, indicador_anomalia, anomalia, id
         update = (time.strftime('%Y-%m-%d %H:%M:%S'), random.randrange(5, 21), random.randrange(0, 101), causas[random.randrange(0, 3)],
                   random.randrange(0, 21), random.randrange(1, 120),
                   random.random(), random.randrange(0, 4), ID)
@@ -143,11 +149,9 @@ def updateSegmentos():
 
 
 if __name__ == '__main__':
-    result = readSegmentos()
-    print result
-#    createSegmentos()
+    createSegmentos()
 
-# while(True):
-#    updateSegmentos()
-#    print("Generando nuevos datos")
-#    time.sleep(60)
+    while(True):
+        updateSegmentos()
+        print("Generando nuevos datos")
+        time.sleep(60)

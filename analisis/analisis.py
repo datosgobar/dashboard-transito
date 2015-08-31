@@ -2,13 +2,14 @@
 # -*- coding: utf-8 -*-
 
 import sqlalchemy
-import MySQLdb
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import exc
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 
+import pdb
 from getDataFake import api_sensores_fake
 import config
 import json
@@ -51,10 +52,10 @@ def getData(url):
             if (response.status_code == 200):
                 return response.json()
             else:
-                #("hubo timeout de teracode en {0}".format(url))
+                print ("hubo timeout de teracode en {0}".format(url))
                 pass
         except requests.exceptions.Timeout:
-            #("hubo timeout del request en {0}".format(url))
+            print ("hubo timeout del request en {0}".format(url))
             pass
         except:
             return None
@@ -96,16 +97,16 @@ def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=N
         start += step
 
     """cambiar funcion map por api_sensores_fake"""
-    #alldata = map(api_sensores_fake, urls)
-    pool = multiprocessing.Pool(pool_len)
-    alldata = pool.map(getData, urls)
-    pool.close()
-    pool.terminate()
-    pool.join()
-    if outfn != None:
-        outf = open(outfn, "wb")
-        json.dump(alldata, outf)
-        outf.close()
+    alldata = map(api_sensores_fake, urls)
+    # pool = multiprocessing.Pool(pool_len)
+    # alldata = pool.map(getData, urls)
+    # pool.close()
+    # pool.terminate()
+    # pool.join()
+    # if outfn != None:
+    #     outf = open(outfn, "wb")
+    #     json.dump(alldata, outf)
+    #     outf.close()
 
     return alldata
 
@@ -126,7 +127,10 @@ def setupDB():
     """
     Guarda el enum de causas de una anomalia
     """
-    with open('../static/data/causas.json') as causas_data:
+    # pdb.set_trace()
+    file_causas = os.path.realpath(
+        "../dashboard-operativo-transito/static/data/causas.json")
+    with open(file_causas) as causas_data:
         causas = json.load(causas_data)
     for causa in causas['causas']:
         if not session.query(Causa).filter(Causa.id == causa['id']).count():
@@ -353,6 +357,14 @@ Retorna:
 
 
 def getCurrentSegmentState(anomalies, lastrecords):
+    """
+        anomalies index 0 {'comentario_causa': '', 'id_segment': '10', 'timestamp_start': \
+            '2015-08-27 13:40:00', 'indicador_anomalia': '9.77', 'timestamp_end': '2015-08-27 13:55:00', \
+            'id': '56', 'causa_id': '0'}
+
+        lastrecords index 0 [57, 611, datetime.datetime(2015, 8, 27, 13, 40, 9)]
+    """
+    # pdb.set_trace()
     segments = {}
     for r in lastrecords:
         if not segments.has_key(r[0]) or r[2] > segments[r[0]][2]:
@@ -361,22 +373,29 @@ def getCurrentSegmentState(anomalies, lastrecords):
     ad = {a["id_segment"]: a for a in anomalies}
 
     output = []
+    # segments keys dispone de todos los sensores range(0, 57)
     for s in segments.values():
+        # s [10, 248, datetime.datetime(2015, 8, 27, 15, 1, 27)]
         duracion_anomalia = 0
         if ad.has_key(s[0]):
-            duracion_anomalia = ad[s[0]][
-                "timestamp_end"] - ad[s[0]]["timestamp_start"]
-        output += [{
+            duracion_anomalia = (ad[s[0]][
+                "timestamp_end"] - ad[s[0]]["timestamp_start"]).seconds / 60
+        if ad.has_key(s[0]):
+            anomalia = 1
+        else:
+            anomalia = 0
+        output.append({
             "id": s[0],
             "timestamp_medicion": s[2],
             "tiempo": s[1],
             "velocidad": -1,
-            "comentario_causa": ad.get(s[0], {}).get("comentario_causa", ""),
-            "causa_id": ad.get(s[0], {}).get("causa_id", 0),
+            "comentario_causa": ad.get(str(s[0]), {}).get("comentario_causa", ""),
+            "causa_id": ad.get(str(s[0]), {}).get("causa_id", 0),
             "duracion_anomalia": duracion_anomalia,
-            "indicador_anomalia": ad.get(s[0], {}).get("indicador_anomalia", 0),
-            "anomalia": ad.has_key(s[0]),
-        }]
+            "indicador_anomalia": ad.get(str(s[0]), {}).get("indicador_anomalia", 0),
+            "anomalia": anomalia,
+            "anomalia_id": ad.get(str(s[0]), {}).get("id", 0)
+        })
     return output
 
 """
@@ -438,6 +457,11 @@ a.start            a.end = b.ts
 
 
 def upsertAnomalies(newanomalydata):
+    """
+        newanomalydata index 0 {'timestamp': datetime.datetime(2015, 8, 27, 15, 5), 'isanomaly': True, \
+            'id_segment': 37, 'indicador_anomalia': 3.39, 'threshold': 664.5, 'evalfield': 1010}
+    """
+    # pdb.set_trace()
     conn = getDBConnection()
     Session = sessionmaker(bind=conn)
     session = Session()
@@ -454,6 +478,7 @@ def upsertAnomalies(newanomalydata):
             for column in Anomaly.__table__.columns:
                 curanomaly[column.name] = str(getattr(candidate, column.name))
             session.add(candidate)
+            lastmodified_anomaly = candidate
         else:
             curanomaly = {
                 "id_segment": a["id_segment"],
@@ -461,21 +486,31 @@ def upsertAnomalies(newanomalydata):
                 "timestamp_end": a["timestamp"],
                 "indicador_anomalia": a["indicador_anomalia"],
                 "comentario_causa": "",
-                "causa_id": 0,
+                "causa_id": 0
             }
-            session.add(Anomaly(**curanomaly))
+            new_anomaly = Anomaly(**curanomaly)
+            session.add(new_anomaly)
+            lastmodified_anomaly = new_anomaly
         session.commit()
-        liveanomalies += [curanomaly]
+        print lastmodified_anomaly.id
+        curanomaly['anomalia_id'] = lastmodified_anomaly.id
+        liveanomalies.append(curanomaly)
     conn.close()
     return liveanomalies
 
 
 def updateSnapshot(newstates):
+    """
+       newstates index 0 
+       {'duracion_anomalia': 0, 'tiempo': 755, 'comentario_causa': '', 'indicador_anomalia': 0, 'velocidad': -1, \
+        'anomalia': 0, 'timestamp_medicion': datetime.datetime(2015, 8, 27, 15, 32, 10), 'id': 10, 'causa_id': 0}    
+    """
+    # pdb.set_trace()
     conn = getDBConnection()
     Session = sessionmaker(bind=conn)
     sess = Session()
     for segstate in newstates:
-        segstate['anomalia'] = 0
+        # print segstate["anomalia_id"]
         curstate = sess.query(SegmentSnapshot).get(segstate["id"])
         if curstate == None:
             curstate = SegmentSnapshot(**segstate)
@@ -501,13 +536,16 @@ def performAnomalyAnalysis(ahora=None):
 
 
 def downloadAndLoadLastMonth():
+
     sensores = [10, 12, 57, 53, 51, 49, 40, 43, 37, 36, 21, 31, 33, 35, 13, 14, 18, 17, 23, 24, 25, 26, 28, 30,
-                32, 45, 47, 38, 44, 48, 48, 11, 56, 54, 55, 41, 22, 16, 15, 19, 20, 10, 27, 29, 34, 39, 42, 46, 50, 52]
+                32, 45, 47, 38, 44, 48, 48, 11, 56, 54, 55, 41, 22, 16, 15, 19, 20, 10,
+                27, 29, 34, 39, 42, 46, 50, 52]
 
     hasta = datetime.datetime.now()
     desde = hasta - datetime.timedelta(days=28)
     raw_data = downloadData(
         sensores, datetime.timedelta(days=2), desde, hasta, pool_len=len(sensores))
+    # print raw_data
     filtered_data = filterDuplicateRecords(raw_data, desde, hasta)
     has_new_records = updateDB(filtered_data)
 

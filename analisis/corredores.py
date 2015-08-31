@@ -25,25 +25,26 @@ def readSnapshot():
         print ex
         result = []
     else:
-        cur.execute("SELECT * FROM segment_snapshot")
-        for row in cur.fetchall():
+        segment_snapshot = cur.execute("SELECT * FROM segment_snapshot")
+        for row in segment_snapshot.fetchall():
             result.append(row)
     finally:
         cur.close()
         return result
 
 
-def buildSegmentos(data):
+def buildSegmentos(segment):
     return {
-        "id": int(data[0]),
-        "timestamp_medicion": str(data[1]),
-        "tiempo": int(data[2]),
-        "velocidad": int(data[3]),
-        "causa": str(data[4]),
-        "causa_id": int(data[5]),
-        "duracion_anomalia": int(data[6]),
-        "indicador_anomalia": float(data[7]),
-        "anomalia": int(data[8])
+        "id": int(segment.id),
+        "timestamp_medicion": str(segment.timestamp_medicion),
+        "tiempo": int(segment.tiempo),
+        "velocidad": int(segment.velocidad),
+        "causa": str(segment.comentario_causa),
+        "causa_id": int(segment.causa_id),
+        "duracion_anomalia": int(segment.duracion_anomalia),
+        "indicador_anomalia": float(segment.indicador_anomalia),
+        "anomalia": int(segment.anomalia),
+        "anomalia": int(segment.anomalia_id)
     }
 
 
@@ -78,8 +79,7 @@ def parserEmitData(self, template):
         "provincia": [11, 56, 54, 55, 41, 22, 16, 15, 19, 20, 10, 27, 29, 34, 39, 46, 50, 52, 48, 30, 33, 43, 44]
     }
 
-    #update = readSnapshot()
-    update = readSegmentos()
+    update = readSnapshot()
 
     if len(update):
         for i in range(len(update)):
