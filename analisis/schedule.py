@@ -3,7 +3,7 @@
 
 import datetime
 import time
-#import analisis
+import analisis
 import os
 
 if os.environ.get('OPENSHIFT_PYTHON_DIR'):

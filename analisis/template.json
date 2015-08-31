@@ -2,97 +2,97 @@
 	"corredores": {
 		"independencia" : {
 			"nombre": "Independencia",
-			"id": "cInd",
+			"id": "cInde",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"Illia" : {
 			"nombre": "Illia",
-			"id": "cIll",
+			"id": "cIlli",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"9_de_julio" : {
 			"nombre": "9 de julio",
-			"id": "c9in",
+			"id": "c9int",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"9_de_julio_externo" : {
 			"nombre": "9 de julio - externo",
-			"id": "c9ex",
+			"id": "c9ext",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"alem" : {
 			"nombre": "Alem",
-			"id": "cAle",
+			"id": "cAlem",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"corrientes" : {
 			"nombre": "Corrientes",
-			"id": "cCor",
+			"id": "cCorr",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"rivadavia" : {
 			"nombre": "Rivadavia",
-			"id": "cRiv",
+			"id": "cRiva",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"av_de_mayo" : {
 			"nombre": "Av. de mayo",
-			"id": "cAvm",
+			"id": "cAvdm",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"san_martin" : {
 			"nombre": "San Martin",
-			"id": "cSan",
+			"id": "cSanm",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"juan_b_justo" : {
 			"nombre": "Juan B. Justo",
-			"id": "cJua",
+			"id": "cJuan",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"cordoba" : {
 			"nombre": "Córdoba",
-			"id": "cCor",
+			"id": "cCord",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"paseo_colon" : {
 			"nombre": "Paseo Colón",
-			"id": "cPas",
+			"id": "cPase",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"cabildo" : {
 			"nombre": "Cabildo",
-			"id": "cCab",
+			"id": "cCabi",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"pueyrredon" : {
 			"nombre": "Pueyrredón",
-			"id": "cPue",
+			"id": "cPuey",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"alcorta" : {
 			"nombre": "Alcorta",
-			"id": "cAlc",
+			"id": "cAlco",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"libertador" : {
 			"nombre": "Libertador",
-			"id": "cLib",
+			"id": "cLibe",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		}

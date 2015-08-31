@@ -6,16 +6,26 @@ import gevent
 import os
 import bottle
 import time
+import datetime
 import logging
 
-
 from analisis import *
-from bottle import error
+from bottle import error, request
 from socketio import socketio_manage
 from socketio.mixins import BroadcastMixin
 from socketio.namespace import BaseNamespace
 from gevent import monkey
 from dashboard_logging import setup_logging
+
+from sqlalchemy import create_engine
+from sqlalchemy.ext.automap import automap_base
+from sqlalchemy.orm import Session
+
+Base = automap_base()
+db_url = config.db_url
+engine = create_engine(db_url)
+Base.prepare(engine, reflect=True)
+Anomaly = Base.classes.anomaly
 
 monkey.patch_all()
 app = bottle.Bottle()
@@ -93,9 +103,29 @@ def get_static(filepath):
 
 @app.post("/")
 def send_data():
-    print request.forms.get('anomaly_id')
-    print request.forms.get("causa_id")
-    print request.forms.get("comentario")
+
+    if set(['anomaly_id', 'comentario', 'causa_id']) == set(request.forms.keys()):
+
+        session = Session(engine)
+        anomaly_id = request.forms.get('anomaly_id', False)
+        causa_id = request.forms.get("causa_id", False)
+        comentario = request.forms.get("comentario", False)
+
+        if anomaly_id and causa_id:
+            queryAnomaly = session.query(Anomaly).filter_by(id=anomaly_id)
+            if queryAnomaly.count():
+                queryAnomaly.update({
+                    'causa_id': causa_id,
+                    'comentario_causa': comentario,
+                    'timestamp_asignacion': datetime.datetime.now()
+                })
+                session.commit()
+                session.close()
+                return "guardado"
+            else:
+                return "no encontre anomaly {}".format(anomaly_id)
+        else:
+            return "no encontre valor en campos anomaly_id y causa_id"
 
 
 @error(404)
