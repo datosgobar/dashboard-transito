@@ -78,7 +78,7 @@ def api_sensores_fake(url):
     dato = {
         "_id": {"$id": "55dca5f7312e783b74c62b9d"},
         "date": datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%dT%H:%M:%S-03:00'),
-        "iddevice": 10,
+        "iddevice": sensor,
         "data": random.randrange(100, 1500),
         "id_data_type": 13,
         "migrated": "false"
