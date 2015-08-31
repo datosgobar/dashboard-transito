@@ -18,24 +18,30 @@
 
 <body>
 
+<header>
+    <div id="logo"></div>
+    <div id="status">70 px</div>
+</header>
+
+
     <div id="contenedor">
         <div id="listadoCorredores">
-            <div id="cLibe" class="corredor shadow"><span class="titulo">...</span><div class="tiempo">00'</div></div>
-            <div id="cAlco" class="corredor shadow"><span class="titulo">...</span><div class="tiempo">00'</div></div>
-            <div id="cIlli" class="corredor shadow"><span class="titulo">...</span><div class="tiempo">00'</div></div>
-            <div id="cCabi" class="corredor shadow"><span class="titulo">...</span><div class="tiempo">00'</div></div>
-            <div id="c9int" class="corredor shadow"><span class="titulo">...</span><div class="tiempo">00'</div></div>
-            <div id="c9ext" class="corredor shadow"><span class="titulo">...</span><div class="tiempo">00'</div></div>
-            <div id="cCorr" class="corredor shadow"><span class="titulo">...</span><div class="tiempo">00'</div></div>
-            <div id="cCord" class="corredor shadow"><span class="titulo">...</span><div class="tiempo">00'</div></div>
-            <div id="cRiva" class="corredor shadow"><span class="titulo">...</span><div class="tiempo">00'</div></div>
-            <div id="cAlem" class="corredor shadow"><span class="titulo">...</span><div class="tiempo">00'</div></div>
-            <div id="cSanm" class="corredor shadow"><span class="titulo">...</span><div class="tiempo">00'</div></div>
-            <div id="cJuan" class="corredor shadow"><span class="titulo">...</span><div class="tiempo">00'</div></div>
-            <div id="cPuey" class="corredor shadow"><span class="titulo">...</span><div class="tiempo">00'</div></div>
-            <div id="cAvdm" class="corredor shadow"><span class="titulo">...</span><div class="tiempo">00'</div></div>
-            <div id="cInde" class="corredor shadow"><span class="titulo">...</span><div class="tiempo">00'</div></div>
-            <div id="cPase" class="corredor shadow"><span class="titulo">...</span><div class="tiempo">00'</div></div>
+            <div id="c9int" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
+            <div id="c9ext" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
+            <div id="cAlco" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
+            <div id="cAlem" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
+            <div id="cCabi" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
+            <div id="cCord" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
+            <div id="cCorr" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
+            <div id="cIlli" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
+            <div id="cInde" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
+            <div id="cJuan" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
+            <div id="cLibe" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
+            <div id="cAvdm" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
+            <div id="cPase" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
+            <div id="cPuey" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
+            <div id="cRiva" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
+            <div id="cSanm" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
         </div>
 
         <div id="detalleCorredores">

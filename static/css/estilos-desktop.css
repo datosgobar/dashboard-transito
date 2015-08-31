@@ -17,12 +17,6 @@
   src: url("fonts/AvenirNextLTPro-Bold.eot?#iefix") format("embedded-opentype"), url("fonts/AvenirNextLTPro-Bold.woff2") format("woff2"), url("fonts/AvenirNextLTPro-Bold.woff") format("woff"), url("fonts/AvenirNextLTPro-Bold.ttf") format("truetype"), url("fonts/AvenirNextLTPro-Bold.svg#AvenirNext-Bold") format("svg"); }
 
 @font-face {
-  font-family: 'AvenirNext-Condensed';
-  font-style: normal;
-  font-weight: normal;
-  src: url("fonts/AvenirNextLTPro-Cn.eot?#iefix") format("embedded-opentype"), url("fonts/AvenirNextLTPro-Cn.woff2") format("woff2"), url("fonts/AvenirNextLTPro-Cn.woff") format("woff"), url("fonts/AvenirNextLTPro-Cn.ttf") format("truetype"), url("fonts/AvenirNextLTPro-Cn.svg#AvenirNext-Condensed") format("svg"); }
-
-@font-face {
   font-family: 'AvenirNext-Demi';
   font-style: normal;
   font-weight: normal;
@@ -32,11 +26,22 @@ html, body {
   margin: 0px auto;
   padding: 0;
   width: 100%;
-  background-color: #F2F2F2;
+  background-color: #282D33;
   font-size: 1em; }
   @media (max-width: 767px) {
     html, body {
       background-color: #ffffff; } }
+
+header {
+  width: 100%;
+  height: 70px;
+  background-color: #1C2023; }
+  header #logo {
+    background-image: url("img/logo-ba-invertido.svg");
+    width: 44px;
+    height: 27px; }
+  header #status {
+    text-transform: uppercase; }
 
 #listadoCorredores {
   z-index: 999;

@@ -4,20 +4,24 @@
 @include font-face('Gotham', 'fonts/gotham');
 @include font-face('Open Sans', 'fonts/OpenSans');
 @include font-face('AvenirNext-Bold', 'fonts/AvenirNextLTPro-Bold');
-@include font-face('AvenirNext-Condensed', 'fonts/AvenirNextLTPro-Cn');
 @include font-face('AvenirNext-Demi', 'fonts/AvenirNextLTPro-Demi');
 
 $fontset-gotham: "Gotham", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
 $fontset-openSans: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
 $fontset-avenir-bold: "AvenirNext-Bold", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
-$fontset-avenir-condensed: "AvenirNext-Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
 $fontset-avenir-demi: "AvenirNext-Demi", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
 
 $rojo: #e53935;
 $naranja: #ff8f00;
 $amarillo: #fdd835;
 
-$negro: #333333;
+$fondo-oscuro: #1C2023;
+$fondo-claro: #282D33;
+
+
+
+
+
 $gris: #c0c0c0;
 $fondoAnomalia: #e5e5e5;
 $verde:#39e535;
@@ -33,13 +37,30 @@ body {
     margin: 0px auto;
     padding: 0;
     width: 100%;
-    background-color: #F2F2F2;
+    background-color: $fondo-claro;
     font-size: 1em;
     @include breakpoint(xs) {
         background-color: #ffffff;
     }
 }
 
+
+header{
+    width: 100%;
+    height: 70px;
+    background-color: $fondo-oscuro;
+    #logo{
+        background-image: url("img/logo-ba-invertido.svg");
+        width: 44px;
+        height: 27px;
+
+    }
+    #status{
+        text-transform: uppercase;
+
+    }
+
+}
 
 #listadoCorredores{
     z-index: 999;
