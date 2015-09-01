@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sqlalchemy
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import exc
@@ -51,10 +52,10 @@ def getData(url):
             if (response.status_code == 200):
                 return response.json()
             else:
-                print("hubo timeout de teracode en {0}".format(url))
+                print ("hubo timeout de teracode en {0}".format(url))
                 pass
         except requests.exceptions.Timeout:
-            print("hubo timeout del request en {0}".format(url))
+            print ("hubo timeout del request en {0}".format(url))
             pass
         except:
             return None
@@ -349,7 +350,7 @@ Retorna:
     "timestamp_start" : (ts de inicio),
     "timestamp_end" : (ts de fin),
     "indicador_anomalia" : (porcentaje),
-    "anomalia" : int
+    "anomalia" : True/False
 }
 """
 # TODO: Completar campo "velocidad"
@@ -377,9 +378,13 @@ def getCurrentSegmentState(anomalies, lastrecords):
         # s [10, 248, datetime.datetime(2015, 8, 27, 15, 1, 27)]
         duracion_anomalia = 0
         if ad.has_key(s[0]):
-            duracion_anomalia = ad[s[0]][
-                "timestamp_end"] - ad[s[0]]["timestamp_start"]
-        output += [{
+            duracion_anomalia = (ad[s[0]][
+                "timestamp_end"] - ad[s[0]]["timestamp_start"]).seconds / 60
+        if ad.has_key(s[0]):
+            anomalia = 1
+        else:
+            anomalia = 0
+        output.append({
             "id": s[0],
             "timestamp_medicion": s[2],
             "tiempo": s[1],
@@ -387,9 +392,10 @@ def getCurrentSegmentState(anomalies, lastrecords):
             "comentario_causa": ad.get(str(s[0]), {}).get("comentario_causa", ""),
             "causa_id": ad.get(str(s[0]), {}).get("causa_id", 0),
             "duracion_anomalia": duracion_anomalia,
-            "indicador_anomalia": ad.get(s[0], {}).get("indicador_anomalia", 0),
-            "anomalia": ad.get(s[0], {}).get("nivel_anomalia", 0),
-        }]
+            "indicador_anomalia": ad.get(str(s[0]), {}).get("indicador_anomalia", 0),
+            "anomalia": anomalia,
+            "anomalia_id": ad.get(str(s[0]), {}).get("id", 0)
+        })
     return output
 
 """
@@ -479,9 +485,8 @@ def upsertAnomalies(newanomalydata):
                 "timestamp_start": a["timestamp"],
                 "timestamp_end": a["timestamp"],
                 "indicador_anomalia": a["indicador_anomalia"],
-                "nivel_anomalia": a["nivel_anomalia"],
                 "comentario_causa": "",
-                "causa_id": 0,
+                "causa_id": 0
             }
             new_anomaly = Anomaly(**curanomaly)
             session.add(new_anomaly)
@@ -505,6 +510,7 @@ def updateSnapshot(newstates):
     Session = sessionmaker(bind=conn)
     sess = Session()
     for segstate in newstates:
+        # print segstate["anomalia_id"]
         curstate = sess.query(SegmentSnapshot).get(segstate["id"])
         if curstate == None:
             curstate = SegmentSnapshot(**segstate)
@@ -530,6 +536,7 @@ def performAnomalyAnalysis(ahora=None):
 
 
 def downloadAndLoadLastMonth():
+
     sensores = [10, 12, 57, 53, 51, 49, 40, 43, 37, 36, 21, 31, 33, 35, 13, 14, 18, 17, 23, 24, 25, 26, 28, 30,
                 32, 45, 47, 38, 44, 48, 48, 11, 56, 54, 55, 41, 22, 16, 15, 19, 20, 10,
                 27, 29, 34, 39, 42, 46, 50, 52]
@@ -538,6 +545,7 @@ def downloadAndLoadLastMonth():
     desde = hasta - datetime.timedelta(days=28)
     raw_data = downloadData(
         sensores, datetime.timedelta(days=2), desde, hasta, pool_len=len(sensores))
+    # print raw_data
     filtered_data = filterDuplicateRecords(raw_data, desde, hasta)
     has_new_records = updateDB(filtered_data)
 
