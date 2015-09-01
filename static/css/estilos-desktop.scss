@@ -5,105 +5,250 @@
 @include font-face('Open Sans', 'fonts/OpenSans');
 @include font-face('AvenirNext-Bold', 'fonts/AvenirNextLTPro-Bold');
 @include font-face('AvenirNext-Demi', 'fonts/AvenirNextLTPro-Demi');
-
-$fontset-gotham: "Gotham", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
-$fontset-openSans: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
-$fontset-avenir-bold: "AvenirNext-Bold", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
-$fontset-avenir-demi: "AvenirNext-Demi", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
-
+@include font-face('AvenirNext-Regular', 'fonts/AvenirNextLTPro-Regular');
+$fontset-gotham: "Gotham",
+"Helvetica Neue",
+Helvetica,
+Arial,
+sans-serif !default;
+$fontset-openSans: "Open Sans",
+"Helvetica Neue",
+Helvetica,
+Arial,
+sans-serif !default;
+$fontset-avenir-bold: "AvenirNext-Bold",
+"Helvetica Neue",
+Helvetica,
+Arial,
+sans-serif !default;
+$fontset-avenir-demi: "AvenirNext-Demi",
+"Helvetica Neue",
+Helvetica,
+Arial,
+sans-serif !default;
+$fontset-avenir-regular: "AvenirNext-Regular",
+"Helvetica Neue",
+Helvetica,
+Arial,
+sans-serif !default;
+//colores
 $rojo: #e53935;
 $naranja: #ff8f00;
 $amarillo: #fdd835;
-
 $fondo-oscuro: #1C2023;
 $fondo-claro: #282D33;
-
-
-
-
-
+$texto-normal: #6C7480;
+$texto-claro: #CFD1D1;
 $gris: #c0c0c0;
 $fondoAnomalia: #e5e5e5;
 $verde:#39e535;
 $blanco: #fafafa;
-
 //tamaños de dispositivos
 $screen-xs: 480px !default; // telefonos
 $screen-sm: 768px !default; //tablet
 $screen-md: 992px !default; //desktop
-
 html,
 body {
     margin: 0px auto;
     padding: 0;
+    height: 100%;
     width: 100%;
+    font-family: $fontset-avenir-regular;
     background-color: $fondo-claro;
     font-size: 1em;
+    color: $texto-normal;
     @include breakpoint(xs) {
         background-color: #ffffff;
     }
 }
 
-
-header{
-    width: 100%;
-    height: 70px;
-    background-color: $fondo-oscuro;
-    #logo{
-        background-image: url("img/logo-ba-invertido.svg");
-        width: 44px;
-        height: 27px;
-
+#contenido {
+    #header {
+        position: absolute;
+        width: 100%;
+        height: 70px;
+        background-color: $fondo-oscuro;
+        z-index: 999;
+        #logo {
+            float: left;
+            background: url("img/logo-ba-invertido.png") no-repeat left center;
+            margin-left: 10px;
+            width: 200px;
+            height: 70px;
+            cursor: pointer;
+        }
+        #status {
+            font-size: 0.8em;
+            float: right;
+            font-family: $fontset-avenir-demi;
+            margin-right: 10px;
+            text-transform: uppercase;
+            line-height: 70px;
+        }
     }
-    #status{
-        text-transform: uppercase;
-
-    }
-
 }
 
-#listadoCorredores{
-    z-index: 999;
-    width: 200px;
-    font-family: $fontset-avenir-demi;
-    .corredor{
-        cursor: pointer;
-        background-color: #ffffff;
-        font-size: 1em;
-        padding: 10px;
-        margin-bottom: 1px;
-    }
-    .corredor:hover{
-        background-color: $gris;
-    }
-    .tiempo{
-        font-family: $fontset-avenir-bold;
-        float: right;
-    }
-
-}
-
-#detalleCorredores{
-    z-index: 500;
-    position: absolute;
-    width: 500px;
+#paneles {
     height: 100%;
-    right: 0px;
-    top:0px;
-    #mapa{
-        // Este estilo es provisorio
+    #leftPanel {
+        top: 70px;
+        position: fixed;
+        bottom: 0;
+        height: 100%;
+        background-color: $fondo-oscuro;
+        z-index: 999;
+        width: 250px;
+        .corredor {
+            cursor: pointer;
+            background-color: $fondo-oscuro;
+            font-size: 1em;
+            padding: 10px;
+            padding-left: 20px;
+            border-left: 10px solid $texto-normal;
+        }
+        .corredor:hover {
+            background-color: $fondo-claro;
+        }
+        .icono {
+            height: 20px;
+            width: 20px;
+            float: right;
+            background: url("img/vistoGris.svg") no-repeat center center;
+        }
+    }
+    #rightPanel {
+        top: 70px;
+        left: 250px;
+        position: fixed;
         width: 100%;
         height: 100%;
     }
 }
 
-.shadow{
+#mapa {
+    height: 100%;
+    width: 100%;
+}
+
+#cuadroOperador {
+    width: 100%;
+    display: relative;
+    #corredores {
+        background-color: $fondo-oscuro;
+        float: left;
+        height: 330px;
+        border-radius: 5px;
+        margin: 10px;
+        padding: 10px;
+    }
+    #edicion {
+        padding: 10px;
+        margin: 10px;
+        border-radius: 5px;
+        background-color: $fondo-oscuro;
+        float: left;
+        max-width: 350px;
+    }
+    .titulo{
+        font-family: $fontset-avenir-regular;
+        font-size: 22px;
+        color: $texto-claro;
+        width: 100%;
+        border-bottom: 1px solid  $texto-claro;
+        padding-bottom: 4px;
+        margin-bottom: 4px;
+    }
+    .tuerca{
+        background: url("img/editar.svg") no-repeat right center;
+        width: 20px;
+        height: 20px;
+        float: right;
+    }
+
+    .subtitulo,label{
+        font-family: $fontset-avenir-demi;
+        font-size: 12px;
+        color: $texto-claro;
+        text-transform: uppercase;
+
+    }
+    .dato{
+        font-family: $fontset-avenir-regular;
+        font-size: 16px;
+        color: $texto-normal;
+    }
+
+    .fila{
+        display: table;
+        margin: 5px auto;
+        width: 95%;
+
+        .izquierda{
+            float: left;
+            width: 50%;
+        }
+        .derecha{
+            float: right;
+            width: 50%;
+        }
+    }
+
+    .inputs{
+        text-align: right;
+    }
+
+    select{
+        float: right;
+        padding: 5px;
+        font-size: 14px;
+        margin-left: 13px;
+        width: 170px;
+        border: 0;
+        background-color: $fondo-claro;
+        color: $texto-claro;
+        border-radius: 3px;
+    }
+
+    textarea {
+        font-family: $fontset-avenir-regular;
+        background-color: $fondo-claro;
+        color: $texto-claro;
+        font-size: 14px;
+        resize: none;
+        width: 99%;
+        border: 0;
+        border-radius: 3px;
+    }    
+    input {
+        cursor: pointer;
+        background-color: transparent;
+        color: $texto-claro;
+        border: 2px solid $texto-claro;
+        border-radius: 15px;
+        font-size: 12px;
+        font-family: $fontset-avenir-demi;
+        padding: 5px 10px 5px 10px;
+    }
+
+    input:hover {
+        background-color: $fondo-claro;
+    }
+
+    input:disabled {
+        cursor: not-allowed;
+        color: $texto-normal;
+        border: 2px solid $texto-normal;
+    }
+
+
+}
+
+.shadow {
     transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 0.5);
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1);
 }
 
-.shadow:hover{
+.shadow:hover {
     transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 0.5);
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25);
 }
-
