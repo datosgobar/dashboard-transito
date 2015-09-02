@@ -5,12 +5,12 @@
         "descripcion": "Manifestación"
     },
     {
-        "id": 2,
-        "descripcion": "Accidente"
-    },
-    {
         "id": 3,
         "descripcion": "Vehículo detenido"
+    },
+    {
+        "id": 2,
+        "descripcion": "Accidente XXXX"
     },
     {
         "id": 4,

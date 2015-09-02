@@ -14,21 +14,6 @@ var nombresDeCorredores = (function () {
     return archivo;
 })(); 
 
-// Trae JSON con listado de causas de una anomalia
-var causasAnomalias = (function () {
-    var archivo = null;
-    $.ajax({
-        'async': false,
-        'global': false,
-        'url': "_static/data/causas.json",
-        'dataType': "json",
-        'success': function (data) {
-            console.log("json causas leido");
-            archivo = data;
-        }
-    });
-    return archivo;
-})(); 
 
 //ARMA EL HTML DE LA TARJETA
 function armoTemplateCard(data) {

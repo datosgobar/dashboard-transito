@@ -1,3 +1,23 @@
+
+// Trae JSON con listado de causas de una anomalia
+var causasAnomalias = (function () {
+    var archivo = null;
+    $.ajax({
+        'async': false,
+        'global': false,
+        'url': "_static/data/causas.json",
+        'dataType': "json",
+        'success': function (data) {
+            archivo = data;
+        }
+    });
+            console.log("json causas leido");
+    return archivo;
+})(); 
+
+
+
+
 // pone los titulos a la botonera
 function actualizacionDesktop(data){
     $("#" + data.id + " .titulo").html(data.nombre);
