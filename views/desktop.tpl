@@ -93,7 +93,7 @@
 
                             <div class="fila">
                                 <label>Causa</label>
-                                <select>
+                                <select id="causa">
                                     <option selected value="0">Seleccionar causa...</option>
                                     <option value="1">Causa 1</option>
                                     <option value="2">Causa 2</option>
