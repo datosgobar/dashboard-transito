@@ -9,13 +9,18 @@ var causasAnomalias = (function () {
         'dataType': "json",
         'success': function (data) {
             archivo = data;
+            armoSelectAnomalias(data);
         }
     });
-            console.log("json causas leido");
     return archivo;
 })(); 
-
-
+function armoSelectAnomalias(datos){
+    
+    for (var i = 0 ; i < datos.causas.length; i++  ){
+        $("#causa").append('<option value="'+ datos.causas[i].id +'">'+ datos.causas[i].descripcion +'</option>');
+    }
+ 
+}
 
 
 // pone los titulos a la botonera
