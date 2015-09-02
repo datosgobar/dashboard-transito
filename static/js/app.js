@@ -26,7 +26,7 @@ function armoTemplateCard(data) {
     var card = '<div class="card oculta" id="' + data.id + '">';
     card = card + "<div class='corredor'><div class='titulo'>" + data.nombre + "</div><div class='icono visto'></div></div>";
 
-    card = card + "<div class='etiquetas'>";
+    card = card + "<div class='contenedor'><div class='etiquetas'>";
     if (data.segmentos_capital.length > 0) { // hay de capital
         nombres = data.segmentos_capital;
     } else {
@@ -42,13 +42,13 @@ function armoTemplateCard(data) {
 
     }
     card = card + "<div class='segmento derecha'>" + nombreDeCorredor(nombres[segmentos-1].id).split("-")[1] +"</div>";
-    card = card + "</div>";
+    card = card + "</div></div>";
 
 
 
 
     if (data.segmentos_capital.length > 0){ // hay de capital
-        card = card + '<div class="capital">';
+        card = card + '<div class="contenedor"><div class="capital">';
         for (var p = 0 ; p < segmentos ; p++){
             card = card + '<div class="segmento estado'+data.segmentos_capital[p].anomalia+'"> </div>';
             if (data.segmentos_capital[p].anomalia > estado){
@@ -58,13 +58,13 @@ function armoTemplateCard(data) {
                 }
             }
         }
-        card = card + '</div><div class="flechaCap"></div>' ;
+        card = card + '</div><div class="flechaCap"></div></div>' ;
     }
 
 
 
     if (data.segmentos_provincia.length > 0){ // hay de provincia
-        card = card + '<div class="provincia">';
+        card = card + '<div class="contenedor"><div class="provincia">';
         for (var q = 0 ; q < segmentos ; q++){
             card = card + '<div class="segmento estado'+data.segmentos_provincia[q].anomalia+'"></div>';
             if (data.segmentos_provincia[q].anomalia > estado){
@@ -77,14 +77,15 @@ function armoTemplateCard(data) {
         card = card + '</div><div class="flechaPro"></div>' ;
     }
 
-
     card = card + "</div>";
 
     if (causaPendiente) {
         card = card.replace('visto', 'enProceso');
     }
+
     //si no hay falla entonces no mando nada.
-    if (estado === 0){
+    console.log ("Estado: " , estado)
+    if (!causaPendiente){
         card = "";
     }
 

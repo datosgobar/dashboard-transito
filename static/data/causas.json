@@ -1,47 +1,47 @@
 {
     "causas": [
     {
-        "id": 1,
-        "descripcion": "Manifestación"
-    },
-    {
-        "id": 3,
-        "descripcion": "Vehículo detenido"
-    },
-    {
         "id": 2,
-        "descripcion": "Accidente XXXX"
-    },
-    {
-        "id": 4,
-        "descripcion": "Operativo Policial"
-    },
-    {
-        "id": 5,
-        "descripcion": "Incendio"
-    },
-    {
-        "id": 6,
-        "descripcion": "Derrumbe"
-    },
-    {
-        "id": 7,
-        "descripcion": "Obra"
-    },
-    {
-        "id": 8,
-        "descripcion": "Evento"
+        "descripcion": "Accidente"
     },
     {
         "id": 9,
         "descripcion": "Corte de luz"
     },
     {
-        "id": 10,
-        "descripcion": "Inundación"
+        "id": 6,
+        "descripcion": "Derrumbe"
+    },
+    {
+        "id": 8,
+        "descripcion": "Evento"
     },
     {
         "id": 11,
         "descripcion": "Gran flujo vehicular"
+    },
+    {
+        "id": 5,
+        "descripcion": "Incendio"
+    },
+    {
+        "id": 10,
+        "descripcion": "Inundación"
+    },
+    {
+        "id": 1,
+        "descripcion": "Manifestación"
+    },
+    {
+        "id": 7,
+        "descripcion": "Obra"
+    },
+    {
+        "id": 4,
+        "descripcion": "Operativo Policial"
+    },
+    {
+        "id": 3,
+        "descripcion": "Vehículo detenido"
     }]
 }

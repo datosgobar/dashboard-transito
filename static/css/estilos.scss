@@ -80,28 +80,41 @@ body {
     margin: 0 auto 20px;
     overflow: hidden;
 }
-
 .capital,
 .provincia,
-.etiquetas {
-    margin: 0px 100px 0px auto;
+.etiquetas{
+    margin: 0 auto;
     display: table;
     table-layout: fixed;    
-    width: 70%;
+    width: 100%;
     border-collapse: separate;
     border-spacing: 5px;
+}
+
+
+.etiquetas{
+    margin-bottom: 10px;
+}
+.contenedor{
+    height: 50px;    
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-right: 50px;
+    margin-left: auto;
+    float: right;
+    width: 70%;
 }
 
 .flechaCap,
 .flechaPro {
     float: right;
     position: relative;
-    top: -34px;
-    right: 20px;
+    top: -35px;
     width: 44px;
     height: 27px;
-
+    right: -50px;
 }
+
 .flechaCap {
     background-image: url("img/capital.svg");
 }
@@ -115,11 +128,13 @@ body {
     height: 35px;
     font-family: $fontset-avenir-demi;
     font-size: 40px;
+    line-height: 40px;
 }
 
 
 .corredor {
     float: left;
+    max-height: 200px;
 }
 
 .izquierda {
