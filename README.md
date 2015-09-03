@@ -50,12 +50,18 @@ Bajar e instalar [Visual C++ for Python 2.7](http://download.microsoft.com/downl
 
 ```sh
 easy_install bottle
+easy_install bottle-cork
 easy_install gevent
 easy_install gevent-socketio
+easy_install requests
 easy_install MySQL-python
 easy_install sqlalchemy
 easy_install bottle-cork
 $ easy_install supervisor
+easy_install pandas
+easy_install dateutil
+easy_install sqlalchemy-migrate
+
 ```
 
 ## Corriendo la app 

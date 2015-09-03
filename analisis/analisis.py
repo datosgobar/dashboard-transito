@@ -164,6 +164,8 @@ def updateDB(newdata):
             #    session.add(historical)
             #    session.commit()
             #    newrecords = True
+    else:
+        print "not updateDB"
 
     conn.close()
     return newrecords
@@ -380,10 +382,6 @@ def getCurrentSegmentState(anomalies, lastrecords):
         if ad.has_key(s[0]):
             duracion_anomalia = (ad[s[0]][
                 "timestamp_end"] - ad[s[0]]["timestamp_start"]).seconds / 60
-        if ad.has_key(s[0]):
-            anomalia = 1
-        else:
-            anomalia = 0
         output.append({
             "id": s[0],
             "timestamp_medicion": s[2],
@@ -393,7 +391,7 @@ def getCurrentSegmentState(anomalies, lastrecords):
             "causa_id": ad.get(str(s[0]), {}).get("causa_id", 0),
             "duracion_anomalia": duracion_anomalia,
             "indicador_anomalia": ad.get(str(s[0]), {}).get("indicador_anomalia", 0),
-            "anomalia": anomalia,
+            "anomalia": ad.get(str(s[0]), {}).get("nivel_anomalia", 0),
             "anomalia_id": ad.get(str(s[0]), {}).get("id", 0)
         })
     return output
@@ -474,6 +472,7 @@ def upsertAnomalies(newanomalydata):
             candidate.timestamp_end = max(
                 a["timestamp"], candidate.timestamp_end)
             candidate.indicador_anomalia = a["indicador_anomalia"]
+            candidate.nivel_anomalia = a["nivel_anomalia"]
             curanomaly = {}
             for column in Anomaly.__table__.columns:
                 curanomaly[column.name] = str(getattr(candidate, column.name))
@@ -485,6 +484,7 @@ def upsertAnomalies(newanomalydata):
                 "timestamp_start": a["timestamp"],
                 "timestamp_end": a["timestamp"],
                 "indicador_anomalia": a["indicador_anomalia"],
+                "nivel_anomalia": a["nivel_anomalia"],
                 "comentario_causa": "",
                 "causa_id": 0
             }

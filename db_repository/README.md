@@ -29,5 +29,5 @@ $ python db_repository/__init__.py
 5. Actualizar DB a última versión
 
 ```sh
-$ python manage.py upgrade
+$ python db_repository/manage.py upgrade
 ```
