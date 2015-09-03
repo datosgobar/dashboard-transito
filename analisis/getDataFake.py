@@ -151,7 +151,6 @@ def updateSegmentos():
 
 
 if __name__ == '__main__':
-    createSegmentos()
 
     while(True):
         updateSegmentos()

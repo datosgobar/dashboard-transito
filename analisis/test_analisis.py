@@ -15,13 +15,14 @@ from getDataFake import api_sensores_fake
         downloadData
         createDBEngine
         getDBConnection
-
         setupDB
         updateDB
+
         removeOldRecords
         filterDuplicateRecords
         loadApiDump
         executeLoop
+
         getLastRecords
         getLastMonthRecords
         updateDetectionParams
@@ -117,4 +118,32 @@ def test_setupDB():
 def test_updateDB():
     filtered_data = []
     updateDB(filtered_data)
+    pass
+
+
+def test_removeOldRecords():
+    pass
+
+
+def test_filterDuplicateRecords():
+    hasta = datetime.datetime.now()
+    desde = hasta - datetime.timedelta(minutes=20)
+    print str(desde), str(hasta), "===", type(hasta), "diff 20min"
+    data = downloadData(
+        sensor_ids, datetime.timedelta(days=2), desde, hasta, pool_len=5)
+    assert len(data) != 0
+    filter_records = filterDuplicateRecords(data, desde, hasta)
+    for obj in filter_records:
+        assert hasattr(obj, 'id')
+
+
+def test_loadApiDump():
+    pass
+
+
+def test_executeLoop():
+    pass
+
+
+def test_getLastRecords():
     pass
