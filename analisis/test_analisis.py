@@ -22,12 +22,13 @@ from getDataFake import api_sensores_fake
         filterDuplicateRecords
         loadApiDump
         executeLoop
-
         getLastRecords
+        
         getLastMonthRecords
         updateDetectionParams
         getCurrentSegmentState
         getDetectionParams
+        
         upsertAnomalies
         updateSnapshot
         performAnomalyAnalysis
@@ -150,4 +151,10 @@ def test_executeLoop():
 
 
 def test_getLastRecords():
-    pass
+    hasta = datetime.datetime.now()
+    desde = hasta - datetime.timedelta(minutes=20)
+    last_records = getLastRecords(desde, hasta)
+    assert len(last_records) == 3
+    assert type(last_records[0]) == int
+    assert type(last_records[1]) == int
+    assert type(last_records[2]) == datetime.datetime

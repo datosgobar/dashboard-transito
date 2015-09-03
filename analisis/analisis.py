@@ -146,6 +146,7 @@ Guarda datos recibidos por parámetro en la tabla "historical"
 
 def updateDB(newdata):
     # "Updating database"
+    # pdb.set_trace()
     conn = getDBConnection()
     Session = sessionmaker(bind=conn)
     session = Session()
@@ -165,7 +166,7 @@ def updateDB(newdata):
             #    session.commit()
             #    newrecords = True
     else:
-        print "not updateDB"
+        print "not newdata updateDB"
 
     conn.close()
     return newrecords
@@ -191,6 +192,7 @@ Filtro los registros para no duplicar datos en la base de datos
 
 def filterDuplicateRecords(data, desde=None, hasta=None):
     # "Removing duplicates"
+    # pdb.set_trace()
     conn = getDBConnection()
     # parsear json
     Session = sessionmaker(bind=conn)
@@ -231,7 +233,6 @@ def filterDuplicateRecords(data, desde=None, hasta=None):
                 "data": data,
                 "timestamp": datetime.datetime.strptime(timestamp, '%Y-%m-%dT%H:%M:%S-03:00')
             }))
-
     return filtered_data
 
 
