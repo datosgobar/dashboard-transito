@@ -148,7 +148,7 @@ def get_static(filepath):
     return bottle.static_file(filepath, root='./static/')
 
 
-@bottle.post("/")
+@bottle.post("/index")
 def send_data():
     bottle_auth.require(fail_redirect='/')
     if set(['anomaly_id', 'comentario', 'causa_id']) == set(request.forms.keys()):

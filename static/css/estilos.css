@@ -104,6 +104,11 @@ html, body {
   font-size: 40px;
   line-height: 40px; }
 
+.chico {
+  font-size: 20px;
+  color: black;
+  text-align: center; }
+
 .corredor {
   float: left;
   max-height: 200px; }

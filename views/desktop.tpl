@@ -50,7 +50,9 @@
 
                         <div class="titulo">Estado<div class="tuerca"></div></div>
 
-                        <form action="javascript:alert('enviando')">
+                        <form action="javascript:actualizoRegistro()">
+
+                            <input id="anomaly_frm" type="text" value="1" hidden>
 
                             <div class="fila">
                                 <div class="subtitulo">Trayecto</div>
@@ -93,20 +95,20 @@
 
                             <div class="fila">
                                 <label>Causa</label>
-                                <select id="causa">
+                                <select id="causa_frm">
                                     <option selected value="0">Seleccionar causa...</option>
                                 </select>
                             </div>
                                 
                             <div class="fila">
                                 <label>Descripcion</label>
-                                <textarea rows="3" maxlength="140" placeholder="Ej. Manifestación en Arenales y Sta. Fe. Congestión en Libertador."></textarea> 
+                                <textarea id="comentario_frm" rows="3" maxlength="140" placeholder="Ej. Manifestación en Arenales y Sta. Fe. Congestión en Libertador."></textarea> 
 
                                 <br>
                             </div>
                             <div class="fila inputs">
                                 <input type="submit" value="REPORTAR">
-                                <input type="submit" value="MODIFICAR" disabled>
+                                <input type="submit" value="MODIFICAR" hidden>
                             </div>
                         </form>
 
