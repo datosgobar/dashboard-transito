@@ -30,6 +30,7 @@ $ sudo easy_install gevent
 $ sudo easy_install gevent-socketio
 $ sudo easy_install MySQL-python
 $ sudo easy_install sqlalchemy
+$ sudo pip install bottle-cork
 $ easy_install supervisor
 ```
 
@@ -55,6 +56,7 @@ easy_install gevent-socketio
 easy_install requests
 easy_install MySQL-python
 easy_install sqlalchemy
+easy_install bottle-cork
 $ easy_install supervisor
 easy_install pandas
 easy_install dateutil
