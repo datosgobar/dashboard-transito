@@ -97,16 +97,16 @@ def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=N
         start += step
 
     """cambiar funcion map por api_sensores_fake"""
-    alldata = map(api_sensores_fake, urls)
-    # pool = multiprocessing.Pool(pool_len)
-    # alldata = pool.map(getData, urls)
-    # pool.close()
-    # pool.terminate()
-    # pool.join()
-    # if outfn != None:
-    #     outf = open(outfn, "wb")
-    #     json.dump(alldata, outf)
-    #     outf.close()
+    #alldata = map(api_sensores_fake, urls)
+    pool = multiprocessing.Pool(pool_len)
+    alldata = pool.map(getData, urls)
+    pool.close()
+    pool.terminate()
+    pool.join()
+    if outfn != None:
+        outf = open(outfn, "wb")
+        json.dump(alldata, outf)
+        outf.close()
 
     return alldata
 

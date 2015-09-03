@@ -44,7 +44,7 @@ def buildSegmentos(segment):
         "duracion_anomalia": int(segment.duracion_anomalia),
         "indicador_anomalia": float(segment.indicador_anomalia),
         "anomalia": int(segment.anomalia),
-        "anomalia": int(segment.anomalia_id)
+        "anomalia_id": int(segment.anomalia_id)
     }
 
 
