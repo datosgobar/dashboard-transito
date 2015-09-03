@@ -53,24 +53,6 @@ def readSegmentos():
         return result
 
 
-def createSegmentos():
-
-    causas = ["Choque", "Manifestacion", "Animales sueltos"]
-    cur = engine.connect()
-    try:
-        for ID in range(10, 58):
-            cur.execute("""INSERT INTO segment_snapshot VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
-                        (ID, time.strftime('%Y-%m-%d %H:%M:%S'), random.randrange(5, 21),
-                            random.randrange(0, 101), causas[random.randrange(0, 3)], random.randrange(
-                            0, 21), random.randrange(1, 120),
-                            random.random(), random.randrange(0, 4)))
-            print "Auto Increment ID: %s" % ID
-    except Exception, ex:
-        print(ex)
-    finally:
-        cur.close()
-
-
 def api_sensores_fake(url):
 
     sensor = urlparse.urlsplit(url).path.split("/")[3]
@@ -149,7 +131,6 @@ def updateSegmentos():
 
 
 if __name__ == '__main__':
-    createSegmentos()
 
     while(True):
         updateSegmentos()
