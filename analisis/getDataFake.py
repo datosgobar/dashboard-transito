@@ -7,7 +7,6 @@ import os
 import config
 import random
 
-
 from dateutil import parser
 import datetime
 import urlparse
@@ -112,8 +111,8 @@ def parserEmitDataFake(self, result):
 
 def updateSegmentos():
 
-    cur = engine.connect()
-
+    conn = engine.connect()
+    trans = conn.begin()
     causas = ["Choque", "Manifestacion", "Animales sueltos"]
     query = """UPDATE segment_snapshot SET timestamp_medicion = %s, tiempo = %s, velocidad = %s, comentario_causa = %s, causa_id = %s, duracion_anomalia = %s, \
   indicador_anomalia =%s, anomalia = %s WHERE id = %s"""
@@ -125,9 +124,9 @@ def updateSegmentos():
                   random.randrange(0, 21), random.randrange(1, 120),
                   random.random(), random.randrange(0, 4), ID)
         print update
-        cur.execute(query, update)
-
-    cur.close()
+        conn.execute(query, update)
+    trans.commit()
+    conn.close()
 
 
 if __name__ == '__main__':
