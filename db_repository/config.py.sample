@@ -13,7 +13,8 @@ else:
         user='root',
         password='password',
         host='localhost',
-        db='dashboardoperativo'
+        db='dashboardoperativo',
+        debug='False'
     )
     db_url = db['engine'] + "://" + db['user'] + ":" + \
         db['password'] + "@" + db['host'] + "/" + db['db']

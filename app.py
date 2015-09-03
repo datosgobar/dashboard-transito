@@ -6,19 +6,55 @@ import gevent
 import os
 import bottle
 import time
+import datetime
 import logging
 
+# from analisis import *  # comentada por nico
+from analisis.getDataFake import parserEmitDataFake  # para nico
+from analisis.corredores import parserEmitData
 
-from analisis import *
-from bottle import error
+from bottle import error, request
 from socketio import socketio_manage
 from socketio.mixins import BroadcastMixin
 from socketio.namespace import BaseNamespace
 from gevent import monkey
 from dashboard_logging import setup_logging
 
+from beaker.middleware import SessionMiddleware
+from cork import Cork
+from cork.backends import SqlAlchemyBackend
+
+from sqlalchemy import create_engine
+from sqlalchemy.ext.automap import automap_base
+from sqlalchemy.orm import Session
+
+bottle.debug(True)
+Base = automap_base()
+db_url = 'mysql://root:password@localhost/dashboardoperativo'
+engine = create_engine(db_url)
+Base.prepare(engine, reflect=True)
+Anomaly = Base.classes.anomaly
+
 monkey.patch_all()
-app = bottle.Bottle()
+
+
+def auth_sqlalchemy():
+    sqlalchemy_backend = SqlAlchemyBackend(db_url)
+    return sqlalchemy_backend
+
+auth = auth_sqlalchemy()
+bottle_auth = Cork(backend=auth)
+
+app = bottle.app()
+session_opts = {
+    'session.cookie_expires': True,
+    'session.encrypt_key': 'please use a random key and keep it secret!',
+    'session.httponly': True,
+    'session.timeout': 3600 * 24,  # 1 day
+    'session.type': 'cookie',
+    'session.validate_key': True,
+}
+app = SessionMiddleware(app, session_opts)
 
 # inicio condicional para evaluar si estoy en openshift
 if os.environ.get('OPENSHIFT_PYTHON_DIR'):
@@ -31,7 +67,7 @@ if os.environ.get('OPENSHIFT_PYTHON_DIR'):
     port = int(os.environ['OPENSHIFT_PYTHON_PORT'])
 else:
     # caso contrario, entiendo que estoy en ambiente local
-    ip = "127.0.0.1"
+    ip = "0.0.0.0"
     port = 8080
 
 # clase que hereda funcionalidades de socketio
@@ -72,30 +108,69 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
 # genero ruta / que envia template index
 
 
-@app.get('/')
-def root():
+@bottle.route('/')
+def views_login():
+    """Serve login form"""
+    return bottle.template('login')
+    # return {}
+
+
+@bottle.route('/salir')
+def logout():
+    bottle_auth.logout(success_redirect='/')
+
+
+@bottle.post('/login')
+def login_post():
+    """Authenticate users"""
+    username = request.POST.get("username", "").strip()
+    password = request.POST.get("password", "").strip()
+    print username, password
+    bottle_auth.login(
+        username, password, success_redirect='/index', fail_redirect='/')
+
+
+@bottle.route('/index')
+def views_index():
+    bottle_auth.require(fail_redirect='/')
     return bottle.template('index')
 
 
-@app.get('/desktop')
+@bottle.route('/desktop')
 def root():
+    bottle_auth.require(fail_redirect='/')
     return bottle.template('desktop')
 
-# path para datos estaticos en el front
 
-
-@app.get('/_static/<filepath:path>')
+@bottle.route('/_static/<filepath:path>')
 def get_static(filepath):
+    bottle_auth.require(fail_redirect='/')
     return bottle.static_file(filepath, root='./static/')
 
-# resuelve errores 404 y 500, en un decorador, para rutear a la funcion handler
 
-
-@app.post("/")
+@bottle.post("/")
 def send_data():
-    print request.forms.get('anomaly_id')
-    print request.forms.get("causa_id")
-    print request.forms.get("comentario")
+    bottle_auth.require(fail_redirect='/')
+    if set(['anomaly_id', 'comentario', 'causa_id']) == set(request.forms.keys()):
+        session = Session(engine)
+        anomaly_id = request.forms.get('anomaly_id', False)
+        causa_id = request.forms.get("causa_id", False)
+        comentario = request.forms.get("comentario", False)
+        if anomaly_id and causa_id:
+            queryAnomaly = session.query(Anomaly).filter_by(id=anomaly_id)
+            if queryAnomaly.count():
+                queryAnomaly.update({
+                    'causa_id': causa_id,
+                    'comentario_causa': comentario,
+                    'timestamp_asignacion': datetime.datetime.now()
+                })
+                session.commit()
+                session.close()
+                return "guardado"
+            else:
+                return "no encontre anomaly {}".format(anomaly_id)
+        else:
+            return "no encontre valor en campos anomaly_id y causa_id"
 
 
 @error(404)
@@ -103,11 +178,10 @@ def send_data():
 def handler_error(error):
     return 'Nothing here, sorry'
 
-# genero ruta /alertas para el manejo de socket.io, con xhr-polling y websocket
 
-
-@app.get('/socket.io/<path:path>')
+@bottle.get('/socket.io/<path:path>')
 def socketio_service(path):
+    bottle_auth.require(fail_redirect='/')
     socketio_manage(
         bottle.request.environ, {'/alertas': dataSemaforos}, bottle.request)
 
@@ -124,6 +198,6 @@ if __name__ == '__main__':
                host=ip,
                port=port,
                server='geventSocketIO',
-               debug=False,
+               debug=True,
                reloader=False,
                )
