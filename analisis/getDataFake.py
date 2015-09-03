@@ -49,6 +49,7 @@ def readSegmentos():
         for row in segment_snapshot.fetchall():
             result.append(row)
     finally:
+        cur.commit()
         cur.close()
         return result
 
@@ -68,6 +69,7 @@ def createSegmentos():
     except Exception, ex:
         print(ex)
     finally:
+        cur.commit()
         cur.close()
 
 
