@@ -7,41 +7,25 @@ var nombresDeCorredores = (function () {
         'url': "_static/data/segmentos.json",
         'dataType': "json",
         'success': function (data) {
-        	console.log("json segmentos leido");
             archivo = data;
         }
     });
     return archivo;
 })(); 
 
-// Trae JSON con listado de causas de una anomalia
-var causasAnomalias = (function () {
-    var archivo = null;
-    $.ajax({
-        'async': false,
-        'global': false,
-        'url': "_static/data/causas.json",
-        'dataType': "json",
-        'success': function (data) {
-            console.log("json causas leido");
-            archivo = data;
-        }
-    });
-    return archivo;
-})(); 
 
 //ARMA EL HTML DE LA TARJETA
 function armoTemplateCard(data) {
-    var causaPendiente = false;
+
+    var causaPendienteCap = false;
+    var causaPendientePro = false;
     var estado = 0;
     var segmentos = Math.max(data.segmentos_capital.length, data.segmentos_provincia.length);
     var nombres;
-
-
     var card = '<div class="card oculta" id="' + data.id + '">';
-    card = card + "<div class='corredor'><div class='titulo'>" + data.nombre + "</div><div class='icono visto'></div></div>";
+    card = card + "<div class='corredor'><div class='titulo'>" + data.nombre + "</div><div class='icono enProceso'></div></div>";
 
-    card = card + "<div class='etiquetas'>";
+    card = card + "<div class='contenedor'><div class='etiquetas'>";
     if (data.segmentos_capital.length > 0) { // hay de capital
         nombres = data.segmentos_capital;
     } else {
@@ -57,51 +41,56 @@ function armoTemplateCard(data) {
 
     }
     card = card + "<div class='segmento derecha'>" + nombreDeCorredor(nombres[segmentos-1].id).split("-")[1] +"</div>";
-    card = card + "</div>";
+    card = card + "</div></div>";
 
 
 
 
     if (data.segmentos_capital.length > 0){ // hay de capital
-        card = card + '<div class="capital">';
+        card = card + '<div class="contenedor"><div class="capital">';
         for (var p = 0 ; p < segmentos ; p++){
-            card = card + '<div class="segmento estado'+data.segmentos_capital[p].anomalia+'"> </div>';
+            card = card + '<div class="segmento chico estado'+data.segmentos_capital[p].anomalia+'">s:'+ data.segmentos_capital[p].id + '-c:' + data.segmentos_capital[p].causa_id +'</div>';
             if (data.segmentos_capital[p].anomalia > estado){
                 estado = data.segmentos_capital[p].anomalia;
-                if (data.segmentos_capital[p].causa_id === 0){ //hay probelmas pero no hay causa
-                    causaPendiente = true;
+                if (data.segmentos_capital[p].causa_id === 0){ //hay problemas pero no hay causa
+                    causaPendienteCap = true;
                 }
             }
         }
-        card = card + '</div><div class="flechaCap"></div>' ;
+        card = card + '</div><div class="flechaCap"></div></div>' ;
     }
 
 
 
     if (data.segmentos_provincia.length > 0){ // hay de provincia
-        card = card + '<div class="provincia">';
+        card = card + '<div class="contenedor"><div class="provincia">';
         for (var q = 0 ; q < segmentos ; q++){
-            card = card + '<div class="segmento estado'+data.segmentos_provincia[q].anomalia+'"></div>';
+            card = card + '<div class="segmento chico estado'+data.segmentos_provincia[q].anomalia+'">s:'+ data.segmentos_provincia[q].id + '-c:' + data.segmentos_provincia[q].causa_id + '</div>';
             if (data.segmentos_provincia[q].anomalia > estado){
                 estado = data.segmentos_provincia[q].anomalia;
-                if (data.segmentos_provincia[q].causa_id === 0){ //hay probelmas pero no hay causa
-                    causaPendiente = true;
+                if (data.segmentos_provincia[q].causa_id === 0){ //hay problemas pero no hay causa
+                    causaPendientePro = true;
                 }
             }
         }
         card = card + '</div><div class="flechaPro"></div>' ;
     }
 
-
     card = card + "</div>";
 
-    if (causaPendiente) {
-        card = card.replace('visto', 'enProceso');
+    //todos los segmentos con causa_id > 0 azul
+    //algun segmento con causa_id = 0 rojo
+
+
+    //cambio el icono
+    if (causaPendienteCap || causaPendientePro){
+        card = card.replace('enProceso','noVisto');        
     }
-    //si no hay falla entonces no mando nada.
+
     if (estado === 0){
         card = "";
     }
+
 
     return card;
 }
@@ -114,7 +103,7 @@ function agregaCard(data){
 	}
 	var card = armoTemplateCard(data);
 
-    if ( card.indexOf("enProceso") > 0 ){
+    if ( card.indexOf("noVisto") > 0 ){
         $("#noResueltos").prepend(card);
     }else{
         $("#resueltos").prepend(card);

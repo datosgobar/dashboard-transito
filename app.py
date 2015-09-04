@@ -9,7 +9,10 @@ import time
 import datetime
 import logging
 
-from analisis import *
+# from analisis import *  # comentada por nico
+from analisis.getDataFake import parserEmitDataFake  # para nico
+from analisis.corredores import parserEmitData
+
 from bottle import error, request
 from socketio import socketio_manage
 from socketio.mixins import BroadcastMixin
@@ -27,7 +30,7 @@ from sqlalchemy.orm import Session
 
 bottle.debug(True)
 Base = automap_base()
-db_url = config.db_url
+db_url = 'mysql://root:password@localhost/dashboardoperativo'
 engine = create_engine(db_url)
 Base.prepare(engine, reflect=True)
 Anomaly = Base.classes.anomaly
@@ -36,7 +39,7 @@ monkey.patch_all()
 
 
 def auth_sqlalchemy():
-    sqlalchemy_backend = SqlAlchemyBackend(config.db_url)
+    sqlalchemy_backend = SqlAlchemyBackend(db_url)
     return sqlalchemy_backend
 
 auth = auth_sqlalchemy()

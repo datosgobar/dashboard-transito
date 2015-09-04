@@ -1,14 +1,13 @@
 /*  
  * Map Styles bounds, center and options - V0.1
- * Copyright (c) 2012 Nicolas Lound - Clarin.com
+ * @author: Nicolas Lound 
  * Dual licensed under the MIT or GPL Version 2 licenses.
  * http://opensource.org/licenses/MIT
  * http://www.gnu.org/licenses/gpl-2.0.html
 */
 
 //edit these for bounding the map.
-var centro =  new google.maps.LatLng(-34.62746,-58.45567);	// center of the map
-
+var centro =  new google.maps.LatLng(-34.617817, -58.405647);	// center of the map
 
 /*
  * DO NOT EDIT BELOW THIS LINE
@@ -16,7 +15,7 @@ var centro =  new google.maps.LatLng(-34.62746,-58.45567);	// center of the map
 
 
 var settingsItemsMap = {
-    zoom: 14, // nivel de zoom inicial
+    zoom: 11, // nivel de zoom inicial
     center: centro,
     streetViewControl: false,
 	mapTypeControl: false, // Map type control. Road, satellite, etc.
