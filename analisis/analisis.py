@@ -12,7 +12,6 @@ from sqlalchemy.orm import Session
 import pdb
 from getDataFake import api_sensores_fake
 import config
-import time
 import json
 import requests
 import datetime
@@ -57,7 +56,6 @@ def getData(url):
                 pass
         except requests.exceptions.Timeout:
             print ("hubo timeout del request en {0}".format(url))
-            time.sleep(1)
             pass
         except:
             return None
@@ -148,7 +146,6 @@ Guarda datos recibidos por parámetro en la tabla "historical"
 
 def updateDB(newdata):
     # "Updating database"
-    # pdb.set_trace()
     conn = getDBConnection()
     Session = sessionmaker(bind=conn)
     session = Session()
@@ -168,7 +165,7 @@ def updateDB(newdata):
             #    session.commit()
             #    newrecords = True
     else:
-        print "not newdata updateDB"
+        print "not updateDB"
 
     conn.close()
     return newrecords
@@ -194,7 +191,6 @@ Filtro los registros para no duplicar datos en la base de datos
 
 def filterDuplicateRecords(data, desde=None, hasta=None):
     # "Removing duplicates"
-    # pdb.set_trace()
     conn = getDBConnection()
     # parsear json
     Session = sessionmaker(bind=conn)
@@ -235,6 +231,7 @@ def filterDuplicateRecords(data, desde=None, hasta=None):
                 "data": data,
                 "timestamp": datetime.datetime.strptime(timestamp, '%Y-%m-%dT%H:%M:%S-03:00')
             }))
+
     return filtered_data
 
 
@@ -495,7 +492,7 @@ def upsertAnomalies(newanomalydata):
             session.add(new_anomaly)
             lastmodified_anomaly = new_anomaly
         session.commit()
-        # print lastmodified_anomaly.id
+        print lastmodified_anomaly.id
         curanomaly['anomalia_id'] = lastmodified_anomaly.id
         liveanomalies.append(curanomaly)
     conn.close()
