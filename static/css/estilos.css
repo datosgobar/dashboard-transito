@@ -56,12 +56,21 @@ html, body {
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   background-color: #1C2023;
-  font-size: 45px;
+  font-size: 40px;
   font-family: "AvenirNext-Bold", "Helvetica Neue", Helvetica, Arial, sans-serif;
   width: 90%;
-  padding: 20px;
+  padding: 10px;
   margin: 0 auto 20px;
   overflow: hidden; }
+  @media (max-width: 767px) {
+    .card {
+      font-size: 10px; } }
+  @media (min-width: 768px) {
+    .card {
+      font-size: 15px; } }
+  @media (min-width: 992px) {
+    .card {
+      font-size: 40px; } }
 
 .capital, .provincia, .etiquetas {
   margin: 0 auto;
@@ -101,7 +110,6 @@ html, body {
   display: table-cell;
   height: 35px;
   font-family: "AvenirNext-Demi", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 40px;
   line-height: 40px; }
 
 .chico {

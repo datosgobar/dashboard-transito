@@ -20,7 +20,7 @@
     <div id="contenido">
         <div id="header">
             <div id="logo"></div>
-            <div id="status">última actualizacion: --</div>
+            <div id="status">última actualización: --</div>
         </div>
         <div id="paneles">
             <div id="leftPanel">
@@ -73,7 +73,7 @@
 
                             <div class="fila">
                                 <div class="izquierda">
-                                    <div class="subtitulo">Trayecto</div>
+                                    <div class="subtitulo">Tiempo</div>
                                     <div class="dato">--</div>
                                 </div>
                                 <div class="derecha">

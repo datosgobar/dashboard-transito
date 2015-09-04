@@ -43,6 +43,7 @@ $amarillo: #fdd835;
 $screen-xs: 480px !default; // telefonos
 $screen-sm: 768px !default; //tablet
 $screen-md: 992px !default; //desktop
+$screen-xl: 1300px !default; //desktop
 html,
 body {
     margin: 10px auto;
@@ -73,12 +74,21 @@ body {
     @include border-top-radius(5px);
     @include border-bottom-radius(5px);
     background-color: $fondo-tarjeta;
-    font-size: 45px;
+    font-size: 40px;
     font-family: $fontset-avenir-bold;
     width: 90%;
-    padding: 20px;
+    padding: 10px;
     margin: 0 auto 20px;
     overflow: hidden;
+    @include breakpoint(xs) {
+        font-size: 10px;
+    }
+    @include breakpoint(sm) {
+        font-size: 15px;
+    }
+    @include breakpoint(md) {
+        font-size: 40px;
+    }
 }
 .capital,
 .provincia,
@@ -127,7 +137,7 @@ body {
     display: table-cell;
     height: 35px;
     font-family: $fontset-avenir-demi;
-    font-size: 40px;
+    //font-size: 40px;
     line-height: 40px;
 }
 
