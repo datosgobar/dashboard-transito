@@ -148,17 +148,19 @@ def get_static(filepath):
 @bottle.post("/index")
 def send_data():
     bottle_auth.require(fail_redirect='/')
-    if set(['anomaly_id', 'comentario', 'causa_id']) == set(request.forms.keys()):
+    if set(['anomaly_id', 'comentario', 'causa_id', 'tipo_corte']) == set(request.forms.keys()):
         session = Session(engine)
         anomaly_id = request.forms.get('anomaly_id', False)
         causa_id = request.forms.get("causa_id", False)
         comentario = request.forms.get("comentario", False)
+        tipo_corte = request.forms.get("tipo_corte", False)
         if anomaly_id and causa_id:
             queryAnomaly = session.query(Anomaly).filter_by(id=anomaly_id)
             if queryAnomaly.count():
                 queryAnomaly.update({
                     'causa_id': causa_id,
                     'comentario_causa': comentario,
+                    'tipo_corte': tipo_corte,
                     'timestamp_asignacion': datetime.datetime.now()
                 })
                 session.commit()

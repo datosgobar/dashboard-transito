@@ -28,7 +28,7 @@ from getDataFake import api_sensores_fake
         updateDetectionParams
         getCurrentSegmentState
         getDetectionParams
-        
+
         upsertAnomalies
         updateSnapshot
         performAnomalyAnalysis
@@ -75,11 +75,10 @@ def test_downloadData():
     list_fall = []
     hasta = datetime.datetime.now()
     desde = hasta - datetime.timedelta(minutes=20)
-    # downloadData(sensor_ids, step, download_startdate, download_enddate,
-    # outfn=None, token="superadmin.", pool_len=5)
+    print ""
     print str(datetime.datetime.now())
     result = downloadData(
-        sensor_ids, datetime.timedelta(days=2), desde, hasta, pool_len=5)
+        sensor_ids, datetime.timedelta(days=2), desde, hasta, pool_len=48)
     print str(datetime.datetime.now())
 
     for res in result:

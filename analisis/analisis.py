@@ -12,6 +12,7 @@ from sqlalchemy.orm import Session
 import pdb
 from getDataFake import api_sensores_fake
 import config
+import time
 import json
 import requests
 import datetime
@@ -56,6 +57,7 @@ def getData(url):
                 pass
         except requests.exceptions.Timeout:
             print ("hubo timeout del request en {0}".format(url))
+            time.sleep(1)
             pass
         except:
             return None
@@ -493,7 +495,7 @@ def upsertAnomalies(newanomalydata):
             session.add(new_anomaly)
             lastmodified_anomaly = new_anomaly
         session.commit()
-        print lastmodified_anomaly.id
+        # print lastmodified_anomaly.id
         curanomaly['anomalia_id'] = lastmodified_anomaly.id
         liveanomalies.append(curanomaly)
     conn.close()
