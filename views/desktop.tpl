@@ -101,7 +101,7 @@
                             </div>
                                 
                             <div class="fila">
-                                <label>Descripcion</label>
+                                <label>Descripción</label>
                                 <textarea id="comentario_frm" rows="3" maxlength="140" placeholder="Ej. Manifestación en Arenales y Sta. Fe. Congestión en Libertador."></textarea> 
 
                                 <br>
