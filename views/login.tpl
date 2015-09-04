@@ -1,18 +1,28 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta content="text/html; charset=utf-8" http-equiv="content-type">
+<!DOCTYPE HTML>
+<html lang="es">
+<head>    
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">    
+    <title>Dashboard de Tránsito</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="_static/css/estilos-login.min.css" />
+    <link rel="icon" href="favicon.ico"/>
+</dead>    
 <body>
-<div>
-  <div>
-      <h2>Login</h2>
-      <form action="/login" method="post" name="login">
-          <input type="text" name="username" />
-          <input type="password" name="password" />
-          <br/><br/>
-          <button type="submit" > Enviar </button>
-      </form>
-  </div>
-</div>
+    <div class="login">
+        <div class="titulo">Dashboard Tránsito</div>
+        <form action="/login" method="post" name="login">
+            <div class="campos">
+                <label>usuario</label><br>
+                <input type="text" name="username" /><br>
+                <label>Contraseña</label><br>
+                <input type="password" name="password" /><br>
+                <div class="enviar">
+                    <input type="submit" value="ENTRAR">
+                </div>              
+            </div>              
+        </form>
+    </div>
 </body>
 </head>

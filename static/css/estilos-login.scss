@@ -1,0 +1,158 @@
+@import "../../node_modules/node-bourbon/node_modules/bourbon/app/assets/stylesheets/_bourbon.scss";
+@import "mixins/breakpoint.scss";
+@import "mixins/opacity.scss";
+@include font-face('AvenirNext-Bold', 'fonts/AvenirNextLTPro-Bold');
+@include font-face('AvenirNext-Demi', 'fonts/AvenirNextLTPro-Demi');
+@include font-face('AvenirNext-Regular', 'fonts/AvenirNextLTPro-Regular');
+
+$fontset-avenir-demi: "AvenirNext-Demi", "Helvetica Neue", Helvetica, Arial, sans-serif !default; 
+$fontset-avenir-regular: "AvenirNext-Regular","Helvetica Neue",Helvetica,Arial,sans-serif !default;
+// colores
+
+$fondo-oscuro: #16191C;
+$fondo-claro: #3C434D;
+
+$texto-titulo: #3C434D;
+$texto-labels: #CFD1D1;
+$texto-inputs: #CFD1D1;
+$texto-submit: #CFD1D1;
+
+
+//tamaños de dispositivos
+$screen-xs: 480px !default; // telefonos
+$screen-sm: 768px !default; //tablet
+$screen-md: 992px !default; //desktop
+html,
+body {
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    height: 100%;
+    background: $fondo-oscuro url("img/login.jpg") no-repeat center center;
+    background-size: cover;
+ 
+}
+
+.login{
+    box-shadow: 0px 0px 20px 0px rgba(0.4, 0, 0.2, 0.5);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-150px,-150px);
+    width: 260px;
+    height: 300px;
+    border-radius: 10px;
+    background-color: $fondo-oscuro;
+    padding-left: 20px;
+    padding-right: 20px;
+
+
+    .titulo{
+        margin-top: 10px;
+        text-align: center;
+        font-family: $fontset-avenir-regular;
+        line-height: 45px;
+        font-size: 28px;
+        color: $texto-titulo;
+        border-bottom: 1px solid $texto-titulo;
+
+    }
+
+    form{
+        margin: 8px auto;
+        padding: 8px;
+        width: 90%;
+
+        label{
+            width: 40px;
+            font-family: $fontset-avenir-demi;
+            font-size: 14px;
+            line-height: 30px;
+            color: $texto-labels;
+            text-transform: uppercase;
+        }
+
+        input[type="text"],input[type="password"]  {
+            width: 90%;
+            border-radius: 16px;
+            border: 0;
+            background-color: $fondo-claro;
+            color: $texto-inputs;
+            font-size: 16px;
+            font-family: $fontset-avenir-regular;
+            padding: 5px 10px 5px 10px;
+            height: 16px;
+            margin-bottom: 15px;
+
+
+        }
+
+        .enviar{
+            text-align:center
+        }
+
+        input[type="submit"]{
+            cursor: pointer;
+            background-color: transparent;
+            color: $texto-submit;
+            border: 2px solid $texto-submit;
+            border-radius: 50px;
+            font-size: 12px;
+            font-family: $fontset-avenir-demi;
+            padding: 5px 20px 5px 20px;
+            margin-top: 20px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: $fondo-claro;
+        }
+
+    }
+
+}
+
+/*
+
+    form{
+   border: 1px solid green;
+        background-color: $fondo-oscuro;
+        height: 300px;
+        width: 300px;
+
+        h1{}
+
+
+        input[text],input[password]  {
+            cursor: pointer;
+            background-color: transparent;
+            color: $texto-claro;
+            border: 2px solid $texto-claro;
+            border-radius: 15px;
+            font-size: 12px;
+            font-family: $fontset-avenir-demi;
+            padding: 5px 10px 5px 10px;
+        }
+
+        input:hover {
+            background-color: $fondo-claro;
+        }
+
+        input[submit]  {
+            cursor: pointer;
+            background-color: transparent;
+            color: $texto-claro;
+            border: 2px solid $texto-claro;
+            border-radius: 15px;
+            font-size: 12px;
+            font-family: $fontset-avenir-demi;
+            padding: 5px 10px 5px 10px;
+        }
+
+
+    }
+
+
+}
+
+
+*/

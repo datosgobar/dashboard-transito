@@ -6,7 +6,8 @@ module.exports = function (grunt) {
             dist: {
                 files: {
                     'static/css/estilos.css': 'static/css/estilos.scss',
-                    'static/css/estilos-desktop.css': 'static/css/estilos-desktop.scss'
+                    'static/css/estilos-desktop.css': 'static/css/estilos-desktop.scss',
+                    'static/css/estilos-login.css': 'static/css/estilos-login.scss'
                 }
             }
         },
@@ -24,7 +25,9 @@ module.exports = function (grunt) {
             target:{
                 files:{
                 'static/css/estilos.min.css': 'static/css/estilos.css',
-                'static/css/estilos-desktop.min.css': 'static/css/estilos-desktop.css'
+                'static/css/estilos-desktop.min.css': 'static/css/estilos-desktop.css',
+                'static/css/estilos-login.min.css': 'static/css/estilos-login.css'
+
                 }
             }
         },
