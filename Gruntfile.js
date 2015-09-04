@@ -26,7 +26,7 @@ module.exports = function (grunt) {
                 files:{
                 'static/css/estilos.min.css': 'static/css/estilos.css',
                 'static/css/estilos-desktop.min.css': 'static/css/estilos-desktop.css',
-                'static/css/estilos-login.min.css': 'static/css/estilos-login.css'
+                'public/css/estilos-login.min.css': 'static/css/estilos-login.css'
 
                 }
             }

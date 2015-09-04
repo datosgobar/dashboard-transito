@@ -9,10 +9,7 @@ import time
 import datetime
 import logging
 
-# from analisis import *  # comentada por nico
-from analisis.getDataFake import parserEmitDataFake  # para nico
-from analisis.corredores import parserEmitData
-
+from analisis import *
 from bottle import error, request
 from socketio import socketio_manage
 from socketio.mixins import BroadcastMixin
@@ -30,7 +27,7 @@ from sqlalchemy.orm import Session
 
 bottle.debug(True)
 Base = automap_base()
-db_url = 'mysql://root:password@localhost/dashboardoperativo'
+db_url = config.db_url
 engine = create_engine(db_url)
 Base.prepare(engine, reflect=True)
 Anomaly = Base.classes.anomaly
@@ -39,7 +36,7 @@ monkey.patch_all()
 
 
 def auth_sqlalchemy():
-    sqlalchemy_backend = SqlAlchemyBackend(db_url)
+    sqlalchemy_backend = SqlAlchemyBackend(config.db_url)
     return sqlalchemy_backend
 
 auth = auth_sqlalchemy()
@@ -111,8 +108,10 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
 @bottle.route('/')
 def views_login():
     """Serve login form"""
-    return bottle.template('login')
-    # return {}
+    if bottle_auth.user_is_anonymous:
+        return bottle.template('login')
+    else:
+        return bottle.template('index')
 
 
 @bottle.route('/salir')
@@ -142,6 +141,11 @@ def root():
     return bottle.template('desktop')
 
 
+@bottle.route('/_public/<filepath:path>')
+def get_static_js(filepath):
+    return bottle.static_file(filepath, root='./public/')
+
+
 @bottle.route('/_static/<filepath:path>')
 def get_static(filepath):
     bottle_auth.require(fail_redirect='/')
@@ -151,17 +155,19 @@ def get_static(filepath):
 @bottle.post("/index")
 def send_data():
     bottle_auth.require(fail_redirect='/')
-    if set(['anomaly_id', 'comentario', 'causa_id']) == set(request.forms.keys()):
+    if set(['anomaly_id', 'comentario', 'causa_id', 'tipo_corte']) == set(request.forms.keys()):
         session = Session(engine)
         anomaly_id = request.forms.get('anomaly_id', False)
         causa_id = request.forms.get("causa_id", False)
         comentario = request.forms.get("comentario", False)
+        tipo_corte = request.forms.get("tipo_corte", False)
         if anomaly_id and causa_id:
             queryAnomaly = session.query(Anomaly).filter_by(id=anomaly_id)
             if queryAnomaly.count():
                 queryAnomaly.update({
                     'causa_id': causa_id,
                     'comentario_causa': comentario,
+                    'tipo_corte': tipo_corte,
                     'timestamp_asignacion': datetime.datetime.now()
                 })
                 session.commit()

@@ -3,5 +3,5 @@
 
 from getDataFake import getData, parserEmitDataFake
 from corredores import parserEmitData
-# from analisis import * # comentada por nico
+from analisis import *
 import config

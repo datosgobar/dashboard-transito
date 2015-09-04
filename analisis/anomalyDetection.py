@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import pandas as pd
+import pdb
 import json
 import StringIO
 
@@ -98,6 +99,7 @@ Retorna una lista con las anomalias encontradas de la forma:
 
 
 def detectAnomalies(detectparams, lastrecords, dontfilter=False):
+    # pdb.set_trace()
     if len(lastrecords) == 0:
         return []
     detectparams = pd.read_json(detectparams, orient="records")
@@ -140,11 +142,12 @@ def _detectAnomalies(detectparams, lastrecords):
     # lastrecords, detectparams, on=["iddevice", "franja",
     # "daytype"]).sort("date")
     resultsdf = pd.merge(
-        lastrecords, detectparams, on=["iddevice", "franja", "daytype", "time"]).sort("date")
+        lastrecords, detectparams, on=["iddevice", "franja", "daytype"]).sort("date")
 
     #anomalies = resultsdf[resultsdf[evalfield]>(resultsdf[basefield]+resultsdf[marginfield])]
     #resultsdf["threshold"] = resultsdf[basefield]
     resultsdf["threshold"] = resultsdf[basefield] + resultsdf[marginfield] * 2
+    # resultsdf[evalfield] > resultsdf["threshold"]
     resultsdf["isanomaly"] = resultsdf[evalfield] > resultsdf["threshold"]
     return resultsdf
 
@@ -238,11 +241,11 @@ import json
 import dateutil.parser
 lastmonthrecords = [(10, 222, '2015-07-12T00:00:01-03:00'), (10, 217, '2015-07-12T01:00:00-03:00'), (10, 183, '2015-07-12T02:00:00-03:00'), (10, 248, '2015-07-12T03:00:00-03:00')]
 def f(r) :
-    return [
-        r[0],
-        r[1],
-        dateutil.parser.parse(r[2])
-    ]
+	return [
+		r[0],
+		r[1],
+		dateutil.parser.parse(r[2])
+	]
 
 lastmonthrecords = map(f, lastmonthrecords)
 
