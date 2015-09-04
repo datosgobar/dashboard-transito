@@ -15,4 +15,5 @@ analisis/detection_params.json
 logs/
 README.html
 .DS_Store
-db_repository/manager.py
+db_repository/manage.py
+manage.py
