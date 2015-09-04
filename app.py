@@ -108,8 +108,10 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
 @bottle.route('/')
 def views_login():
     """Serve login form"""
-    return bottle.template('login')
-    # return {}
+    if bottle_auth.user_is_anonymous:
+        return bottle.template('login')
+    else:
+        return bottle.template('index')
 
 
 @bottle.route('/salir')
@@ -137,6 +139,11 @@ def views_index():
 def root():
     bottle_auth.require(fail_redirect='/')
     return bottle.template('desktop')
+
+
+@bottle.route('/_public/<filepath:path>')
+def get_static_js(filepath):
+    return bottle.static_file(filepath, root='./public/')
 
 
 @bottle.route('/_static/<filepath:path>')

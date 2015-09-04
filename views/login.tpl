@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="content-type">
+<script type="text/javascript" src="_public/test.js"></script>
 <body>
 <div>
   <div>
