@@ -130,7 +130,7 @@ body {
     width: 100%;
 }
 
-#cuadroOperador {
+#cuadroOperador{
     width: 100%;
     display: relative;
     #corredores {
@@ -140,6 +140,7 @@ body {
         border-radius: 5px;
         margin: 10px;
         padding: 10px;
+        min-width: 600px;
     }
     #edicion {
         padding: 10px;
@@ -149,6 +150,13 @@ body {
         float: left;
         max-width: 350px;
     }
+    .tuerca{
+        background: url("img/editar.svg") no-repeat right center;
+        width: 20px;
+        height: 20px;
+        float: right;
+    }
+
     .titulo{
         font-family: $fontset-avenir-regular;
         font-size: 22px;
@@ -157,12 +165,6 @@ body {
         border-bottom: 1px solid  $texto-claro;
         padding-bottom: 4px;
         margin-bottom: 4px;
-    }
-    .tuerca{
-        background: url("img/editar.svg") no-repeat right center;
-        width: 20px;
-        height: 20px;
-        float: right;
     }
 
     .subtitulo,label{

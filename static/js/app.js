@@ -14,7 +14,7 @@ var nombresDeCorredores = (function () {
 })(); 
 
 
-//ARMA EL HTML DE LA TARJETA
+//ARMA EL HTML DE LA TARJETA DE LA VENTANA PRINCIPAL
 function armoTemplateCard(data) {
 
     var causaPendienteCap = false;
@@ -117,3 +117,4 @@ function agregaCard(data){
 function nombreDeCorredor(id){
 	return nombresDeCorredores[id].nombreSegmento;
 }
+

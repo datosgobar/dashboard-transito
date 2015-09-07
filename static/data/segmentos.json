@@ -1,194 +1,626 @@
 {
     "10": {
         "corredor": "Independencia",
-        "nombreSegmento": "Paseo Colón - 9 de julio"
+        "nombreSegmento": "Paseo Colón - 9 de julio",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "11": {
         "corredor": "Illia",
-        "nombreSegmento": "General Paz - Sarmiento"
+        "nombreSegmento": "General Paz - Sarmiento",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "56": {
         "corredor": "Illia",
-        "nombreSegmento": "Sarmiento - 9 de julio"
+        "nombreSegmento": "Sarmiento - 9 de julio",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "12": {
         "corredor": "Illia",
-        "nombreSegmento": "General Paz - Sarmiento"
+        "nombreSegmento": "General Paz - Sarmiento",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "57": {
         "corredor": "Illia",
-        "nombreSegmento": "Sarmiento - 9 de julio"
+        "nombreSegmento": "Sarmiento - 9 de julio",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "13": {
         "corredor": "9 de julio",
-        "nombreSegmento": "San Juan - Corrientes"
+        "nombreSegmento": "San Juan - Corrientes",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "17": {
         "corredor": "9 de julio",
-        "nombreSegmento": "Corrientes - Arroyo"
+        "nombreSegmento": "Corrientes - Arroyo",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "15": {
         "corredor": "9 de julio",
-        "nombreSegmento": "Arroyo - Corrientes"
+        "nombreSegmento": "Arroyo - Corrientes",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "19": {
         "corredor": "9 de julio",
-        "nombreSegmento": "Corrientes - San Juan"
+        "nombreSegmento": "Corrientes - San Juan",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "14": {
         "corredor": "9 de julio - Externa",
-        "nombreSegmento": "Arroyo - Corrientes"
+        "nombreSegmento": "Arroyo - Corrientes",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "18": {
         "corredor": "9 de julio - Externa",
-        "nombreSegmento": "Corrientes - San Juan"
+        "nombreSegmento": "Corrientes - San Juan",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "16": {
         "corredor": "9 de julio - Externa",
-        "nombreSegmento": "Arroyo - Corrientes"
+        "nombreSegmento": "Arroyo - Corrientes",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "20": {
         "corredor": "9 de julio - Externa",
-        "nombreSegmento": "Corrientes - San Juan"
+        "nombreSegmento": "Corrientes - San Juan",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "21": {
         "corredor": "Alem",
-        "nombreSegmento": "Rojas - Casa Rosada"
+        "nombreSegmento": "Rojas - Casa Rosada",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "22": {
         "corredor": "Alem",
-        "nombreSegmento": "Rojas - Casa Rosada"
+        "nombreSegmento": "Rojas - Casa Rosada",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "23": {
         "corredor": "Corrientes",
-        "nombreSegmento": "Medrano - Obelisco"
+        "nombreSegmento": "Medrano - Obelisco",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "24": {
         "corredor": "Rivadavia",
-        "nombreSegmento": "Pueyrredón - Montevideo"
+        "nombreSegmento": "Pueyrredón - Montevideo",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "25": {
         "corredor": "Av. de mayo",
-        "nombreSegmento": "Plaza de mayo - Montevideo"
+        "nombreSegmento": "Plaza de mayo - Montevideo",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "26": {
         "corredor": "San Martín",
-        "nombreSegmento": "General Paz - Beiró"
+        "nombreSegmento": "General Paz - Beiró",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "28": {
         "corredor": "San Martín",
-        "nombreSegmento": "Beiró - Juan B. Justo"
+        "nombreSegmento": "Beiró - Juan B. Justo",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "27": {
         "corredor": "San Martín",
-        "nombreSegmento": "General Paz - Beiró"
+        "nombreSegmento": "General Paz - Beiró",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "29": {
         "corredor": "San Martín",
-        "nombreSegmento": "Beiró - Juan B. Justo"
+        "nombreSegmento": "Beiró - Juan B. Justo",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "31": {
         "corredor": "Juan B. Justo",
-        "nombreSegmento": "Santa Fé - Corrientes"
+        "nombreSegmento": "Santa Fé - Corrientes",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "32": {
         "corredor": "Juan B. Justo",
-        "nombreSegmento": "Corrientes - Nazca"
+        "nombreSegmento": "Corrientes - Nazca",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "35": {
         "corredor": "Juan B. Justo",
-        "nombreSegmento": "Nazca - General Paz"
+        "nombreSegmento": "Nazca - General Paz",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "30": {
         "corredor": "Juan B. Justo",
-        "nombreSegmento": "Santa Fé - Corrientes"
+        "nombreSegmento": "Santa Fé - Corrientes",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "33": {
         "corredor": "Juan B. Justo",
-        "nombreSegmento": "Corrientes - Nazca"
+        "nombreSegmento": "Corrientes - Nazca",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "34": {
         "corredor": "Juan B. Justo",
-        "nombreSegmento": "Nazca - General Paz"
+        "nombreSegmento": "Nazca - General Paz",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "36": {
         "corredor": "Córdoba",
-        "nombreSegmento": "9 de julio - Estado de Israel"
+        "nombreSegmento": "9 de julio - Estado de Israel",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "37": {
         "corredor": "Córdoba",
-        "nombreSegmento": "Estado de Israel - Dorrego"
+        "nombreSegmento": "Estado de Israel - Dorrego",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "38": {
         "corredor": "Paseo Colón",
-        "nombreSegmento": "San Juan - Casa Rosada"
+        "nombreSegmento": "San Juan - Casa Rosada",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "39": {
         "corredor": "Paseo Colón",
-        "nombreSegmento": "San Juan - Casa Rosada"
+        "nombreSegmento": "San Juan - Casa Rosada",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "41": {
         "corredor": "Cabildo",
-        "nombreSegmento": "General Paz - Congreso"
+        "nombreSegmento": "General Paz - Congreso",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "43": {
         "corredor": "Cabildo",
-        "nombreSegmento": "Congreso - Lacroze"
+        "nombreSegmento": "Congreso - Lacroze",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "44": {
         "corredor": "Cabildo",
-        "nombreSegmento": "Lacroze - Juan B. Justo"
+        "nombreSegmento": "Lacroze - Juan B. Justo",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "40": {
         "corredor": "Cabildo",
-        "nombreSegmento": "General Paz - Congreso"
+        "nombreSegmento": "General Paz - Congreso",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "42": {
         "corredor": "Cabildo",
-        "nombreSegmento": "Congreso - Lacroze"
+        "nombreSegmento": "Congreso - Lacroze",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "45": {
         "corredor": "Cabildo",
-        "nombreSegmento": "Lacroze - Juan B. Justo"
+        "nombreSegmento": "Lacroze - Juan B. Justo",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "46": {
         "corredor": "Pueyrredón",
-        "nombreSegmento": "Mitre - Córdoba"
+        "nombreSegmento": "Mitre - Córdoba",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "47": {
         "corredor": "Pueyrredón",
-        "nombreSegmento": "Mitre - Córdoba"
+        "nombreSegmento": "Mitre - Córdoba",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "49": {
         "corredor": "Libertador",
-        "nombreSegmento": "Cerrito - Sarmiento"
+        "nombreSegmento": "Cerrito - Sarmiento",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "51": {
         "corredor": "Libertador",
-        "nombreSegmento": "Sarmiento - La Pampa"
+        "nombreSegmento": "Sarmiento - La Pampa",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "53": {
         "corredor": "Libertador",
-        "nombreSegmento": "La Pampa - General Paz"
+        "nombreSegmento": "La Pampa - General Paz",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "48": {
         "corredor": "Libertador",
-        "nombreSegmento": "Cerrito - Sarmiento"
+        "nombreSegmento": "Cerrito - Sarmiento",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "50": {
         "corredor": "Libertador",
-        "nombreSegmento": "Sarmiento - La Pampa"
+        "nombreSegmento": "Sarmiento - La Pampa",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "52": {
         "corredor": "Libertador",
-        "nombreSegmento": "La Pampa - General Paz"
+        "nombreSegmento": "La Pampa - General Paz",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "54": {
         "corredor": "Alcorta",
-        "nombreSegmento": "Cerrito - Sarmiento"
+        "nombreSegmento": "Cerrito - Sarmiento",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     },
     "55": {
         "corredor": "Alcorta",
-        "nombreSegmento": "Sarmiento - Udaondo"
+        "nombreSegmento": "Sarmiento - Udaondo",
+        "sentido": "",
+        "anomalia": "",
+        "tiempo": "",
+        "demora": "",
+        "corte": "",
+        "causa": "",
+        "descripcion":""
+
+
     }
 }
