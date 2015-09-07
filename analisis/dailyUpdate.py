@@ -3,6 +3,10 @@
 
 import analisis
 import os
+import datetime
+
+from dashboard_logging import dashboard_logging
+logger = dashboard_logging(config="analisis/logging.json", name=__name__)
 
 
 def run():
@@ -18,6 +22,7 @@ def run():
         execfile(zvirtenv, dict(__file__=zvirtenv))
 
     analisis.dailyUpdate()
+    logger.info("run dailyUpdate, time:{0}".format(datetime.datetime.now()))
 
 if __name__ == '__main__':
     run()
