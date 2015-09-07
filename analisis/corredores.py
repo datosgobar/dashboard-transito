@@ -8,9 +8,12 @@ import config
 import json
 from getDataFake import readSegmentos
 from sqlalchemy import create_engine
+from dashboard_logging import dashboard_logging
 
 db_url = config.db_url
 engine = create_engine(db_url)
+
+logger = dashboard_logging(config="logging.json", name=__name__)
 
 
 def readSnapshot():
@@ -22,12 +25,13 @@ def readSnapshot():
     try:
         cur = engine.connect()
     except Exception, ex:
-        print ex
+        logger.error("read snapshot", traceback=True)
         result = []
     else:
         segment_snapshot = cur.execute("SELECT * FROM segment_snapshot")
         for row in segment_snapshot.fetchall():
             result.append(row)
+        logger.info("read snapshot total: {}".format(len(result)))
     finally:
         cur.close()
         return result
@@ -86,20 +90,21 @@ def parserEmitData(self, template):
             for corredor, segmentosids in corredores.iteritems():
                 if update[i][0] in segmentosids:
                     if update[i][0] in referencia['centro']:
-                        # print update[i][0], c, 'centro'
+                        #logger.info("{0} {1} {2}".format(update[i][0], c, 'centro'))
                         template['corredores'][corredor][
                             'segmentos_capital'].append(buildSegmentos(update[i]))
                     else:
-                        # print update[i][0], c, 'prov'
+                        #logger.info("{0} {1} {2}".format(update[i][0], c, 'prov'))
                         template['corredores'][corredor][
                             'segmentos_provincia'].append(buildSegmentos(update[i]))
                 else:
                     continue
 
         for channell in corredores.keys():
-            print channell, template['corredores'][channell]
+            #logger.info("channel {0} template {1}".format(channell, template['corredores'][channell]))
             self.emit(channell, template['corredores'][channell])
+            logger.info("updateo channel {0}".format(channell))
             time.sleep(0.5)
     else:
-        print "sin datos"
+        logger.info("sin datos en tabla")
         self.emit('info', "sin datos")

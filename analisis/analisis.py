@@ -8,6 +8,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import exc
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
+from dashboard_logging import dashboard_logging
 
 import pdb
 from getDataFake import api_sensores_fake
@@ -22,6 +23,10 @@ import argparse
 
 import anomalyDetection
 
+from dashboard_logging import dashboard_logging
+logger = dashboard_logging(config="logging.json", name=__name__)
+logger.info("inicio analisis")
+
 detection_params_fn = os.path.dirname(
     os.path.realpath(__file__)) + "/detection_params.json"
 
@@ -35,28 +40,25 @@ engine = create_engine(db_url)
 
 # reflect the tables
 Base.prepare(engine, reflect=True)
-
 Historical = Base.classes.historical
 Anomaly = Base.classes.anomaly
 SegmentSnapshot = Base.classes.segment_snapshot
 Causa = Base.classes.causa
-
 session = Session(engine)
 
 
 def getData(url):
-    # url
     for i in xrange(3):
         try:
             response = requests.get(url)
             if (response.status_code == 200):
                 return response.json()
             else:
-                print ("hubo timeout de teracode en {0}".format(url))
-                pass
-        except requests.exceptions.Timeout:
-            print ("hubo timeout del request en {0}".format(url))
-            pass
+                logger.error("hubo timeout del count:{0} request en {1} codigo:{2}".format(
+                    i, url, response.status_code))
+        except requests.exceptions.Timeout, e:
+            logger.error(
+                "hubo timeout del count:{0} request en {1}".format(i, url), traceback=True)
         except:
             return None
 
@@ -64,14 +66,14 @@ def getData(url):
 
 
 """
-Funcion que arme para bajar datos de la api de teracode
-Ej:
-sensor_ids = [...] # Sacar de waypoints.py
-download_startdate = "2015-07-01T00:00:00-00:00"
-download_enddate = "2015-07-12T00:00:01-00:00"
-step = datetime.timedelta(days=2)
-newdata = downloadData (
-    sensor_ids, step, download_startdate, download_enddate, outfn="raw_api_01_11.json")
+    Funcion que arme para bajar datos de la api de teracode
+    Ej:
+    sensor_ids = [...] # Sacar de waypoints.py
+    download_startdate = "2015-07-01T00:00:00-00:00"
+    download_enddate = "2015-07-12T00:00:01-00:00"
+    step = datetime.timedelta(days=2)
+    newdata = downloadData (
+        sensor_ids, step, download_startdate, download_enddate, outfn="raw_api_01_11.json")
 """
 
 
@@ -86,6 +88,9 @@ def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=N
     urls = []
     if step > (download_enddate - download_startdate):
         step = download_enddate - download_startdate
+    else:
+        logger.info("condicion step sin cumplir step:{0} enddate:{1} startdate:{2}".format(
+            step, download_enddate, download_startdate))
     while start < end:
         startdate, enddate = start, start + step
         for sensor_id in sensor_ids:
@@ -98,15 +103,22 @@ def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=N
 
     """cambiar funcion map por api_sensores_fake"""
     #alldata = map(api_sensores_fake, urls)
-    pool = multiprocessing.Pool(pool_len)
-    alldata = pool.map(getData, urls)
-    pool.close()
-    pool.terminate()
-    pool.join()
+    try:
+        pool = multiprocessing.Pool(pool_len)
+        alldata = pool.map(getData, urls)
+    except Exception, e:
+        logger.error("pool multiprocessing, error:", traceback=True)
+        alldata = []
+    else:
+        pool.close()
+        pool.terminate()
+        pool.join()
+
     if outfn != None:
         outf = open(outfn, "wb")
-        json.dump(alldata, outf)
-        outf.close()
+        if alldata:
+            json.dump(alldata, outf)
+            outf.close()
 
     return alldata
 
@@ -155,9 +167,8 @@ def updateDB(newdata):
             session.bulk_save_objects(newdata)
             session.commit()
             newrecords = True
-        except exc.SQLAlchemyError:
-            # "Encountered SQLAlchemyError"
-            pass
+        except exc.SQLAlchemyError, e:
+            logger.error("SQLAlchemyError:", traceback=True)
 
             # for historical in newdata:
             # pushear instancia de Historial a la base
@@ -165,7 +176,7 @@ def updateDB(newdata):
             #    session.commit()
             #    newrecords = True
     else:
-        print "not updateDB"
+        logger.info("not updateDB")
 
     conn.close()
     return newrecords
@@ -402,6 +413,8 @@ Lee los parametros de deteccion de la tabla detection_params.csv
 
 
 def getDetectionParams():
+    logger.info(
+        "load getDetectionParams,  time:{0}".format(datetime.datetime.now()))
     return open(detection_params_fn).read()
 
 """
@@ -492,7 +505,6 @@ def upsertAnomalies(newanomalydata):
             session.add(new_anomaly)
             lastmodified_anomaly = new_anomaly
         session.commit()
-        print lastmodified_anomaly.id
         curanomaly['anomalia_id'] = lastmodified_anomaly.id
         liveanomalies.append(curanomaly)
     conn.close()
