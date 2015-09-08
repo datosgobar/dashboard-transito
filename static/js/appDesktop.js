@@ -60,7 +60,7 @@ function actualizoRegistro() {
 }
 
 // mapa a full height
-$("#logo").on("click", function() {
+$("#logo").click(function() {
     $("#mapa").animate({
         height: "100%"
     }, 200);
@@ -78,16 +78,23 @@ $(".corredor").click(function() {
             height: "100%"
         }, 200);
     };
-
-});
-
-// Listener botonera
-$(".corredor").click(function() {
-    var corredor = $(this);
     if ( $(this).hasClass("cargando") === false){
         abreDetalleCorredor(corredor);
     };
+
 });
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // arma el detalle de todo el corredor en la ventana del operador
@@ -96,29 +103,94 @@ function abreDetalleCorredor(data){
     $("#cuadroOperador").fadeOut(0);
     var titulo = data.find(".titulo")
     $("#corredores .titulo")[0].innerHTML = titulo[0].innerHTML;
-
-
     // armo los corredores
     llenaPantallaActualizacion(titulo.parent()[0].id);
+
+
     $("#cuadroOperador").fadeIn("fast");
 }
 
 
 function llenaPantallaActualizacion(corredor){
 
+    var cantidad = 0; 
+    var cor = ""; 
+    var cappro = [0,0];
+    var corPro = "";
+    var corCap = "";
 
-    console.log (corredor);
+    // Vacío ventana
+    $("#corredores .etiquetasCapital").html("");
+    $("#corredores .etiquetasProvincia").html("");
+    $("#corredores #corredorCapital").html("");
+    $("#corredores #corredorProvincia").html("");
+    $("#avisoProvincia").html("");
+    $("#avisoCapital").html("");
+    $("#corredores .corredoresCapital").html("");
+    $("#corredores .corredoresProvincia").html("");
+    $("#panelesProvincia").html("");
+    $("#panelesCapital").html("");
 
-/*
-    nombresDeCorredores["corredor"].nombreSegmento
-    nombresDeCorredores["corredor"].sentido
-    nombresDeCorredores["corredor"].anomalia
-    nombresDeCorredores["corredor"].tiempo
-    nombresDeCorredores["corredor"].demora
-    nombresDeCorredores["corredor"].corte
-    nombresDeCorredores["corredor"].causa
-    nombresDeCorredores["corredor"].descripcion
-*/
+
+    if ( typeof(corredores[corredor].provincia) != "undefined"){
+        cantidad = corredores[corredor].provincia.length;
+        cor = corredores[corredor].provincia;
+        corPro = corredores[corredor].provincia;
+        cappro[1] = 1;
+
+    }
+
+    if ( typeof(corredores[corredor].capital) != "undefined"){
+        cantidad = corredores[corredor].capital.length;
+        cor = corredores[corredor].capital;
+        corCap = corredores[corredor].capital;
+        cappro[0] = 1;
+    }
+
+
+    // armo etiquetas
+    for (var i = 0 ; i < cor.length ; i++){
+        var alineado = "cen";
+        if (i === 0){alineado = "izq";}
+        $("#corredores .etiquetasCapital").append('<div class="nombreCorredor ' + alineado + '">' + nombresDeCorredores[cor[i]].nombreSegmento.split(" - ")[0] + '</div>' );
+        $("#corredores .etiquetasProvincia").append('<div class="nombreCorredor ' + alineado + '">' + nombresDeCorredores[cor[i]].nombreSegmento.split(" - ")[0] + '</div>' );
+    }
+    $("#corredores .etiquetasCapital").append('<div class="nombreCorredor der">' + nombresDeCorredores[cor[cor.length-1]].nombreSegmento.split(" - ")[1] + '</div>');
+    $("#corredores .etiquetasProvincia").append('<div class="nombreCorredor der">' + nombresDeCorredores[cor[cor.length-1]].nombreSegmento.split(" - ")[1] + '</div>');
+
+    if (cappro[1] === 0 ){
+        $("#avisoProvincia").append('<div id="aviso">El trayecto no tiene dirección hacia Provincia</div>');        
+    }
+    if (cappro[0] === 0 ){
+        $("#avisoCapital").append('<div id="aviso">El trayecto no tiene dirección hacia Capital</div>');
+    }
+
+        
+    //armo segmentos
+    for (var i = 0 ; i < cor.length ; i++){
+        if (cappro[0] === 0 ){
+            $("#corredores .corredoresCapital").append('<div class="corredor segmento estado0"></div>' );
+        }else{
+            $("#corredores .corredoresCapital").append('<div class="corredor segmento estado' + nombresDeCorredores[corCap[i]].anomalia + '"></div>' );
+            $("#panelesCapital").append('<div class="panel" id="c'+corCap[i]+'"><div class="filaPanel">Aviso de anomalia<div class="datoPanel">--</div></div><div class="filaPanel">Tiempo del trayecto<div class="datoPanel">--</div></div><div class="filaPanel">Demora<div class="datoPanel">--</div></div><div class="filaPanel">Causa<div class="datoPanel">--</div></div></div>')
+        }
+        
+        if (cappro[1] === 0 ){
+            $("#corredores .corredoresProvincia").append('<div class="corredor segmento estado0"> </div>' );
+        }else{
+            $("#corredores .corredoresProvincia").append('<div class="corredor segmento estado' + nombresDeCorredores[corPro[i]].anomalia + ' "></div>' );
+            $("#panelesProvincia").append('<div class="panel" id="c'+corPro[i]+'"><div class="filaPanel">Aviso de anomalia<div class="datoPanel">--</div></div><div class="filaPanel">Tiempo del trayecto<div class="datoPanel">--</div></div><div class="filaPanel">Demora<div class="datoPanel">--</div></div><div class="filaPanel">Causa<div class="datoPanel">--</div></div></div>')
+
+        }
+
+        
+    }
+
+    // agrega el listener al panel que se acaba de agregar.
+    $(".panel").click(function() {
+        //el id del segmento
+        console.log(this.id.replace("c",""));
+    });
 
 }
 
@@ -174,11 +246,9 @@ function actualizacionDesktop(data) {
 
     var datos =JSON.parse('{'+texto+'}');
     corredores[data.id] = datos;
-    
 
-
+    // captura el panel agregado y llena el cuadro de estado
 
 }
-
 
 

@@ -48,10 +48,18 @@
                     <!-- ventana corredores -->
                     <div id="corredores">
                         <div class="titulo">---</div>
+                                               
+                        <div class="flecha capital"></div>                        
+                        <div class="etiquetasCapital"></div>
+                        <div class="corredoresCapital"></div>
+                        <div id="avisoCapital"></div>
+                        <div id="panelesCapital"></div>
 
-
-
-
+                        <div class="flecha provincia"></div>                        
+                        <div class="etiquetasProvincia"></div>
+                        <div class="corredoresProvincia"></div>
+                        <div id="avisoProvincia"></div>
+                        <div id="panelesProvincia"></div>
 
                     </div>
                     

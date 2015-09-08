@@ -37,6 +37,7 @@ $naranja: #ff8f00;
 $amarillo: #fdd835;
 $fondo-oscuro: #1C2023;
 $fondo-claro: #282D33;
+$fondo-hover: #383D43;
 $texto-normal: #6C7480;
 $texto-claro: #CFD1D1;
 $gris: #c0c0c0;
@@ -133,6 +134,18 @@ body {
 #cuadroOperador{
     width: 100%;
     display: relative;
+    .filaPanel{
+        font-size: 12px;
+        padding: 0px 10px 5px 10px;
+        .datoPanel{
+            float: right;
+            color: $texto-claro;
+        }
+    }
+    .filaPanel:hover{
+        background-color: $fondo-hover;
+    }
+
     #corredores {
         background-color: $fondo-oscuro;
         float: left;
@@ -140,7 +153,76 @@ body {
         border-radius: 5px;
         margin: 10px;
         padding: 10px;
-        min-width: 600px;
+        min-width: 700px;
+
+        .flecha{
+            float: right;
+            height: 16px;
+            margin-top: 35px;
+            margin-right: 60px;
+            width: 26px;
+        }
+        .provincia{
+            background-image: url("img/provincia.svg");            
+        }
+        .capital{
+            background-image: url("img/capital.svg");
+        }
+
+
+        #aviso{
+            text-align: center;
+            font-family: $fontset-avenir-regular;
+            font-size: 16px;
+            color: $texto-normal;
+            line-height: 100px;
+            width: 600px;
+            top: -25px;
+            position: relative;
+        }
+        .etiquetasProvincia{
+            border-top: 1px solid $fondo-claro;
+        }
+
+        .etiquetasCapital,.etiquetasProvincia,
+        .corredoresCapital, .corredoresProvincia,
+        #panelesCapital, #panelesProvincia{
+            display: table;
+            table-layout: fixed;    
+            border-collapse: separate;
+            border-spacing: 5px;
+            width: 600px;
+            .izq{text-align: left}
+            .cen{text-align: center}
+            .der{text-align: right}
+            .nombreCorredor{
+                display: table-cell;
+                font-family: $fontset-avenir-demi;
+                font-size: 14px;
+            }
+            .corredor, .panel{
+                display: table-cell;
+            }
+            .panel{
+                height: 20px;
+                min-width: 20px;
+                position: relative;
+                top: -9px;
+            }
+            .panel div{
+                pointer-events: none;
+            }
+            .panel:hover{
+                cursor: pointer;
+                background-color: $fondo-claro;
+            }
+            .segmento{
+                //background-color: $fondo-claro;
+                height: 16px;
+                font-size: 8px;
+                text-align: center;
+            }
+        }
     }
     #edicion {
         padding: 10px;
@@ -243,6 +325,23 @@ body {
     }
 
 
+}
+
+
+.estado0 {
+    background-color: $fondo-claro;
+}
+
+.estado1 {
+    background-color: $amarillo;
+}
+
+.estado2 {
+    background-color: $naranja;
+}
+
+.estado3 {
+    background-color: $rojo;
 }
 
 .shadow {
