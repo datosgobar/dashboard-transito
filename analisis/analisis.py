@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import cProfile
+import StringIO
+import pstats
+import contextlib
+
 import sqlalchemy
 
 from sqlalchemy import create_engine
@@ -11,7 +16,7 @@ from sqlalchemy.orm import Session
 from dashboard_logging import dashboard_logging
 
 import pdb
-from getDataFake import api_sensores_fake
+
 import config
 import json
 import requests
@@ -22,13 +27,51 @@ import os
 import argparse
 
 import anomalyDetection
-
 from dashboard_logging import dashboard_logging
 logger = dashboard_logging(config="logging.json", name=__name__)
 logger.info("inicio analisis")
 
+from sqlalchemy import event
+from sqlalchemy.engine import Engine
+import time
+import logging
+
+logging.basicConfig()
+logger = logging.getLogger("myapp.sqltime")
+logger.setLevel(logging.DEBUG)
+
+
+@event.listens_for(Engine, "before_cursor_execute")
+def before_cursor_execute(conn, cursor, statement,
+                          parameters, context, executemany):
+    conn.info.setdefault('query_start_time', []).append(time.time())
+    logger.debug("Start Query: %s", statement)
+
+
+@event.listens_for(Engine, "after_cursor_execute")
+def after_cursor_execute(conn, cursor, statement,
+                         parameters, context, executemany):
+    total = time.time() - conn.info['query_start_time'].pop(-1)
+    logger.debug("Query Complete!")
+    logger.debug("Total Time: %f", total)
+
+
+@contextlib.contextmanager
+def profiled():
+    pr = cProfile.Profile()
+    pr.enable()
+    yield
+    pr.disable()
+    s = StringIO.StringIO()
+    ps = pstats.Stats(pr, stream=s).sort_stats('cumulative')
+    ps.print_stats()
+    # uncomment this to see who's calling what
+    # ps.print_callers()
+    print s.getvalue()
+
 detection_params_fn = os.path.dirname(
     os.path.realpath(__file__)) + "/detection_params.json"
+
 
 # Schema reflection! Para que las clases esten
 # Actualizadas con las migraciones de la DB
@@ -36,7 +79,7 @@ Base = automap_base()
 # Base = declarative_base()
 
 db_url = config.db_url
-engine = create_engine(db_url)
+engine = create_engine(db_url, echo=False)
 
 # reflect the tables
 Base.prepare(engine, reflect=True)
@@ -127,33 +170,12 @@ def createDBEngine():
     # engine = sqlalchemy.create_engine("postgres://postgres@/postgres")
     # engine = sqlalchemy.create_engine("sqlite:///analysis.db")
 
-    return create_engine(config.db_url)
+    return create_engine(config.db_url, echo=False)
 
 
 def getDBConnection():
     conn = createDBEngine().connect()
     return conn
-
-
-def setupDB():
-    """
-    Guarda el enum de causas de una anomalia
-    """
-    # pdb.set_trace()
-    file_causas = os.path.realpath(
-        "../dashboard-operativo-transito/static/data/causas.json")
-    with open(file_causas) as causas_data:
-        causas = json.load(causas_data)
-    for causa in causas['causas']:
-        if not session.query(Causa).filter(Causa.id == causa['id']).count():
-            session.add(
-                Causa(descripcion=causa['descripcion'].encode('utf-8'), id=causa['id']))
-            session.commit()
-
-
-"""
-Guarda datos recibidos por parámetro en la tabla "historical"
-"""
 
 
 def updateDB(newdata):
@@ -164,8 +186,9 @@ def updateDB(newdata):
     newrecords = False
     if len(newdata) > 0:
         try:
-            session.bulk_save_objects(newdata)
-            session.commit()
+            with profiled():
+                session.bulk_save_objects(newdata)
+                session.commit()
             newrecords = True
         except exc.SQLAlchemyError, e:
             logger.error("SQLAlchemyError:", traceback=True)
@@ -570,8 +593,6 @@ def dailyUpdate():
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Módulo de Análisis')
     parser.add_argument(
-        '--setup_database', action='store_true', help='Setup de base de datos')
-    parser.add_argument(
         '--download_lastmonth', action='store_true', help='Bajar y cargar la informacion del ultimo mes')
     parser.add_argument(
         '--load_apidump', metavar="dump.json", action='store', default=None, help='Cargar informacion historica desde un json con los resultados de las llamadas a Teracode')
@@ -581,8 +602,6 @@ if __name__ == '__main__':
         '--execute_loop_now', action='store_true', help='Ejecuta un unico ciclo de loop')
 
     args = parser.parse_args()
-    if args.setup_database:
-        setupDB()
 
     if args.download_lastmonth:
         downloadAndLoadLastMonth()
