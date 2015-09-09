@@ -15,10 +15,6 @@ from sqlalchemy.engine import Engine
 import time
 import logging
 
-logging.basicConfig()
-logger = logging.getLogger("myapp.sqltime")
-logger.setLevel(logging.DEBUG)
-
 
 def sqlalchemyDEBUG():
 
@@ -142,11 +138,6 @@ class instanceSQL(object):
             self.Session = sessionmaker(autoflush=False)
             return self.Session()
 
-    def close(self):
-        if self.__c:
-            self.__engine.close()
-            self.__c = False
-
 
 def main():
 
@@ -156,9 +147,8 @@ def main():
     with profiled():
         conn = instanceSQL(cfg=config)
         conn.createDBEngine()
-        conn.instanceTable(list_tables=[
-            'causa', 'historical', 'anomaly', 'segment_snapshot'
-        ])
+        conn.instanceTable(
+            list_tables=['causa', 'historical', 'anomaly', 'segment_snapshot'])
 
 
 if __name__ == '__main__':

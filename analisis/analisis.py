@@ -30,7 +30,7 @@ Causa = conn_sql.instanceTable(unique_table='causa')
 Anomaly = conn_sql.instanceTable(unique_table='anomaly')
 Historical = conn_sql.instanceTable(unique_table='historical')
 SegmentSnapshot = conn_sql.instanceTable(unique_table='segment_snapshot')
-# conn_sql.close()
+
 session = conn_sql.session()
 detection_params_fn = os.path.dirname(
     os.path.realpath(__file__)) + "/detection_params.json"
@@ -218,6 +218,7 @@ def executeLoop(desde, hasta, dontdownload=False):
         has_new_records = updateDB(filtered_data)
     if has_new_records:
         performAnomalyAnalysis(hasta)
+    session.close_all()
 
 
 def getLastRecords(desde, hasta):
@@ -268,6 +269,7 @@ def updateDetectionParams(desde=None, hasta=None):
     outf = open(detection_params_fn, "wb")
     outf.write(newparams)
     outf.close()
+    session.close_all()
 
 
 def getCurrentSegmentState(anomalies, lastrecords):
@@ -484,6 +486,7 @@ def downloadAndLoadLastMonth():
     # print raw_data
     filtered_data = filterDuplicateRecords(raw_data, desde, hasta)
     has_new_records = updateDB(filtered_data)
+    session.close_all()
 
 
 def dailyUpdate():
