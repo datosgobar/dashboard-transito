@@ -89,11 +89,11 @@ class instanceSQL(object):
         """
         try:
             self.__engine = create_engine(
-                self.cfg.db_url, echo=self.debug, pool_timeout=60, echo_pool=self.debug_pool)
+                self.cfg.db_url, echo=self.debug, pool_timeout=60, echo_pool=self.debug_pool).connect()
             self.Base.prepare(self.__engine, reflect=True)
             self.__c = True
         except Exception, e:
-            return "OperationalError: not connect {0} , traceback:{1}".format(self.cfg.db_url, e)
+            print "OperationalError: not connect {0} , traceback:{1}".format(self.cfg.db_url, e)
 
     def __unique(self, unique_table=""):
         assert self.Base.classes.has_key(unique_table)
@@ -141,6 +141,11 @@ class instanceSQL(object):
         elif individual == False:
             self.Session = sessionmaker(autoflush=False)
             return self.Session()
+
+    def close(self):
+        if self.__c:
+            self.__engine.close()
+            self.__c = False
 
 
 def main():
