@@ -22,7 +22,7 @@ from dashboard_logging import dashboard_logging
 logger = dashboard_logging(config="logging.json", name=__name__)
 logger.info("inicio analisis")
 
-sqlalchemyDEBUG()
+# sqlalchemyDEBUG()
 
 conn_sql = instanceSQL(cfg=config)
 conn_sql.createDBEngine()
@@ -30,8 +30,8 @@ Causa = conn_sql.instanceTable(unique_table='causa')
 Anomaly = conn_sql.instanceTable(unique_table='anomaly')
 Historical = conn_sql.instanceTable(unique_table='historical')
 SegmentSnapshot = conn_sql.instanceTable(unique_table='segment_snapshot')
-
-
+# conn_sql.close()
+session = conn_sql.session()
 detection_params_fn = os.path.dirname(
     os.path.realpath(__file__)) + "/detection_params.json"
 
@@ -111,10 +111,8 @@ def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=N
 
 def updateDB(newdata):
     # "Updating database"
-    pdb.set_trace()
-    conn = conn_sql.getDBConnection()
-    Session = sessionmaker(bind=conn)
-    session = Session()
+    # pdb.set_trace()
+    #session = conn_sql.session()
     newrecords = False
     if len(newdata) > 0:
         try:
@@ -132,7 +130,7 @@ def updateDB(newdata):
     else:
         logger.info("not updateDB")
 
-    conn.close()
+    # conn_sql.close()
     return newrecords
 
 
@@ -140,10 +138,6 @@ def removeOldRecords():
     """
     Elimina registros con mas de un mes de antiguedad de la tabla "historical"
     """
-    conn = conn_sql.getDBConnection()
-    Session = sessionmaker(bind=conn)
-    session = Session()
-
     pass
 
 
@@ -153,10 +147,7 @@ def filterDuplicateRecords(data, desde=None, hasta=None):
     """
     # pdb.set_trace()
     # "Removing duplicates"
-    conn = conn_sql.getDBConnection()
     # parsear json
-    Session = sessionmaker(bind=conn)
-    session = Session()
     # loopear por cada corredor
     query = session.query(Historical)
     if desde != None:
@@ -234,10 +225,6 @@ def getLastRecords(desde, hasta):
     Esta tabla retorna una lista de tuplas de la forma (id_segment, data, timestamp) 
     con los ultimos registros agregados a la tabla "historical"
     """
-    conn = conn_sql.getDBConnection()
-    # sesion
-    Session = sessionmaker(bind=conn)
-    session = Session()
     # realizando una consulta
     # desde = datetime.datetime.strptime(desde, '%Y-%m-%dT%H:%M:%S-03:00')
     # hasta = datetime.datetime.strptime(hasta, '%Y-%m-%dT%H:%M:%S-03:00')
@@ -254,7 +241,6 @@ def getLastRecords(desde, hasta):
        #             "data" : result.data,
        #             "timestamp" : result.timestamp }
         last_records.append(record)
-    conn.close()
     return last_records
 
 
@@ -414,9 +400,6 @@ def upsertAnomalies(newanomalydata):
             'id_segment': 37, 'indicador_anomalia': 3.39, 'threshold': 664.5, 'evalfield': 1010}
     """
     # pdb.set_trace()
-    conn = conn_sql.getDBConnection()
-    Session = sessionmaker(bind=conn)
-    session = Session()
     liveanomalies = []
     for a in newanomalydata:
         window_older = a["timestamp"] - datetime.timedelta(minutes=20)
@@ -448,7 +431,6 @@ def upsertAnomalies(newanomalydata):
         session.commit()
         curanomaly['anomalia_id'] = lastmodified_anomaly.id
         liveanomalies.append(curanomaly)
-    conn.close()
     return liveanomalies
 
 
@@ -459,22 +441,22 @@ def updateSnapshot(newstates):
         'anomalia': 0, 'timestamp_medicion': datetime.datetime(2015, 8, 27, 15, 32, 10), 'id': 10, 'causa_id': 0}    
     """
     # pdb.set_trace()
-    conn = conn_sql.getDBConnection()
-    Session = sessionmaker(bind=conn)
-    sess = Session()
+    # conn = conn_sql.getDBConnection()
+    # Session = sessionmaker(bind=conn)
+    # sess = session()
     for segstate in newstates:
         # print segstate["anomalia_id"]
-        curstate = sess.query(SegmentSnapshot).get(segstate["id"])
+        curstate = session.query(SegmentSnapshot).get(segstate["id"])
         if curstate == None:
             curstate = SegmentSnapshot(**segstate)
         else:
             for (k, v) in segstate.items():
                 setattr(curstate, k, v)
-        sess.add(curstate)
-        sess.flush()
+        session.add(curstate)
+        session.flush()
 
-    sess.commit()
-    conn.close()
+    session.commit()
+    # conn.close()
 
 
 def performAnomalyAnalysis(ahora=None):
@@ -490,10 +472,10 @@ def performAnomalyAnalysis(ahora=None):
 
 def downloadAndLoadLastMonth():
 
-    sensores = [10, 12, 57, 53]
-    # 51, 49, 40, 43, 37, 36, 21, 31, 33, 35, 13, 14, 18, 17, 23, 24, 25, 26,
-    # 28, 30,32, 45, 47, 38, 44, 48, 48, 11, 56, 54, 55, 41, 22, 16, 15, 19,
-    # 20, 10, 27, 29, 34, 39, 42, 46, 50, 52]
+    sensores = [10, 12, 57, 53,
+                51, 49, 40, 43, 37, 36, 21, 31, 33, 35, 13, 14, 18, 17, 23, 24, 25, 26,
+                28, 30, 32, 45, 47, 38, 44, 48, 48, 11, 56, 54, 55, 41, 22, 16, 15, 19,
+                20, 10, 27, 29, 34, 39, 42, 46, 50, 52]
 
     hasta = datetime.datetime.now()
     desde = hasta - datetime.timedelta(days=28)

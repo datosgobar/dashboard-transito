@@ -89,7 +89,7 @@ class instanceSQL(object):
         """
         try:
             self.__engine = create_engine(
-                self.cfg.db_url, echo=self.debug, pool_timeout=60, echo_pool=self.debug_pool).connect()
+                self.cfg.db_url, echo=self.debug, pool_timeout=60, echo_pool=self.debug_pool)
             self.Base.prepare(self.__engine, reflect=True)
             self.__c = True
         except Exception, e:
