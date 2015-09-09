@@ -1,22 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import cProfile
-import StringIO
-import pstats
-import contextlib
-
-import sqlalchemy
-
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import exc
-from sqlalchemy.ext.automap import automap_base
-from sqlalchemy.orm import Session
-from dashboard_logging import dashboard_logging
-
 import pdb
-
 import config
 import json
 import requests
@@ -25,69 +10,17 @@ import dateutil.parser
 import multiprocessing
 import os
 import argparse
-
 import anomalyDetection
+import time
+import logging
+
 from dashboard_logging import dashboard_logging
 logger = dashboard_logging(config="logging.json", name=__name__)
 logger.info("inicio analisis")
 
-from sqlalchemy import event
-from sqlalchemy.engine import Engine
-import time
-import logging
-
-logging.basicConfig()
-logger = logging.getLogger("myapp.sqltime")
-logger.setLevel(logging.DEBUG)
-
-
-@event.listens_for(Engine, "before_cursor_execute")
-def before_cursor_execute(conn, cursor, statement,
-                          parameters, context, executemany):
-    conn.info.setdefault('query_start_time', []).append(time.time())
-    logger.debug("Start Query: %s", statement)
-
-
-@event.listens_for(Engine, "after_cursor_execute")
-def after_cursor_execute(conn, cursor, statement,
-                         parameters, context, executemany):
-    total = time.time() - conn.info['query_start_time'].pop(-1)
-    logger.debug("Query Complete!")
-    logger.debug("Total Time: %f", total)
-
-
-@contextlib.contextmanager
-def profiled():
-    pr = cProfile.Profile()
-    pr.enable()
-    yield
-    pr.disable()
-    s = StringIO.StringIO()
-    ps = pstats.Stats(pr, stream=s).sort_stats('cumulative')
-    ps.print_stats()
-    # uncomment this to see who's calling what
-    # ps.print_callers()
-    print s.getvalue()
 
 detection_params_fn = os.path.dirname(
     os.path.realpath(__file__)) + "/detection_params.json"
-
-
-# Schema reflection! Para que las clases esten
-# Actualizadas con las migraciones de la DB
-Base = automap_base()
-# Base = declarative_base()
-
-db_url = config.db_url
-engine = create_engine(db_url, echo=False)
-
-# reflect the tables
-Base.prepare(engine, reflect=True)
-Historical = Base.classes.historical
-Anomaly = Base.classes.anomaly
-SegmentSnapshot = Base.classes.segment_snapshot
-Causa = Base.classes.causa
-session = Session(engine)
 
 
 def getData(url):
@@ -108,20 +41,17 @@ def getData(url):
     return None
 
 
-"""
-    Funcion que arme para bajar datos de la api de teracode
-    Ej:
-    sensor_ids = [...] # Sacar de waypoints.py
-    download_startdate = "2015-07-01T00:00:00-00:00"
-    download_enddate = "2015-07-12T00:00:01-00:00"
-    step = datetime.timedelta(days=2)
-    newdata = downloadData (
-        sensor_ids, step, download_startdate, download_enddate, outfn="raw_api_01_11.json")
-"""
-
-
 def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=None, token="superadmin.", pool_len=48):
-
+    """
+        Funcion que arme para bajar datos de la api de teracode
+        Ej:
+        sensor_ids = [...] # Sacar de waypoints.py
+        download_startdate = "2015-07-01T00:00:00-00:00"
+        download_enddate = "2015-07-12T00:00:01-00:00"
+        step = datetime.timedelta(days=2)
+        newdata = downloadData (
+            sensor_ids, step, download_startdate, download_enddate, outfn="raw_api_01_11.json")
+    """
     # vsensids = virtsens["id_sensor"].unique()
     urltpl = "https://apisensores.buenosaires.gob.ar/api/data/%s?token=%s&fecha_desde=%s&fecha_hasta=%s"
 
@@ -166,18 +96,6 @@ def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=N
     return alldata
 
 
-def createDBEngine():
-    # engine = sqlalchemy.create_engine("postgres://postgres@/postgres")
-    # engine = sqlalchemy.create_engine("sqlite:///analysis.db")
-
-    return create_engine(config.db_url, echo=False)
-
-
-def getDBConnection():
-    conn = createDBEngine().connect()
-    return conn
-
-
 def updateDB(newdata):
     # "Updating database"
     conn = getDBConnection()
@@ -205,12 +123,10 @@ def updateDB(newdata):
     return newrecords
 
 
-"""
-Elimina registros con mas de un mes de antiguedad de la tabla "historical"
-"""
-
-
 def removeOldRecords():
+    """
+    Elimina registros con mas de un mes de antiguedad de la tabla "historical"
+    """
     conn = getDBConnection()
     Session = sessionmaker(bind=conn)
     session = Session()
@@ -218,12 +134,10 @@ def removeOldRecords():
     pass
 
 
-"""
-Filtro los registros para no duplicar datos en la base de datos
-"""
-
-
 def filterDuplicateRecords(data, desde=None, hasta=None):
+    """
+    Filtro los registros para no duplicar datos en la base de datos
+    """
     # "Removing duplicates"
     conn = getDBConnection()
     # parsear json
@@ -270,13 +184,12 @@ def filterDuplicateRecords(data, desde=None, hasta=None):
 
 
 def loadApiDump(fn):
+    """
+    Este loop se va a ejecutar con la frecuencia indicada para cada momento del dia.
+    """
     raw_data = json.load(open(fn))
     filtered_data = filterDuplicateRecords(raw_data)
     has_new_records = updateDB(filtered_data)
-
-"""
-Este loop se va a ejecutar con la frecuencia indicada para cada momento del dia.
-"""
 
 
 def executeLoop(desde, hasta, dontdownload=False):
@@ -301,23 +214,21 @@ def executeLoop(desde, hasta, dontdownload=False):
     if has_new_records:
         performAnomalyAnalysis(hasta)
 
-"""
-Esta tabla retorna una lista de tuplas de la forma (id_segment, data, timestamp) con los ultimos registros agregados a la tabla "historical"
-"""
-
 
 def getLastRecords(desde, hasta):
+    """
+    Esta tabla retorna una lista de tuplas de la forma (id_segment, data, timestamp) 
+    con los ultimos registros agregados a la tabla "historical"
+    """
     conn = getDBConnection()
     # sesion
     Session = sessionmaker(bind=conn)
     session = Session()
     # realizando una consulta
-
     # desde = datetime.datetime.strptime(desde, '%Y-%m-%dT%H:%M:%S-03:00')
     # hasta = datetime.datetime.strptime(hasta, '%Y-%m-%dT%H:%M:%S-03:00')
     # ahora = datetime.datetime.now()
     # desde_cuando = ahora - datetime.timedelta(minutes=20)
-
     # results = session.query(Historical).filter(Historical.timestamp >
     # desde_cuando  ).all()
     results = session.query(Historical).filter(
@@ -325,28 +236,27 @@ def getLastRecords(desde, hasta):
     last_records = []
     for result in results:
         record = [result.segment, result.data, result.timestamp]
-#        record = { "id_segment" : result.segment,
-#                    "data" : result.data,
-#                    "timestamp" : result.timestamp }
+       # record = { "id_segment" : result.segment,
+       #             "data" : result.data,
+       #             "timestamp" : result.timestamp }
         last_records.append(record)
     conn.close()
     return last_records
 
 
-"""
-Esta tabla retorna una lista de tuplas de la forma (id_segment, data, timestamp) con todos los registros \ agregados a la tabla "historical" en el ultimo mes
-"""
-
-
 def getLastMonthRecords():
+    """
+    Esta tabla retorna una lista de tuplas de la forma (id_segment, data, timestamp) con todos los registros 
+    \ agregados a la tabla "historical" en el ultimo mes
+    """
     pass
-
-"""
-Esta funcion determina los parametros de deteccion de anomalias para cada segmento y los guarda en el archivo detection_params.json
-"""
 
 
 def updateDetectionParams(desde=None, hasta=None):
+    """
+    Esta funcion determina los parametros de deteccion de anomalias para cada segmento y los guarda 
+    en el archivo detection_params.json
+    """
     if hasta == None:
         hasta = datetime.datetime.now()
     if desde == None:
@@ -359,41 +269,38 @@ def updateDetectionParams(desde=None, hasta=None):
     outf.write(newparams)
     outf.close()
 
-"""
-Esta funcion retorna la data que se va a cargar en la tabla segment_snapshot como una lista de diccionarios.
-Recibe:
-- Lista de dicts con las anomalias que estan vivas en este momento. Cada elemento sigue la forma de los registros de la tabla anomaly:
-{
-    "id_segment" : int,
-    "timestamp_start" : datetime,
-    "timestamp_end" : datetime,
-    "comentario_causa" : str,
-    "causa_id" : int
-}
-
-- Un listado de tuplas de la forma (id_segment, data, timestamp) con los datos de los ultimos 20 minutos
-
-Retorna:
-- Una lista con un dict tipo json por cada segmento con su estado updateado para la tabla segment_snapshot.
-  Deberia tener la siguiente estructura:
-{
-    "id" : (id del segmento),
-    "timestamp_medicion" : (timestamp de la medicion),
-    "tiempo" : (tiempo que toma atravesar el segmento segun la ultima medicion),
-    "velocidad" : (distancia del corredor / tiempo),
-    "comentario_causa" : (por ahora null, lo modifica la UI),
-    "causa_id" : (por ahora null, lo modifica la UI),
-    "timestamp_start" : (ts de inicio),
-    "timestamp_end" : (ts de fin),
-    "indicador_anomalia" : (porcentaje),
-    "anomalia" : True/False
-}
-"""
-# TODO: Completar campo "velocidad"
-
 
 def getCurrentSegmentState(anomalies, lastrecords):
     """
+    Esta funcion retorna la data que se va a cargar en la tabla segment_snapshot como una lista de diccionarios.
+    Recibe:
+    - Lista de dicts con las anomalias que estan vivas en este momento. Cada elemento sigue la forma de los registros de la tabla anomaly:
+    {
+        "id_segment" : int,
+        "timestamp_start" : datetime,
+        "timestamp_end" : datetime,
+        "comentario_causa" : str,
+        "causa_id" : int
+    }
+
+    - Un listado de tuplas de la forma (id_segment, data, timestamp) con los datos de los ultimos 20 minutos
+
+    Retorna:
+    - Una lista con un dict tipo json por cada segmento con su estado updateado para la tabla segment_snapshot.
+      Deberia tener la siguiente estructura:
+    {
+        "id" : (id del segmento),
+        "timestamp_medicion" : (timestamp de la medicion),
+        "tiempo" : (tiempo que toma atravesar el segmento segun la ultima medicion),
+        "velocidad" : (distancia del corredor / tiempo),
+        "comentario_causa" : (por ahora null, lo modifica la UI),
+        "causa_id" : (por ahora null, lo modifica la UI),
+        "timestamp_start" : (ts de inicio),
+        "timestamp_end" : (ts de fin),
+        "indicador_anomalia" : (porcentaje),
+        "anomalia" : True/False
+    }
+
         anomalies index 0 {'comentario_causa': '', 'id_segment': '10', 'timestamp_start': \
             '2015-08-27 13:40:00', 'indicador_anomalia': '9.77', 'timestamp_end': '2015-08-27 13:55:00', \
             'id': '56', 'causa_id': '0'}
@@ -430,68 +337,65 @@ def getCurrentSegmentState(anomalies, lastrecords):
         })
     return output
 
-"""
-Lee los parametros de deteccion de la tabla detection_params.csv
-"""
-
 
 def getDetectionParams():
+    """
+    Lee los parametros de deteccion de la tabla detection_params.csv
+    """
     logger.info(
         "load getDetectionParams,  time:{0}".format(datetime.datetime.now()))
     return open(detection_params_fn).read()
 
-"""
-Updetea una anomalia prexistente
-La entrada de esta funcion es un unico diccionario que identifica a la anomalia y tiene la siguiente forma:
-{
-    "id_segment" : int,
-    "timestamp" : datetime,
-    "indicador_anomalia" : float,
-}
-
-Salida: Lista de dicts con las anomalias que estan vivas en este momento. Cada elemento es de la forma:
-{
-    "id_segment" : int,
-    "timestamp_start" : datetime,
-    "timestamp_end" : datetime,
-    "comentario_causa" : str,
-    "causa_id" : int
-}
-
-Los atributos id_segment y timestamp se usan para determinar si una anomalia ya esta presente en la tabla "anomaly".
-Las anomalias candidatas a ser mergeadas son todas aquellas cuyo timestamp_end esta dentro de los ultimos 20 minutos.
-Por cada anomalia en newanomalydata (como mucho hay una por segmento) me fijo si hay una anomalia candidata en ese segmento.
-- Si la hay seteo el campo timestamp_end de la anomalia candidata con el campo timestamp de la anomalia nueva
-- Si no la hay creo una nueva anomalia donde:
-    id_segment = timestamp_end = anomalia.id_segment
-    timestamp_start = timestamp_end = anomalia.timestamp
-    indicador_anomalia = anomalia.indicador_anomalia
-
-En este cuadro a es una anomalia ya cargada y b es un avistamiento de una anomalia
-
-a.start    a.end
-|          |           
-v          v           
-+----------+           
-|          |           
-+----------+           
-        +..........+   
-        ^          ^   
-        |          |   
-        b.ts-20m   b.ts
-
-=>
-+------------------+   
-|                  |           
-+------------------+
-^                  ^   
-|                  |   
-a.start            a.end = b.ts
-"""
-
 
 def upsertAnomalies(newanomalydata):
     """
+    Updetea una anomalia prexistente
+    La entrada de esta funcion es un unico diccionario que identifica a la anomalia y tiene la siguiente forma:
+    {
+        "id_segment" : int,
+        "timestamp" : datetime,
+        "indicador_anomalia" : float,
+    }
+
+    Salida: Lista de dicts con las anomalias que estan vivas en este momento. Cada elemento es de la forma:
+    {
+        "id_segment" : int,
+        "timestamp_start" : datetime,
+        "timestamp_end" : datetime,
+        "comentario_causa" : str,
+        "causa_id" : int
+    }
+
+    Los atributos id_segment y timestamp se usan para determinar si una anomalia ya esta presente en la tabla "anomaly".
+    Las anomalias candidatas a ser mergeadas son todas aquellas cuyo timestamp_end esta dentro de los ultimos 20 minutos.
+    Por cada anomalia en newanomalydata (como mucho hay una por segmento) me fijo si hay una anomalia candidata en ese segmento.
+    - Si la hay seteo el campo timestamp_end de la anomalia candidata con el campo timestamp de la anomalia nueva
+    - Si no la hay creo una nueva anomalia donde:
+        id_segment = timestamp_end = anomalia.id_segment
+        timestamp_start = timestamp_end = anomalia.timestamp
+        indicador_anomalia = anomalia.indicador_anomalia
+
+    En este cuadro a es una anomalia ya cargada y b es un avistamiento de una anomalia
+
+    a.start    a.end
+    |          |           
+    v          v           
+    +----------+           
+    |          |           
+    +----------+           
+            +..........+   
+            ^          ^   
+            |          |   
+            b.ts-20m   b.ts
+
+    =>
+    +------------------+   
+    |                  |           
+    +------------------+
+    ^                  ^   
+    |                  |   
+    a.start            a.end = b.ts
+
         newanomalydata index 0 {'timestamp': datetime.datetime(2015, 8, 27, 15, 5), 'isanomaly': True, \
             'id_segment': 37, 'indicador_anomalia': 3.39, 'threshold': 664.5, 'evalfield': 1010}
     """

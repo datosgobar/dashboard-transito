@@ -20,35 +20,42 @@ logger = logging.getLogger("myapp.sqltime")
 logger.setLevel(logging.DEBUG)
 
 
-@event.listens_for(Engine, "before_cursor_execute")
-def before_cursor_execute(conn, cursor, statement,
-                          parameters, context, executemany):
-    conn.info.setdefault('query_start_time', []).append(time.time())
-    logger.debug("Start Query: %s", statement)
+def sqlalchemyDEBUG():
 
+    from sqlalchemy import event
+    from sqlalchemy.engine import Engine
 
-@event.listens_for(Engine, "after_cursor_execute")
-def after_cursor_execute(conn, cursor, statement,
-                         parameters, context, executemany):
-    total = time.time() - conn.info['query_start_time'].pop(-1)
-    logger.debug("Query Complete!")
-    logger.debug("Total Time: %f", total)
+    global profiled
+    global before_cursor_execute
+    global after_cursor_execute
 
+    @event.listens_for(Engine, "before_cursor_execute")
+    def before_cursor_execute(conn, cursor, statement,
+                              parameters, context, executemany):
+        conn.info.setdefault('query_start_time', []).append(time.time())
+        logger.debug("Start Query: %s", statement)
 
-@contextlib.contextmanager
-def profiled():
-    pr = cProfile.Profile()
-    pr.enable()
-    yield
-    pr.disable()
-    s = StringIO.StringIO()
-    ps = pstats.Stats(pr, stream=s).sort_stats('cumulative')
-    ps.print_stats()
-    # uncomment this to see who's calling what
-    # ps.print_callers()
-    print s.getvalue()
+    @event.listens_for(Engine, "after_cursor_execute")
+    def after_cursor_execute(conn, cursor, statement,
+                             parameters, context, executemany):
+        total = time.time() - conn.info['query_start_time'].pop(-1)
+        logger.debug("Query Complete!")
+        logger.debug("Total Time: %f", total)
 
+    @contextlib.contextmanager
+    def profiled():
+        pr = cProfile.Profile()
+        pr.enable()
+        yield
+        pr.disable()
+        s = StringIO.StringIO()
+        ps = pstats.Stats(pr, stream=s).sort_stats('cumulative')
+        ps.print_stats()
+        # uncomment this to see who's calling what
+        # ps.print_callers()
+        print s.getvalue()
 
+# sqlalchemyDEBUG()
 """
 http://docs.sqlalchemy.org/en/latest/orm/extensions/automap.html?highlight=automap_base#sqlalchemy.ext.automap.AutomapBase.prepare.params.reflect
 
@@ -137,11 +144,16 @@ class instanceSQL(object):
 
 
 def main():
-    conn = instanceSQL(cfg=config)
-    conn.createDBEngine()
-    conn.instanceTable(list_tables=[
-        'causa', 'historical', 'anomaly', 'segment_snapshot'
-    ])
+
+    import config
+    sqlalchemyDEBUG()
+
+    with profiled():
+        conn = instanceSQL(cfg=config)
+        conn.createDBEngine()
+        conn.instanceTable(list_tables=[
+            'causa', 'historical', 'anomaly', 'segment_snapshot'
+        ])
 
 
 if __name__ == '__main__':
