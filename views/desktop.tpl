@@ -69,81 +69,77 @@
 
                         <div class="titulo">Estado<div class="tuerca"></div></div>
 
+                        <div id="seleccioneTrayecto">Seleccione el trayecto<br>que desea visualizar</div>
+
                         <form action="javascript:actualizoRegistro()">
 
                             <input id="anomaly_frm" type="text" value="1" hidden>
 
                             <div class="fila">
                                 <div class="subtitulo">Trayecto</div>
-                                <div class="dato">--</div>
+                                <div class="dato" id="trayecto_frm">--</div>
                             </div>
 
 
                             <div class="fila">
                                 <div class="izquierda">
                                     <div class="subtitulo">Sentido</div>
-                                    <div class="dato">--</div>
+                                    <div class="dato" id="sentido_frm">--</div>
                                 </div>
                                 <div class="derecha">
                                     <div class="subtitulo">Anomalía</div>
-                                    <div class="dato">--</div>
+                                    <div class="dato" id="anomalia_frm">--</div>
                                 </div>
                             </div>
 
                             <div class="fila">
                                 <div class="izquierda">
                                     <div class="subtitulo">Tiempo</div>
-                                    <div class="dato">--</div>
+                                    <div class="dato" id="tiempo_frm">--</div>
                                 </div>
                                 <div class="derecha">
 
                                     <div class="subtitulo">Demora</div>
-                                    <div class="dato">--</div>
+                                    <div class="dato" id="demora_frm">--</div>
                                 </div>
                             </div>
 
+                            <div id="ingresar">
+                                <div id="oculta">El trayecto seleccionado<br>no registra anomalía</div>
 
-                            <div class="fila">
-                                <label>Corte</label>
-                                <select id="corte">
-                                    <option selected value="0">No Aplica</option>
-                                    <option selected value="1">Corte parcial</option>
-                                    <option selected value="2">Corte total</option>
-                                </select>
-                            </div>
+                                <div class="fila">
+                                    <label>Corte</label>
+                                    <select id="corte_frm">
+                                        <option selected value="0">No Aplica</option>
+                                        <option value="1">Corte parcial</option>
+                                        <option value="2">Corte total</option>
+                                    </select>
+                                </div>
 
-                            <div class="fila">
-                                <label>Causa</label>
-                                <select id="causa_frm">
-                                    <option selected value="0">Seleccionar causa...</option>
-                                </select>
-                            </div>
-                                
-                            <div class="fila">
-                                <label>Descripción</label>
-                                <textarea id="comentario_frm" rows="3" maxlength="140" placeholder="Ej. Manifestación en Arenales y Sta. Fe. Congestión en Libertador."></textarea> 
+                                <div class="fila">
+                                    <label>Causa</label>
+                                    <select id="causa_frm">
+                                        <option selected value="0">Seleccionar causa...</option>
+                                    </select>
+                                </div>
+                                    
+                                <div class="fila">
+                                    <label>Descripción</label>
+                                    <textarea id="descripcion_frm" rows="2" maxlength="140" placeholder="Ej. Manifestación en Arenales y Sta. Fe. Congestión en Libertador."></textarea> 
 
-                                <br>
-                            </div>
-                            <div class="fila inputs">
-                                <input type="submit" value="REPORTAR">
-                                <input type="submit" value="MODIFICAR" hidden>
+                                    <br>
+                                </div>
+                                <div class="fila inputs">
+                                    <input type="submit" value="REPORTAR">
+                                    <input type="submit" value="MODIFICAR" hidden>
+                                </div>
                             </div>
                         </form>
-
                     </div>
-
                 </div>
             </div>
         </div>
-
     </div>
-
-
-
-
-
-
 
 	<script type="text/javascript" src="_static/js/eventos-socket-desktop.js"></script>
 	<script type="text/javascript">

@@ -230,7 +230,8 @@ body {
         border-radius: 5px;
         background-color: $fondo-oscuro;
         float: left;
-        max-width: 350px;
+        height: 330px;
+        width: 215px;
     }
     .tuerca{
         background: url("img/editar.svg") no-repeat right center;
@@ -239,26 +240,54 @@ body {
         float: right;
     }
 
+    #seleccioneTrayecto{
+
+
+        padding-top: 25px;        
+        color: $texto-claro;
+        height: 165px;
+        padding-top: 120px;
+        position: fixed;
+        text-align: center;
+        width: 215px;
+        background-color: $fondo-oscuro;
+        //display: none; //inline
+    }        
+
+    #oculta{
+        border-top: 1px solid $texto-claro;
+        padding-top: 44px;        
+        color: $texto-claro;
+        height: 115px;
+        padding-top: 70px;
+        position: fixed;
+        text-align: center;
+        width: 215px;
+        background-color: $fondo-oscuro;
+        display: none; //inline
+    }
+
+
     .titulo{
         font-family: $fontset-avenir-regular;
-        font-size: 22px;
+        font-size: 21px;
         color: $texto-claro;
         width: 100%;
-        border-bottom: 1px solid  $texto-claro;
+        border-bottom: 1px solid $texto-claro;
         padding-bottom: 4px;
         margin-bottom: 4px;
     }
 
     .subtitulo,label{
         font-family: $fontset-avenir-demi;
-        font-size: 12px;
+        font-size: 11px;
         color: $texto-claro;
         text-transform: uppercase;
 
     }
     .dato{
         font-family: $fontset-avenir-regular;
-        font-size: 16px;
+        font-size: 12px;
         color: $texto-normal;
     }
 
@@ -284,9 +313,9 @@ body {
     select{
         float: right;
         padding: 5px;
-        font-size: 14px;
+        font-size: 12px;
         margin-left: 13px;
-        width: 170px;
+        width: 150px;
         border: 0;
         background-color: $fondo-claro;
         color: $texto-claro;
@@ -297,7 +326,7 @@ body {
         font-family: $fontset-avenir-regular;
         background-color: $fondo-claro;
         color: $texto-claro;
-        font-size: 14px;
+        font-size: 12px;
         resize: none;
         width: 99%;
         border: 0;
