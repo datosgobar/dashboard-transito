@@ -114,8 +114,17 @@ body {
             height: 20px;
             width: 20px;
             float: right;
+        }
+        .iconoGris {
             background: url("img/vistoGris.svg") no-repeat center center;
         }
+        .iconoAzul {
+            background: url("img/enproceso.svg") no-repeat center center;
+        }
+        .iconoRojo {
+            background: url("img/novisto.svg") no-repeat center center;
+        }
+
     }
     #rightPanel {
         top: 70px;
@@ -372,6 +381,23 @@ body {
 .estado3 {
     background-color: $rojo;
 }
+
+.borde0 {
+    //border-color: $fondo-claro !important;
+}
+
+.borde1 {
+    border-color: $amarillo !important;
+}
+
+.borde2 {
+    border-color: $naranja !important;
+}
+
+.borde3 {
+    border-color: $rojo !important;
+}
+
 
 .shadow {
     transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 0.5);

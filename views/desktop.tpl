@@ -73,7 +73,7 @@
 
                         <form action="javascript:actualizoRegistro()">
 
-                            <input id="anomaly_frm" type="text" value="1" hidden>
+                            <input id="anomaly_frm" type="text" value="" hidden>
 
                             <div class="fila">
                                 <div class="subtitulo">Trayecto</div>
