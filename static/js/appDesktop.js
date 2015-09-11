@@ -74,12 +74,13 @@ $("#logo").click(function() {
     }, 200);
 });
 
+
 // mapa comprimido
 $(".corredor").click(function() {
     $("#seleccioneTrayecto").css("display","inline");    
     $("#oculta").css("display", "none");
     var corredor = $(this);
-    if ( $(this).hasClass("cargando") === false){
+    if ( $(this).hasClass("cargando") === false ){
         $("#mapa").animate({
             height: "300px"
         }, 200);
@@ -88,7 +89,7 @@ $(".corredor").click(function() {
             height: "100%"
         }, 200);
     };
-    if ( $(this).hasClass("cargando") === false){
+    if ( $(this).hasClass("cargando") === false ){
         abreDetalleCorredor(corredor);
     };
 
@@ -97,13 +98,14 @@ $(".corredor").click(function() {
 // arma el detalle de todo el corredor en la ventana del operador
 // usa todos los valores cargados en @var nombresDeCorredores
 function abreDetalleCorredor(data){
+    $(".corredorActivo").removeClass("corredorActivo");
+    $("#"+(data[0].id)).addClass("corredorActivo");
     $("#cuadroOperador").fadeOut(0);
     var titulo = data.find(".titulo")
     $("#corredores .titulo")[0].innerHTML = titulo[0].innerHTML;
     // armo los corredores
     llenaPantallaActualizacion(titulo.parent()[0].id);
     $("#cuadroOperador").fadeIn("fast");
-
 }
 
 
@@ -300,8 +302,6 @@ function actualizacionDesktop(data) {
         }
         
     };
-
-
 
     //asigno estado a listado de corredores
     $("#" + data.id).addClass("borde" + maximoEstado);
