@@ -3,5 +3,6 @@
 
 from getDataFake import getData, parserEmitDataFake
 from corredores import parserEmitData
-# from analisis import * # comentada por nico
+from dashboard_logging import dashboard_logging
+
 import config

@@ -15,7 +15,6 @@ from socketio import socketio_manage
 from socketio.mixins import BroadcastMixin
 from socketio.namespace import BaseNamespace
 from gevent import monkey
-from dashboard_logging import setup_logging
 
 from beaker.middleware import SessionMiddleware
 from cork import Cork
@@ -34,6 +33,8 @@ Anomaly = Base.classes.anomaly
 
 monkey.patch_all()
 
+logger = dashboard_logging(config="analisis/logging.json", name=__name__)
+
 
 def auth_sqlalchemy():
     sqlalchemy_backend = SqlAlchemyBackend(config.db_url)
@@ -44,12 +45,12 @@ bottle_auth = Cork(backend=auth)
 
 app = bottle.app()
 session_opts = {
-    'session.cookie_expires': True,
-    'session.encrypt_key': 'please use a random key and keep it secret!',
-    'session.httponly': True,
+    #'session.cookie_expires': True,
+    #'session.encrypt_key': 'please use a random key and keep it secret!',
+    #'session.httponly': False,
     'session.timeout': 3600 * 24,  # 1 day
-    'session.type': 'cookie',
-    'session.validate_key': True,
+    #'session.type': 'cookie'
+    #'session.validate_key': True,
 }
 app = SessionMiddleware(app, session_opts)
 
@@ -62,12 +63,15 @@ if os.environ.get('OPENSHIFT_PYTHON_DIR'):
     execfile(zvirtenv, dict(__file__=zvirtenv))
     ip = os.environ['OPENSHIFT_PYTHON_IP']
     port = int(os.environ['OPENSHIFT_PYTHON_PORT'])
+    logger.info("OPENSHIFT Listening on port {0} ip {1}".format(ip, port))
 else:
     # caso contrario, entiendo que estoy en ambiente local
     ip = "0.0.0.0"
     port = 8080
 
 # clase que hereda funcionalidades de socketio
+
+logger.info("Listening on port {0} ip {1}".format(ip, port))
 
 
 class dataSemaforos(BaseNamespace, BroadcastMixin):
@@ -78,7 +82,6 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
             self.template = json.loads(template_buffer.__str__())
 
     def clean(self):
-
         for key, value in self.template['corredores'].iteritems():
             self.template['corredores'][key]['segmentos_provincia'] = []
             self.template['corredores'][key]['segmentos_capital'] = []
@@ -87,20 +90,19 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
     def on_receive(self, msg):
 
         if msg:
-            print msg
+            logger.info("{0}".format(msg))
 
     def recv_connect(self):
 
         self.init()
-
-        print "connect, emit data"
+        logger.info("connect, emit data")
         while True:
             self.clean()
             parserEmitData(self, self.template)
             time.sleep(300)
 
     def recv_disconnect(self):
-        print "disconnect"
+        logger.info("discconect")
 
 # genero ruta / que envia template index
 
@@ -124,7 +126,7 @@ def login_post():
     """Authenticate users"""
     username = request.POST.get("username", "").strip()
     password = request.POST.get("password", "").strip()
-    print username, password
+    logger.info("login {0}".format(username))
     bottle_auth.login(
         username, password, success_redirect='/index', fail_redirect='/')
 
@@ -172,11 +174,14 @@ def send_data():
                 })
                 session.commit()
                 session.close()
+                logger.info("post guardado")
                 return "guardado"
             else:
-                return "no encontre anomaly {}".format(anomaly_id)
+                logger.info("no encontre anomaly {}".format(anomaly_id))
         else:
-            return "no encontre valor en campos anomaly_id y causa_id"
+            logger.info("no encontro valor en campos anomaly_id y causa_id")
+    else:
+        logger.error("post mal generado")
 
 
 @error(404)
@@ -188,16 +193,12 @@ def handler_error(error):
 @bottle.get('/socket.io/<path:path>')
 def socketio_service(path):
     bottle_auth.require(fail_redirect='/')
+    logger.info("connect socket io")
     socketio_manage(
         bottle.request.environ, {'/alertas': dataSemaforos}, bottle.request)
 
 
 if __name__ == '__main__':
-
-    setup_logging()
-    logger = logging.getLogger(__name__)
-
-    logger.info("Listening on port {0} ip {1}".format(ip, port))
 
     # inicia la server python
     bottle.run(app=app,

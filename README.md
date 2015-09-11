@@ -25,13 +25,20 @@ $ sudo python setup install
 O instalamos las dependecias a mano de la siguiente manera:
 
 ```sh
-$ sudo easy_install bottle
-$ sudo easy_install gevent
-$ sudo easy_install gevent-socketio
-$ sudo easy_install MySQL-python
-$ sudo easy_install sqlalchemy
-$ sudo pip install bottle-cork
-$ easy_install supervisor
+$ sudo pip install bottle==0.10.1
+$ sudo pip install bottle-cork==0.11.1
+$ sudo pip install gevent==1.1b1
+$ sudo pip install gevent-socketio==0.3.5
+$ sudo pip install requests==2.7.0
+$ sudo pip install requests[security]
+$ sudo pip install MySQL-python==1.2.3
+$ sudo pip install sqlalchemy==1.0.8
+$ sudo pip install sqlalchemy-migrate==0.9.7
+$ sudo pip install python-dateutil
+$ sudo pip install numpy==1.9.2
+$ sudo pip install pandas==0.16.2
+$ sudo pip install gunicorn==19.3.0
+$ sudo pip install supervisor==3.1.3
 ```
 
 ## Instalacion bajo Mac
@@ -61,7 +68,6 @@ $ easy_install supervisor
 easy_install pandas
 easy_install dateutil
 easy_install sqlalchemy-migrate
-
 ```
 
 ## Corriendo la app 
@@ -118,6 +124,8 @@ $ python analisis/getDataFake.py
   * Instanciar Python Server
 
     ```sh
+    $ gunicorn -b 0.0.0.0:8080 --worker-class socketio.sgunicorn.GeventSocketIOWorker app:app 
+    or
     $ python app.py
     ```
 
@@ -173,6 +181,7 @@ $ supervisorctl stop all
   - [gevent](http://gevent.org/intro.html)
   - [gevent-socketio](https://gevent-socketio.readthedocs.org/en/latest/)
   - [supervisor](http://supervisord.org/configuration.html)
+  - [gunicorn](http://gunicorn.org/#quickstart)
 
 ## Licencia
 [MIT](http://opensource.org/licenses/MIT)

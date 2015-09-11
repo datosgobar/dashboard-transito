@@ -4,18 +4,21 @@ var socket = io.connect('/alertas', {
 });
 
 socket.on('connect', function() {
-    console.log("Connected.");
+	console.log("Connected.");
 	socket.emit('receive', "Connected");
 });
 
-socket.on('error', function(e){
+socket.on('error', function(e) {
 	console.log("error")
 });
-socket.on('info', function(e){
+socket.on('info', function(e) {
 	console.log(e)
 });
-socket.on('disconnect', function(e){
+socket.on('disconnect', function(e) {
 	console.log("Disconnect.")
+	var socket = io.connect('/alertas', {
+		'force new connection': true
+	});
 });
 
 
@@ -67,4 +70,8 @@ socket.on('alcorta', function(data) {
 });
 socket.on('libertador', function(data) {
 	actualizacionDesktop(data);
+});
+
+socket.on('ultima_actualizacion', function(data) {
+	console.log(data);
 });

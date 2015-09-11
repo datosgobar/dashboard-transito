@@ -6,12 +6,16 @@ import time
 import analisis
 import os
 
+from dashboard_logging import dashboard_logging
+logger = dashboard_logging(config="analisis/logging.json", name=__name__)
+
 if os.environ.get('OPENSHIFT_PYTHON_DIR'):
     # en caso de estarlo, activo entorno virtual y agarro las variables de
     # entorno para ip y puerto
     zvirtenv = os.path.join(os.environ['OPENSHIFT_PYTHON_DIR'],
                             'virtenv', 'bin', 'activate_this.py')
     execfile(zvirtenv, dict(__file__=zvirtenv))
+    logger.info("activo virtenv openshift")
 else:
     pass
 
@@ -103,18 +107,15 @@ class setInterval:
         while True:
 
             self.setCfg()
-            # print time.strftime("%H:%M:%S")
-            # print self.setTimeOut
-            # print "somethings, another code"
 
-            # le resto el tiempo del a ventana que falta ejecutar
-            # desde, hasta formato de fecha ISO-8601
+            interval = self.setTimeOut / 60
             hasta = datetime.datetime.now()
-            desde = hasta - datetime.timedelta(minutes=self.setTimeOut / 60)
-            print self.setTimeOut / 60
-            print hasta, desde
+            desde = hasta - datetime.timedelta(minutes=interval)
+
             analisis.executeLoop(desde, hasta, dontdownload=False)
-            # print "somethings, another code"
+            logger.info("run schedule, desde:{1} hasta:{0}, interval:{2}, setTimeout:{3}".format(
+                hasta, desde, interval, self.setTimeOut))
+
             time.sleep(self.setTimeOut)
 
 
