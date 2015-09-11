@@ -140,7 +140,7 @@ def _detectAnomalies(detectparams, lastrecords):
     # lastrecords, detectparams, on=["iddevice", "franja",
     # "daytype"]).sort("date")
     resultsdf = pd.merge(
-        lastrecords, detectparams, on=["iddevice", "franja", "daytype", "time"]).sort("date")
+        lastrecords, detectparams, on=["iddevice", "franja", "daytype"]).sort("date")
 
     #anomalies = resultsdf[resultsdf[evalfield]>(resultsdf[basefield]+resultsdf[marginfield])]
     #resultsdf["threshold"] = resultsdf[basefield]
