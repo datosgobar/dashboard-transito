@@ -84,8 +84,13 @@ html, body {
     #paneles #leftPanel .icono {
       height: 20px;
       width: 20px;
-      float: right;
+      float: right; }
+    #paneles #leftPanel .iconoGris {
       background: url("img/vistoGris.svg") no-repeat center center; }
+    #paneles #leftPanel .iconoAzul {
+      background: url("img/enproceso.svg") no-repeat center center; }
+    #paneles #leftPanel .iconoRojo {
+      background: url("img/novisto.svg") no-repeat center center; }
   #paneles #rightPanel {
     top: 70px;
     left: 250px;
@@ -100,41 +105,124 @@ html, body {
 #cuadroOperador {
   width: 100%;
   display: relative; }
+  #cuadroOperador .filaPanel {
+    font-size: 12px;
+    padding: 0px 10px 5px 10px; }
+    #cuadroOperador .filaPanel .datoPanel {
+      float: right;
+      color: #CFD1D1; }
+  #cuadroOperador .filaPanel:hover {
+    background-color: #383D43; }
   #cuadroOperador #corredores {
     background-color: #1C2023;
     float: left;
     height: 330px;
     border-radius: 5px;
     margin: 10px;
-    padding: 10px; }
+    padding: 10px;
+    min-width: 700px; }
+    #cuadroOperador #corredores .flecha {
+      float: right;
+      height: 16px;
+      margin-top: 35px;
+      margin-right: 60px;
+      width: 26px; }
+    #cuadroOperador #corredores .provincia {
+      background-image: url("img/provincia.svg"); }
+    #cuadroOperador #corredores .capital {
+      background-image: url("img/capital.svg"); }
+    #cuadroOperador #corredores #aviso {
+      text-align: center;
+      font-family: "AvenirNext-Regular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      color: #6C7480;
+      line-height: 100px;
+      width: 600px;
+      top: -25px;
+      position: relative; }
+    #cuadroOperador #corredores .etiquetasProvincia {
+      border-top: 1px solid #282D33; }
+    #cuadroOperador #corredores .etiquetasCapital, #cuadroOperador #corredores .etiquetasProvincia, #cuadroOperador #corredores .corredoresCapital, #cuadroOperador #corredores .corredoresProvincia, #cuadroOperador #corredores #panelesCapital, #cuadroOperador #corredores #panelesProvincia {
+      display: table;
+      table-layout: fixed;
+      border-collapse: separate;
+      border-spacing: 5px;
+      width: 600px; }
+      #cuadroOperador #corredores .etiquetasCapital .izq, #cuadroOperador #corredores .etiquetasProvincia .izq, #cuadroOperador #corredores .corredoresCapital .izq, #cuadroOperador #corredores .corredoresProvincia .izq, #cuadroOperador #corredores #panelesCapital .izq, #cuadroOperador #corredores #panelesProvincia .izq {
+        text-align: left; }
+      #cuadroOperador #corredores .etiquetasCapital .cen, #cuadroOperador #corredores .etiquetasProvincia .cen, #cuadroOperador #corredores .corredoresCapital .cen, #cuadroOperador #corredores .corredoresProvincia .cen, #cuadroOperador #corredores #panelesCapital .cen, #cuadroOperador #corredores #panelesProvincia .cen {
+        text-align: center; }
+      #cuadroOperador #corredores .etiquetasCapital .der, #cuadroOperador #corredores .etiquetasProvincia .der, #cuadroOperador #corredores .corredoresCapital .der, #cuadroOperador #corredores .corredoresProvincia .der, #cuadroOperador #corredores #panelesCapital .der, #cuadroOperador #corredores #panelesProvincia .der {
+        text-align: right; }
+      #cuadroOperador #corredores .etiquetasCapital .nombreCorredor, #cuadroOperador #corredores .etiquetasProvincia .nombreCorredor, #cuadroOperador #corredores .corredoresCapital .nombreCorredor, #cuadroOperador #corredores .corredoresProvincia .nombreCorredor, #cuadroOperador #corredores #panelesCapital .nombreCorredor, #cuadroOperador #corredores #panelesProvincia .nombreCorredor {
+        display: table-cell;
+        font-family: "AvenirNext-Demi", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 14px; }
+      #cuadroOperador #corredores .etiquetasCapital .corredor, #cuadroOperador #corredores .etiquetasCapital .panel, #cuadroOperador #corredores .etiquetasProvincia .corredor, #cuadroOperador #corredores .etiquetasProvincia .panel, #cuadroOperador #corredores .corredoresCapital .corredor, #cuadroOperador #corredores .corredoresCapital .panel, #cuadroOperador #corredores .corredoresProvincia .corredor, #cuadroOperador #corredores .corredoresProvincia .panel, #cuadroOperador #corredores #panelesCapital .corredor, #cuadroOperador #corredores #panelesCapital .panel, #cuadroOperador #corredores #panelesProvincia .corredor, #cuadroOperador #corredores #panelesProvincia .panel {
+        display: table-cell; }
+      #cuadroOperador #corredores .etiquetasCapital .panel, #cuadroOperador #corredores .etiquetasProvincia .panel, #cuadroOperador #corredores .corredoresCapital .panel, #cuadroOperador #corredores .corredoresProvincia .panel, #cuadroOperador #corredores #panelesCapital .panel, #cuadroOperador #corredores #panelesProvincia .panel {
+        height: 20px;
+        min-width: 20px;
+        position: relative;
+        top: -9px; }
+      #cuadroOperador #corredores .etiquetasCapital .panel div, #cuadroOperador #corredores .etiquetasProvincia .panel div, #cuadroOperador #corredores .corredoresCapital .panel div, #cuadroOperador #corredores .corredoresProvincia .panel div, #cuadroOperador #corredores #panelesCapital .panel div, #cuadroOperador #corredores #panelesProvincia .panel div {
+        pointer-events: none; }
+      #cuadroOperador #corredores .etiquetasCapital .panel:hover, #cuadroOperador #corredores .etiquetasProvincia .panel:hover, #cuadroOperador #corredores .corredoresCapital .panel:hover, #cuadroOperador #corredores .corredoresProvincia .panel:hover, #cuadroOperador #corredores #panelesCapital .panel:hover, #cuadroOperador #corredores #panelesProvincia .panel:hover {
+        cursor: pointer;
+        background-color: #282D33; }
+      #cuadroOperador #corredores .etiquetasCapital .segmento, #cuadroOperador #corredores .etiquetasProvincia .segmento, #cuadroOperador #corredores .corredoresCapital .segmento, #cuadroOperador #corredores .corredoresProvincia .segmento, #cuadroOperador #corredores #panelesCapital .segmento, #cuadroOperador #corredores #panelesProvincia .segmento {
+        height: 16px;
+        font-size: 8px;
+        text-align: center; }
   #cuadroOperador #edicion {
     padding: 10px;
     margin: 10px;
     border-radius: 5px;
     background-color: #1C2023;
     float: left;
-    max-width: 350px; }
-  #cuadroOperador .titulo {
-    font-family: "AvenirNext-Regular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 22px;
-    color: #CFD1D1;
-    width: 100%;
-    border-bottom: 1px solid #CFD1D1;
-    padding-bottom: 4px;
-    margin-bottom: 4px; }
+    height: 330px;
+    width: 215px; }
   #cuadroOperador .tuerca {
     background: url("img/editar.svg") no-repeat right center;
     width: 20px;
     height: 20px;
     float: right; }
+  #cuadroOperador #seleccioneTrayecto {
+    padding-top: 25px;
+    color: #CFD1D1;
+    height: 165px;
+    padding-top: 120px;
+    position: fixed;
+    text-align: center;
+    width: 215px;
+    background-color: #1C2023; }
+  #cuadroOperador #oculta {
+    border-top: 1px solid #CFD1D1;
+    padding-top: 44px;
+    color: #CFD1D1;
+    height: 115px;
+    padding-top: 70px;
+    position: fixed;
+    text-align: center;
+    width: 215px;
+    background-color: #1C2023;
+    display: none; }
+  #cuadroOperador .titulo {
+    font-family: "AvenirNext-Regular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 21px;
+    color: #CFD1D1;
+    width: 100%;
+    border-bottom: 1px solid #CFD1D1;
+    padding-bottom: 4px;
+    margin-bottom: 4px; }
   #cuadroOperador .subtitulo, #cuadroOperador label {
     font-family: "AvenirNext-Demi", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 12px;
+    font-size: 11px;
     color: #CFD1D1;
     text-transform: uppercase; }
   #cuadroOperador .dato {
     font-family: "AvenirNext-Regular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 16px;
+    font-size: 12px;
     color: #6C7480; }
   #cuadroOperador .fila {
     display: table;
@@ -151,9 +239,9 @@ html, body {
   #cuadroOperador select {
     float: right;
     padding: 5px;
-    font-size: 14px;
+    font-size: 12px;
     margin-left: 13px;
-    width: 170px;
+    width: 150px;
     border: 0;
     background-color: #282D33;
     color: #CFD1D1;
@@ -162,7 +250,7 @@ html, body {
     font-family: "AvenirNext-Regular", "Helvetica Neue", Helvetica, Arial, sans-serif;
     background-color: #282D33;
     color: #CFD1D1;
-    font-size: 14px;
+    font-size: 12px;
     resize: none;
     width: 99%;
     border: 0;
@@ -182,6 +270,30 @@ html, body {
     cursor: not-allowed;
     color: #6C7480;
     border: 2px solid #6C7480; }
+
+.corredorActivo {
+  color: #fafafa !important; }
+
+.estado0 {
+  background-color: #282D33; }
+
+.estado1 {
+  background-color: #fdd835; }
+
+.estado2 {
+  background-color: #ff8f00; }
+
+.estado3 {
+  background-color: #e53935; }
+
+.borde1 {
+  border-color: #fdd835 !important; }
+
+.borde2 {
+  border-color: #ff8f00 !important; }
+
+.borde3 {
+  border-color: #e53935 !important; }
 
 .shadow {
   transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 0.5);

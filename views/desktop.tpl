@@ -23,107 +23,122 @@
         </div>
         <div id="paneles">
             <div id="leftPanel">
-                <div id="c9int" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
-                <div id="c9ext" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
-                <div id="cAlco" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
-                <div id="cAlem" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
-                <div id="cCabi" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
-                <div id="cCord" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
-                <div id="cCorr" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
-                <div id="cIlli" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
-                <div id="cInde" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
-                <div id="cJuan" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
-                <div id="cLibe" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
-                <div id="cAvdm" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
-                <div id="cPase" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
-                <div id="cPuey" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
-                <div id="cRiva" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
-                <div id="cSanm" class="corredor shadow"><span class="titulo">...</span><div class="icono"></div></div>
+                <div id="c9int" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
+                <div id="c9ext" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
+                <div id="cAlco" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
+                <div id="cAlem" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
+                <div id="cCabi" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
+                <div id="cCord" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
+                <div id="cCorr" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
+                <div id="cIlli" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
+                <div id="cInde" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
+                <div id="cJuan" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
+                <div id="cLibe" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
+                <div id="cAvdm" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
+                <div id="cPase" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
+                <div id="cPuey" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
+                <div id="cRiva" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
+                <div id="cSanm" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
             </div>
 
             <div id="rightPanel">
                 <div id="mapa"> </div>
                 <div id="cuadroOperador">
-                    <div id="corredores">corredores</div>
+                    <!-- ventana corredores -->
+                    <div id="corredores">
+                        <div class="titulo">---</div>
+                                               
+                        <div class="flecha capital"></div>                        
+                        <div class="etiquetasCapital"></div>
+                        <div class="corredoresCapital"></div>
+                        <div id="avisoCapital"></div>
+                        <div id="panelesCapital"></div>
+
+                        <div class="flecha provincia"></div>                        
+                        <div class="etiquetasProvincia"></div>
+                        <div class="corredoresProvincia"></div>
+                        <div id="avisoProvincia"></div>
+                        <div id="panelesProvincia"></div>
+
+                    </div>
+                    
+
+                    <!-- ventana de edicion -->
                     <div id="edicion">
 
                         <div class="titulo">Estado<div class="tuerca"></div></div>
 
+                        <div id="seleccioneTrayecto">Seleccione el trayecto<br>que desea visualizar</div>
+
                         <form action="javascript:actualizoRegistro()">
 
-                            <input id="anomaly_frm" type="text" value="1" hidden>
+                            <input id="anomaly_frm" type="text" value="" hidden>
 
                             <div class="fila">
                                 <div class="subtitulo">Trayecto</div>
-                                <div class="dato">--</div>
+                                <div class="dato" id="trayecto_frm">--</div>
                             </div>
 
 
                             <div class="fila">
                                 <div class="izquierda">
                                     <div class="subtitulo">Sentido</div>
-                                    <div class="dato">--</div>
+                                    <div class="dato" id="sentido_frm">--</div>
                                 </div>
                                 <div class="derecha">
                                     <div class="subtitulo">Anomalía</div>
-                                    <div class="dato">--</div>
+                                    <div class="dato" id="anomalia_frm">--</div>
                                 </div>
                             </div>
 
                             <div class="fila">
                                 <div class="izquierda">
                                     <div class="subtitulo">Tiempo</div>
-                                    <div class="dato">--</div>
+                                    <div class="dato" id="tiempo_frm">--</div>
                                 </div>
                                 <div class="derecha">
 
                                     <div class="subtitulo">Demora</div>
-                                    <div class="dato">--</div>
+                                    <div class="dato" id="demora_frm">--</div>
                                 </div>
                             </div>
 
+                            <div id="ingresar">
+                                <div id="oculta">El trayecto seleccionado<br>no registra anomalía</div>
 
-                            <div class="fila">
-                                <label>Corte</label>
-                                <select id="corte">
-                                    <option selected value="0">No Aplica</option>
-                                    <option selected value="1">Corte parcial</option>
-                                    <option selected value="2">Corte total</option>
-                                </select>
-                            </div>
+                                <div class="fila">
+                                    <label>Corte</label>
+                                    <select id="corte_frm">
+                                        <option selected value="0">No Aplica</option>
+                                        <option value="1">Corte parcial</option>
+                                        <option value="2">Corte total</option>
+                                    </select>
+                                </div>
 
-                            <div class="fila">
-                                <label>Causa</label>
-                                <select id="causa_frm">
-                                    <option selected value="0">Seleccionar causa...</option>
-                                </select>
-                            </div>
-                                
-                            <div class="fila">
-                                <label>Descripcion</label>
-                                <textarea id="comentario_frm" rows="3" maxlength="140" placeholder="Ej. Manifestación en Arenales y Sta. Fe. Congestión en Libertador."></textarea> 
+                                <div class="fila">
+                                    <label>Causa</label>
+                                    <select id="causa_frm">
+                                        <option selected value="0">Seleccionar causa...</option>
+                                    </select>
+                                </div>
+                                    
+                                <div class="fila">
+                                    <label>Descripción</label>
+                                    <textarea id="descripcion_frm" rows="2" maxlength="140" placeholder="Ej. Manifestación en Arenales y Sta. Fe. Congestión en Libertador."></textarea> 
 
-                                <br>
-                            </div>
-                            <div class="fila inputs">
-                                <input type="submit" value="REPORTAR">
-                                <input type="submit" value="MODIFICAR" hidden>
+                                    <br>
+                                </div>
+                                <div class="fila inputs">
+                                    <input type="submit" value="REPORTAR">
+                                    <input type="submit" value="MODIFICAR" hidden>
+                                </div>
                             </div>
                         </form>
-
                     </div>
-
                 </div>
             </div>
         </div>
-
     </div>
-
-
-
-
-
-
 
 	<script type="text/javascript" src="_static/js/eventos-socket-desktop.js"></script>
 	<script type="text/javascript">
