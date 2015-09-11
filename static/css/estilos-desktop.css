@@ -271,6 +271,9 @@ html, body {
     color: #6C7480;
     border: 2px solid #6C7480; }
 
+.corredorActivo {
+  color: #fafafa !important; }
+
 .estado0 {
   background-color: #282D33; }
 
