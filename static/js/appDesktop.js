@@ -41,8 +41,16 @@ function armoSelectAnomalias(datos) {
 }
 
 // hace el post a la base de datos
+
 function actualizoRegistro() {
-    var data = 'anomaly_id='+$("#anomaly_frm").val()+'&comentario='+$("#comentario_frm").val()+'&causa_id='+$("#causa_frm").val();
+    var comentario = $("#comentario_frm").val();
+    if (comentario === undefined){
+        comentario = "";
+    }
+    console.log (">",comentario)
+
+    var data = 'anomaly_id='+$("#anomaly_frm").val()+'&comentario='+comentario+'&causa_id='+$("#causa_frm").val()+'&tipo_corte='+$("#corte_frm").val();
+  
     $.ajax({
         type: "POST",
         url: "/index",
@@ -160,14 +168,14 @@ function llenaPantallaActualizacion(corredor){
             $("#corredores .corredoresCapital").append('<div class="corredor segmento estado0"></div>' );
         }else{
             $("#corredores .corredoresCapital").append('<div class="corredor segmento estado' + nombresDeCorredores[corCap[i]].anomalia + '"></div>' );
-            $("#panelesCapital").append('<div class="panel" id="c'+corCap[i]+'"><div class="filaPanel">Aviso de anomalia<div class="datoPanel">Hace '+nombresDeCorredores[corCap[i]].duracion_anomalia+' min.</div></div><div class="filaPanel">Tiempo del trayecto<div class="datoPanel">'+ nombresDeCorredores[corCap[i]].tiempo +'</div></div><div class="filaPanel">Demora<div class="datoPanel">'+ ((nombresDeCorredores[corCap[i]].indicador_anomalia)*100).toFixed(1) +' </div></div><div class="filaPanel">Causa<div class="datoPanel">'+nombresDeCorredores[corCap[i]].causa+'</div></div></div>');
+            $("#panelesCapital").append('<div class="panel" id="c'+corCap[i]+'"><div class="filaPanel">Aviso de anomalia<div class="datoPanel">'+nombresDeCorredores[corCap[i]].duracion_anomalia+'´</div></div><div class="filaPanel">Tiempo del trayecto<div class="datoPanel">'+ nombresDeCorredores[corCap[i]].tiempo +'´</div></div><div class="filaPanel">Demora<div class="datoPanel">'+ ((nombresDeCorredores[corCap[i]].indicador_anomalia)*100).toFixed(1) +'% </div></div><div class="filaPanel">Causa<div class="datoPanel">'+nombresDeCorredores[corCap[i]].causa+'</div></div></div>');
         }
         
         if (cappro[1] === 0 ){
             $("#corredores .corredoresProvincia").append('<div class="corredor segmento estado0"> </div>' );
         }else{
             $("#corredores .corredoresProvincia").append('<div class="corredor segmento estado' + nombresDeCorredores[corPro[i]].anomalia + ' "></div>' );
-            $("#panelesProvincia").append('<div class="panel" id="c'+corPro[i]+'"><div class="filaPanel">Aviso de anomalia<div class="datoPanel"> Hace '+nombresDeCorredores[corPro[i]].duracion_anomalia+' min.</div></div><div class="filaPanel">Tiempo del trayecto<div class="datoPanel">'+ nombresDeCorredores[corPro[i]].tiempo +'</div></div><div class="filaPanel">Demora<div class="datoPanel">'+ ((nombresDeCorredores[corPro[i]].indicador_anomalia)*100).toFixed(1)+' </div></div><div class="filaPanel">Causa<div class="datoPanel">'+nombresDeCorredores[corPro[i]].causa+'</div></div></div>');
+            $("#panelesProvincia").append('<div class="panel" id="c'+corPro[i]+'"><div class="filaPanel">Aviso de anomalia<div class="datoPanel">'+nombresDeCorredores[corPro[i]].duracion_anomalia+'´</div></div><div class="filaPanel">Tiempo del trayecto<div class="datoPanel">'+ nombresDeCorredores[corPro[i]].tiempo +'´</div></div><div class="filaPanel">Demora<div class="datoPanel">'+ ((nombresDeCorredores[corPro[i]].indicador_anomalia)*100).toFixed(1)+'% </div></div><div class="filaPanel">Causa<div class="datoPanel">'+nombresDeCorredores[corPro[i]].causa+'</div></div></div>');
         }
 
         
@@ -197,7 +205,7 @@ function llenoPantallaEdicion(idSegmento){
         // oculto cartel de edicion..
         $("#oculta").css("display", "none");
 
-        
+        $("anomaly_frm").val(nombresDeCorredores[idSegmento].anomalia_id);
         $("#corte_frm").val('1');
         $("#causa_frm").val('4');
         $("#descripcion_frm").val("");
@@ -218,6 +226,11 @@ function actualizacionDesktop(data) {
     var segmentosC = [];
     var segmentosP = [];
     var texto = "";
+    var maximoEstado = -1;
+    var faltaAsignarFalla = false;
+    var todasLasFallasAsignadas = false;
+
+
 
     $("#" + data.id + " .titulo").html(data.nombre);
     $("#" + data.id).removeClass("cargando");
@@ -225,8 +238,18 @@ function actualizacionDesktop(data) {
     if (data.segmentos_capital.length != 0){
             console.log (data.segmentos_capital);
         for (var i = 0; i < data.segmentos_capital.length ; i++){
-            nombresDeCorredores[data.segmentos_capital[i].id].sentido = "capital";
 
+            if (maximoEstado < data.segmentos_capital[i].anomalia){
+                maximoEstado = data.segmentos_capital[i].anomalia;
+                if ( data.segmentos_capital[i].causa_id  == 0 ){
+                    faltaAsignarFalla = true;
+                    if (!todasLasFallasAsignadas && data.segmentos_capital[i].causa_id  != 0){
+                        todasLasFallasAsignadas = true;
+                    }
+                }
+            }
+    
+            nombresDeCorredores[data.segmentos_capital[i].id].sentido = "capital";
             nombresDeCorredores[data.segmentos_capital[i].id].anomalia = data.segmentos_capital[i].anomalia;
             nombresDeCorredores[data.segmentos_capital[i].id].anomalia_id = data.segmentos_capital[i].anomalia_id;
             nombresDeCorredores[data.segmentos_capital[i].id].causa = data.segmentos_capital[i].causa;
@@ -238,15 +261,26 @@ function actualizacionDesktop(data) {
             nombresDeCorredores[data.segmentos_capital[i].id].velocidad = data.segmentos_capital[i].velocidad;
 
             segmentosC.push(data.segmentos_capital[i].id);
-
         }
         texto = '"capital":['+segmentosC.toString()+']'
     };
 
     if (data.segmentos_provincia.length != 0){
         for (var p = 0; p < data.segmentos_provincia.length ; p++){
-            nombresDeCorredores[data.segmentos_provincia[p].id].sentido = "provincia";
 
+            if (maximoEstado < data.segmentos_provincia[p].anomalia){
+                maximoEstado = data.segmentos_provincia[p].anomalia;
+                if ( data.segmentos_provincia[p].causa_id  == 0 ){
+                    faltaAsignarFalla = true;
+                    if (!todasLasFallasAsignadas && data.segmentos_provincia[p].causa_id  != 0){
+                        todasLasFallasAsignadas = true;
+                    }
+
+                }
+
+            }
+
+            nombresDeCorredores[data.segmentos_provincia[p].id].sentido = "provincia";
             nombresDeCorredores[data.segmentos_provincia[p].id].anomalia = data.segmentos_provincia[p].anomalia;
             nombresDeCorredores[data.segmentos_provincia[p].id].anomalia_id = data.segmentos_provincia[p].anomalia_id;
             nombresDeCorredores[data.segmentos_provincia[p].id].causa = data.segmentos_provincia[p].causa;
@@ -266,6 +300,26 @@ function actualizacionDesktop(data) {
         }
         
     };
+
+
+
+    //asigno estado a listado de corredores
+    $("#" + data.id).addClass("borde" + maximoEstado);
+
+    //asigno el icono a los corredoresestado a listado de corredores
+    var icon = $("#" + data.id + " .icono");
+    icon.removeClass()
+    icon.addClass("icono");
+
+    if (faltaAsignarFalla){
+        icon.addClass("iconoAzul");
+    }else{
+        if (todasLasFallasAsignadas){
+            icon.addClass("iconoGris");        
+        }else{
+            icon.addClass("iconoRojo");    
+        }
+    }
 
     var datos =JSON.parse('{'+texto+'}');
     corredores[data.id] = datos;
