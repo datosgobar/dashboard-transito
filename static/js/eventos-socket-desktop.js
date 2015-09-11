@@ -37,6 +37,8 @@ socket.on('9_de_julio_externo', function(data) {
 });
 socket.on('alem', function(data) {
 	actualizacionDesktop(data);
+	console.log(data);
+	
 });
 socket.on('corrientes', function(data) {
 	actualizacionDesktop(data);

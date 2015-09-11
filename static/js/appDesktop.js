@@ -43,14 +43,17 @@ function armoSelectAnomalias(datos) {
 // hace el post a la base de datos
 
 function actualizoRegistro() {
-    var comentario = $("#comentario_frm").val();
+    var comentario = $("#descripcion_frm").val();
     if (comentario === undefined){
         comentario = "";
     }
-    console.log (">",comentario)
+
 
     var data = 'anomaly_id='+$("#anomaly_frm").val()+'&comentario='+comentario+'&causa_id='+$("#causa_frm").val()+'&tipo_corte='+$("#corte_frm").val();
-  
+
+    console.log (">>",comentario)
+    console.log (">>>", data);
+
     $.ajax({
         type: "POST",
         url: "/index",
@@ -170,14 +173,14 @@ function llenaPantallaActualizacion(corredor){
             $("#corredores .corredoresCapital").append('<div class="corredor segmento estado0"></div>' );
         }else{
             $("#corredores .corredoresCapital").append('<div class="corredor segmento estado' + nombresDeCorredores[corCap[i]].anomalia + '"></div>' );
-            $("#panelesCapital").append('<div class="panel" id="c'+corCap[i]+'"><div class="filaPanel">Aviso de anomalia<div class="datoPanel">'+nombresDeCorredores[corCap[i]].duracion_anomalia+'´</div></div><div class="filaPanel">Tiempo del trayecto<div class="datoPanel">'+ nombresDeCorredores[corCap[i]].tiempo +'´</div></div><div class="filaPanel">Demora<div class="datoPanel">'+ ((nombresDeCorredores[corCap[i]].indicador_anomalia)*100).toFixed(1) +'% </div></div><div class="filaPanel">Causa<div class="datoPanel">'+nombresDeCorredores[corCap[i]].causa+'</div></div></div>');
+            $("#panelesCapital").append('<div class="panel" id="c'+corCap[i]+'"><div class="filaPanel">Aviso de anomalia<div class="datoPanel">'+nombresDeCorredores[corCap[i]].duracion_anomalia+'´</div></div><div class="filaPanel">Tiempo del trayecto<div class="datoPanel">'+ nombresDeCorredores[corCap[i]].tiempo +'´</div></div><div class="filaPanel">Demora<div class="datoPanel">'+ ((nombresDeCorredores[corCap[i]].indicador_anomalia)*100).toFixed(1) +'% </div></div><div class="filaPanel">Causa<div class="datoPanel">'+nombresDeCorredores[corCap[i]].comentario_causa+'</div></div></div>');
         }
         
         if (cappro[1] === 0 ){
             $("#corredores .corredoresProvincia").append('<div class="corredor segmento estado0"> </div>' );
         }else{
             $("#corredores .corredoresProvincia").append('<div class="corredor segmento estado' + nombresDeCorredores[corPro[i]].anomalia + ' "></div>' );
-            $("#panelesProvincia").append('<div class="panel" id="c'+corPro[i]+'"><div class="filaPanel">Aviso de anomalia<div class="datoPanel">'+nombresDeCorredores[corPro[i]].duracion_anomalia+'´</div></div><div class="filaPanel">Tiempo del trayecto<div class="datoPanel">'+ nombresDeCorredores[corPro[i]].tiempo +'´</div></div><div class="filaPanel">Demora<div class="datoPanel">'+ ((nombresDeCorredores[corPro[i]].indicador_anomalia)*100).toFixed(1)+'% </div></div><div class="filaPanel">Causa<div class="datoPanel">'+nombresDeCorredores[corPro[i]].causa+'</div></div></div>');
+            $("#panelesProvincia").append('<div class="panel" id="c'+corPro[i]+'"><div class="filaPanel">Aviso de anomalia<div class="datoPanel">'+nombresDeCorredores[corPro[i]].duracion_anomalia+'´</div></div><div class="filaPanel">Tiempo del trayecto<div class="datoPanel">'+ nombresDeCorredores[corPro[i]].tiempo +'´</div></div><div class="filaPanel">Demora<div class="datoPanel">'+ ((nombresDeCorredores[corPro[i]].indicador_anomalia)*100).toFixed(1)+'% </div></div><div class="filaPanel">Causa<div class="datoPanel">'+nombresDeCorredores[corPro[i]].comentario_causa+'</div></div></div>');
         }
 
         
@@ -202,12 +205,13 @@ function llenoPantallaEdicion(idSegmento){
     $("#tiempo_frm").html(nombresDeCorredores[idSegmento].tiempo + " min.");
     $("#demora_frm").html(((nombresDeCorredores[idSegmento].indicador_anomalia)*100).toFixed(1)+"%");
 
-    if ( nombresDeCorredores[idSegmento].anomalia_id != 0 ) {
+    if ( nombresDeCorredores[idSegmento].anomalia != 0 ) {
 
         // oculto cartel de edicion..
         $("#oculta").css("display", "none");
 
-        $("anomaly_frm").val(nombresDeCorredores[idSegmento].anomalia_id);
+        $("#anomaly_frm").attr("value", nombresDeCorredores[idSegmento].anomalia_id);
+
         $("#corte_frm").val('1');
         $("#causa_frm").val('4');
         $("#descripcion_frm").val("");
@@ -254,7 +258,7 @@ function actualizacionDesktop(data) {
             nombresDeCorredores[data.segmentos_capital[i].id].sentido = "capital";
             nombresDeCorredores[data.segmentos_capital[i].id].anomalia = data.segmentos_capital[i].anomalia;
             nombresDeCorredores[data.segmentos_capital[i].id].anomalia_id = data.segmentos_capital[i].anomalia_id;
-            nombresDeCorredores[data.segmentos_capital[i].id].causa = data.segmentos_capital[i].causa;
+            nombresDeCorredores[data.segmentos_capital[i].id].comentario_causa = data.segmentos_capital[i].comentario_causa;
             nombresDeCorredores[data.segmentos_capital[i].id].causa_id = data.segmentos_capital[i].causa_id;
             nombresDeCorredores[data.segmentos_capital[i].id].duracion_anomalia = data.segmentos_capital[i].duracion_anomalia;
             nombresDeCorredores[data.segmentos_capital[i].id].id = data.segmentos_capital[i].id;
@@ -285,7 +289,7 @@ function actualizacionDesktop(data) {
             nombresDeCorredores[data.segmentos_provincia[p].id].sentido = "provincia";
             nombresDeCorredores[data.segmentos_provincia[p].id].anomalia = data.segmentos_provincia[p].anomalia;
             nombresDeCorredores[data.segmentos_provincia[p].id].anomalia_id = data.segmentos_provincia[p].anomalia_id;
-            nombresDeCorredores[data.segmentos_provincia[p].id].causa = data.segmentos_provincia[p].causa;
+            nombresDeCorredores[data.segmentos_provincia[p].id].comentario_causa = data.segmentos_provincia[p].comentario_causa;
             nombresDeCorredores[data.segmentos_provincia[p].id].causa_id = data.segmentos_provincia[p].causa_id;
             nombresDeCorredores[data.segmentos_provincia[p].id].duracion_anomalia = data.segmentos_provincia[p].duracion_anomalia;
             nombresDeCorredores[data.segmentos_provincia[p].id].id = data.segmentos_provincia[p].id;
