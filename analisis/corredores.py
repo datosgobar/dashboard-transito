@@ -6,7 +6,6 @@ import time
 import random
 import config
 import json
-from getDataFake import readSegmentos
 from sqlalchemy import create_engine
 from dashboard_logging import dashboard_logging
 
@@ -104,7 +103,8 @@ def parserEmitData(self, template):
             #logger.info("channel {0} template {1}".format(channell, template['corredores'][channell]))
             self.emit(channell, template['corredores'][channell])
             logger.info("updateo channel {0}".format(channell))
-            time.sleep(0.5)
+            # time.sleep(0.5)
+        self.emit("ultima_actualizacion", str(update[0][1]))
     else:
         logger.info("sin datos en tabla")
         self.emit('info', "sin datos")
