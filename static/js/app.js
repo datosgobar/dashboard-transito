@@ -24,6 +24,7 @@ function armoTemplateCard(data) {
     var nombres;
     var card = '<div class="card oculta" id="' + data.id + '">';
     card = card + "<div class='corredor'><div class='titulo'>" + data.nombre + "</div><div class='icono enProceso'></div></div>";
+    console.log(data.nombre);
 
     card = card + "<div class='contenedor'><div class='etiquetas'>";
     if (data.segmentos_capital.length > 0) { // hay de capital

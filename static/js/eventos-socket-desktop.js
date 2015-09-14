@@ -20,8 +20,6 @@ socket.on('disconnect', function(e) {
 		'force new connection': true
 	});
 });
-
-
 // aqui especificamos el canal para la recepcion continua de los datos
 socket.on('independencia', function(data) {
 	actualizacionDesktop(data);
@@ -32,13 +30,14 @@ socket.on('Illia', function(data) {
 socket.on('9_de_julio', function(data) {
 	actualizacionDesktop(data);
 });
-socket.on('9_de_julio_externo', function(data) {
+socket.on('cerrito', function(data) {
+	actualizacionDesktop(data);
+});
+socket.on('pellegrini', function(data) {
 	actualizacionDesktop(data);
 });
 socket.on('alem', function(data) {
 	actualizacionDesktop(data);
-	console.log(data);
-	
 });
 socket.on('corrientes', function(data) {
 	actualizacionDesktop(data);
