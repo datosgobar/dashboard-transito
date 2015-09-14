@@ -20,8 +20,6 @@ socket.on('disconnect', function(e) {
 		'force new connection': true
 	});
 });
-
-
 // aqui especificamos el canal para la recepcion continua de los datos
 socket.on('independencia', function(data) {
 	actualizacionDesktop(data);

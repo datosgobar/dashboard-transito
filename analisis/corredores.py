@@ -59,8 +59,8 @@ def parserEmitData(self, template):
     """
     corredores = {
         '9_de_julio': [13, 17, 15, 19],
-        'pellegrini': [14, 18],
         'cerrito': [16, 20],
+        'pellegrini': [14, 18],
         'Illia': [12, 57, 11, 56],
         'alcorta': [54, 55],
         'alem': [21, 22],
