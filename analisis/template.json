@@ -18,12 +18,18 @@
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
-		"9_de_julio_externo" : {
-			"nombre": "9 de julio - externo",
-			"id": "c9ext",
+		"pellegrini" : {
+			"nombre": "pellegrini",
+			"id": "",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
+		"cerrito" : {
+			"nombre": "cerrito",
+			"id": "",
+			"segmentos_capital" : [],
+			"segmentos_provincia" : []
+		},		
 		"alem" : {
 			"nombre": "Alem",
 			"id": "cAlem",
