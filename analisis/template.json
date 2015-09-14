@@ -19,14 +19,14 @@
 			"segmentos_provincia" : []
 		},
 		"pellegrini" : {
-			"nombre": "pellegrini",
-			"id": "",
+			"nombre": "Pellegrini",
+			"id": "cPell",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"cerrito" : {
-			"nombre": "cerrito",
-			"id": "",
+			"nombre": "Cerrito",
+			"id": "cCerr",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},		

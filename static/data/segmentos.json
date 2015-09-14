@@ -117,8 +117,8 @@
 
     },
     "14": {
-        "corredor": "9 de julio - Externa",
-        "nombreSegmento": "Arroyo - Corrientes",
+        "corredor": "Pellegrini",
+        "nombreSegmento": "Pellegrini",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -130,8 +130,8 @@
 
     },
     "18": {
-        "corredor": "9 de julio - Externa",
-        "nombreSegmento": "Corrientes - San Juan",
+        "corredor": "Pellegrini",
+        "nombreSegmento": "Pellegrini",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -143,7 +143,7 @@
 
     },
     "16": {
-        "corredor": "9 de julio - Externa",
+        "corredor": "Cerrito",
         "nombreSegmento": "Arroyo - Corrientes",
         "sentido": "",
         "anomalia": "",
@@ -153,10 +153,9 @@
         "causa": "",
         "descripcion":""
 
-
     },
     "20": {
-        "corredor": "9 de julio - Externa",
+        "corredor": "Cerrito",
         "nombreSegmento": "Corrientes - San Juan",
         "sentido": "",
         "anomalia": "",
