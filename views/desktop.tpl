@@ -19,7 +19,8 @@
     <div id="contenido">
         <div id="header">
             <div id="logo"></div>
-            <div id="status">última actualización: <span id="ultimaActualizacion">--</span></div>
+            <div id="status">última actualización: <span id="ultimaActualizacion">--</span><button id="salir">salir</div></div>
+            
         </div>
         <div id="paneles">
             <div id="leftPanel">
@@ -130,8 +131,9 @@
                                     <br>
                                 </div>
                                 <div class="fila inputs">
-                                    <input type="submit" value="REPORTAR">
-                                    <input type="submit" value="MODIFICAR" hidden>
+                                    <div id="mensajeStatus_frm"></div>
+                                    <input id="reportar_frm" type="submit" value="REPORTAR">
+                                    <input id="modificar_frm" type="submit" value="MODIFICAR" hidden>
                                 </div>
                             </div>
                         </form>
