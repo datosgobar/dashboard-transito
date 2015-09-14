@@ -19,7 +19,7 @@
     <div id="contenido">
         <div id="header">
             <div id="logo"></div>
-            <div id="status">última actualización: --</div>
+            <div id="status">última actualización: <span id="ultimaActualizacion">--</span></div>
         </div>
         <div id="paneles">
             <div id="leftPanel">
