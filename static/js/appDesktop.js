@@ -51,9 +51,6 @@ function actualizoRegistro() {
 
     var data = 'anomaly_id='+$("#anomaly_frm").val()+'&comentario='+comentario+'&causa_id='+$("#causa_frm").val()+'&tipo_corte='+$("#corte_frm").val();
 
-    console.log (">>",comentario)
-    console.log (">>>", data);
-
     $.ajax({
         type: "POST",
         url: "/index",
@@ -227,8 +224,6 @@ function llenoPantallaEdicion(idSegmento){
 // esta funcion se llama cada vez que socket recibe un mensaje 
 function actualizacionDesktop(data) {
 
-
-
     var segmentosC = [];
     var segmentosP = [];
     var texto = "";
@@ -236,13 +231,10 @@ function actualizacionDesktop(data) {
     var faltaAsignarFalla = false;
     var todasLasFallasAsignadas = false;
 
-
-
     $("#" + data.id + " .titulo").html(data.nombre);
     $("#" + data.id).removeClass("cargando");
 
     if (data.segmentos_capital.length != 0){
-            console.log (data.segmentos_capital);
         for (var i = 0; i < data.segmentos_capital.length ; i++){
 
             if (maximoEstado < data.segmentos_capital[i].anomalia){
@@ -328,4 +320,8 @@ function actualizacionDesktop(data) {
     var datos =JSON.parse('{'+texto+'}');
     corredores[data.id] = datos;
 
+}
+
+function updateUltimaActualizacion(data){
+    $("#ultimaActualizacion").html(data);
 }
