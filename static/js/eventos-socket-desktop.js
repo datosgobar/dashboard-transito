@@ -32,13 +32,17 @@ socket.on('Illia', function(data) {
 socket.on('9_de_julio', function(data) {
 	actualizacionDesktop(data);
 });
-socket.on('9_de_julio_externo', function(data) {
-	actualizacionDesktop(data);
+socket.on('cerrito', function(data) {
+	console.log("cerrito:", data)
+	//actualizacionDesktop(data);
+});
+socket.on('pellegrini', function(data) {
+	console.log("pellegrini:", data)
+	//actualizacionDesktop(data);
 });
 socket.on('alem', function(data) {
 	actualizacionDesktop(data);
 	console.log(data);
-	
 });
 socket.on('corrientes', function(data) {
 	actualizacionDesktop(data);
