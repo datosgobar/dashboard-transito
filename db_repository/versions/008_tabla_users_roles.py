@@ -19,7 +19,7 @@ meta = MetaData()
 def add_user(Base, session):
     Users = Base.classes.users
     sqlalchemy_backend = Cork(backend=SqlAlchemyBackend(config.db_url))
-    session.add(Users(username="transito", role="admin", hash=sqlalchemy_backend._hash("transito", "tr4ns1t01234"),
+    session.add(Users(username="transito", role="admin", hash=sqlalchemy_backend._hash("transito", "transito"),
                       email_addr="transito@buenosaires.gob.ar", desc="operario",
                       creation_date=str(datetime.now()), last_login=str(datetime.now())
                       ))

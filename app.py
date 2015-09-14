@@ -178,10 +178,13 @@ def send_data():
                 return "guardado"
             else:
                 logger.info("no encontre anomaly {}".format(anomaly_id))
+                return "no encontre anomaly {}".format(anomaly_id)
         else:
             logger.info("no encontro valor en campos anomaly_id y causa_id")
+            return "no encontro valor en campos anomaly_id y causa_id"
     else:
         logger.error("post mal generado")
+        return "post mal ggenerado"
 
 
 @error(404)
