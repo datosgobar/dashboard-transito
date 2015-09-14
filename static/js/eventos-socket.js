@@ -12,14 +12,17 @@ socket.on('connect', function() {
 socket.on('independencia', function(data) {
 	actualizacion(data);
 });
-socket.on('Illia', function(data) { // no llega el nombre en data.nombre
+socket.on('Illia', function(data) { 
 	actualizacion(data);
 });
 socket.on('9_de_julio', function(data) {
 	actualizacion(data);
 });
 
-socket.on('9_de_julio_externo', function(data) {
+socket.on('pellegrini', function(data) {
+	actualizacion(data);
+});
+socket.on('cerrito', function(data) {
 	actualizacion(data);
 });
 

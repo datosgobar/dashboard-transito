@@ -24,10 +24,10 @@
         <div id="paneles">
             <div id="leftPanel">
                 <div id="c9int" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
-                <div id="c9ext" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
                 <div id="cAlco" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
                 <div id="cAlem" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
                 <div id="cCabi" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
+                <div id="cCerr" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
                 <div id="cCord" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
                 <div id="cCorr" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
                 <div id="cIlli" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
@@ -36,6 +36,7 @@
                 <div id="cLibe" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
                 <div id="cAvdm" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
                 <div id="cPase" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
+                <div id="cPell" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
                 <div id="cPuey" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
                 <div id="cRiva" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
                 <div id="cSanm" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
