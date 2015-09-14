@@ -270,6 +270,8 @@ html, body {
     cursor: not-allowed;
     color: #6C7480;
     border: 2px solid #6C7480; }
+  #cuadroOperador #mensajeStatus_frm {
+    float: left; }
 
 .corredorActivo {
   color: #fafafa !important; }
@@ -278,19 +280,19 @@ html, body {
   background-color: #282D33; }
 
 .estado1 {
-  background-color: #fdd835; }
+  background-color: #ff8f00; }
 
 .estado2 {
-  background-color: #ff8f00; }
+  background-color: #e53935; }
 
 .estado3 {
   background-color: #e53935; }
 
 .borde1 {
-  border-color: #fdd835 !important; }
+  border-color: #ff8f00 !important; }
 
 .borde2 {
-  border-color: #ff8f00 !important; }
+  border-color: #e53935 !important; }
 
 .borde3 {
   border-color: #e53935 !important; }
@@ -302,3 +304,17 @@ html, body {
 .shadow:hover {
   transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 0.5);
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25); }
+
+#salir {
+  cursor: pointer;
+  background-color: transparent;
+  color: #CFD1D1;
+  border: 2px solid #CFD1D1;
+  border-radius: 15px;
+  font-size: 12px;
+  font-family: "AvenirNext-Demi", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  padding: 5px 10px 5px 10px;
+  margin-left: 20px; }
+
+#salir:hover {
+  background-color: #282D33; }
