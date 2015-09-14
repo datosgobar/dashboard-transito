@@ -207,7 +207,8 @@ def executeLoop(desde, hasta, dontdownload=False):
     """
 
     sensores = [10, 12, 57, 53, 51, 49, 40, 43, 37, 36, 21, 31, 33, 35, 13, 14, 18, 17, 23,
-                24, 25, 26, 28, 30, 32, 45, 47, 38, 44, 48, 48, 11, 56, 54, 55, 41, 22, 16, 15, 19, 20, 10, 27, 29, 34, 39, 42, 46, 50, 52]
+                24, 25, 26, 28, 30, 32, 45, 47, 38, 44, 48, 48, 11, 56, 54, 55, 41, 22, 16, 15,
+                19, 20, 10, 27, 29, 34, 39, 42, 46, 50, 52]
 
     if dontdownload:
         has_new_records = True
@@ -276,7 +277,8 @@ def getCurrentSegmentState(anomalies, lastrecords):
     """
     Esta funcion retorna la data que se va a cargar en la tabla segment_snapshot como una lista de diccionarios.
     Recibe:
-    - Lista de dicts con las anomalias que estan vivas en este momento. Cada elemento sigue la forma de los registros de la tabla anomaly:
+    - Lista de dicts con las anomalias que estan vivas en este momento. Cada elemento sigue
+     la forma de los registros de la tabla anomaly:
     {
         "id_segment" : int,
         "timestamp_start" : datetime,
@@ -309,7 +311,9 @@ def getCurrentSegmentState(anomalies, lastrecords):
 
         lastrecords index 0 [57, 611, datetime.datetime(2015, 8, 27, 13, 40, 9)]
     """
-    # pdb.set_trace()
+
+    pdb.set_trace()
+
     segments = {}
     for r in lastrecords:
         if not segments.has_key(r[0]) or r[2] > segments[r[0]][2]:
@@ -328,7 +332,7 @@ def getCurrentSegmentState(anomalies, lastrecords):
         output.append({
             "id": s[0],
             "timestamp_medicion": s[2],
-            "tiempo": s[1],
+            "tiempo": s[1] / 60,  # medido en segundos?
             "velocidad": -1,
             "comentario_causa": ad.get(str(s[0]), {}).get("comentario_causa", ""),
             "causa_id": ad.get(str(s[0]), {}).get("causa_id", 0),
@@ -420,8 +424,8 @@ def upsertAnomalies(newanomalydata):
         else:
             curanomaly = {
                 "id_segment": a["id_segment"],
-                "timestamp_start": a["timestamp"],
-                "timestamp_end": a["timestamp"],
+                "timestamp_start": a["timestamp"],  # ???
+                "timestamp_end": a["timestamp"],  # ???
                 "indicador_anomalia": a["indicador_anomalia"],
                 "nivel_anomalia": a["nivel_anomalia"],
                 "comentario_causa": "",
@@ -499,7 +503,8 @@ if __name__ == '__main__':
     parser.add_argument(
         '--download_lastmonth', action='store_true', help='Bajar y cargar la informacion del ultimo mes')
     parser.add_argument(
-        '--load_apidump', metavar="dump.json", action='store', default=None, help='Cargar informacion historica desde un json con los resultados de las llamadas a Teracode')
+        '--load_apidump', metavar="dump.json", action='store', default=None, help='Cargar informacion historica \
+        desde un json con los resultados de las llamadas a Teracode')
     parser.add_argument(
         '--generate_detection_params', action='store_true', help='Generar modelo para análisis de anomalías')
     parser.add_argument(
