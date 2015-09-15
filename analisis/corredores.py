@@ -92,23 +92,26 @@ def parserEmitData(self, template):
             for corredor, segmentosids in corredores.iteritems():
                 if update[i][0] in segmentosids:
                     if update[i][0] in referencia['centro']:
-                        #logger.info("{0} {1} {2}".format(update[i][0], c, 'centro'))
+                        # logger.info("{0} {1} {2}".format(update[i][0], c,
+                        # 'centro'))
                         template['corredores'][corredor][
                             'segmentos_capital'].append(buildSegmentos(update[i]))
                     else:
-                        #logger.info("{0} {1} {2}".format(update[i][0], c, 'prov'))
+                        # logger.info("{0} {1} {2}".format(update[i][0], c,
+                        # 'prov'))
                         template['corredores'][corredor][
                             'segmentos_provincia'].append(buildSegmentos(update[i]))
                 else:
                     continue
 
         for channell in corredores.keys():
-            #logger.info("channel {0} template {1}".format(channell, template['corredores'][channell]))
+            # logger.info("channel {0} template {1}".format(channell,
+            # template['corredores'][channell]))
             self.emit(channell, template['corredores'][channell])
             logger.info("updateo channel {0}".format(channell))
             # time.sleep(0.5)
-            ultima_actualizacion = (datetime.datetime.now(
-            ) - dateutil.parser.parse(str(update[0][1]))).seconds / 60
+            ultima_actualizacion = str(
+                (datetime.datetime.now() - dateutil.parser.parse(str(update[0][1])))).split(".")[0]
         self.emit("ultima_actualizacion", ultima_actualizacion)
     else:
         logger.info("sin datos en tabla")

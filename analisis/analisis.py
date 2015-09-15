@@ -406,10 +406,10 @@ def upsertAnomalies(newanomalydata):
         newanomalydata index 0 {'timestamp': datetime.datetime(2015, 8, 27, 15, 5), 'isanomaly': True, \
             'id_segment': 37, 'indicador_anomalia': 3.39, 'threshold': 664.5, 'evalfield': 1010}
     """
-    # pdb.set_trace()
+    pdb.set_trace()
     liveanomalies = []
     for a in newanomalydata:
-        window_older = a["timestamp"] - datetime.timedelta(minutes=20)
+        window_older = a["timestamp"] - datetime.timedelta(minutes=10)
         candidate = session.query(Anomaly).filter(Anomaly.id_segment == a["id_segment"]).filter(
             Anomaly.timestamp_end >= window_older).filter(Anomaly.timestamp_end <= a["timestamp"]).first()
         if candidate:
