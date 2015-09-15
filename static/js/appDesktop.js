@@ -44,15 +44,12 @@ function armoSelectAnomalias(datos) {
 
 function actualizoRegistro() {
     var comentario = $("#descripcion_frm").val();
-    if (comentario === undefined){
+    if (comentario === undefined || comentario === "undefined"){
         comentario = "";
     }
 
 
     var data = 'anomaly_id='+$("#anomaly_frm").val()+'&comentario='+comentario+'&causa_id='+$("#causa_frm").val()+'&tipo_corte='+$("#corte_frm").val();
-
-    console.log (">>",comentario)
-    console.log (">>>", data);
 
     $.ajax({
         type: "POST",
@@ -60,10 +57,11 @@ function actualizoRegistro() {
         data: data,
         success: function(msg) {
             if (msg === "guardado"){
-                console.log("guardado con éxito");
-                
+                $("#mensajeStatus_frm").innerHTML("Guardado");
+                $("#reportar_frm").hide();
+                $("#modificar_frm").show();
             }else{
-                console.log("Error: ", msg);
+                $("#mensajeStatus_frm").innerHTML(msg);
             }
         },
         contentType: 'application/x-www-form-urlencoded'
@@ -98,6 +96,12 @@ $(".corredor").click(function() {
 
 });
 
+// mapa a full height
+$("#salir").click(function() {
+    window.location = "/salir";
+});
+
+
 // arma el detalle de todo el corredor en la ventana del operador
 // usa todos los valores cargados en @var nombresDeCorredores
 function abreDetalleCorredor(data){
@@ -119,6 +123,7 @@ function llenaPantallaActualizacion(corredor){
     var cappro = [0,0];
     var corPro = "";
     var corCap = "";
+    var demora = 0;        
 
     // Vacío ventana
     $("#corredores .etiquetasCapital").html("");
@@ -166,21 +171,23 @@ function llenaPantallaActualizacion(corredor){
         $("#avisoCapital").append('<div id="aviso">El trayecto no tiene dirección hacia Capital</div>');
     }
 
-        
     //armo segmentos
     for (var i = 0 ; i < cor.length ; i++){
         if (cappro[0] === 0 ){
             $("#corredores .corredoresCapital").append('<div class="corredor segmento estado0"></div>' );
         }else{
+            demora = ( (nombresDeCorredores[corCap[i]].tiempo * (nombresDeCorredores[corCap[i]].indicador_anomalia * 100))/100+(nombresDeCorredores[corCap[i]].indicador_anomalia * 100) );
             $("#corredores .corredoresCapital").append('<div class="corredor segmento estado' + nombresDeCorredores[corCap[i]].anomalia + '"></div>' );
-            $("#panelesCapital").append('<div class="panel" id="c'+corCap[i]+'"><div class="filaPanel">Aviso de anomalia<div class="datoPanel">'+nombresDeCorredores[corCap[i]].duracion_anomalia+'´</div></div><div class="filaPanel">Tiempo del trayecto<div class="datoPanel">'+ nombresDeCorredores[corCap[i]].tiempo +'´</div></div><div class="filaPanel">Demora<div class="datoPanel">'+ ((nombresDeCorredores[corCap[i]].indicador_anomalia)*100).toFixed(1) +'% </div></div><div class="filaPanel">Causa<div class="datoPanel">'+nombresDeCorredores[corCap[i]].comentario_causa+'</div></div></div>');
+            $("#panelesCapital").append('<div class="panel" id="c'+corCap[i]+'"><div class="filaPanel">Aviso de anomalia<div class="datoPanel">'+nombresDeCorredores[corCap[i]].duracion_anomalia+'´</div></div><div class="filaPanel">Tiempo del trayecto<div class="datoPanel">'+ nombresDeCorredores[corCap[i]].tiempo +'´</div></div><div class="filaPanel">Demora<div class="datoPanel">'+ ((nombresDeCorredores[corCap[i]].indicador_anomalia)*100).toFixed(1) +'% ('+ demora +' min) </div></div><div class="filaPanel">Causa<div class="datoPanel">'+nombresDeCorredores[corCap[i]].comentario_causa+'</div></div></div>');
         }
         
         if (cappro[1] === 0 ){
             $("#corredores .corredoresProvincia").append('<div class="corredor segmento estado0"> </div>' );
         }else{
+
+            demora = ( (nombresDeCorredores[corPro[i]].tiempo * (nombresDeCorredores[corPro[i]].indicador_anomalia * 100))/100+(nombresDeCorredores[corPro[i]].indicador_anomalia * 100) );
             $("#corredores .corredoresProvincia").append('<div class="corredor segmento estado' + nombresDeCorredores[corPro[i]].anomalia + ' "></div>' );
-            $("#panelesProvincia").append('<div class="panel" id="c'+corPro[i]+'"><div class="filaPanel">Aviso de anomalia<div class="datoPanel">'+nombresDeCorredores[corPro[i]].duracion_anomalia+'´</div></div><div class="filaPanel">Tiempo del trayecto<div class="datoPanel">'+ nombresDeCorredores[corPro[i]].tiempo +'´</div></div><div class="filaPanel">Demora<div class="datoPanel">'+ ((nombresDeCorredores[corPro[i]].indicador_anomalia)*100).toFixed(1)+'% </div></div><div class="filaPanel">Causa<div class="datoPanel">'+nombresDeCorredores[corPro[i]].comentario_causa+'</div></div></div>');
+            $("#panelesProvincia").append('<div class="panel" id="c'+corPro[i]+'"><div class="filaPanel">Aviso de anomalia<div class="datoPanel">'+nombresDeCorredores[corPro[i]].duracion_anomalia+'´</div></div><div class="filaPanel">Tiempo del trayecto<div class="datoPanel">'+ nombresDeCorredores[corPro[i]].tiempo +'´</div></div><div class="filaPanel">Demora<div class="datoPanel">'+ ((nombresDeCorredores[corPro[i]].indicador_anomalia)*100).toFixed(1)+'% ('+ demora +' min) </div></div><div class="filaPanel">Causa<div class="datoPanel">'+nombresDeCorredores[corPro[i]].comentario_causa+'</div></div></div>');
         }
 
         
@@ -192,18 +199,22 @@ function llenaPantallaActualizacion(corredor){
         $("#seleccioneTrayecto").css("display","none");
 
     });
-
 }
 
 
 //llena la pantalla de edicion del sector seleccionado
 function llenoPantallaEdicion(idSegmento){
 
+    var demora = ( (nombresDeCorredores[idSegmento].tiempo * (nombresDeCorredores[idSegmento].indicador_anomalia * 100))/100+(nombresDeCorredores[idSegmento].indicador_anomalia * 100) ).toFixed();
+
     $("#trayecto_frm").html(nombresDeCorredores[idSegmento].nombreSegmento);
     $("#sentido_frm").html(nombresDeCorredores[idSegmento].sentido);
     $("#anomalia_frm").html(nombresDeCorredores[idSegmento].duracion_anomalia);
     $("#tiempo_frm").html(nombresDeCorredores[idSegmento].tiempo + " min.");
-    $("#demora_frm").html(((nombresDeCorredores[idSegmento].indicador_anomalia)*100).toFixed(1)+"%");
+    $("#demora_frm").html(((nombresDeCorredores[idSegmento].indicador_anomalia)*100).toFixed(1)+"% (" + demora + " min)");
+    $("#mensajeStatus_frm").html("");
+    $("#reportar_frm").show();
+    $("#modificar_frm").hide();
 
     if ( nombresDeCorredores[idSegmento].anomalia != 0 ) {
 
@@ -211,9 +222,30 @@ function llenoPantallaEdicion(idSegmento){
         $("#oculta").css("display", "none");
 
         $("#anomaly_frm").attr("value", nombresDeCorredores[idSegmento].anomalia_id);
+/*
++
++
++
++
++
++
++
++
+DE DONDE CORNOS SALE ESTE VALOR?????
++
++
++
++
++
++
++
++
+*/
+        //$("#corte_frm").val('1');
 
-        $("#corte_frm").val('1');
-        $("#causa_frm").val('4');
+
+
+        $("#causa_frm").val(nombresDeCorredores[idSegmento].causa_id);
         $("#descripcion_frm").val("");
     }else{
         // muestro cartel de edicion
@@ -227,8 +259,6 @@ function llenoPantallaEdicion(idSegmento){
 // esta funcion se llama cada vez que socket recibe un mensaje 
 function actualizacionDesktop(data) {
 
-
-
     var segmentosC = [];
     var segmentosP = [];
     var texto = "";
@@ -236,13 +266,10 @@ function actualizacionDesktop(data) {
     var faltaAsignarFalla = false;
     var todasLasFallasAsignadas = false;
 
-
-
     $("#" + data.id + " .titulo").html(data.nombre);
     $("#" + data.id).removeClass("cargando");
 
     if (data.segmentos_capital.length != 0){
-            console.log (data.segmentos_capital);
         for (var i = 0; i < data.segmentos_capital.length ; i++){
 
             if (maximoEstado < data.segmentos_capital[i].anomalia){
@@ -258,7 +285,11 @@ function actualizacionDesktop(data) {
             nombresDeCorredores[data.segmentos_capital[i].id].sentido = "capital";
             nombresDeCorredores[data.segmentos_capital[i].id].anomalia = data.segmentos_capital[i].anomalia;
             nombresDeCorredores[data.segmentos_capital[i].id].anomalia_id = data.segmentos_capital[i].anomalia_id;
-            nombresDeCorredores[data.segmentos_capital[i].id].comentario_causa = data.segmentos_capital[i].comentario_causa;
+            if (data.segmentos_capital[i].comentario_causa === undefined || data.segmentos_capital[i].comentario_causa === "undefined"){
+                nombresDeCorredores[data.segmentos_capital[i].id].comentario_causa = "--";
+            }else{
+                nombresDeCorredores[data.segmentos_capital[i].id].comentario_causa = data.segmentos_capital[i].comentario_causa;    
+            }
             nombresDeCorredores[data.segmentos_capital[i].id].causa_id = data.segmentos_capital[i].causa_id;
             nombresDeCorredores[data.segmentos_capital[i].id].duracion_anomalia = data.segmentos_capital[i].duracion_anomalia;
             nombresDeCorredores[data.segmentos_capital[i].id].id = data.segmentos_capital[i].id;
@@ -289,7 +320,13 @@ function actualizacionDesktop(data) {
             nombresDeCorredores[data.segmentos_provincia[p].id].sentido = "provincia";
             nombresDeCorredores[data.segmentos_provincia[p].id].anomalia = data.segmentos_provincia[p].anomalia;
             nombresDeCorredores[data.segmentos_provincia[p].id].anomalia_id = data.segmentos_provincia[p].anomalia_id;
-            nombresDeCorredores[data.segmentos_provincia[p].id].comentario_causa = data.segmentos_provincia[p].comentario_causa;
+
+            if ( data.segmentos_provincia[p].comentario_causa === undefined || data.segmentos_provincia[p].comentario_causa === "undefined"){
+                nombresDeCorredores[data.segmentos_provincia[p].id].comentario_causa = "--";
+            }else{
+                nombresDeCorredores[data.segmentos_provincia[p].id].comentario_causa = data.segmentos_provincia[p].comentario_causa;                
+            }
+                        
             nombresDeCorredores[data.segmentos_provincia[p].id].causa_id = data.segmentos_provincia[p].causa_id;
             nombresDeCorredores[data.segmentos_provincia[p].id].duracion_anomalia = data.segmentos_provincia[p].duracion_anomalia;
             nombresDeCorredores[data.segmentos_provincia[p].id].id = data.segmentos_provincia[p].id;
@@ -328,4 +365,8 @@ function actualizacionDesktop(data) {
     var datos =JSON.parse('{'+texto+'}');
     corredores[data.id] = datos;
 
+}
+
+function updateUltimaActualizacion(data){
+    $("#ultimaActualizacion").html(data);
 }
