@@ -16,7 +16,7 @@ $texto-titulo: #3C434D;
 $texto-labels: #CFD1D1;
 $texto-inputs: #CFD1D1;
 $texto-submit: #CFD1D1;
-
+$texto-error: #ff5555; 
 
 //tamaños de dispositivos
 $screen-xs: 480px !default; // telefonos
@@ -40,7 +40,7 @@ body {
     left: 50%;
     transform: translate(-150px,-150px);
     width: 260px;
-    height: 300px;
+    height: 320px;
     border-radius: 10px;
     background-color: $fondo-oscuro;
     padding-left: 20px;
@@ -63,6 +63,15 @@ body {
         padding: 8px;
         width: 90%;
 
+        p{
+            font-family: $fontset-avenir-demi;
+            font-size: 12px;
+            line-height: 12px;
+            color: $texto-error;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
         label{
             width: 40px;
             font-family: $fontset-avenir-demi;
@@ -84,7 +93,6 @@ body {
             height: 16px;
             margin-bottom: 15px;
 
-
         }
 
         .enviar{
@@ -100,7 +108,7 @@ body {
             font-size: 12px;
             font-family: $fontset-avenir-demi;
             padding: 5px 20px 5px 20px;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         input[type="submit"]:hover {
@@ -110,49 +118,3 @@ body {
     }
 
 }
-
-/*
-
-    form{
-   border: 1px solid green;
-        background-color: $fondo-oscuro;
-        height: 300px;
-        width: 300px;
-
-        h1{}
-
-
-        input[text],input[password]  {
-            cursor: pointer;
-            background-color: transparent;
-            color: $texto-claro;
-            border: 2px solid $texto-claro;
-            border-radius: 15px;
-            font-size: 12px;
-            font-family: $fontset-avenir-demi;
-            padding: 5px 10px 5px 10px;
-        }
-
-        input:hover {
-            background-color: $fondo-claro;
-        }
-
-        input[submit]  {
-            cursor: pointer;
-            background-color: transparent;
-            color: $texto-claro;
-            border: 2px solid $texto-claro;
-            border-radius: 15px;
-            font-size: 12px;
-            font-family: $fontset-avenir-demi;
-            padding: 5px 10px 5px 10px;
-        }
-
-
-    }
-
-
-}
-
-
-*/
