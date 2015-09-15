@@ -18,12 +18,13 @@
                 <input type="text" name="username" /><br>
                 <label>Contraseña</label><br>
                 <input type="password" name="password" /><br>
+                <p>{{ error }}</p>
                 <div class="enviar">
                     <input type="submit" value="ENTRAR">
                 </div>              
             </div>              
         </form>
-    <p>{{ error }}</p>
+
     </div>
 </body>
 </head>
