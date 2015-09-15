@@ -74,5 +74,6 @@ socket.on('libertador', function(data) {
 });
 
 socket.on('ultima_actualizacion', function(data) {
+	console.log(data)
 	updateUltimaActualizacion(data);
 });

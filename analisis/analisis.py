@@ -328,8 +328,8 @@ def getCurrentSegmentState(anomalies, lastrecords):
         # s [10, 248, datetime.datetime(2015, 8, 27, 15, 1, 27)]
         duracion_anomalia = 0
         if ad.has_key(s[0]):
-            duracion_anomalia = (ad[s[0]][
-                "timestamp_end"] - ad[s[0]]["timestamp_start"]).seconds / 60
+            duracion_anomalia = (
+                ad[s[0]]["timestamp_end"] - ad[s[0]]["timestamp_start"]).seconds / 60
         output.append({
             "id": s[0],
             "timestamp_medicion": s[2],
@@ -347,7 +347,7 @@ def getCurrentSegmentState(anomalies, lastrecords):
 
 def getDetectionParams():
     """
-    Lee los parametros de deteccion de la tabla detection_params.csv
+        Lee los parametros de deteccion de la tabla detection_params.csv
     """
     logger.info(
         "load getDetectionParams,  time:{0}".format(datetime.datetime.now()))
