@@ -112,7 +112,7 @@ html, body {
       float: right;
       color: #CFD1D1; }
   #cuadroOperador .filaPanel:hover {
-    background-color: #383D43; }
+    background-color: #1C2023 !important; }
   #cuadroOperador #corredores {
     background-color: #1C2023;
     float: left;
@@ -165,8 +165,6 @@ html, body {
         min-width: 20px;
         position: relative;
         top: -9px; }
-      #cuadroOperador #corredores .etiquetasCapital .panel div, #cuadroOperador #corredores .etiquetasProvincia .panel div, #cuadroOperador #corredores .corredoresCapital .panel div, #cuadroOperador #corredores .corredoresProvincia .panel div, #cuadroOperador #corredores #panelesCapital .panel div, #cuadroOperador #corredores #panelesProvincia .panel div {
-        pointer-events: none; }
       #cuadroOperador #corredores .etiquetasCapital .panel:hover, #cuadroOperador #corredores .etiquetasProvincia .panel:hover, #cuadroOperador #corredores .corredoresCapital .panel:hover, #cuadroOperador #corredores .corredoresProvincia .panel:hover, #cuadroOperador #corredores #panelesCapital .panel:hover, #cuadroOperador #corredores #panelesProvincia .panel:hover {
         cursor: pointer;
         background-color: #282D33; }
@@ -274,7 +272,8 @@ html, body {
     float: left; }
 
 .corredorActivo {
-  color: #fafafa !important; }
+  color: #fafafa !important;
+  background-color: #282D33 !important; }
 
 .estado0 {
   background-color: #282D33; }
