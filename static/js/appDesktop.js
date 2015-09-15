@@ -195,7 +195,9 @@ function llenaPantallaActualizacion(corredor){
 
     // agrega el listener al panel que se acaba de agregar.
     $(".panel").click(function() {
-        llenoPantallaEdicion(this.id.replace("c",""));
+        var idPanelClickeado = this.id.replace("c","")
+        llenoPantallaEdicion(idPanelClickeado);
+        panTo(nombresDeCorredores[idPanelClickeado].latlng);
         $("#seleccioneTrayecto").css("display","none");
 
     });
@@ -369,4 +371,11 @@ function actualizacionDesktop(data) {
 
 function updateUltimaActualizacion(data){
     $("#ultimaActualizacion").html(data);
+}
+
+
+
+function panTo(geo) {
+    var latLng = new google.maps.LatLng(geo.split(",")[0],geo.split(",")[1]);
+    map.panTo(latLng);
 }
