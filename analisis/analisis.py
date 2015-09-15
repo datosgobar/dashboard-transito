@@ -406,7 +406,7 @@ def upsertAnomalies(newanomalydata):
         newanomalydata index 0 {'timestamp': datetime.datetime(2015, 8, 27, 15, 5), 'isanomaly': True, \
             'id_segment': 37, 'indicador_anomalia': 3.39, 'threshold': 664.5, 'evalfield': 1010}
     """
-    pdb.set_trace()
+    # pdb.set_trace()
     liveanomalies = []
     for a in newanomalydata:
         window_older = a["timestamp"] - datetime.timedelta(minutes=10)
@@ -419,7 +419,7 @@ def upsertAnomalies(newanomalydata):
             candidate.nivel_anomalia = a["nivel_anomalia"]
             curanomaly = {}
             for column in Anomaly.__table__.columns:
-                curanomaly[column.name] = str(getattr(candidate, column.name))
+                curanomaly[column.name] = getattr(candidate, column.name)
             session.add(candidate)
             lastmodified_anomaly = candidate
         else:
