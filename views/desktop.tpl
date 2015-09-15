@@ -19,7 +19,7 @@
     <div id="contenido">
         <div id="header">
             <div id="logo"></div>
-            <div id="status">última actualización: <span id="ultimaActualizacion">--</span><button id="salir">salir</div></div>
+            <div id="status">última actualización: hace <span id="ultimaActualizacion">--</span> min.<button id="salir">salir</div></div>
             
         </div>
         <div id="paneles">
