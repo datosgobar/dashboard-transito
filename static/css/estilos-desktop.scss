@@ -37,7 +37,7 @@ $naranja: #ff8f00;
 $amarillo: #fdd835;
 $fondo-oscuro: #1C2023;
 $fondo-claro: #282D33;
-$fondo-hover: #383D43;
+$fondo-hover: #1C2023;
 $texto-normal: #6C7480;
 $texto-claro: #CFD1D1;
 $gris: #c0c0c0;
@@ -152,7 +152,7 @@ body {
         }
     }
     .filaPanel:hover{
-        background-color: $fondo-hover;
+        background-color: $fondo-hover !important;
     }
 
     #corredores {
@@ -219,7 +219,7 @@ body {
                 top: -9px;
             }
             .panel div{
-                pointer-events: none;
+                //pointer-events: none;
             }
             .panel:hover{
                 cursor: pointer;
@@ -369,6 +369,7 @@ body {
 
 .corredorActivo{
     color: $blanco !important;
+    background-color: $fondo-claro !important;
 }
 
 
