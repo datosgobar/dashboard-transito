@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="_public/css/estilos-login.min.css" />
     <link rel="icon" href="favicon.ico"/>
     <script src="https://www.google.com/recaptcha/api.js?hl=es" async defer></script>
-</dead>    
+</head>    
 <body>
     <div class="login">
         <div class="titulo">Dashboard Tránsito</div>
@@ -20,7 +20,6 @@
                 <label>Contraseña</label><br>
                 <input type="password" name="password" /><br>
                 <p>{{ error }}</p>
-                <!-- https://developers.google.com/recaptcha/docs/display?hl=en -->
                 <div class="g-recaptcha" data-sitekey={{site_key}}></div>
                 <div class="enviar">
                     <input type="submit" value="ENTRAR">
