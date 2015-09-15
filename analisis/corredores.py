@@ -6,12 +6,14 @@ import time
 import random
 import config
 import json
+import datetime
+import dateutil.parser
+
 from sqlalchemy import create_engine
 from dashboard_logging import dashboard_logging
 
 db_url = config.db_url
 engine = create_engine(db_url)
-
 logger = dashboard_logging(config="logging.json", name=__name__)
 
 
@@ -105,7 +107,9 @@ def parserEmitData(self, template):
             self.emit(channell, template['corredores'][channell])
             logger.info("updateo channel {0}".format(channell))
             # time.sleep(0.5)
-        self.emit("ultima_actualizacion", str(update[0][1]))
+            ultima_actualizacion = (datetime.datetime.now(
+            ) - dateutil.parser.parse(str(update[0][1]))).seconds / 60 / 60
+        self.emit("ultima_actualizacion", ultima_actualizacion)
     else:
         logger.info("sin datos en tabla")
         self.emit('info', "sin datos")

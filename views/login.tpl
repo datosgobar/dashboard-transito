@@ -23,6 +23,7 @@
                 </div>              
             </div>              
         </form>
+    <p>{{ error }}</p>
     </div>
 </body>
 </head>

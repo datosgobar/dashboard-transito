@@ -111,7 +111,7 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
 def views_login():
     """Serve login form"""
     if bottle_auth.user_is_anonymous:
-        return bottle.template('login')
+        return bottle.template('login', error="")
     else:
         return bottle.template('index')
 
@@ -127,8 +127,8 @@ def login_post():
     username = request.POST.get("username", "").strip()
     password = request.POST.get("password", "").strip()
     logger.info("login {0}".format(username))
-    bottle_auth.login(
-        username, password, success_redirect='/index', fail_redirect='/')
+    if not bottle_auth.login(username, password, success_redirect='/index'):
+        return bottle.template('login', error="Usuario y Contraseña invalidos.")
 
 
 @bottle.route('/index')
