@@ -98,7 +98,7 @@ $(".corredor").click(function() {
 
 // mapa a full height
 $("#salir").click(function() {
-    window.location = "/salir";
+    window.location = "/logout";
 });
 
 
