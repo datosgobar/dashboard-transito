@@ -29,9 +29,9 @@ html, body {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-150px, -150px);
-  width: 260px;
-  height: 320px;
+  transform: translate(-150px, -210px);
+  width: 300px;
+  height: 420px;
   border-radius: 10px;
   background-color: #16191C;
   padding-left: 20px;
@@ -73,6 +73,10 @@ html, body {
       padding: 5px 10px 5px 10px;
       height: 16px;
       margin-bottom: 15px; }
+    .login form .g-recaptcha iframe {
+      transform: scale(0.8);
+      left: -18px;
+      position: relative; }
     .login form .enviar {
       text-align: center; }
     .login form input[type="submit"] {
