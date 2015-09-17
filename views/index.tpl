@@ -19,6 +19,8 @@
 <body>
     <div id="indicador"></div>
     <div id="cards">
+
+        <div id="sinAnomalia" class="oculta">No se registran anomalías en los trayectos principales de la ciudad</div>
         <div id="noResueltos"></div>
         <div id="resueltos"></div>
     </div>

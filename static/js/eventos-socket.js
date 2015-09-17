@@ -92,5 +92,12 @@ function esFalla(data){
 function actualizacion(data){
 	$("#indicador").fadeIn(0);
 	agregaCard(data);
+	if ( $("#noResueltos").children().length != 0 || $("#resueltos").children().length != 0){
+		$("#sinAnomalia").addClass("oculta");
+	}else{
+		$("#sinAnomalia").removeClass("oculta");
+	}
+	
+	
 	$("#indicador").fadeOut(200);
 }
