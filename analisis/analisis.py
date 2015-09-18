@@ -313,7 +313,7 @@ def getCurrentSegmentState(anomalies, lastrecords):
         lastrecords index 0 [57, 611, datetime.datetime(2015, 8, 27, 13, 40, 9)]
     """
 
-    # pdb.set_trace()
+    pdb.set_trace()
 
     segments = {}
     for r in lastrecords:
@@ -335,12 +335,12 @@ def getCurrentSegmentState(anomalies, lastrecords):
             "timestamp_medicion": s[2],
             "tiempo": s[1] / 60,  # medido en segundos?
             "velocidad": -1,
-            "comentario_causa": ad.get(str(s[0]), {}).get("comentario_causa", ""),
-            "causa_id": ad.get(str(s[0]), {}).get("causa_id", 0),
+            "comentario_causa": ad.get(s[0], {}).get("comentario_causa", ""),
+            "causa_id": ad.get(s[0], {}).get("causa_id", 0),
             "duracion_anomalia": duracion_anomalia,
-            "indicador_anomalia": ad.get(str(s[0]), {}).get("indicador_anomalia", 0),
-            "anomalia": ad.get(str(s[0]), {}).get("nivel_anomalia", 0),
-            "anomalia_id": ad.get(str(s[0]), {}).get("id", 0)
+            "indicador_anomalia": ad.get(s[0], {}).get("indicador_anomalia", 0),
+            "anomalia": ad.get(s[0], {}).get("nivel_anomalia", 0),
+            "anomalia_id": ad.get(s[0], {}).get("id", 0)
         })
     return output
 
@@ -409,7 +409,7 @@ def upsertAnomalies(newanomalydata):
     # pdb.set_trace()
     liveanomalies = []
     for a in newanomalydata:
-        window_older = a["timestamp"] - datetime.timedelta(minutes=10)
+        window_older = a["timestamp"] - datetime.timedelta(minutes=20)
         candidate = session.query(Anomaly).filter(Anomaly.id_segment == a["id_segment"]).filter(
             Anomaly.timestamp_end >= window_older).filter(Anomaly.timestamp_end <= a["timestamp"]).first()
         if candidate:
@@ -419,7 +419,7 @@ def upsertAnomalies(newanomalydata):
             candidate.nivel_anomalia = a["nivel_anomalia"]
             curanomaly = {}
             for column in Anomaly.__table__.columns:
-                curanomaly[column.name] = getattr(candidate, column.name)
+                curanomaly[column.name] = str(getattr(candidate, column.name))
             session.add(candidate)
             lastmodified_anomaly = candidate
         else:
@@ -430,6 +430,7 @@ def upsertAnomalies(newanomalydata):
                 "indicador_anomalia": a["indicador_anomalia"],
                 "nivel_anomalia": a["nivel_anomalia"],
                 "comentario_causa": "",
+                "tipo_corte": "",
                 "causa_id": 0
             }
             new_anomaly = Anomaly(**curanomaly)
@@ -437,8 +438,56 @@ def upsertAnomalies(newanomalydata):
             lastmodified_anomaly = new_anomaly
         session.commit()
         curanomaly['anomalia_id'] = lastmodified_anomaly.id
-        liveanomalies.append(curanomaly)
+        curanomaly['tipo_corte'] = lastmodified_anomaly.tipo_corte
+        new_curanomaly = normalize_anomalies(curanomaly)
+        liveanomalies.append(new_curanomaly)
     return liveanomalies
+
+
+def normalize_anomalies(curanomaly):
+    """
+        funcion que normaliza en formato de los valores a utilizar en el resto del modulo
+
+        {'comentario_causa': '', 'id_segment': 36, 'nivel_anomalia': 2, 
+        'timestamp_start': datetime.datetime(2015, 9, 16, 14, 50), 
+        'indicador_anomalia': 0.46, 'timestamp_end': datetime.datetime(2015, 9, 16, 14, 50), 'causa_id': 0}
+    """
+    def return_datetime(timestamp):
+        if type(timestamp) is not datetime.datetime:
+            return datetime.datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
+        else:
+            return timestamp
+
+    new_curanomaly = {}
+    if curanomaly.get('id_segment'):
+        new_curanomaly['id_segment'] = int(curanomaly.get('id_segment'))
+    if curanomaly.has_key("comentario_causa"):
+        new_curanomaly["comentario_causa"] = str(
+            curanomaly.get("comentario_causa"))
+    if curanomaly.has_key("timestamp_start"):
+        new_curanomaly["timestamp_start"] = return_datetime(
+            curanomaly["timestamp_start"])
+    if curanomaly.has_key("timestamp_end"):
+        new_curanomaly["timestamp_end"] = return_datetime(
+            curanomaly["timestamp_end"])
+    if curanomaly.has_key("timestamp_asignacion"):
+        new_curanomaly["timestamp_asignacion"] = str(
+            curanomaly['timestamp_asignacion'])
+    if curanomaly.has_key("causa_id"):
+        new_curanomaly["causa_id"] = int(curanomaly["causa_id"])
+    if curanomaly.has_key('indicador_anomalia'):
+        new_curanomaly["indicador_anomalia"] = float(
+            curanomaly["indicador_anomalia"])
+    if curanomaly.has_key('nivel_anomalia'):
+        new_curanomaly["nivel_anomalia"] = int(curanomaly["nivel_anomalia"])
+    if curanomaly.has_key('tipo_corte') and curanomaly.get("tipo_corte") == "None":
+        new_curanomaly["tipo_corte"] = str(curanomaly.get("tipo_corte"))
+    if curanomaly.has_key("anomalia_id"):
+        new_curanomaly["anomalia_id"] = int(curanomaly.get("anomalia_id"))
+    if curanomaly.has_key('id'):
+        new_curanomaly["id"] = int(curanomaly.get("id"))
+
+    return new_curanomaly
 
 
 def updateSnapshot(newstates):
