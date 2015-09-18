@@ -313,7 +313,7 @@ def getCurrentSegmentState(anomalies, lastrecords):
         lastrecords index 0 [57, 611, datetime.datetime(2015, 8, 27, 13, 40, 9)]
     """
 
-    pdb.set_trace()
+    # pdb.set_trace()
 
     segments = {}
     for r in lastrecords:
