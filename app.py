@@ -11,7 +11,7 @@ import logging
 import requests
 
 from analisis import *
-from bottle import error, request
+from bottle import error, request, redirect
 from socketio import socketio_manage
 from socketio.mixins import BroadcastMixin
 from socketio.namespace import BaseNamespace
@@ -108,16 +108,16 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
 # genero ruta / que envia template index
 
 
-@bottle.route('/')
+@bottle.route('/login')
 def views_login():
     """Serve login form"""
     if bottle_auth.user_is_anonymous:
         return bottle.template('login', error="", site_key=config.captcha_site_key)
     else:
-        return bottle.template('index')
+        redirect('/')
 
 
-@bottle.route('/salir')
+@bottle.route('/logout')
 def logout():
     bottle_auth.logout(success_redirect='/')
 
@@ -134,22 +134,22 @@ def login_post():
     r = requests.post(
         "https://www.google.com/recaptcha/api/siteverify", data=params)
     if not r.json()['success']:
-        return bottle.template('login', error="Captcha inválido.")
+        return bottle.template('login', error="Captcha inválido.", site_key=config.captcha_site_key)
 
     logger.info("login {0}".format(username))
-    if not bottle_auth.login(username, password, success_redirect='/index'):
-        return bottle.template('login', error="Usuario y Contraseña inválidos.")
+    if not bottle_auth.login(username, password, success_redirect='/'):
+        return bottle.template('login', error="Usuario y Contraseña inválidos.", site_key=config.captcha_site_key)
 
 
-@bottle.route('/index')
+@bottle.route('/anomalies')
 def views_index():
-    bottle_auth.require(fail_redirect='/')
+    bottle_auth.require(fail_redirect='/login')
     return bottle.template('index')
 
 
-@bottle.route('/desktop')
+@bottle.route('/')
 def root():
-    bottle_auth.require(fail_redirect='/')
+    bottle_auth.require(fail_redirect='/login')
     return bottle.template('desktop')
 
 
@@ -164,9 +164,9 @@ def get_static(filepath):
     return bottle.static_file(filepath, root='./static/')
 
 
-@bottle.post("/index")
+@bottle.post("/")
 def send_data():
-    bottle_auth.require(fail_redirect='/')
+    bottle_auth.require(fail_redirect='/login')
     if set(['anomaly_id', 'comentario', 'causa_id', 'tipo_corte']) == set(request.forms.keys()):
         session = Session(engine)
         anomaly_id = request.forms.get('anomaly_id', False)

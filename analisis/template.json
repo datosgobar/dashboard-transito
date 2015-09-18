@@ -3,102 +3,119 @@
 		"independencia" : {
 			"nombre": "Independencia",
 			"id": "cInde",
+        	"latlng":"-34.618467,-58.397579",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"Illia" : {
 			"nombre": "Illia",
 			"id": "cIlli",
+			"latlng":"-34.576031,-58.392278",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"9_de_julio" : {
 			"nombre": "9 de julio",
 			"id": "c9int",
+			"latlng":"-34.606980,-58.381180",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"pellegrini" : {
 			"nombre": "Pellegrini",
 			"id": "cPell",
+			"latlng":"-34.596815,-58.381395",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"cerrito" : {
 			"nombre": "Cerrito",
 			"id": "cCerr",
+			"latlng":"-34.598979,-58.382575",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},		
 		"alem" : {
 			"nombre": "Alem",
 			"id": "cAlem",
+			"latlng":"-34.602024,-58.370417",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"corrientes" : {
 			"nombre": "Corrientes",
 			"id": "cCorr",
+			"latlng":"-34.604056,-58.411052",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"rivadavia" : {
 			"nombre": "Rivadavia",
 			"id": "cRiva",
+			"latlng":"-34.623828,-58.449860",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"av_de_mayo" : {
 			"nombre": "Av. de mayo",
 			"id": "cAvdm",
+			"latlng":"-34.608998,-58.381230",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"san_martin" : {
 			"nombre": "San Martín",
 			"id": "cSanm",
+			"latlng":"-34.598273,-58.482107",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"juan_b_justo" : {
 			"nombre": "Juan B. Justo",
 			"id": "cJuan",
+			"latlng":"-34.613392,-58.472011",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"cordoba" : {
 			"nombre": "Córdoba",
 			"id": "cCord",
+			"latlng":"-34.598003,-58.411965",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"paseo_colon" : {
 			"nombre": "Paseo Colón",
 			"id": "cPase",
+			"latlng":"-34.616437,-58.369178",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"cabildo" : {
 			"nombre": "Cabildo",
 			"id": "cCabi",
+			"latlng":"-34.559119,-58.459131",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"pueyrredon" : {
 			"nombre": "Pueyrredón",
 			"id": "cPuey",
+			"latlng":"-34.595818,-58.402866",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"alcorta" : {
 			"nombre": "Alcorta",
 			"id": "cAlco",
+			"latlng":"-34.564588,-58.421132",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		},
 		"libertador" : {
 			"nombre": "Libertador",
 			"id": "cLibe",
+			"latlng":"-34.581446,-58.403382",
 			"segmentos_capital" : [],
 			"segmentos_provincia" : []
 		}
