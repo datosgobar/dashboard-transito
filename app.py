@@ -100,7 +100,7 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
         while True:
             self.clean()
             parserEmitData(self, self.template)
-            time.sleep(300)
+            time.sleep(60)
 
     def recv_disconnect(self):
         logger.info("discconect")
