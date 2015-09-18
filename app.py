@@ -134,11 +134,11 @@ def login_post():
     r = requests.post(
         "https://www.google.com/recaptcha/api/siteverify", data=params)
     if not r.json()['success']:
-        return bottle.template('login', error="Captcha inválido.")
+        return bottle.template('login', error="Captcha inválido.", site_key=config.captcha_site_key)
 
     logger.info("login {0}".format(username))
     if not bottle_auth.login(username, password, success_redirect='/index'):
-        return bottle.template('login', error="Usuario y Contraseña inválidos.")
+        return bottle.template('login', error="Usuario y Contraseña inválidos.", site_key=config.captcha_site_key)
 
 
 @bottle.route('/anomalies')
