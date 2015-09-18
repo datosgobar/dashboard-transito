@@ -55,6 +55,23 @@ body {
     }
 }
 
+#sinAnomalia{
+    
+    line-height: 180px;
+    font-size: 40px;
+    font-family: $fontset-avenir-bold;
+    width: 90%;
+    height: 200px;
+    padding: 10px;
+    margin: 150px auto;
+    color: $texto-tarjeta;
+    border-radius: 10px;
+    background-color: $fondo-tarjeta;
+    text-align: center;
+
+
+}
+
 .oculta {
     display: none;
 }

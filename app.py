@@ -8,6 +8,7 @@ import bottle
 import time
 import datetime
 import logging
+import requests
 
 from analisis import *
 from bottle import error, request, redirect
@@ -111,7 +112,7 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
 def views_login():
     """Serve login form"""
     if bottle_auth.user_is_anonymous:
-        return bottle.template('login', error="")
+        return bottle.template('login', error="", site_key=config.captcha_site_key)
     else:
         redirect('/')
 
@@ -126,9 +127,18 @@ def login_post():
     """Authenticate users"""
     username = request.POST.get("username", "").strip()
     password = request.POST.get("password", "").strip()
+
+    # Chequear con Google que el captcha sea valido
+    captcha_response = request.POST.get("g-recaptcha-response", "").strip()
+    params = {'secret': config.captcha_secret, 'response': captcha_response}
+    r = requests.post(
+        "https://www.google.com/recaptcha/api/siteverify", data=params)
+    if not r.json()['success']:
+        return bottle.template('login', error="Captcha inválido.")
+
     logger.info("login {0}".format(username))
-    if not bottle_auth.login(username, password, success_redirect='/'):
-        return bottle.template('login', error="Usuario y Contraseña invalidos.")
+    if not bottle_auth.login(username, password, success_redirect='/index'):
+        return bottle.template('login', error="Usuario y Contraseña inválidos.")
 
 
 @bottle.route('/anomalies')

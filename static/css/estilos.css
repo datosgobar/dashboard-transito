@@ -37,6 +37,19 @@ html, body {
     html, body {
       background-color: #ffffff; } }
 
+#sinAnomalia {
+  line-height: 180px;
+  font-size: 40px;
+  font-family: "AvenirNext-Bold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  width: 90%;
+  height: 200px;
+  padding: 10px;
+  margin: 150px auto;
+  color: #CFD1D1;
+  border-radius: 10px;
+  background-color: #1C2023;
+  text-align: center; }
+
 .oculta {
   display: none; }
 

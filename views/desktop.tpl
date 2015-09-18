@@ -111,9 +111,6 @@
                                 <div class="fila">
                                     <label>Corte</label>
                                     <select id="corte_frm">
-                                        <option selected value="0">No Aplica</option>
-                                        <option value="1">Corte parcial</option>
-                                        <option value="2">Corte total</option>
                                     </select>
                                 </div>
 
@@ -121,6 +118,8 @@
                                     <label>Causa</label>
                                     <select id="causa_frm">
                                         <option selected value="0">Seleccionar causa...</option>
+                                        <option selected value="1">Corte parcial</option>
+                                        <option selected value="2">Corte total</option>
                                     </select>
                                 </div>
                                     
