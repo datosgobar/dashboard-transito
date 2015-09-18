@@ -137,7 +137,7 @@ def login_post():
         return bottle.template('login', error="Captcha inválido.", site_key=config.captcha_site_key)
 
     logger.info("login {0}".format(username))
-    if not bottle_auth.login(username, password, success_redirect='/index'):
+    if not bottle_auth.login(username, password, success_redirect='/'):
         return bottle.template('login', error="Usuario y Contraseña inválidos.", site_key=config.captcha_site_key)
 
 
