@@ -107,12 +107,13 @@ html, body {
   display: relative; }
   #cuadroOperador .filaPanel {
     font-size: 12px;
-    padding: 0px 10px 5px 10px; }
+    padding: 4px 10px 4px 10px;
+    line-height: 12px; }
     #cuadroOperador .filaPanel .datoPanel {
       float: right;
       color: #CFD1D1; }
   #cuadroOperador .filaPanel:hover {
-    background-color: #1C2023 !important; }
+    background-color: #282D33 !important; }
   #cuadroOperador #corredores {
     background-color: #1C2023;
     float: left;
@@ -166,8 +167,7 @@ html, body {
         position: relative;
         top: -9px; }
       #cuadroOperador #corredores .etiquetasCapital .panel:hover, #cuadroOperador #corredores .etiquetasProvincia .panel:hover, #cuadroOperador #corredores .corredoresCapital .panel:hover, #cuadroOperador #corredores .corredoresProvincia .panel:hover, #cuadroOperador #corredores #panelesCapital .panel:hover, #cuadroOperador #corredores #panelesProvincia .panel:hover {
-        cursor: pointer;
-        background-color: #282D33; }
+        cursor: pointer; }
       #cuadroOperador #corredores .etiquetasCapital .segmento, #cuadroOperador #corredores .etiquetasProvincia .segmento, #cuadroOperador #corredores .corredoresCapital .segmento, #cuadroOperador #corredores .corredoresProvincia .segmento, #cuadroOperador #corredores #panelesCapital .segmento, #cuadroOperador #corredores #panelesProvincia .segmento {
         height: 16px;
         font-size: 8px;

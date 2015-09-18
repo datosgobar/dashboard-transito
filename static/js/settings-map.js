@@ -7,14 +7,14 @@
 */
 
 //edit these for bounding the map.
-var centro =  new google.maps.LatLng(-34.604592, -58.405232);	// center of the map
+var centro =  new google.maps.LatLng(-34.604592, -58.375232);	// center of the map
 /*
  * DO NOT EDIT BELOW THIS LINE
 */
 
 
 var settingsItemsMap = {
-    zoom: 14, // nivel de zoom inicial
+    zoom: 15, // nivel de zoom inicial
     center: centro,
     streetViewControl: false,
 	mapTypeControl: false, // Map type control. Road, satellite, etc.
