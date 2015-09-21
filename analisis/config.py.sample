@@ -13,7 +13,11 @@ else:
         user='root',
         password='password',
         host='localhost',
-        db='dashboardoperativo'
+        db='dashboardoperativo',
+        debug='False',
     )
     db_url = db['engine'] + "://" + db['user'] + ":" + \
         db['password'] + "@" + db['host'] + "/" + db['db']
+        
+captcha_site_key="6Lcd2wwTAAAAAMfz3yJhphSG74U54MJhRMu-_Vyp",
+captcha_secret='6Lcd2wwTAAAAALP0ZBvoLJlSxjF5qytxJJ19Z2iE'

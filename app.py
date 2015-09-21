@@ -8,9 +8,10 @@ import bottle
 import time
 import datetime
 import logging
+import requests
 
 from analisis import *
-from bottle import error, request
+from bottle import error, request, redirect
 from socketio import socketio_manage
 from socketio.mixins import BroadcastMixin
 from socketio.namespace import BaseNamespace
@@ -54,21 +55,6 @@ session_opts = {
 }
 app = SessionMiddleware(app, session_opts)
 
-# inicio condicional para evaluar si estoy en openshift
-if os.environ.get('OPENSHIFT_PYTHON_DIR'):
-    # en caso de estarlo, activo entorno virtual y agarro las variables de
-    # entorno para ip y puerto
-    zvirtenv = os.path.join(os.environ['OPENSHIFT_PYTHON_DIR'],
-                            'virtenv', 'bin', 'activate_this.py')
-    execfile(zvirtenv, dict(__file__=zvirtenv))
-    ip = os.environ['OPENSHIFT_PYTHON_IP']
-    port = int(os.environ['OPENSHIFT_PYTHON_PORT'])
-    logger.info("OPENSHIFT Listening on port {0} ip {1}".format(ip, port))
-else:
-    # caso contrario, entiendo que estoy en ambiente local
-    ip = "0.0.0.0"
-    port = 8080
-
 # clase que hereda funcionalidades de socketio
 
 logger.info("Listening on port {0} ip {1}".format(ip, port))
@@ -99,7 +85,7 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
         while True:
             self.clean()
             parserEmitData(self, self.template)
-            time.sleep(300)
+            time.sleep(60)
 
     def recv_disconnect(self):
         logger.info("discconect")
@@ -107,16 +93,16 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
 # genero ruta / que envia template index
 
 
-@bottle.route('/')
+@bottle.route('/login')
 def views_login():
     """Serve login form"""
     if bottle_auth.user_is_anonymous:
-        return bottle.template('login', error="")
+        return bottle.template('login', error="", site_key=config.captcha_site_key)
     else:
-        return bottle.template('index')
+        redirect('/')
 
 
-@bottle.route('/salir')
+@bottle.route('/logout')
 def logout():
     bottle_auth.logout(success_redirect='/')
 
@@ -126,20 +112,29 @@ def login_post():
     """Authenticate users"""
     username = request.POST.get("username", "").strip()
     password = request.POST.get("password", "").strip()
+
+    # Chequear con Google que el captcha sea valido
+    captcha_response = request.POST.get("g-recaptcha-response", "").strip()
+    params = {'secret': config.captcha_secret, 'response': captcha_response}
+    r = requests.post(
+        "https://www.google.com/recaptcha/api/siteverify", data=params)
+    if not r.json()['success']:
+        return bottle.template('login', error="Captcha inválido.", site_key=config.captcha_site_key)
+
     logger.info("login {0}".format(username))
-    if not bottle_auth.login(username, password, success_redirect='/index'):
-        return bottle.template('login', error="Usuario y Contraseña invalidos.")
+    if not bottle_auth.login(username, password, success_redirect='/'):
+        return bottle.template('login', error="Usuario y Contraseña inválidos.", site_key=config.captcha_site_key)
 
 
-@bottle.route('/index')
+@bottle.route('/anomalies')
 def views_index():
-    bottle_auth.require(fail_redirect='/')
+    bottle_auth.require(fail_redirect='/login')
     return bottle.template('index')
 
 
-@bottle.route('/desktop')
+@bottle.route('/')
 def root():
-    bottle_auth.require(fail_redirect='/')
+    bottle_auth.require(fail_redirect='/login')
     return bottle.template('desktop')
 
 
@@ -154,9 +149,9 @@ def get_static(filepath):
     return bottle.static_file(filepath, root='./static/')
 
 
-@bottle.post("/index")
+@bottle.post("/")
 def send_data():
-    bottle_auth.require(fail_redirect='/')
+    bottle_auth.require(fail_redirect='/login')
     if set(['anomaly_id', 'comentario', 'causa_id', 'tipo_corte']) == set(request.forms.keys()):
         session = Session(engine)
         anomaly_id = request.forms.get('anomaly_id', False)
