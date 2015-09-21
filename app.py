@@ -11,6 +11,7 @@ import logging
 import requests
 
 from analisis import *
+from analisis import config
 from bottle import error, request, redirect
 from socketio import socketio_manage
 from socketio.mixins import BroadcastMixin
@@ -54,6 +55,11 @@ session_opts = {
     #'session.validate_key': True,
 }
 app = SessionMiddleware(app, session_opts)
+
+# inicio condicional para evaluar si estoy en openshift
+    # caso contrario, entiendo que estoy en ambiente local
+ip = config.server["ip"]
+port = config.server["port"]
 
 # clase que hereda funcionalidades de socketio
 
