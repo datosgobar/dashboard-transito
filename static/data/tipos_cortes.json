@@ -1,0 +1,15 @@
+{
+    "cortes": [
+    {
+        "id": 0,
+        "descripcion": "No Aplica"
+    },
+    {
+        "id": 1,
+        "descripcion": "Corte Parcial"
+    },
+    {
+        "id": 2,
+        "descripcion": "Corte Total"
+    }]
+}

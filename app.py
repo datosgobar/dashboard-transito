@@ -11,6 +11,7 @@ import logging
 import requests
 
 from analisis import *
+from analisis import config
 from bottle import error, request, redirect
 from socketio import socketio_manage
 from socketio.mixins import BroadcastMixin
@@ -56,19 +57,9 @@ session_opts = {
 app = SessionMiddleware(app, session_opts)
 
 # inicio condicional para evaluar si estoy en openshift
-if os.environ.get('OPENSHIFT_PYTHON_DIR'):
-    # en caso de estarlo, activo entorno virtual y agarro las variables de
-    # entorno para ip y puerto
-    zvirtenv = os.path.join(os.environ['OPENSHIFT_PYTHON_DIR'],
-                            'virtenv', 'bin', 'activate_this.py')
-    execfile(zvirtenv, dict(__file__=zvirtenv))
-    ip = os.environ['OPENSHIFT_PYTHON_IP']
-    port = int(os.environ['OPENSHIFT_PYTHON_PORT'])
-    logger.info("OPENSHIFT Listening on port {0} ip {1}".format(ip, port))
-else:
     # caso contrario, entiendo que estoy en ambiente local
-    ip = "0.0.0.0"
-    port = 8080
+ip = config.server["ip"]
+port = config.server["port"]
 
 # clase que hereda funcionalidades de socketio
 
@@ -171,8 +162,8 @@ def send_data():
         session = Session(engine)
         anomaly_id = request.forms.get('anomaly_id', False)
         causa_id = request.forms.get("causa_id", False)
-        comentario = request.forms.get("comentario", False)
-        tipo_corte = request.forms.get("tipo_corte", False)
+        comentario = request.forms.get("comentario", "")
+        tipo_corte = request.forms.get("tipo_corte", 0)
         if anomaly_id and causa_id:
             queryAnomaly = session.query(Anomaly).filter_by(id=anomaly_id)
             if queryAnomaly.count():
