@@ -481,8 +481,11 @@ def normalize_anomalies(curanomaly):
             curanomaly["indicador_anomalia"])
     if curanomaly.has_key('nivel_anomalia'):
         new_curanomaly["nivel_anomalia"] = int(curanomaly["nivel_anomalia"])
-    if curanomaly.has_key('tipo_corte'):
-        new_curanomaly["tipo_corte"] = int(curanomaly.get("tipo_corte"))
+    if curanomaly.has_key('tipo_corte') :
+        if curanomaly.get("tipo_corte") == "None":
+            new_curanomaly["tipo_corte"] = 0
+        else:
+            new_curanomaly["tipo_corte"] = int(curanomaly.get("tipo_corte", 0))
     if curanomaly.has_key("anomalia_id"):
         new_curanomaly["anomalia_id"] = int(curanomaly.get("anomalia_id"))
     if curanomaly.has_key('id'):
