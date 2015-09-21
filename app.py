@@ -161,8 +161,8 @@ def send_data():
         session = Session(engine)
         anomaly_id = request.forms.get('anomaly_id', False)
         causa_id = request.forms.get("causa_id", False)
-        comentario = request.forms.get("comentario", False)
-        tipo_corte = request.forms.get("tipo_corte", False)
+        comentario = request.forms.get("comentario", "")
+        tipo_corte = request.forms.get("tipo_corte", 0)
         if anomaly_id and causa_id:
             queryAnomaly = session.query(Anomaly).filter_by(id=anomaly_id)
             if queryAnomaly.count():

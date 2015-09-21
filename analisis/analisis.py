@@ -313,7 +313,7 @@ def getCurrentSegmentState(anomalies, lastrecords):
         lastrecords index 0 [57, 611, datetime.datetime(2015, 8, 27, 13, 40, 9)]
     """
 
-    pdb.set_trace()
+    #pdb.set_trace()
 
     segments = {}
     for r in lastrecords:
@@ -340,7 +340,8 @@ def getCurrentSegmentState(anomalies, lastrecords):
             "duracion_anomalia": duracion_anomalia,
             "indicador_anomalia": ad.get(s[0], {}).get("indicador_anomalia", 0),
             "anomalia": ad.get(s[0], {}).get("nivel_anomalia", 0),
-            "anomalia_id": ad.get(s[0], {}).get("id", 0)
+            "anomalia_id": ad.get(s[0], {}).get("id", 0),
+            "tipo_corte": ad.get(s[0], {}).get("tipo_corte", 0)
         })
     return output
 
@@ -406,7 +407,7 @@ def upsertAnomalies(newanomalydata):
         newanomalydata index 0 {'timestamp': datetime.datetime(2015, 8, 27, 15, 5), 'isanomaly': True, \
             'id_segment': 37, 'indicador_anomalia': 3.39, 'threshold': 664.5, 'evalfield': 1010}
     """
-    # pdb.set_trace()
+    #pdb.set_trace()
     liveanomalies = []
     for a in newanomalydata:
         window_older = a["timestamp"] - datetime.timedelta(minutes=20)
@@ -430,7 +431,7 @@ def upsertAnomalies(newanomalydata):
                 "indicador_anomalia": a["indicador_anomalia"],
                 "nivel_anomalia": a["nivel_anomalia"],
                 "comentario_causa": "",
-                "tipo_corte": "",
+                "tipo_corte": 0,
                 "causa_id": 0
             }
             new_anomaly = Anomaly(**curanomaly)
@@ -480,8 +481,9 @@ def normalize_anomalies(curanomaly):
             curanomaly["indicador_anomalia"])
     if curanomaly.has_key('nivel_anomalia'):
         new_curanomaly["nivel_anomalia"] = int(curanomaly["nivel_anomalia"])
-    if curanomaly.has_key('tipo_corte') and curanomaly.get("tipo_corte") == "None":
-        new_curanomaly["tipo_corte"] = str(curanomaly.get("tipo_corte"))
+    if curanomaly.has_key('tipo_corte'):
+        new_curanomaly["tipo_corte"] = int(curanomaly.get("tipo_corte"))
+        #print new_curanomaly["tipo_corte"]
     if curanomaly.has_key("anomalia_id"):
         new_curanomaly["anomalia_id"] = int(curanomaly.get("anomalia_id"))
     if curanomaly.has_key('id'):
