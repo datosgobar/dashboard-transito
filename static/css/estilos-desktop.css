@@ -36,7 +36,7 @@ html, body {
   font-family: "AvenirNext-Regular", "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-color: #282D33;
   font-size: 1em;
-  color: #6C7480; }
+  color: #AAAAAA; }
   @media (max-width: 767px) {
     html, body {
       background-color: #ffffff; } }
@@ -78,7 +78,7 @@ html, body {
       font-size: 1em;
       padding: 8px;
       padding-left: 20px;
-      border-left: 10px solid #6C7480; }
+      border-left: 10px solid #AAAAAA; }
     #paneles #leftPanel .corredor:hover {
       background-color: #282D33; }
     #paneles #leftPanel .icono {
@@ -107,12 +107,13 @@ html, body {
   display: relative; }
   #cuadroOperador .filaPanel {
     font-size: 12px;
-    padding: 0px 10px 5px 10px; }
+    padding: 4px 10px 4px 10px;
+    line-height: 12px; }
     #cuadroOperador .filaPanel .datoPanel {
       float: right;
       color: #CFD1D1; }
   #cuadroOperador .filaPanel:hover {
-    background-color: #1C2023 !important; }
+    background-color: #282D33 !important; }
   #cuadroOperador #corredores {
     background-color: #1C2023;
     float: left;
@@ -135,7 +136,7 @@ html, body {
       text-align: center;
       font-family: "AvenirNext-Regular", "Helvetica Neue", Helvetica, Arial, sans-serif;
       font-size: 16px;
-      color: #6C7480;
+      color: #AAAAAA;
       line-height: 100px;
       width: 600px;
       top: -25px;
@@ -164,10 +165,10 @@ html, body {
         height: 20px;
         min-width: 20px;
         position: relative;
-        top: -9px; }
+        top: -20px;
+        padding-top: 10px; }
       #cuadroOperador #corredores .etiquetasCapital .panel:hover, #cuadroOperador #corredores .etiquetasProvincia .panel:hover, #cuadroOperador #corredores .corredoresCapital .panel:hover, #cuadroOperador #corredores .corredoresProvincia .panel:hover, #cuadroOperador #corredores #panelesCapital .panel:hover, #cuadroOperador #corredores #panelesProvincia .panel:hover {
-        cursor: pointer;
-        background-color: #282D33; }
+        cursor: pointer; }
       #cuadroOperador #corredores .etiquetasCapital .segmento, #cuadroOperador #corredores .etiquetasProvincia .segmento, #cuadroOperador #corredores .corredoresCapital .segmento, #cuadroOperador #corredores .corredoresProvincia .segmento, #cuadroOperador #corredores #panelesCapital .segmento, #cuadroOperador #corredores #panelesProvincia .segmento {
         height: 16px;
         font-size: 8px;
@@ -221,7 +222,7 @@ html, body {
   #cuadroOperador .dato {
     font-family: "AvenirNext-Regular", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 12px;
-    color: #6C7480; }
+    color: #AAAAAA; }
   #cuadroOperador .fila {
     display: table;
     margin: 5px auto;
@@ -266,8 +267,8 @@ html, body {
     background-color: #282D33; }
   #cuadroOperador input:disabled {
     cursor: not-allowed;
-    color: #6C7480;
-    border: 2px solid #6C7480; }
+    color: #AAAAAA;
+    border: 2px solid #AAAAAA; }
   #cuadroOperador #mensajeStatus_frm {
     float: left; }
 
@@ -313,7 +314,8 @@ html, body {
   font-size: 12px;
   font-family: "AvenirNext-Demi", "Helvetica Neue", Helvetica, Arial, sans-serif;
   padding: 5px 10px 5px 10px;
-  margin-left: 20px; }
+  margin-left: 20px;
+  text-transform: uppercase; }
 
 #salir:hover {
   background-color: #282D33; }

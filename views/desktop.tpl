@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0" />
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<script type="text/javascript" src="_static/js/socket.io.js"></script>
-    <script type='text/javascript' src="http://maps.google.com/maps/api/js?sensor=false&.js&language=es"></script>
+    <script type='text/javascript' src="https://maps.googleapis.com/maps/api/js"></script>
 	<script type="text/javascript" src="_static/js/jquery-2.1.3.min.js"></script>
 	<script type="text/javascript" src="_static/js/settings-map.js"></script>
 
@@ -111,6 +111,9 @@
                                 <div class="fila">
                                     <label>Corte</label>
                                     <select id="corte_frm">
+                                        <option selected value="0">No aplica</option>
+                                        <option value="1">Corte parcial</option>
+                                        <option value="2">Corte total</option>
                                     </select>
                                 </div>
 
@@ -118,8 +121,6 @@
                                     <label>Causa</label>
                                     <select id="causa_frm">
                                         <option selected value="0">Seleccionar causa...</option>
-                                        <option selected value="1">Corte parcial</option>
-                                        <option selected value="2">Corte total</option>
                                     </select>
                                 </div>
                                     

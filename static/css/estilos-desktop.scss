@@ -37,8 +37,8 @@ $naranja: #ff8f00;
 $amarillo: #fdd835;
 $fondo-oscuro: #1C2023;
 $fondo-claro: #282D33;
-$fondo-hover: #1C2023;
-$texto-normal: #6C7480;
+$fondo-hover: #282D33;
+$texto-normal: #AAAAAA;
 $texto-claro: #CFD1D1;
 $gris: #c0c0c0;
 $fondoAnomalia: #e5e5e5;
@@ -145,7 +145,8 @@ body {
     display: relative;
     .filaPanel{
         font-size: 12px;
-        padding: 0px 10px 5px 10px;
+        padding: 4px 10px 4px 10px;
+        line-height: 12px;
         .datoPanel{
             float: right;
             color: $texto-claro;
@@ -216,14 +217,14 @@ body {
                 height: 20px;
                 min-width: 20px;
                 position: relative;
-                top: -9px;
+                top: -20px;
+                padding-top: 10px;
             }
             .panel div{
                 //pointer-events: none;
             }
             .panel:hover{
                 cursor: pointer;
-                background-color: $fondo-claro;
             }
             .segmento{
                 //background-color: $fondo-claro;
@@ -302,7 +303,6 @@ body {
         display: table;
         margin: 5px auto;
         width: 95%;
-
         .izquierda{
             float: left;
             width: 50%;
@@ -426,6 +426,7 @@ body {
     font-family: $fontset-avenir-demi;
     padding: 5px 10px 5px 10px;
     margin-left: 20px;
+    text-transform: uppercase;
 }
 
 #salir:hover {
