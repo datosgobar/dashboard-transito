@@ -165,7 +165,8 @@ html, body {
         height: 20px;
         min-width: 20px;
         position: relative;
-        top: -9px; }
+        top: -20px;
+        padding-top: 10px; }
       #cuadroOperador #corredores .etiquetasCapital .panel:hover, #cuadroOperador #corredores .etiquetasProvincia .panel:hover, #cuadroOperador #corredores .corredoresCapital .panel:hover, #cuadroOperador #corredores .corredoresProvincia .panel:hover, #cuadroOperador #corredores #panelesCapital .panel:hover, #cuadroOperador #corredores #panelesProvincia .panel:hover {
         cursor: pointer; }
       #cuadroOperador #corredores .etiquetasCapital .segmento, #cuadroOperador #corredores .etiquetasProvincia .segmento, #cuadroOperador #corredores .corredoresCapital .segmento, #cuadroOperador #corredores .corredoresProvincia .segmento, #cuadroOperador #corredores #panelesCapital .segmento, #cuadroOperador #corredores #panelesProvincia .segmento {
