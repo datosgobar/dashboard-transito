@@ -314,7 +314,8 @@ html, body {
   font-size: 12px;
   font-family: "AvenirNext-Demi", "Helvetica Neue", Helvetica, Arial, sans-serif;
   padding: 5px 10px 5px 10px;
-  margin-left: 20px; }
+  margin-left: 20px;
+  text-transform: uppercase; }
 
 #salir:hover {
   background-color: #282D33; }

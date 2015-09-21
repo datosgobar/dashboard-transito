@@ -55,13 +55,11 @@ function armoSelectAnomalias(datos) {
 }
 
 // hace el post a la base de datos
-
 function actualizoRegistro() {
     var comentario = $("#descripcion_frm").val();
     if (comentario === undefined || comentario === "undefined"){
         comentario = "";
     }
-
 
     var data = 'anomaly_id='+$("#anomaly_frm").val()+'&comentario='+comentario+'&causa_id='+$("#causa_frm").val()+'&tipo_corte='+$("#corte_frm").val();
 
@@ -82,7 +80,7 @@ function actualizoRegistro() {
     });
 }
 
-// mapa a full height
+// muestro el mapa al 100% cuando hago clic en el logo de la ciudad
 $("#logo").click(function() {
     $("#mapa").animate({
         height: "100%"
@@ -90,7 +88,7 @@ $("#logo").click(function() {
 });
 
 
-// mapa comprimido
+// complrime el mapa cuando abro un corredor
 $(".corredor").click(function() {
     $("#seleccioneTrayecto").css("display","inline");    
     $("#oculta").css("display", "none");
@@ -131,7 +129,7 @@ function abreDetalleCorredor(data){
     panTo(geolocalizacion[data[0].id].latlng);
 }
 
-
+// arma las cajas de los segmentos al clickear un corredor.
 function llenaPantallaActualizacion(corredor){
 
     var cantidad = 0; 
@@ -141,7 +139,7 @@ function llenaPantallaActualizacion(corredor){
     var corCap = "";
     var demora = 0;        
 
-    // Vacío ventana
+    // Vacío ventana 
     $("#corredores .etiquetasCapital").html("");
     $("#corredores .etiquetasProvincia").html("");
     $("#corredores #corredorCapital").html("");
@@ -153,22 +151,21 @@ function llenaPantallaActualizacion(corredor){
     $("#panelesProvincia").html("");
     $("#panelesCapital").html("");
 
-
+    //pregunto si hay segmentos de provincia
     if ( typeof(corredores[corredor].provincia) != "undefined"){
         cantidad = corredores[corredor].provincia.length;
         cor = corredores[corredor].provincia;
         corPro = corredores[corredor].provincia;
         cappro[1] = 1;
-
     }
 
+    //pregunto si hay segmentos de capital
     if ( typeof(corredores[corredor].capital) != "undefined"){
         cantidad = corredores[corredor].capital.length;
         cor = corredores[corredor].capital;
         corCap = corredores[corredor].capital;
         cappro[0] = 1;
     }
-
 
     // armo etiquetas
     for (var i = 0 ; i < cor.length ; i++){
@@ -206,11 +203,9 @@ function llenaPantallaActualizacion(corredor){
             $("#corredores .corredoresProvincia").append('<div class="corredor segmento estado' + nombresDeCorredores[corPro[i]].anomalia + ' "></div>' );
             $("#panelesProvincia").append('<div class="panel" id="c'+corPro[i]+'"><div class="filaPanel">Duración anomalía<div class="datoPanel">'+nombresDeCorredores[corPro[i]].duracion_anomalia+'´</div></div><div class="filaPanel">Tiempo del trayecto<div class="datoPanel">'+ nombresDeCorredores[corPro[i]].tiempo +'´</div></div><div class="filaPanel">Demora<div class="datoPanel">'+ ((nombresDeCorredores[corPro[i]].indicador_anomalia)*100).toFixed(1)+'% ('+ demora.toFixed() +' min) </div></div><div class="filaPanel">Causa<div class="datoPanel">'+nombresDeCorredores[corPro[i]].comentario_causa+'</div></div></div>');
         }
-
-        
     }
 
-    // agrega el listener al panel que se acaba de agregar.
+    // agrega el listener al panel del segmento que se acaba de agregar.
     $(".panel").click(function() {
         var idPanelClickeado = this.id.replace("c","")
         llenoPantallaEdicion(idPanelClickeado);
@@ -259,12 +254,8 @@ function actualizacionDesktop(data) {
     var segmentosP = [];
     var texto = "";
     var maximoEstado = 0;
-    
     var tieneAnonalias = false;
     var todasAnomaliasChequeadas = false;
-
-
-
 
     $("#" + data.id + " .titulo").html(data.nombre);
     $("#" + data.id).removeClass("cargando");
@@ -277,7 +268,6 @@ function actualizacionDesktop(data) {
                     todasAnomaliasChequeadas = true;    
                 }
             }
-
 
             if (maximoEstado < data.segmentos_capital[i].causa_id){
                 maximoEstado = data.segmentos_capital[i].causa_id;
@@ -313,11 +303,9 @@ function actualizacionDesktop(data) {
                 
             }
 
-
             if (maximoEstado < data.segmentos_provincia[p].causa_id){
                 maximoEstado = data.segmentos_provincia[p].causa_id;
             }
-
 
             nombresDeCorredores[data.segmentos_provincia[p].id].sentido = "provincia";
             nombresDeCorredores[data.segmentos_provincia[p].id].anomalia = data.segmentos_provincia[p].anomalia;
@@ -372,8 +360,6 @@ function actualizacionDesktop(data) {
 function updateUltimaActualizacion(data){
     $("#ultimaActualizacion").html(data);
 }
-
-
 
 function panTo(geo) {
     var latLng = new google.maps.LatLng(geo.split(",")[0],geo.split(",")[1]);
