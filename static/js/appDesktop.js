@@ -67,15 +67,15 @@ function actualizoRegistro() {
 
     $.ajax({
         type: "POST",
-        url: "/index",
+        url: "/",
         data: data,
         success: function(msg) {
             if (msg === "guardado"){
-                $("#mensajeStatus_frm").innerHTML("Guardado");
+                $("#mensajeStatus_frm").html("Guardado");
                 $("#reportar_frm").hide();
                 $("#modificar_frm").show();
             }else{
-                $("#mensajeStatus_frm").innerHTML(msg);
+                $("#mensajeStatus_frm").html(msg);
             }
         },
         contentType: 'application/x-www-form-urlencoded'
@@ -257,7 +257,7 @@ function actualizacionDesktop(data) {
     var segmentosC = [];
     var segmentosP = [];
     var texto = "";
-    var maximoEstado = -1;
+    var maximoEstado = 0;
     
     var tieneAnonalias = false;
     var todasAnomaliasChequeadas = false;
@@ -275,6 +275,11 @@ function actualizacionDesktop(data) {
                 if (data.segmentos_capital[i].causa_id == 0){
                     todasAnomaliasChequeadas = true;    
                 }
+            }
+
+
+            if (maximoEstado < data.segmentos_capital[i].causa_id){
+                maximoEstado = data.segmentos_capital[i].causa_id;
             }
 
             nombresDeCorredores[data.segmentos_capital[i].id].sentido = "capital";
@@ -306,6 +311,12 @@ function actualizacionDesktop(data) {
                 }
                 
             }
+
+
+            if (maximoEstado < data.segmentos_provincia[p].causa_id){
+                maximoEstado = data.segmentos_provincia[p].causa_id;
+            }
+
 
             nombresDeCorredores[data.segmentos_provincia[p].id].sentido = "provincia";
             nombresDeCorredores[data.segmentos_provincia[p].id].anomalia = data.segmentos_provincia[p].anomalia;
@@ -344,9 +355,9 @@ function actualizacionDesktop(data) {
 
     if (tieneAnonalias){
         if (todasAnomaliasChequeadas){
-            icon.addClass("iconoAzul");
-        }else{
             icon.addClass("iconoRojo");
+        }else{
+            icon.addClass("iconoAzul");
         }
     }else{
         icon.addClass("iconoGris");

@@ -123,8 +123,8 @@ html, body {
   display: table-cell;
   height: 35px;
   font-family: "AvenirNext-Demi", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  line-height: 40px;
-  font-size: 0px; }
+  font-size: 40px;
+  line-height: 40px; }
 
 .chico {
   font-size: 0px;
