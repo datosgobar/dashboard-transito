@@ -239,6 +239,7 @@ function llenoPantallaEdicion(idSegmento){
         $("#oculta").css("display", "none");
 
         $("#anomaly_frm").attr("value", nombresDeCorredores[idSegmento].anomalia_id);
+
         $("#corte_frm").val(nombresDeCorredores[idSegmento].corte);
         $("#causa_frm").val(nombresDeCorredores[idSegmento].causa_id);
         $("#descripcion_frm").val("");
