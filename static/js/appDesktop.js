@@ -187,18 +187,23 @@ function llenaPantallaActualizacion(corredor){
     //armo segmentos
     for (var i = 0 ; i < cor.length ; i++){
         if (cappro[0] === 0 ){
+            // el segmento no tiene anomalias
             $("#corredores .corredoresCapital").append('<div class="corredor segmento estado0"></div>' );
         }else{
             demora = ( (nombresDeCorredores[corCap[i]].tiempo * (nombresDeCorredores[corCap[i]].indicador_anomalia * 100))/100+(nombresDeCorredores[corCap[i]].indicador_anomalia * 100) );
             $("#corredores .corredoresCapital").append('<div class="corredor segmento estado' + nombresDeCorredores[corCap[i]].anomalia + '"></div>' );
 
-            $("#panelesCapital").append('<div class="panel" id="c'+corCap[i]+'"><div class="filaPanel">Duración anomalía<div class="datoPanel">'+nombresDeCorredores[corCap[i]].duracion_anomalia+'´</div></div><div class="filaPanel">Tiempo del trayecto<div class="datoPanel">'+ nombresDeCorredores[corCap[i]].tiempo +'´</div></div><div class="filaPanel">Demora<div class="datoPanel">'+ ((nombresDeCorredores[corCap[i]].indicador_anomalia)*100).toFixed(1) +'% ('+ demora.toFixed() +' min) </div></div><div class="filaPanel">Causa<div class="datoPanel">'+nombresDeCorredores[corCap[i]].comentario_causa+'</div></div></div>');
+            $("#panelesCapital").append('<div class="panel" id="c' + corCap[i] + '">'+
+                '<div class="filaPanel">Duración anomalía<div class="datoPanel">' + nombresDeCorredores[corCap[i]].duracion_anomalia +'´</div></div>'+
+                '<div class="filaPanel">Tiempo del trayecto<div class="datoPanel">'+ nombresDeCorredores[corCap[i]].tiempo + '´</div></div>'+
+                '<div class="filaPanel">Demora<div class="datoPanel">'+ ((nombresDeCorredores[corCap[i]].indicador_anomalia)*100).toFixed(1) +'% ('+ demora.toFixed() +' min) </div></div>'+
+                '<div class="filaPanel">Causa<div class="datoPanel">'+nombresDeCorredores[corCap[i]].comentario_causa+'</div></div></div>');
         }
         
         if (cappro[1] === 0 ){
+            // el segmento no tiene anomalias
             $("#corredores .corredoresProvincia").append('<div class="corredor segmento estado0"> </div>' );
         }else{
-
             demora = ( (nombresDeCorredores[corPro[i]].tiempo * (nombresDeCorredores[corPro[i]].indicador_anomalia * 100))/100+(nombresDeCorredores[corPro[i]].indicador_anomalia * 100) );
             $("#corredores .corredoresProvincia").append('<div class="corredor segmento estado' + nombresDeCorredores[corPro[i]].anomalia + ' "></div>' );
             $("#panelesProvincia").append('<div class="panel" id="c'+corPro[i]+'"><div class="filaPanel">Duración anomalía<div class="datoPanel">'+nombresDeCorredores[corPro[i]].duracion_anomalia+'´</div></div><div class="filaPanel">Tiempo del trayecto<div class="datoPanel">'+ nombresDeCorredores[corPro[i]].tiempo +'´</div></div><div class="filaPanel">Demora<div class="datoPanel">'+ ((nombresDeCorredores[corPro[i]].indicador_anomalia)*100).toFixed(1)+'% ('+ demora.toFixed() +' min) </div></div><div class="filaPanel">Causa<div class="datoPanel">'+nombresDeCorredores[corPro[i]].comentario_causa+'</div></div></div>');
@@ -260,6 +265,8 @@ function actualizacionDesktop(data) {
     $("#" + data.id + " .titulo").html(data.nombre);
     $("#" + data.id).removeClass("cargando");
 
+
+    // completo el sentido capital si lo hubiuese
     if (data.segmentos_capital.length != 0){
         for (var i = 0; i < data.segmentos_capital.length ; i++){
             if (data.segmentos_capital[i].anomalia_id != 0){
@@ -294,7 +301,8 @@ function actualizacionDesktop(data) {
         texto = '"capital":['+segmentosC.toString()+']'
     };
 
-    if (data.segmentos_provincia.length != 0){
+    // completo el sentido provincia si lo hubiuese
+        if (data.segmentos_provincia.length != 0){
         for (var p = 0; p < data.segmentos_provincia.length ; p++){
             if (data.segmentos_provincia[p].anomalia_id != 0){
                 tieneAnonalias = true;
@@ -367,3 +375,9 @@ function panTo(geo) {
     var latLng = new google.maps.LatLng(geo.split(",")[0],geo.split(",")[1]);
     map.panTo(latLng);
 }
+
+
+// abre pantalla anomalias
+$("#verAnomalias").click(function() {
+    window.location = "/anomalies";
+});

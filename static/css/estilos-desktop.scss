@@ -124,6 +124,19 @@ body {
         .iconoRojo {
             background: url("img/novisto.svg") no-repeat center center;
         }
+        button{
+
+            border: 0 none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-family: $fontset-avenir-demi;
+            font-size: 8px;
+            margin: 20px 0 0 80px;
+            opacity: 0.3;
+            padding: 5px 10px;
+            text-align: center;
+            text-transform: uppercase;
+        }
 
     }
     #rightPanel {
