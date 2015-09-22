@@ -137,7 +137,12 @@ function llenaPantallaActualizacion(corredor){
     var cappro = [0,0];
     var corPro = "";
     var corCap = "";
-    var demora = 0;        
+
+    // variables con legibilidades de segmentos
+    var duracionAnomalia  = 0,
+        tiempoTrayecto = 0,
+        demora = 0,
+        causa = "";
 
     // Vacío ventana 
     $("#corredores .etiquetasCapital").html("");
@@ -190,23 +195,85 @@ function llenaPantallaActualizacion(corredor){
             // el segmento no tiene anomalias
             $("#corredores .corredoresCapital").append('<div class="corredor segmento estado0"></div>' );
         }else{
-            demora = ( (nombresDeCorredores[corCap[i]].tiempo * (nombresDeCorredores[corCap[i]].indicador_anomalia * 100))/100+(nombresDeCorredores[corCap[i]].indicador_anomalia * 100) );
+            //demora = ( (nombresDeCorredores[corCap[i]].tiempo * (nombresDeCorredores[corCap[i]].indicador_anomalia * 100))/100+(nombresDeCorredores[corCap[i]].indicador_anomalia * 100) );
             $("#corredores .corredoresCapital").append('<div class="corredor segmento estado' + nombresDeCorredores[corCap[i]].anomalia + '"></div>' );
 
+
+
+            //asigno tiempo de anomalia
+            if (nombresDeCorredores[corCap[i]].duracion_anomalia != 0){
+                duracionAnomalia = nombresDeCorredores[corCap[i]].duracion_anomalia + "'";
+            }else{
+                duracionAnomalia = "--";
+            }
+            
+            //asigno tiempo de trayecto
+            tiempoTrayecto = nombresDeCorredores[corCap[i]].tiempo;
+    
+            //asigno demora
+            if (nombresDeCorredores[corCap[i]].indicador_anomalia != 0){
+                var matanga = (tiempoTrayecto * (nombresDeCorredores[corCap[i]].indicador_anomalia *100 ).toFixed())/100;
+                demora = (nombresDeCorredores[corCap[i]].indicador_anomalia *100 ).toFixed() + "% (+ " +matanga.toFixed()+ "')";
+            }else{
+                demora = "--";
+            }
+
+            //asigno causa
+            if (nombresDeCorredores[corCap[i]].comentario_causa != ""){
+                causa = nombresDeCorredores[corCap[i]].comentario_causa;
+            }else{
+                causa = "--"
+            }
+            
+
+            //armo el panel
             $("#panelesCapital").append('<div class="panel" id="c' + corCap[i] + '">'+
-                '<div class="filaPanel">Duración anomalía<div class="datoPanel">' + nombresDeCorredores[corCap[i]].duracion_anomalia +'´</div></div>'+
-                '<div class="filaPanel">Tiempo del trayecto<div class="datoPanel">'+ nombresDeCorredores[corCap[i]].tiempo + '´</div></div>'+
-                '<div class="filaPanel">Demora<div class="datoPanel">'+ ((nombresDeCorredores[corCap[i]].indicador_anomalia)*100).toFixed(1) +'% ('+ demora.toFixed() +' min) </div></div>'+
-                '<div class="filaPanel">Causa<div class="datoPanel">'+nombresDeCorredores[corCap[i]].comentario_causa+'</div></div></div>');
+                '<div class="filaPanel">Duración anomalía<div class="datoPanel">' + duracionAnomalia +'</div></div>'+
+                '<div class="filaPanel">Tiempo del trayecto<div class="datoPanel">'+ tiempoTrayecto + '</div></div>'+
+                '<div class="filaPanel">Demora<div class="datoPanel">'+ demora  + '</div></div>'+
+                '<div class="filaPanel">Causa<div class="datoPanel">'+ causa +'</div></div></div>');
         }
         
         if (cappro[1] === 0 ){
             // el segmento no tiene anomalias
             $("#corredores .corredoresProvincia").append('<div class="corredor segmento estado0"> </div>' );
         }else{
-            demora = ( (nombresDeCorredores[corPro[i]].tiempo * (nombresDeCorredores[corPro[i]].indicador_anomalia * 100))/100+(nombresDeCorredores[corPro[i]].indicador_anomalia * 100) );
+            //demora = ( (nombresDeCorredores[corPro[i]].tiempo * (nombresDeCorredores[corPro[i]].indicador_anomalia * 100))/100+(nombresDeCorredores[corPro[i]].indicador_anomalia * 100) );
             $("#corredores .corredoresProvincia").append('<div class="corredor segmento estado' + nombresDeCorredores[corPro[i]].anomalia + ' "></div>' );
-            $("#panelesProvincia").append('<div class="panel" id="c'+corPro[i]+'"><div class="filaPanel">Duración anomalía<div class="datoPanel">'+nombresDeCorredores[corPro[i]].duracion_anomalia+'´</div></div><div class="filaPanel">Tiempo del trayecto<div class="datoPanel">'+ nombresDeCorredores[corPro[i]].tiempo +'´</div></div><div class="filaPanel">Demora<div class="datoPanel">'+ ((nombresDeCorredores[corPro[i]].indicador_anomalia)*100).toFixed(1)+'% ('+ demora.toFixed() +' min) </div></div><div class="filaPanel">Causa<div class="datoPanel">'+nombresDeCorredores[corPro[i]].comentario_causa+'</div></div></div>');
+
+
+            //asigno tiempo de anomalia
+            if (nombresDeCorredores[corPro[i]].duracion_anomalia != 0){
+                duracionAnomalia = nombresDeCorredores[corPro[i]].duracion_anomalia + "'";
+            }else{
+                duracionAnomalia = "--";
+            }
+            
+            //asigno tiempo de trayecto
+            tiempoTrayecto = nombresDeCorredores[corPro[i]].tiempo;
+    
+            //asigno demora
+            if (nombresDeCorredores[corPro[i]].indicador_anomalia != 0){
+                var matanga = (tiempoTrayecto * (nombresDeCorredores[corPro[i]].indicador_anomalia *100 ).toFixed())/100;
+                demora = (nombresDeCorredores[corPro[i]].indicador_anomalia *100 ).toFixed() + "% (+ " +matanga.toFixed()+ "')";
+            }else{
+                demora = "--";
+            }
+
+            //asigno causa
+            if (nombresDeCorredores[corPro[i]].comentario_causa != ""){
+                causa = nombresDeCorredores[corPro[i]].comentario_causa;
+            }else{
+                causa = "--"
+            }
+
+            
+            //armo el panel
+            $("#panelesProvincia").append('<div class="panel" id="c'+corPro[i]+'">'+
+                '<div class="filaPanel">Duración anomalía<div class="datoPanel">'+ duracionAnomalia +'</div></div>'+
+                '<div class="filaPanel">Tiempo del trayecto<div class="datoPanel">'+ tiempoTrayecto +'´</div></div>'+
+                '<div class="filaPanel">Demora<div class="datoPanel">'+ demora + '</div></div>'+
+                '<div class="filaPanel">Causa<div class="datoPanel">'+ causa +'</div></div></div>');
         }
     }
 
