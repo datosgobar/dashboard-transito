@@ -91,6 +91,17 @@ html, body {
       background: url("img/enproceso.svg") no-repeat center center; }
     #paneles #leftPanel .iconoRojo {
       background: url("img/novisto.svg") no-repeat center center; }
+    #paneles #leftPanel button {
+      border: 0 none;
+      border-radius: 15px;
+      cursor: pointer;
+      font-family: "AvenirNext-Demi", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 8px;
+      margin: 20px 0 0 80px;
+      opacity: 0.3;
+      padding: 5px 10px;
+      text-align: center;
+      text-transform: uppercase; }
   #paneles #rightPanel {
     top: 70px;
     left: 250px;
