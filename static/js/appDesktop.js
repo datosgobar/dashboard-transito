@@ -1,4 +1,5 @@
 var corredores  = JSON.parse("{}");
+var anomaliasDescripcion = ["Normal","Medio","Alto"]
 
 // Trae JSON con listado de segmentos
 var nombresDeCorredores = (function () {
@@ -295,20 +296,19 @@ function llenaPantallaActualizacion(corredor){
 //llena la pantalla de edicion del sector seleccionado
 function llenoPantallaEdicion(idSegmento){
 
-    var demora = ( (nombresDeCorredores[idSegmento].tiempo * (nombresDeCorredores[idSegmento].indicador_anomalia * 100))/100+(nombresDeCorredores[idSegmento].indicador_anomalia * 100) ).toFixed();
+  
+    var matanga = (nombresDeCorredores[idSegmento].tiempo * (nombresDeCorredores[idSegmento].indicador_anomalia *100 ).toFixed())/100;
+    var demora = (nombresDeCorredores[idSegmento].indicador_anomalia *100 ).toFixed() + "% (+ " +matanga.toFixed()+ "')";
 
-    
 
     $("#trayecto_frm").html(nombresDeCorredores[idSegmento].nombreSegmento);
     $("#sentido_frm").html(nombresDeCorredores[idSegmento].sentido);
-    $("#anomalia_frm").html(nombresDeCorredores[idSegmento].duracion_anomalia);
+    $("#anomalia_frm").html(anomaliasDescripcion[nombresDeCorredores[idSegmento].causa_id]);
     $("#tiempo_frm").html(nombresDeCorredores[idSegmento].tiempo + "'");
-    $("#demora_frm").html(((nombresDeCorredores[idSegmento].indicador_anomalia)*100).toFixed()+"% (+" + demora + "'')");
+    $("#demora_frm").html( demora );
     $("#mensajeStatus_frm").html("");
     $("#reportar_frm").show();
     $("#modificar_frm").hide();
-
-
 
 
     if ( nombresDeCorredores[idSegmento].anomalia_id != 0 ) {
