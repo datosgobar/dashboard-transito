@@ -12,7 +12,7 @@ else:
         debug=True,
         user="luisuranga@buenosaires.gob.ar",
         pwd="emerepad",
-        to="luisuranga@buenosaires.gob.ar"
+        to="chadad@buenosaires.gob.ar"
     )
     server = dict(
         ip='0.0.0.0',
