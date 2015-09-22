@@ -219,17 +219,20 @@ function llenaPantallaActualizacion(corredor){
             }
 
             //asigno causa
-            if (nombresDeCorredores[corCap[i]].comentario_causa != ""){
-                causa = nombresDeCorredores[corCap[i]].comentario_causa;
+            if (nombresDeCorredores[corCap[i]].causa_id == 0){
+                causa = "--";
             }else{
-                causa = "--"
+                jQuery.map(causasAnomalias.causas, function(obj) {
+                  if(obj.id == nombresDeCorredores[corCap[i]].causa_id){
+                    causa = obj.descripcion;
+                  }
+                });
             }
-            
 
             //armo el panel
             $("#panelesCapital").append('<div class="panel" id="c' + corCap[i] + '">'+
                 '<div class="filaPanel">Duración anomalía<div class="datoPanel">' + duracionAnomalia +'</div></div>'+
-                '<div class="filaPanel">Tiempo del trayecto<div class="datoPanel">'+ tiempoTrayecto + '</div></div>'+
+                '<div class="filaPanel">Tiempo del trayecto<div class="datoPanel">'+ tiempoTrayecto + "'" + '</div></div>'+
                 '<div class="filaPanel">Demora<div class="datoPanel">'+ demora  + '</div></div>'+
                 '<div class="filaPanel">Causa<div class="datoPanel">'+ causa +'</div></div></div>');
         }
@@ -261,17 +264,20 @@ function llenaPantallaActualizacion(corredor){
             }
 
             //asigno causa
-            if (nombresDeCorredores[corPro[i]].comentario_causa != ""){
-                causa = nombresDeCorredores[corPro[i]].comentario_causa;
+            if (nombresDeCorredores[corPro[i]].causa_id == 0){
+                causa = "--";
             }else{
-                causa = "--"
+                jQuery.map(causasAnomalias.causas, function(obj) {
+                  if(obj.id == nombresDeCorredores[corPro[i]].causa_id){
+                    causa = obj.descripcion;
+                  }
+                });
             }
-
             
             //armo el panel
             $("#panelesProvincia").append('<div class="panel" id="c'+corPro[i]+'">'+
                 '<div class="filaPanel">Duración anomalía<div class="datoPanel">'+ duracionAnomalia +'</div></div>'+
-                '<div class="filaPanel">Tiempo del trayecto<div class="datoPanel">'+ tiempoTrayecto +'´</div></div>'+
+                '<div class="filaPanel">Tiempo del trayecto<div class="datoPanel">'+ tiempoTrayecto   + "'" +'</div></div>'+
                 '<div class="filaPanel">Demora<div class="datoPanel">'+ demora + '</div></div>'+
                 '<div class="filaPanel">Causa<div class="datoPanel">'+ causa +'</div></div></div>');
         }
@@ -291,25 +297,27 @@ function llenoPantallaEdicion(idSegmento){
 
     var demora = ( (nombresDeCorredores[idSegmento].tiempo * (nombresDeCorredores[idSegmento].indicador_anomalia * 100))/100+(nombresDeCorredores[idSegmento].indicador_anomalia * 100) ).toFixed();
 
+    
+
     $("#trayecto_frm").html(nombresDeCorredores[idSegmento].nombreSegmento);
     $("#sentido_frm").html(nombresDeCorredores[idSegmento].sentido);
     $("#anomalia_frm").html(nombresDeCorredores[idSegmento].duracion_anomalia);
-    $("#tiempo_frm").html(nombresDeCorredores[idSegmento].tiempo + " min.");
-    $("#demora_frm").html(((nombresDeCorredores[idSegmento].indicador_anomalia)*100).toFixed(1)+"% (" + demora + " min)");
+    $("#tiempo_frm").html(nombresDeCorredores[idSegmento].tiempo + "'");
+    $("#demora_frm").html(((nombresDeCorredores[idSegmento].indicador_anomalia)*100).toFixed()+"% (+" + demora + "'')");
     $("#mensajeStatus_frm").html("");
     $("#reportar_frm").show();
     $("#modificar_frm").hide();
 
-    if ( nombresDeCorredores[idSegmento].anomalia_id != 0 ) {
 
+
+
+    if ( nombresDeCorredores[idSegmento].anomalia_id != 0 ) {
         // oculto cartel de edicion..
         $("#oculta").css("display", "none");
-
         $("#anomaly_frm").attr("value", nombresDeCorredores[idSegmento].anomalia_id);
-
-        $("#corte_frm").val(nombresDeCorredores[idSegmento].corte);
+        $("#corte_frm").val(nombresDeCorredores[idSegmento].tipo_corte);
         $("#causa_frm").val(nombresDeCorredores[idSegmento].causa_id);
-        $("#descripcion_frm").val("");
+        $("#descripcion_frm").val(nombresDeCorredores[idSegmento].comentario_causa);
     }else{
         // muestro cartel de edicion
         $("#oculta").css("display", "inline");
@@ -351,11 +359,7 @@ function actualizacionDesktop(data) {
             nombresDeCorredores[data.segmentos_capital[i].id].anomalia = data.segmentos_capital[i].anomalia;
             nombresDeCorredores[data.segmentos_capital[i].id].anomalia_id = data.segmentos_capital[i].anomalia_id;
             nombresDeCorredores[data.segmentos_capital[i].id].tipo_corte = data.segmentos_capital[i].tipo_corte;
-            if (data.segmentos_capital[i].comentario_causa === undefined || data.segmentos_capital[i].comentario_causa === "undefined"){
-                nombresDeCorredores[data.segmentos_capital[i].id].comentario_causa = "--";
-            }else{
-                nombresDeCorredores[data.segmentos_capital[i].id].comentario_causa = data.segmentos_capital[i].comentario_causa;    
-            }
+            nombresDeCorredores[data.segmentos_capital[i].id].comentario_causa = data.segmentos_capital[i].causa;    
             nombresDeCorredores[data.segmentos_capital[i].id].causa_id = data.segmentos_capital[i].causa_id;
             nombresDeCorredores[data.segmentos_capital[i].id].duracion_anomalia = data.segmentos_capital[i].duracion_anomalia;
             nombresDeCorredores[data.segmentos_capital[i].id].id = data.segmentos_capital[i].id;
@@ -387,13 +391,7 @@ function actualizacionDesktop(data) {
             nombresDeCorredores[data.segmentos_provincia[p].id].anomalia = data.segmentos_provincia[p].anomalia;
             nombresDeCorredores[data.segmentos_provincia[p].id].anomalia_id = data.segmentos_provincia[p].anomalia_id;
             nombresDeCorredores[data.segmentos_provincia[p].id].tipo_corte = data.segmentos_provincia[p].tipo_corte;
-
-            if ( data.segmentos_provincia[p].comentario_causa === undefined || data.segmentos_provincia[p].comentario_causa === "undefined"){
-                nombresDeCorredores[data.segmentos_provincia[p].id].comentario_causa = "--";
-            }else{
-                nombresDeCorredores[data.segmentos_provincia[p].id].comentario_causa = data.segmentos_provincia[p].comentario_causa;                
-            }
-                        
+            nombresDeCorredores[data.segmentos_provincia[p].id].comentario_causa = data.segmentos_provincia[p].causa;                
             nombresDeCorredores[data.segmentos_provincia[p].id].causa_id = data.segmentos_provincia[p].causa_id;
             nombresDeCorredores[data.segmentos_provincia[p].id].duracion_anomalia = data.segmentos_provincia[p].duracion_anomalia;
             nombresDeCorredores[data.segmentos_provincia[p].id].id = data.segmentos_provincia[p].id;
