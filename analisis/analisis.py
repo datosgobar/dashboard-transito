@@ -14,6 +14,7 @@ import argparse
 import anomalyDetection
 import time
 import logging
+from smtp_send import send_email_error
 
 from conn_sql import sqlalchemyDEBUG, instanceSQL
 from sqlalchemy.orm import Session, sessionmaker
@@ -38,7 +39,7 @@ detection_params_fn = os.path.dirname(
 
 
 def getData(url):
-    for i in xrange(3):
+    for i in xrange(4):
         try:
             response = requests.get(url)
             if (response.status_code == 200):
@@ -51,7 +52,9 @@ def getData(url):
                 "hubo timeout del count:{0} request en {1}".format(i, url), traceback=True)
         except:
             return None
-
+        if i == 3:
+            send_email_error(i)
+            break
     return None
 
 
@@ -481,11 +484,11 @@ def normalize_anomalies(curanomaly):
             curanomaly["indicador_anomalia"])
     if curanomaly.has_key('nivel_anomalia'):
         new_curanomaly["nivel_anomalia"] = int(curanomaly["nivel_anomalia"])
-    if curanomaly.has_key('tipo_corte') :
-        if curanomaly.get("tipo_corte") == "None":
+    if curanomaly.has_key('tipo_corte'):
+        if curanomaly.get("tipo_corte") == None:
             new_curanomaly["tipo_corte"] = 0
         else:
-            new_curanomaly["tipo_corte"] = int(curanomaly.get("tipo_corte", 0))
+            new_curanomaly["tipo_corte"] = curanomaly.get("tipo_corte")
     if curanomaly.has_key("anomalia_id"):
         new_curanomaly["anomalia_id"] = int(curanomaly.get("anomalia_id"))
     if curanomaly.has_key('id'):
