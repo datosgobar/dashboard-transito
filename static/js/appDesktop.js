@@ -276,6 +276,7 @@ function actualizacionDesktop(data) {
             nombresDeCorredores[data.segmentos_capital[i].id].sentido = "capital";
             nombresDeCorredores[data.segmentos_capital[i].id].anomalia = data.segmentos_capital[i].anomalia;
             nombresDeCorredores[data.segmentos_capital[i].id].anomalia_id = data.segmentos_capital[i].anomalia_id;
+            nombresDeCorredores[data.segmentos_capital[i].id].tipo_corte = data.segmentos_capital[i].tipo_corte;
             if (data.segmentos_capital[i].comentario_causa === undefined || data.segmentos_capital[i].comentario_causa === "undefined"){
                 nombresDeCorredores[data.segmentos_capital[i].id].comentario_causa = "--";
             }else{
@@ -310,6 +311,7 @@ function actualizacionDesktop(data) {
             nombresDeCorredores[data.segmentos_provincia[p].id].sentido = "provincia";
             nombresDeCorredores[data.segmentos_provincia[p].id].anomalia = data.segmentos_provincia[p].anomalia;
             nombresDeCorredores[data.segmentos_provincia[p].id].anomalia_id = data.segmentos_provincia[p].anomalia_id;
+            nombresDeCorredores[data.segmentos_provincia[p].id].tipo_corte = data.segmentos_provincia[p].tipo_corte;
 
             if ( data.segmentos_provincia[p].comentario_causa === undefined || data.segmentos_provincia[p].comentario_causa === "undefined"){
                 nombresDeCorredores[data.segmentos_provincia[p].id].comentario_causa = "--";
