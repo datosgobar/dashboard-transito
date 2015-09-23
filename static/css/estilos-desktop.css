@@ -37,9 +37,6 @@ html, body {
   background-color: #282D33;
   font-size: 1em;
   color: #AAAAAA; }
-  @media (max-width: 767px) {
-    html, body {
-      background-color: #ffffff; } }
 
 #contenido #header {
   position: absolute;

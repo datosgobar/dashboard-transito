@@ -1,5 +1,5 @@
 var corredores  = JSON.parse("{}");
-var anomaliasDescripcion = ["Normal","Medio","Alto"]
+var anomaliasDescripcion = ["--","Intermedia","Grave"]
 
 // Trae JSON con listado de segmentos
 var nombresDeCorredores = (function () {
@@ -69,12 +69,15 @@ function actualizoRegistro() {
         url: "/",
         data: data,
         success: function(msg) {
+            $("#mensajeStatus_frm").show();
             if (msg === "guardado"){
                 $("#mensajeStatus_frm").html("Guardado");
                 $("#reportar_frm").hide();
                 $("#modificar_frm").show();
+                $("#mensajeStatus_frm").delay(1000).hide("slow");
             }else{
                 $("#mensajeStatus_frm").html(msg);
+                $("#mensajeStatus_frm").delay(3000).hide("slow");
             }
         },
         contentType: 'application/x-www-form-urlencoded'
@@ -213,8 +216,8 @@ function llenaPantallaActualizacion(corredor){
     
             //asigno demora
             if (nombresDeCorredores[corCap[i]].indicador_anomalia != 0){
-                var matanga = (tiempoTrayecto * (nombresDeCorredores[corCap[i]].indicador_anomalia *100 ).toFixed())/100;
-                demora = (nombresDeCorredores[corCap[i]].indicador_anomalia *100 ).toFixed() + "% (+ " +matanga.toFixed()+ "')";
+                var porcentaje = (tiempoTrayecto * (nombresDeCorredores[corCap[i]].indicador_anomalia *100 ).toFixed())/100;
+                demora = (nombresDeCorredores[corCap[i]].indicador_anomalia *100 ).toFixed() + "% (+ " +porcentaje.toFixed()+ "')";
             }else{
                 demora = "--";
             }
@@ -258,8 +261,8 @@ function llenaPantallaActualizacion(corredor){
     
             //asigno demora
             if (nombresDeCorredores[corPro[i]].indicador_anomalia != 0){
-                var matanga = (tiempoTrayecto * (nombresDeCorredores[corPro[i]].indicador_anomalia *100 ).toFixed())/100;
-                demora = (nombresDeCorredores[corPro[i]].indicador_anomalia *100 ).toFixed() + "% (+ " +matanga.toFixed()+ "')";
+                var porcentaje = (tiempoTrayecto * (nombresDeCorredores[corPro[i]].indicador_anomalia *100 ).toFixed())/100;
+                demora = (nombresDeCorredores[corPro[i]].indicador_anomalia *100 ).toFixed() + "% (+ " +porcentaje.toFixed()+ "')";
             }else{
                 demora = "--";
             }
@@ -297,9 +300,12 @@ function llenaPantallaActualizacion(corredor){
 function llenoPantallaEdicion(idSegmento){
 
   
-    var matanga = (nombresDeCorredores[idSegmento].tiempo * (nombresDeCorredores[idSegmento].indicador_anomalia *100 ).toFixed())/100;
-    var demora = (nombresDeCorredores[idSegmento].indicador_anomalia *100 ).toFixed() + "% (+ " +matanga.toFixed()+ "')";
+    var porcentaje = (nombresDeCorredores[idSegmento].tiempo * (nombresDeCorredores[idSegmento].indicador_anomalia *100 ).toFixed())/100;
+    var demora = (nombresDeCorredores[idSegmento].indicador_anomalia *100 ).toFixed() + "% (+ " +porcentaje.toFixed()+ "')";
 
+    if ( nombresDeCorredores[idSegmento].indicador_anomalia == 0) {
+        demora = "--";
+    }
 
     $("#trayecto_frm").html(nombresDeCorredores[idSegmento].nombreSegmento);
     $("#sentido_frm").html(nombresDeCorredores[idSegmento].sentido);
@@ -322,8 +328,6 @@ function llenoPantallaEdicion(idSegmento){
         // muestro cartel de edicion
         $("#oculta").css("display", "inline");
     };
-
-
 }
 
 // pone los titulos a la botonera y completa el JSON
@@ -351,8 +355,8 @@ function actualizacionDesktop(data) {
                 }
             }
 
-            if (maximoEstado < data.segmentos_capital[i].causa_id){
-                maximoEstado = data.segmentos_capital[i].causa_id;
+            if (maximoEstado < data.segmentos_capital[i].anomalia){
+                maximoEstado = data.segmentos_capital[i].anomalia;
             }
 
             nombresDeCorredores[data.segmentos_capital[i].id].sentido = "capital";
@@ -383,8 +387,8 @@ function actualizacionDesktop(data) {
                 
             }
 
-            if (maximoEstado < data.segmentos_provincia[p].causa_id){
-                maximoEstado = data.segmentos_provincia[p].causa_id;
+            if (maximoEstado < data.segmentos_provincia[p].anomalia){
+                maximoEstado = data.segmentos_provincia[p].anomalia;
             }
 
             nombresDeCorredores[data.segmentos_provincia[p].id].sentido = "provincia";
