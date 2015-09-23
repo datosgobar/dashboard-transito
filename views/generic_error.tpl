@@ -15,7 +15,7 @@
     <div class="notFound">
         <h1>La página que intenta ver no esta disponible</h1>
         <div class="error"> Error {{ error }} </div>
-        <button href="/" id="volver"> volver al inicio</button>
+        <button id="volver"> volver al inicio</button>
     </div>
 
     <script>
