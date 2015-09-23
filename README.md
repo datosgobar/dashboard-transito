@@ -87,9 +87,9 @@ easy_install sqlalchemy-migrate
     Ir a /db_repository y leer README correspondiente
   * Generación de data de causas
 ```sh
-$ python analisis.py --setup_database
+$ python analisis/analisis.py --download_lastmonth
 ```
-  * Generación de data fake
+  * Generación de data fake (no es necesario en produccion)
 ```sh
 $ python analisis/getDataFake.py
 ```
@@ -118,19 +118,6 @@ $ python analisis/getDataFake.py
             ```sh
             $ python analisis.py --generate_detection_params
             ```
-
-
-
-  * Instanciar Python Server
-
-    ```sh
-    $ gunicorn -b 0.0.0.0:8080 --worker-class socketio.sgunicorn.GeventSocketIOWorker app:app 
-    or
-    $ python app.py
-    ```
-
-  * Abrir el navegador en [http://127.0.0.1:8080/](http://127.0.0.1:8080/)
-
 
 
 ## Configurar script para actualizacón de modelo en cron. 
@@ -164,6 +151,7 @@ $ python analisis/schedule.py
 
 2. Correr los procesos. Esto levanta 5 procesos en paralelo de extracción de datos de Teracode
 
+
 ```sh
 $ supervisord -c supervisord.conf
 ```
@@ -173,6 +161,16 @@ Para parar todos los procesos procesos correr
 ```sh
 $ supervisorctl stop all
 ```
+
+* Instanciar Python Server
+
+  ```sh
+  $ gunicorn -b 0.0.0.0:8080 --worker-class socketio.sgunicorn.GeventSocketIOWorker app:app 
+  or
+  $ python app.py
+  ```
+
+* Abrir el navegador en [http://127.0.0.1:8080/](http://127.0.0.1:8080/)
 
 
 ## Documentación 
