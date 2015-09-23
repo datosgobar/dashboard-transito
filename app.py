@@ -57,7 +57,7 @@ session_opts = {
 app = SessionMiddleware(app, session_opts)
 
 # inicio condicional para evaluar si estoy en openshift
-    # caso contrario, entiendo que estoy en ambiente local
+# caso contrario, entiendo que estoy en ambiente local
 ip = config.server["ip"]
 port = config.server["port"]
 
@@ -191,7 +191,12 @@ def send_data():
 @error(404)
 @error(500)
 def handler_error(error):
-    return 'Nothing here, sorry'
+    redirect('/error')
+
+
+@bottle.route('/error')
+def views_error():
+    return bottle.template('error')
 
 
 @bottle.get('/socket.io/<path:path>')
