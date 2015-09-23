@@ -7,7 +7,7 @@ from email.mime.text import MIMEText
 import datetime
 import config
 
-def send_email_error():
+def send_email_error(error_msg):
 
     msg = MIMEMultipart('alternative')
     msg['Subject'] = "update error: dashboardoperativo {0}".format(datetime.datetime.now())
@@ -15,16 +15,7 @@ def send_email_error():
     msg['To'] = config.email["to"]
     
     text = "API Sensores Error\nAlerta api sensores esta fallando\n"
-    html2 = """\
-    <html>
-      <head></head>
-      <body>
-        <p>API Sensores Error<br>
-           <b>Alerta api sensores esta fallando</b>
-        </p>
-      </body>
-    </html>
-    """
+    html2 = '<html><head></head><body><p>API Sensores Error<br><b>Alerta api sensores esta fallando {0}</b></p></body></html>'.format(error_msg)
     part1 = MIMEText(text, 'plain')
     part2 = MIMEText(html2, "html")
     msg.attach(part1)
