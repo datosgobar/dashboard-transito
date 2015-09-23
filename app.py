@@ -12,7 +12,7 @@ import requests
 
 from analisis import *
 from analisis import config
-from bottle import error, request, redirect
+from bottle import error, request, redirect, response
 from socketio import socketio_manage
 from socketio.mixins import BroadcastMixin
 from socketio.namespace import BaseNamespace
@@ -57,7 +57,7 @@ session_opts = {
 app = SessionMiddleware(app, session_opts)
 
 # inicio condicional para evaluar si estoy en openshift
-    # caso contrario, entiendo que estoy en ambiente local
+# caso contrario, entiendo que estoy en ambiente local
 ip = config.server["ip"]
 port = config.server["port"]
 
@@ -191,7 +191,7 @@ def send_data():
 @error(404)
 @error(500)
 def handler_error(error):
-    return 'Nothing here, sorry'
+    return bottle.template('generic_error', error=response.status)
 
 
 @bottle.get('/socket.io/<path:path>')
