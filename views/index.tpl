@@ -8,7 +8,7 @@
 
 	<script type='text/javascript' src="http://maps.google.com/maps/api/js?sensor=false&.js&language=es"></script>
 	<script type="text/javascript" src="_static/js/socket.io.js"></script>
-	<script type="text/javascript" src="_static/js/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-2.1.3.min.js"></script>
 	<script type="text/javascript" src="_static/js/app.min.js"></script>
 	<script type="text/javascript" src="_static/js/settings-map.js"></script>
 
