@@ -18,5 +18,11 @@
         <button href="/" id="volver"> volver al inicio</button>
     </div>
 
+    <script>
+        $("#volver").click(function() {
+            window.location = "/";
+        });
+    </script>
+
 </body>
-</head>
+</html>
