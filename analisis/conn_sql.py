@@ -11,10 +11,14 @@ from sqlalchemy import create_engine, exc, event
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.engine import Engine
+from smtp_send import send_email_error
 
 import time
 import logging
 
+from dashboard_logging import dashboard_logging
+logger = dashboard_logging(config="logging.json", name=__name__)
+logger.info("inicio conexion a base de datos")
 
 def sqlalchemyDEBUG():
 
@@ -89,7 +93,9 @@ class instanceSQL(object):
             self.Base.prepare(self.__engine, reflect=True)
             self.__c = True
         except Exception, e:
-            print "OperationalError: not connect {0} , traceback:{1}".format(self.cfg.db_url, e)
+            msg_error = "OperationalError: not connect {0} , traceback:{1}".format(self.cfg.db_url, e)
+            logger.error("OperationalError: not connect {0} ".format(self.cfg.db_url), traceback=True)
+            send_email_error(msg_error)
 
     def __unique(self, unique_table=""):
         assert self.Base.classes.has_key(unique_table)

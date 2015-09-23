@@ -13,18 +13,10 @@
 <body>
 
     <div class="notFound">
-        <h1> La página que intenta ver no existe</h1>
+        <h1>La página que intenta ver no esta disponible</h1>
         <div class="error"> Error {{ error }} </div>
-        <button id="volver"> volver al inicio</button>
-    </div>        
-
-
-<script>
-
-$("#volver").click(function() {
-    window.location = "/";
-});
-</script>
+        <button href="/" id="volver"> volver al inicio</button>
+    </div>
 
 </body>
 </head>

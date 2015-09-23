@@ -19,7 +19,7 @@
 <body>
     <div id="indicador"></div>
     <div id="cards">
-
+        <img src="_static/css/img/beta.png" id="beta">
         <div id="sinAnomalia" class="oculta">No se registran anomalías en los trayectos principales de la ciudad</div>
         <div id="noResueltos"></div>
         <div id="resueltos"></div>
