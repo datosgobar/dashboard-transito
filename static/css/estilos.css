@@ -171,3 +171,10 @@ html, body {
 
 .estado3 {
   background-color: #e53935; }
+
+#beta {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  z-index: 999;
+  opacity: 0.8; }

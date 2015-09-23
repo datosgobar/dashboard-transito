@@ -58,9 +58,6 @@ body {
     background-color: $fondo-claro;
     font-size: 1em;
     color: $texto-normal;
-    @include breakpoint(xs) {
-        background-color: #ffffff;
-    }
 }
 
 #contenido {
