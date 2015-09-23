@@ -14,6 +14,7 @@ import argparse
 import anomalyDetection
 import time
 import logging
+from smtp_send import send_email_error
 
 from conn_sql import sqlalchemyDEBUG, instanceSQL
 from sqlalchemy.orm import Session, sessionmaker
@@ -38,24 +39,26 @@ detection_params_fn = os.path.dirname(
 
 
 def getData(url):
-    for i in xrange(3):
+    for i in xrange(4):
         try:
             response = requests.get(url)
             if (response.status_code == 200):
                 return response.json()
             else:
-                logger.error("hubo timeout del count:{0} request en {1} codigo:{2}".format(
-                    i, url, response.status_code))
+                error_msg = "hubo timeout del count:{0} request en {1} codigo:{2}".format(i, url, response.status_code)
+                logger.error(error_msg)
         except requests.exceptions.Timeout, e:
-            logger.error(
-                "hubo timeout del count:{0} request en {1}".format(i, url), traceback=True)
+            error_msg = "hubo timeout del count:{0} request en {1}".format(i, url)
+            logger.error(error_msg, traceback=True)
         except:
             return None
-
+        if i == 3:
+            send_email_error(error_msg)
+            time.sleep(3)
     return None
 
 
-def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=None, token="superadmin.", pool_len=48):
+def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=None, pool_len=48):
     """
         Funcion que arme para bajar datos de la api de teracode
         Ej:
@@ -67,7 +70,9 @@ def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=N
             sensor_ids, step, download_startdate, download_enddate, outfn="raw_api_01_11.json")
     """
     # vsensids = virtsens["id_sensor"].unique()
-    urltpl = "https://apisensores.buenosaires.gob.ar/api/data/%s?token=%s&fecha_desde=%s&fecha_hasta=%s"
+    token = config.api['token']
+    host = config.api['host']
+    urltpl = "https://{0}/api/data/%s?token=%s&fecha_desde=%s&fecha_hasta=%s".format(host)
 
     # end = dateutil.parser.parse(download_enddate)
     start = download_startdate
@@ -95,6 +100,7 @@ def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=N
         alldata = pool.map(getData, urls)
     except Exception, e:
         logger.error("pool multiprocessing, error:", traceback=True)
+        send_email_error("pool multiprocessing, error: {0}".format(e))
         alldata = []
     else:
         pool.close()
@@ -481,11 +487,11 @@ def normalize_anomalies(curanomaly):
             curanomaly["indicador_anomalia"])
     if curanomaly.has_key('nivel_anomalia'):
         new_curanomaly["nivel_anomalia"] = int(curanomaly["nivel_anomalia"])
-    if curanomaly.has_key('tipo_corte') :
-        if curanomaly.get("tipo_corte") == "None":
+    if curanomaly.has_key('tipo_corte'):
+        if curanomaly.get("tipo_corte") == None:
             new_curanomaly["tipo_corte"] = 0
         else:
-            new_curanomaly["tipo_corte"] = int(curanomaly.get("tipo_corte", 0))
+            new_curanomaly["tipo_corte"] = curanomaly.get("tipo_corte")
     if curanomaly.has_key("anomalia_id"):
         new_curanomaly["anomalia_id"] = int(curanomaly.get("anomalia_id"))
     if curanomaly.has_key('id'):
