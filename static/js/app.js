@@ -110,8 +110,18 @@ function agregaCard(data){
     }
 	
 	$(".card").fadeIn();
+
+    marquee();
 }
 
+
+function marquee(){
+    if ($(".corredor").length < 5){
+        $("#cards").removeClass("marquee");
+    }else{
+        $("#cards").addClass("marquee");
+    }
+}
 
 // recibo ID devuelvo nombre del corredor
 function nombreDeCorredor(id){
