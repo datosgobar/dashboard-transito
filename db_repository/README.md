@@ -31,3 +31,9 @@ $ python db_repository/__init__.py
 ```sh
 $ python db_repository/manage.py upgrade
 ```
+
+6. Bajar de versión, (reemplazar "Nro" por el numero de version ejem. 0)
+
+```sh
+$ python db_repository/manage.py downgrade "Nro"
+```
