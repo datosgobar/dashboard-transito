@@ -414,7 +414,8 @@ function actualizacionDesktop(data) {
     };
 
     //asigno estado a listado de corredores
-    $("#" + data.id).addClass("borde" + maximoEstado);
+    $("#" + data.id).removeClass();
+    $("#" + data.id).addClass("corredor shadow listado borde" + maximoEstado);
 
     //asigno el icono a los corredoresestado a listado de corredores
     var icon = $("#" + data.id + " .icono");

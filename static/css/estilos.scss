@@ -229,12 +229,12 @@ body {
     top: 0;
     position: relative;
     box-sizing: border-box;
-    animation: marquee 10s ease-in-out infinite;
+    animation: marquee 15s ease-in-out infinite;
 }
 
 @keyframes marquee {
     0%   { top: 0; opacity: 0 }
     10%   { top: 0;opacity: 1; }
-    90% { top: -200%; opacity: 1; }
-    100% { top: -200%; opacity: 0; }
+    90% { top: -100%; opacity: 1; }
+    100% { top: -100%; opacity: 0; }
 }
