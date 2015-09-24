@@ -140,8 +140,23 @@ serverurl=unix:///tmp/supervisor.sock ; use a unix:// URL  for a unix socket
 ;[include]
 ;files = relative/directory/*.ini
 
+
+[program:webapp]
+command=gunicorn -b 0.0.0.0:8080 --worker-class socketio.sgunicorn.GeventSocketIOWorker app:app
+numprocs=1
+umask=022
+priority=999
+autostart=true
+autorestart=true
+startsecs=10
+startretries=3
+exitcodes=0,2
+stopsignal=TERM
+stopwaitsecs=10
+user=lmokto
+
 [program:scheduletransito]
-command=python /tu_carpeta/analisis/schedule.py
+command=python /home/lmokto/Desktop/dashboard-operativo-transito/analisis/schedule.py
 numprocs=1
 directory=/tmp
 umask=022
@@ -153,13 +168,13 @@ startretries=3
 exitcodes=0,2
 stopsignal=TERM
 stopwaitsecs=10
-user=tu_user
+user=lmokto
 redirect_stderr=true
-stdout_logfile=/tu_carpeta_logs/scheduletransito_stdout.log
+stdout_logfile=/tmp/scheduletransito_stdout.log
 stdout_logfile_maxbytes=1MB
 stdout_logfile_backups=10
 stdout_capture_maxbytes=1MB
-stderr_logfile=/tu_carpeta_logs/scheduletransito_stderr.log
+stderr_logfile=/tmp/scheduletransito_stderr.log
 stderr_logfile_maxbytes=1MB
 stderr_logfile_backups=10
 stderr_capture_maxbytes=1MB
