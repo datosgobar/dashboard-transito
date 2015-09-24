@@ -38,17 +38,18 @@ html, body {
       background-color: #ffffff; } }
 
 #sinAnomalia {
-  line-height: 180px;
+  padding-top: 80px;
   font-size: 36px;
   font-family: "AvenirNext-Bold", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  width: 90%;
-  height: 200px;
-  padding: 10px;
+  width: 700px;
+  height: 300px;
   margin: 150px auto;
   color: #CFD1D1;
   border-radius: 10px;
   background-color: #1C2023;
   text-align: center; }
+  #sinAnomalia img {
+    padding-top: 50px; }
 
 .oculta {
   display: none; }
