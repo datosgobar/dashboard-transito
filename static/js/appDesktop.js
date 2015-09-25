@@ -86,11 +86,15 @@ function actualizoRegistro() {
 
 // muestro el mapa al 100% cuando hago clic en el logo de la ciudad
 $("#logo").click(function() {
+    cierroEdicion ()
+});
+
+function cierroEdicion (){
     $("#mapa").animate({
         height: "100%"
     }, 200);
-});
-
+    $(".corredor").removeClass("corredorActivo");
+}
 
 // complrime el mapa cuando abro un corredor
 $(".corredor").click(function() {
@@ -98,19 +102,17 @@ $(".corredor").click(function() {
     $("#oculta").css("display", "none");
     //panTo(nombresDeCorredores[idPanelClickeado].latlng);
     var corredor = $(this);
-    if ( $(this).hasClass("cargando") === false ){
+    if ( $(this).hasClass("cargando") === false && $(this).hasClass("corredorActivo")  === false ){
         $("#mapa").animate({
             height: "300px"
         }, 200);
+        abreDetalleCorredor(corredor);        
     }else{
-        $("#mapa").animate({
-            height: "100%"
-        }, 200);
-    };
-    if ( $(this).hasClass("cargando") === false ){
-        abreDetalleCorredor(corredor);
-    };
+        $(this).removeClass("corredorActivo");
+        cierroEdicion();
 
+    };
+    
 });
 
 // mapa a full height
@@ -289,7 +291,7 @@ function llenaPantallaActualizacion(corredor){
 
     // agrega el listener al panel del segmento que se acaba de agregar.
     $(".panel").click(function() {
-        var idPanelClickeado = this.id.replace("c","")
+        var idPanelClickeado = this.id.replace("c","");
         llenoPantallaEdicion(idPanelClickeado);
         $("#seleccioneTrayecto").css("display","none");
     });
@@ -414,7 +416,8 @@ function actualizacionDesktop(data) {
     };
 
     //asigno estado a listado de corredores
-    $("#" + data.id).addClass("borde" + maximoEstado);
+    $("#" + data.id).removeClass();
+    $("#" + data.id).addClass("corredor shadow listado borde" + maximoEstado);
 
     //asigno el icono a los corredoresestado a listado de corredores
     var icon = $("#" + data.id + " .icono");

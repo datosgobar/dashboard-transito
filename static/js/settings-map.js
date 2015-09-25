@@ -105,7 +105,13 @@ var settingsItemsMap = {
       { "visibility": "on" },
       { "lightness": -5 }
     ]
-  },{
+  },
+ { "featureType": "road.arterial", "elementType": "geometry.fill", "stylers": [ { "color": "#999999" } ] },
+ { "featureType": "road.arterial", "elementType": "labels.text.fill", "stylers": [ { "color": "#000000" } ] },
+ { "featureType": "road.local", "elementType": "geometry.fill", "stylers": [ { "visibility": "simplified" } ] },
+
+
+  {
     "featureType": "landscape",
     "stylers": [
       { "visibility": "on" },

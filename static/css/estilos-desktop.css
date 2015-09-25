@@ -296,6 +296,9 @@ html, body {
 .estado3 {
   background-color: #e53935; }
 
+.borde0 {
+  border-color: #282D33 !important; }
+
 .borde1 {
   border-color: #ff8f00 !important; }
 
