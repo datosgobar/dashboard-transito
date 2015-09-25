@@ -75,17 +75,17 @@ class setInterval:
         # [23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7]
         if self.H in self.dawn:
             self.setTimeOut = 60 * 59
-        if self.H in self.morning:  # [8, 9, 10]
+        elif self.H in self.morning:  # [8, 9, 10]
             if self.D in self.daily[0:5]:
                 self.setTimeOut = 5 * 60
             else:
                 self.setTimeOut = 20 * 60
-        if self.H in self.midday:  # [11, 12, 13, 14, 15, 16, 17]
+        elif self.H in self.midday:  # [11, 12, 13, 14, 15, 16, 17]
             if self.D in self.daily[0:5]:
                 self.setTimeOut = 10 * 60
             else:
                 self.setTimeOut = 20 * 60
-        if self.H in self.afternoon:  # [18, 19, 20]
+        elif self.H in self.afternoon:  # [18, 19, 20]
             # 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'
             if self.D in self.daily[0:5]:
                 self.setTimeOut = 5 * 60
@@ -93,7 +93,7 @@ class setInterval:
                 self.setTimeOut = 10 * 60
             else:
                 self.setTimeOut = 20 * 60  # Sunday
-        if self.H in self.night:  # [21, 22]
+        elif self.H in self.night:  # [21, 22]
             if self.D in self.daily[0:6]:
                 self.setTimeOut = 10 * 60
             else:
