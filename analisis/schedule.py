@@ -25,14 +25,14 @@ class setInterval:
     def __init__(self):
 
         self.setTimeOut = 0
-        self.dawn = [23, 00, 1, 2, 3, 4, 5, 6, 7]
+        self.dawn = [23, 00, 1, 2, 3, 4, 5, 6, 6]
         # 36 extraccion lun/vier, 9 extraciones sab/dom
-        self.morning = range(8, 11)
+        self.morning = range(7, 10)
         # 42 extraccion lun/vier, 21 extraciones sab/dom
-        self.midday = range(11, 18)
+        self.midday = range(10, 17)
         # 36 extraccion lun/vier, 18 extraciones sab, 9 extraciones dom
-        self.afternoon = range(18, 21)
-        self.night = range(21, 23)  # 12 extraccion lun/sab, 6 extraciones dom
+        self.afternoon = range(17, 20)
+        self.night = range(20, 23)  # 12 extraccion lun/sab, 6 extraciones dom
         self.daily = ['Monday', 'Tuesday', 'Wednesday',
                       'Thursday', 'Friday', 'Saturday', 'Sunday']
 
@@ -72,28 +72,28 @@ class setInterval:
         self.H = int(mytime.split(" ")[4].split(":")[0])
         self.M = int(mytime.split(" ")[4].split(":")[1])
 
-        # [23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7]
+        
         if self.H in self.dawn:
             self.setTimeOut = 60 * 59
-        elif self.H in self.morning:  # [8, 9, 10]
+        elif self.H in self.morning: 
             if self.D in self.daily[0:5]:
                 self.setTimeOut = 5 * 60
             else:
                 self.setTimeOut = 20 * 60
-        elif self.H in self.midday:  # [11, 12, 13, 14, 15, 16, 17]
+        elif self.H in self.midday: 
             if self.D in self.daily[0:5]:
                 self.setTimeOut = 10 * 60
             else:
                 self.setTimeOut = 20 * 60
-        elif self.H in self.afternoon:  # [18, 19, 20]
+        elif self.H in self.afternoon:  
             # 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'
             if self.D in self.daily[0:5]:
                 self.setTimeOut = 5 * 60
-            elif self.D == self.daily[5]:  # Saturday
+            elif self.D == self.daily[5]: 
                 self.setTimeOut = 10 * 60
             else:
                 self.setTimeOut = 20 * 60  # Sunday
-        elif self.H in self.night:  # [21, 22]
+        elif self.H in self.night: 
             if self.D in self.daily[0:6]:
                 self.setTimeOut = 10 * 60
             else:
