@@ -34,7 +34,7 @@ html, body {
   height: 100%;
   width: 100%;
   font-family: "AvenirNext-Regular", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  background-color: #282D33;
+  background-color: #1C2023;
   font-size: 1em;
   color: #AAAAAA; }
 
@@ -112,8 +112,12 @@ html, body {
 
 #cuadroOperador {
   width: 100%;
-  display: relative; }
+  height: 100%;
+  position: absolute;
+  background-color: rgba(39, 41, 46, 0.95);
+  pointer-events: none; }
   #cuadroOperador .filaPanel {
+    pointer-events: auto;
     font-size: 12px;
     padding: 4px 10px 4px 10px;
     line-height: 12px; }
@@ -123,6 +127,7 @@ html, body {
   #cuadroOperador .filaPanel:hover {
     background-color: #282D33 !important; }
   #cuadroOperador #corredores {
+    pointer-events: auto;
     background-color: #1C2023;
     float: left;
     height: 330px;
@@ -182,6 +187,7 @@ html, body {
         font-size: 8px;
         text-align: center; }
   #cuadroOperador #edicion {
+    pointer-events: auto;
     padding: 10px;
     margin: 10px;
     border-radius: 5px;
