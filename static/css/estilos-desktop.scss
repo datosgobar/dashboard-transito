@@ -55,7 +55,7 @@ body {
     height: 100%;
     width: 100%;
     font-family: $fontset-avenir-regular;
-    background-color: $fondo-claro;
+    background-color: $fondo-oscuro;
     font-size: 1em;
     color: $texto-normal;
 }
@@ -152,8 +152,12 @@ body {
 
 #cuadroOperador{
     width: 100%;
-    display: relative;
+    height: 100%;
+    position: absolute;
+    background-color: rgba(39, 41, 46, 0.95);
+    pointer-events: none;
     .filaPanel{
+        pointer-events: auto;
         font-size: 12px;
         padding: 4px 10px 4px 10px;
         line-height: 12px;
@@ -167,6 +171,7 @@ body {
     }
 
     #corredores {
+        pointer-events: auto;
         background-color: $fondo-oscuro;
         float: left;
         height: 330px;
@@ -245,6 +250,7 @@ body {
         }
     }
     #edicion {
+        pointer-events: auto;
         padding: 10px;
         margin: 10px;
         border-radius: 5px;

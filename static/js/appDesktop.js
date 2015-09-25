@@ -90,8 +90,8 @@ $("#logo").click(function() {
 });
 
 function cierroEdicion (){
-    $("#mapa").animate({
-        height: "100%"
+    $("#cuadroOperador").animate({
+        top: "100%"
     }, 200);
     $(".corredor").removeClass("corredorActivo");
 }
@@ -103,10 +103,10 @@ $(".corredor").click(function() {
     //panTo(nombresDeCorredores[idPanelClickeado].latlng);
     var corredor = $(this);
     if ( $(this).hasClass("cargando") === false && $(this).hasClass("corredorActivo")  === false ){
-        $("#mapa").animate({
-            height: "300px"
-        }, 200);
         abreDetalleCorredor(corredor);        
+        $("#cuadroOperador").animate({
+            top: "300px"
+        }, 200);
     }else{
         $(this).removeClass("corredorActivo");
         cierroEdicion();
