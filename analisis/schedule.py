@@ -9,23 +9,13 @@ import os
 from dashboard_logging import dashboard_logging
 logger = dashboard_logging(config="analisis/logging.json", name=__name__)
 
-if os.environ.get('OPENSHIFT_PYTHON_DIR'):
-    # en caso de estarlo, activo entorno virtual y agarro las variables de
-    # entorno para ip y puerto
-    zvirtenv = os.path.join(os.environ['OPENSHIFT_PYTHON_DIR'],
-                            'virtenv', 'bin', 'activate_this.py')
-    execfile(zvirtenv, dict(__file__=zvirtenv))
-    logger.info("activo virtenv openshift")
-else:
-    pass
-
 
 class setInterval:
 
     def __init__(self):
 
         self.setTimeOut = 0
-        self.dawn = [23, 00, 1, 2, 3, 4, 5, 6, 6]
+        self.dawn = [23, 00, 1, 2, 3, 4, 5, 6]
         # 36 extraccion lun/vier, 9 extraciones sab/dom
         self.morning = range(7, 10)
         # 42 extraccion lun/vier, 21 extraciones sab/dom
@@ -72,28 +62,27 @@ class setInterval:
         self.H = int(mytime.split(" ")[4].split(":")[0])
         self.M = int(mytime.split(" ")[4].split(":")[1])
 
-        
         if self.H in self.dawn:
             self.setTimeOut = 60 * 59
-        elif self.H in self.morning: 
+        elif self.H in self.morning:
             if self.D in self.daily[0:5]:
                 self.setTimeOut = 5 * 60
             else:
                 self.setTimeOut = 20 * 60
-        elif self.H in self.midday: 
+        elif self.H in self.midday:
             if self.D in self.daily[0:5]:
                 self.setTimeOut = 10 * 60
             else:
                 self.setTimeOut = 20 * 60
-        elif self.H in self.afternoon:  
+        elif self.H in self.afternoon:
             # 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'
             if self.D in self.daily[0:5]:
                 self.setTimeOut = 5 * 60
-            elif self.D == self.daily[5]: 
+            elif self.D == self.daily[5]:
                 self.setTimeOut = 10 * 60
             else:
                 self.setTimeOut = 20 * 60  # Sunday
-        elif self.H in self.night: 
+        elif self.H in self.night:
             if self.D in self.daily[0:6]:
                 self.setTimeOut = 10 * 60
             else:
