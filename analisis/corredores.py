@@ -61,29 +61,28 @@ def parserEmitData(self, template):
             evaluar si el segmentos corresponde a un corredor y si ese mismo es para prov o capi
     """
     corredores = {
-        '9_de_julio': [13, 17, 15, 19],
-        'cerrito': [16, 20],
-        'pellegrini': [14, 18],
-        'Illia': [12, 57, 11, 56],
-        'alcorta': [54, 55],
-        'alem': [21, 22],
-        'av_de_mayo': [25],
-        'cabildo': [40, 42, 45, 41, 43, 44],
-        'cordoba': [36, 37],
-        'corrientes': [23],
-        'independencia': [10],
-        'juan_b_justo': [31, 32, 35, 30, 33, 34],
-        'libertador': [49, 51, 53, 48, 50, 52],
-        'paseo_colon': [39],
-        'pueyrredon': [47, 46],
-        'rivadavia': [24],
-        'san_martin': [26, 28, 27, 29]
+        '9_de_julio': [13, 17, 15, 19], # ok
+        'cerrito': [16, 20], # ok
+        'pellegrini': [14, 18], # ok
+        'Illia': [12, 57, 11, 56], # ok
+        'alcorta': [54, 55], # ok dudoso, esto no es libertador?
+        'alem': [21, 22], # ok mal
+        'av_de_mayo': [25], # ok
+        'cabildo': [40, 42, 45, 41, 43, 44], # ok mal
+        'cordoba': [36, 37], # ok
+        'corrientes': [23], # ok
+        'independencia': [10], # ok
+        'juan_b_justo': [31, 32, 35, 30, 33, 34], # ok
+        'libertador': [49, 51, 53, 48, 50, 52], # ok
+        'paseo_colon': [39, 38], # ok
+        'pueyrredon': [47, 46], # ok
+        'rivadavia': [24], # ok
+        'san_martin': [26, 28, 27, 29] # ok
     }
 
     referencia = {
-        "centro": [10, 12, 57, 53, 51, 49, 40, 37, 36, 21, 31, 35, 13, 14, 18, 17, 23,
-                   24, 25, 26, 28, 32, 45, 47, 38, 42],
-        "provincia": [11, 56, 54, 55, 41, 22, 16, 15, 19, 20, 10, 27, 29, 34, 39, 46, 50, 52, 48, 30, 33, 43, 44]
+        "centro": [10, 12, 57, 53, 51, 49, 22, 15, 19, 40, 37, 36, 31, 35, 14, 18, 23, 24, 25, 26, 28, 32, 47, 38, 43, 44],
+        "provincia": [11, 56, 54, 55, 41, 16, 42, 21, 20, 10, 13, 27, 17, 29, 34, 39, 46, 50, 52, 48, 30, 33, 45]
     }
 
     update = readSnapshot()
