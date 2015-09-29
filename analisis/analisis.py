@@ -53,7 +53,7 @@ def getData(url):
         except:
             return None
         if i == 3:
-            send_email_error(error_msg)
+            #send_email_error(error_msg)
             time.sleep(3)
     return None
 
@@ -72,7 +72,7 @@ def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=N
     # vsensids = virtsens["id_sensor"].unique()
     token = config.api['token']
     host = config.api['host']
-    urltpl = "https://{0}/api/data/%s?token=%s&fecha_desde=%s&fecha_hasta=%s".format(host)
+    urltpl = "{0}/api/data/%s?token=%s&fecha_desde=%s&fecha_hasta=%s".format(host)
 
     # end = dateutil.parser.parse(download_enddate)
     start = download_startdate

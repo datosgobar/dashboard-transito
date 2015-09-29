@@ -7,9 +7,11 @@ if os.environ.get('OPENSHIFT_MYSQL_DIR'):
         host=os.environ.get('OPENSHIFT_MYSQL_DB_HOST'),
         db='dashboardoperativo'
     )
+    db_url = db['engine'] + "://" + db['user'] + ":" + \
+        db['password'] + "@" + db['host'] + "/" + db['db']
 else:
     api = dict(
-        host="apisensores.buenosaires.gob.ar",
+        host="https://apisensores.buenosaires.gob.ar",
         token="80176b952ffa5d0c8f5f5c916994d037"
     )
     email = dict(
