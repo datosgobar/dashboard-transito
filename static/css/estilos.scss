@@ -44,19 +44,23 @@ $screen-xs: 480px !default; // telefonos
 $screen-sm: 768px !default; //tablet
 $screen-md: 992px !default; //desktop
 $screen-xl: 1300px !default; //desktop
-html,
-body {
-    margin: 10px auto;
-    padding: 0;
+html, body {
+    margin: 0px;
+    padding: 0px;
     width: 100%;
-    background-color: $fondo-landing;
+    height: 100%;
     @include breakpoint(xs) {
         background-color: #ffffff;
     }
 }
 
+body{
+    background: $fondo-landing url("img/login.jpg") no-repeat center center;
+    background-size: cover;
+    
+}
 #sinAnomalia{
-    padding-top: 80px;
+    padding-top: 60px;
     font-size: 36px;
     font-family: $fontset-avenir-bold;
     width: 700px;

@@ -29,16 +29,20 @@
   src: url("fonts/AvenirNextLTPro-Demi.eot?#iefix") format("embedded-opentype"), url("fonts/AvenirNextLTPro-Demi.woff2") format("woff2"), url("fonts/AvenirNextLTPro-Demi.woff") format("woff"), url("fonts/AvenirNextLTPro-Demi.ttf") format("truetype"), url("fonts/AvenirNextLTPro-Demi.svg#AvenirNext-Demi") format("svg"); }
 
 html, body {
-  margin: 10px auto;
-  padding: 0;
+  margin: 0px;
+  padding: 0px;
   width: 100%;
-  background-color: #282D33; }
+  height: 100%; }
   @media (max-width: 767px) {
     html, body {
       background-color: #ffffff; } }
 
+body {
+  background: #282D33 url("img/login.jpg") no-repeat center center;
+  background-size: cover; }
+
 #sinAnomalia {
-  padding-top: 80px;
+  padding-top: 60px;
   font-size: 36px;
   font-family: "AvenirNext-Bold", "Helvetica Neue", Helvetica, Arial, sans-serif;
   width: 700px;
