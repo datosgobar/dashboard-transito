@@ -146,11 +146,11 @@ body{
 }
 
 .flechaCap {
-    background-image: url("img/capital.svg");
+    background-image: url("img/capital.png");
 }
 
 .flechaPro {
-    background-image: url("img/provincia.svg");
+    background-image: url("img/provincia.png");
 }
 
 .segmento {
@@ -193,15 +193,18 @@ body{
 }
 
 .visto {
-    background-image: url("img/visto.svg");
+    background-image: url("img/visto.png");
+    background-size: cover;
 }
 
 .enProceso {
-    background-image: url("img/enproceso.svg");
+    background-image: url("img/enproceso.png");
+    background-size: cover;
 }
 
 .noVisto {
-    background-image: url("img/novisto.svg");
+    background-image: url("img/novisto.png");
+    background-size: cover;
 }
 
 .estado0 {
