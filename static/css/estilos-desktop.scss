@@ -113,13 +113,16 @@ body {
             float: right;
         }
         .iconoGris {
-            background: url("img/vistoGris.svg") no-repeat center center;
+            background: url("img/vistoGris.png") no-repeat center center;
+            background-size: cover;
         }
         .iconoAzul {
-            background: url("img/enproceso.svg") no-repeat center center;
+            background: url("img/enproceso.png") no-repeat center center;
+            background-size: cover;
         }
         .iconoRojo {
-            background: url("img/novisto.svg") no-repeat center center;
+            background: url("img/novisto.png") no-repeat center center;
+            background-size: cover;
         }
         button{
 
@@ -188,10 +191,13 @@ body {
             width: 26px;
         }
         .provincia{
-            background-image: url("img/provincia.svg");            
+            background-image: url("img/provincia.png");            
+            background-size: cover;
+
         }
         .capital{
-            background-image: url("img/capital.svg");
+            background-image: url("img/capital.png");
+            background-size: cover;
         }
 
 
@@ -260,7 +266,9 @@ body {
         width: 215px;
     }
     .tuerca{
-        background: url("img/editar.svg") no-repeat right center;
+        background: url("img/editar.png") no-repeat right center;
+        background-size: cover;
+
         width: 20px;
         height: 20px;
         float: right;

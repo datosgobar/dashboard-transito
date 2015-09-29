@@ -83,11 +83,14 @@ html, body {
       width: 20px;
       float: right; }
     #paneles #leftPanel .iconoGris {
-      background: url("img/vistoGris.svg") no-repeat center center; }
+      background: url("img/vistoGris.png") no-repeat center center;
+      background-size: cover; }
     #paneles #leftPanel .iconoAzul {
-      background: url("img/enproceso.svg") no-repeat center center; }
+      background: url("img/enproceso.png") no-repeat center center;
+      background-size: cover; }
     #paneles #leftPanel .iconoRojo {
-      background: url("img/novisto.svg") no-repeat center center; }
+      background: url("img/novisto.png") no-repeat center center;
+      background-size: cover; }
     #paneles #leftPanel button {
       border: 0 none;
       border-radius: 15px;
@@ -142,9 +145,11 @@ html, body {
       margin-right: 60px;
       width: 26px; }
     #cuadroOperador #corredores .provincia {
-      background-image: url("img/provincia.svg"); }
+      background-image: url("img/provincia.png");
+      background-size: cover; }
     #cuadroOperador #corredores .capital {
-      background-image: url("img/capital.svg"); }
+      background-image: url("img/capital.png");
+      background-size: cover; }
     #cuadroOperador #corredores #aviso {
       text-align: center;
       font-family: "AvenirNext-Regular", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -196,7 +201,8 @@ html, body {
     height: 330px;
     width: 215px; }
   #cuadroOperador .tuerca {
-    background: url("img/editar.svg") no-repeat right center;
+    background: url("img/editar.png") no-repeat right center;
+    background-size: cover;
     width: 20px;
     height: 20px;
     float: right; }
