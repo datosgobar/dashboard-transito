@@ -311,7 +311,7 @@ function llenoPantallaEdicion(idSegmento){
 
     $("#trayecto_frm").html(nombresDeCorredores[idSegmento].nombreSegmento);
     $("#sentido_frm").html(nombresDeCorredores[idSegmento].sentido);
-    $("#anomalia_frm").html(anomaliasDescripcion[nombresDeCorredores[idSegmento].causa_id]);
+    $("#anomalia_frm").html(anomaliasDescripcion[nombresDeCorredores[idSegmento].anomalia]);
     $("#tiempo_frm").html(nombresDeCorredores[idSegmento].tiempo + "'");
     $("#demora_frm").html( demora );
     $("#mensajeStatus_frm").html("");
@@ -322,7 +322,7 @@ function llenoPantallaEdicion(idSegmento){
     if ( nombresDeCorredores[idSegmento].anomalia_id != 0 ) {
         // oculto cartel de edicion..
         $("#oculta").css("display", "none");
-        $("#anomaly_frm").attr("value", nombresDeCorredores[idSegmento].anomalia_id);
+        $("#anomaly_frm").attr("value", nombresDeCorredores[idSegmento].anomalia);
         $("#corte_frm").val(nombresDeCorredores[idSegmento].tipo_corte);
         $("#causa_frm").val(nombresDeCorredores[idSegmento].causa_id);
         $("#descripcion_frm").val(nombresDeCorredores[idSegmento].comentario_causa);
@@ -386,8 +386,8 @@ function actualizacionDesktop(data) {
                 if (data.segmentos_provincia[p].causa_id == 0){
                     todasAnomaliasChequeadas = true;    
                 }
-                
             }
+
 
             if (maximoEstado < data.segmentos_provincia[p].anomalia){
                 maximoEstado = data.segmentos_provincia[p].anomalia;
