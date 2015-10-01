@@ -14,7 +14,7 @@
     },
     "11": {
         "corredor": "Illia",
-        "nombreSegmento": "General Paz - Sarmiento",
+        "nombreSegmento": "Sarmiento - General Paz",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -27,7 +27,7 @@
     },
     "56": {
         "corredor": "Illia",
-        "nombreSegmento": "Sarmiento - 9 de julio",
+        "nombreSegmento": "9 de julio - Sarmiento",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -66,7 +66,7 @@
     },
     "13": {
         "corredor": "9 de julio",
-        "nombreSegmento": "San Juan - Corrientes",
+        "nombreSegmento": "Arroyo - Corrientes",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -79,7 +79,7 @@
     },
     "17": {
         "corredor": "9 de julio",
-        "nombreSegmento": "Corrientes - San Juan",
+        "nombreSegmento": "San Juan - Corrientes",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -92,7 +92,7 @@
     },
     "15": {
         "corredor": "9 de julio",
-        "nombreSegmento": "Arroyo - Corrientes",
+        "nombreSegmento": "Corrientes - Arroyo",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -105,7 +105,7 @@
     },
     "19": {
         "corredor": "9 de julio",
-        "nombreSegmento": "Corrientes - Arroyo",
+        "nombreSegmento": "Corrientes - San Juan",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -131,7 +131,7 @@
     },
     "18": {
         "corredor": "Pellegrini",
-        "nombreSegmento": "Corrientes - San Juan",
+        "nombreSegmento": "San Juan - Corrientes",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -144,7 +144,7 @@
     },
     "16": {
         "corredor": "Cerrito",
-        "nombreSegmento": "Arroyo - Corrientes",
+        "nombreSegmento": "Corrientes - Arroyo",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -182,7 +182,7 @@
     },
     "22": {
         "corredor": "Alem",
-        "nombreSegmento": "Rojas - Casa Rosada",
+        "nombreSegmento": "Casa Rosada - Rojas",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -221,7 +221,7 @@
     },
     "25": {
         "corredor": "Av. de mayo",
-        "nombreSegmento": "Plaza de mayo - Montevideo",
+        "nombreSegmento": "Montevideo- Plaza de Mayo",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -260,7 +260,7 @@
     },
     "27": {
         "corredor": "San Martín",
-        "nombreSegmento": "General Paz - Beiró",
+        "nombreSegmento": "Beiró - General Paz",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -273,7 +273,7 @@
     },
     "29": {
         "corredor": "San Martín",
-        "nombreSegmento": "Beiró - Juan B. Justo",
+        "nombreSegmento": "Juan B. Justo - Beiró",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -286,7 +286,7 @@
     },
     "31": {
         "corredor": "Juan B. Justo",
-        "nombreSegmento": "Santa Fé - Corrientes",
+        "nombreSegmento": "Corrientes - Santa Fé",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -299,7 +299,7 @@
     },
     "32": {
         "corredor": "Juan B. Justo",
-        "nombreSegmento": "Corrientes - Nazca",
+        "nombreSegmento": "Nazca - Corrientes",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -312,7 +312,7 @@
     },
     "35": {
         "corredor": "Juan B. Justo",
-        "nombreSegmento": "Nazca - General Paz",
+        "nombreSegmento": "General Paz - Nazca",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -403,7 +403,7 @@
     },
     "39": {
         "corredor": "Paseo Colón",
-        "nombreSegmento": "San Juan - Casa Rosada",
+        "nombreSegmento": "Casa Rosada - San Juan",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -416,7 +416,7 @@
     },
     "41": {
         "corredor": "Cabildo",
-        "nombreSegmento": "General Paz - Congreso",
+        "nombreSegmento": "Congreso - General Paz",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -468,7 +468,7 @@
     },
     "42": {
         "corredor": "Cabildo",
-        "nombreSegmento": "Congreso - Lacroze",
+        "nombreSegmento": "Lacroze - Congreso",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -481,7 +481,7 @@
     },
     "45": {
         "corredor": "Cabildo",
-        "nombreSegmento": "Lacroze - Juan B. Justo",
+        "nombreSegmento": "Juan B. Justo - Lacroze",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -507,7 +507,7 @@
     },
     "47": {
         "corredor": "Pueyrredón",
-        "nombreSegmento": "Mitre - Córdoba",
+        "nombreSegmento": "Córdoba - Mitre",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -520,7 +520,7 @@
     },
     "49": {
         "corredor": "Libertador",
-        "nombreSegmento": "Cerrito - Sarmiento",
+        "nombreSegmento": "Sarmiento - Cerrito",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -533,7 +533,7 @@
     },
     "51": {
         "corredor": "Libertador",
-        "nombreSegmento": "Sarmiento - La Pampa",
+        "nombreSegmento": "La Pampa - Sarmiento",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -546,7 +546,7 @@
     },
     "53": {
         "corredor": "Libertador",
-        "nombreSegmento": "La Pampa - General Paz",
+        "nombreSegmento": "General Paz - La Pampa",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
