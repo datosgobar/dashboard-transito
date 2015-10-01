@@ -29,16 +29,20 @@
   src: url("fonts/AvenirNextLTPro-Demi.eot?#iefix") format("embedded-opentype"), url("fonts/AvenirNextLTPro-Demi.woff2") format("woff2"), url("fonts/AvenirNextLTPro-Demi.woff") format("woff"), url("fonts/AvenirNextLTPro-Demi.ttf") format("truetype"), url("fonts/AvenirNextLTPro-Demi.svg#AvenirNext-Demi") format("svg"); }
 
 html, body {
-  margin: 10px auto;
-  padding: 0;
+  margin: 0px;
+  padding: 0px;
   width: 100%;
-  background-color: #282D33; }
+  height: 100%; }
   @media (max-width: 767px) {
     html, body {
       background-color: #ffffff; } }
 
+body {
+  background: #282D33 url("img/login.jpg") no-repeat center center;
+  background-size: cover; }
+
 #sinAnomalia {
-  padding-top: 80px;
+  padding-top: 60px;
   font-size: 36px;
   font-family: "AvenirNext-Bold", "Helvetica Neue", Helvetica, Arial, sans-serif;
   width: 700px;
@@ -115,10 +119,10 @@ html, body {
   right: -50px; }
 
 .flechaCap {
-  background-image: url("img/capital.svg"); }
+  background-image: url("img/capital.png"); }
 
 .flechaPro {
-  background-image: url("img/provincia.svg"); }
+  background-image: url("img/provincia.png"); }
 
 .segmento {
   display: table-cell;
@@ -153,13 +157,16 @@ html, body {
   margin-bottom: 20px; }
 
 .visto {
-  background-image: url("img/visto.svg"); }
+  background-image: url("img/visto.png");
+  background-size: cover; }
 
 .enProceso {
-  background-image: url("img/enproceso.svg"); }
+  background-image: url("img/enproceso.png");
+  background-size: cover; }
 
 .noVisto {
-  background-image: url("img/novisto.svg"); }
+  background-image: url("img/novisto.png");
+  background-size: cover; }
 
 .estado0 {
   background-color: #3C434D; }
