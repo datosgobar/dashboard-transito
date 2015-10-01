@@ -34,4 +34,4 @@ def send_email_error(error_msg):
     s.quit()
 
 if __name__ == '__main__':
-    send_email_error()
+    send_email_error("error")

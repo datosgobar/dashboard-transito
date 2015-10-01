@@ -7,6 +7,22 @@ Este dashboard muestra las anomalías de diferentes corredores prioritarios de l
 La vista principal estará siempre visible en un videowall.
 El dashboard también se accede desde las computadoras de los operarios para visualizar en detalle la anomalía, comparar los datos con la vista de tráfico de Google Maps y asignarles una causa. Esta data se recolectará para ser usada en un análisis posterior.
 
+
+La aplicacion se divide en dos partes.
+
+Analisis - ( deteccion de anomalias )
+
+Dispone de una interaccion directa con el servicio cloud Api Sensores https://apisensores.buenosaires.gob.ar, extrae los datos cada un intervalo determinado segun el rango horario y el dia, esto genera un analisis que determina la cantidad de anomalias.
+
+Los errores que pueden generar la falla de conexion entre el servicio apisensores o la perdida conexion con la base de datos, se hacen ademas de logs  mediante el envio de email via smtp.buenosaires.gob.ar puerto (25).
+
+Los datos de configuracion estan en analisis/config.py.sample (api + email)
+
+WebApp - ( Dashboard )
+
+Tiene un login, con captcha que necesita tener interaccion con google https://www.google.com/recaptcha/api
+
+
 ## Instalacion bajo Linux
 
 Tener instalado MySQL 5.1
@@ -15,14 +31,7 @@ Tener instalado MySQL 5.1
 $ apt-get install mysql-server
 ```
 
-Instalar Dependencias, en openshift correr
-
-```sh
-$ source app-root/runtime/dependencies/python/virtenv/bin/activate
-$ sudo python setup install
-```
-
-O instalamos las dependecias a mano de la siguiente manera:
+Instalamos las dependecias a mano de la siguiente manera:
 
 ```sh
 $ sudo pip install bottle==0.10.1
@@ -48,31 +57,17 @@ brew install mysql-server
 mysql.server start
 ```
 
-### Dependencias
-Instalar las dependencias mencionadas en el archivo setup.py con pip
-
-
 ## Instalacion bajo Windows
+
 Bajar e instalar [Visual C++ for Python 2.7](http://download.microsoft.com/download/7/9/6/796EF2E4-801B-4FC4-AB28-B59FBF6D907B/VCForPython27.msi) y [MySQL for Python](https://github.com/farcepest/MySQLdb1)
 
 ```sh
-easy_install bottle
-easy_install bottle-cork
-easy_install gevent
-easy_install gevent-socketio
-easy_install requests
-easy_install MySQL-python
-easy_install sqlalchemy
-easy_install bottle-cork
-$ easy_install supervisor
-easy_install pandas
-easy_install dateutil
-easy_install sqlalchemy-migrate
+Utilizar easy_install en la instalacion dependencias 
 ```
 
 ## Corriendo la app 
 
-* Actualizar datos de conexion a base de datos en (un modelo se puede encontrar en analisis/config.py.sample)
+* Actualizar datos de conexion a base de datos en (una muestra se puede encontrar en analisis/config.py.sample)
 
 
 * Asegurarse que MySQL está corriendo
@@ -85,10 +80,6 @@ easy_install sqlalchemy-migrate
 
   * Creación de las tablas
     Ir a /db_repository y leer README correspondiente
-  * Generación de data de causas
-```sh
-$ python analisis/analisis.py --download_lastmonth
-```
   * Generación de data fake (no es necesario en produccion)
 ```sh
 $ python analisis/getDataFake.py
@@ -96,28 +87,24 @@ $ python analisis/getDataFake.py
 
   * Configuración del modelo. 
 
-    Para esto hay dos alternativas:
+    Para esto hay dos alternativas, utilizar la segunda si la primera falla:
 
-    1. Copiar un modelo existente creando un archivo detection_params.json en el directorio ./analisis
-    Un modelo se puede encontrar en /analisis/detection_params.json.sample
-
-    2. Crear un nuevo modelo
+    1. Crear un nuevo modelo
 
         Cargar datos:
 
-            Una forma es bajando datos de Teracode
+            Bajar los datos de Teracode
 
             $ python analisis.py --download_last_month
 
-            Otra forma forma podría ser cargar un dump de la base, pero no está implementado todavía.
-
-            $ python analisis.py --load_historico historico.json
-
         Generar Modelo:
 
-            ```sh
             $ python analisis.py --generate_detection_params
-            ```
+
+    2. Copiar un modelo existente creando un archivo detection_params.json en el directorio ./analisis
+    Un modelo se puede encontrar en /analisis/detection_params.json.sample
+
+
 
 
 ## Configurar script para actualizacón de modelo en cron. 
@@ -129,46 +116,78 @@ sudo crontab -e
 0 0 * * * /usr/bin/python2.7 /tu_home/tu_user/dashboard-operativo-transito/analisis/dailyUpdate.py
 ```
 
-## Ejectuar Schedule 
+## Ejectuar Schedule e Instanciar Applicacion Web
 
-Estos procesos son los encargados para extracción y carga de datos de Teracode de acuerdo a la frecuencia establecida.
-La función que se llama periódicamente es executeLoop()
+Estos procesos son los encargados para extracción y carga de datos de Api Sensores de acuerdo a la frecuencia establecida.
+La función que se llama periódicamente es executeLoop() ejecutada por schedule.py
 
-### A mano:
+### A mano en localhost:
 
+* Ejecutar Schedule
 ```sh
 $ python analisis/schedule.py
+```
+
+* Instanciar Python Server en Local
+```sh
+$ gunicorn -b 0.0.0.0:8080 --worker-class socketio.sgunicorn.GeventSocketIOWorker app:app 
+or
+$ python app.py
 ```
 
 ### Como Demonio:
 
 
-1. configurar Variables de configuracion en archivo supervisord.conf (al final del archivo)
-  * command
-  * stdout_logfile
-  * stderr_logfile
-  * user
+1. Configurar Variables de configuracion en archivo supervisord.conf, 
+  en scheduletransito los path y el user (whoami), en webapp solo el user.
 
-2. Correr los procesos. Esto levanta 5 procesos en paralelo de extracción de datos de Teracode
+  [program:scheduletransito]
+
+    * command
+    * stdout_logfile
+    * stderr_logfile
+    * user
+
+  [program:webapp]
+
+    * user
+
+2. Ejecutar supervisor para instanciar los procesos en daemon. 
 
 
 ```sh
 $ supervisord -c supervisord.conf
 ```
 
-Para parar todos los procesos procesos correr
+Verificar que estan daemonizados.
+
+```sh
+Output esperado a modo ejemplo
+supervisorctl -i
+scheduletransito RUNNING pid 6734, uptime 0:00:40
+webapp RUNNING pid 6733, uptime 0:00:40
+supervisor> 
+```
+
+Para monitorear, y reiniciar los procesos
+
+
+```sh
+$ cd dashboard-operativo-transito/
+$ supervisorctl -i
+status scheduletransito
+status webapp
+restart scheduletransito
+restart webapp
+supervisor> help
+```
+
+Para parar todos los procesos correr
 
 ```sh
 $ supervisorctl stop all
 ```
 
-* Instanciar Python Server
-
-  ```sh
-  $ gunicorn -b 0.0.0.0:8080 --worker-class socketio.sgunicorn.GeventSocketIOWorker app:app 
-  or
-  $ python app.py
-  ```
 
 * Abrir el navegador en [http://127.0.0.1:8080/](http://127.0.0.1:8080/)
 
