@@ -10,7 +10,7 @@ El dashboard también se accede desde las computadoras de los operarios para vis
 
 La aplicacion se divide en dos partes.
 
-Analisis - ( deteccion de anomalias )
+#### Analisis - ( deteccion de anomalias )
 
 Dispone de una interaccion directa con el servicio cloud Api Sensores https://apisensores.buenosaires.gob.ar, extrae los datos cada un intervalo determinado segun el rango horario y el dia, esto genera un analisis que determina la cantidad de anomalias.
 
@@ -18,7 +18,7 @@ Los errores que pueden generar la falla de conexion entre el servicio apisensore
 
 Los datos de configuracion estan en analisis/config.py.sample (api + email)
 
-WebApp - ( Dashboard )
+#### WebApp - ( Dashboard )
 
 Tiene un login, con captcha que necesita tener interaccion con google https://www.google.com/recaptcha/api/siteverify
 
@@ -141,16 +141,14 @@ $ python app.py
 1. Configurar Variables de configuracion en archivo supervisord.conf, 
   en scheduletransito los path y el user (whoami), en webapp solo el user.
 
-  [program:scheduletransito]
+    [program:scheduletransito]
+      * command
+      * stdout_logfile
+      * stderr_logfile
+      * user
 
-    * command
-    * stdout_logfile
-    * stderr_logfile
-    * user
-
-  [program:webapp]
-
-    * user
+    [program:webapp]
+      * user
 
 2. Ejecutar supervisor para instanciar los procesos en daemon. 
 
