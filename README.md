@@ -20,7 +20,7 @@ Los datos de configuracion estan en analisis/config.py.sample (api + email)
 
 WebApp - ( Dashboard )
 
-Tiene un login, con captcha que necesita tener interaccion con google https://www.google.com/recaptcha/api
+Tiene un login, con captcha que necesita tener interaccion con google https://www.google.com/recaptcha/api/siteverify
 
 
 ## Instalacion bajo Linux
