@@ -10,7 +10,7 @@ El dashboard también se accede desde las computadoras de los operarios para vis
 
 La aplicacion se divide en dos partes.
 
-#### Analisis - ( deteccion de anomalias )
+### Analisis - ( deteccion de anomalias )
 
 Dispone de una interaccion directa con el servicio cloud Api Sensores https://apisensores.buenosaires.gob.ar, extrae los datos cada un intervalo determinado segun el rango horario y el dia, esto genera un analisis que determina la cantidad de anomalias.
 
@@ -18,7 +18,7 @@ Los errores que pueden generar la falla de conexion entre el servicio apisensore
 
 Los datos de configuracion estan en analisis/config.py.sample (api + email)
 
-#### WebApp - ( Dashboard )
+### WebApp - ( Dashboard )
 
 Tiene un login, con captcha que necesita tener interaccion con google https://www.google.com/recaptcha/api/siteverify
 
