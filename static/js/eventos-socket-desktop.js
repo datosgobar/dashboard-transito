@@ -28,12 +28,15 @@ socket.on('Illia', function(data) {
 	actualizacionDesktop(data);
 });
 socket.on('9_de_julio', function(data) {
+	console.log("9_de_julio --->", data)
 	actualizacionDesktop(data);
 });
 socket.on('cerrito', function(data) {
+	console.log("cerrito -->", data)
 	actualizacionDesktop(data);
 });
 socket.on('pellegrini', function(data) {
+	console.log("pellegrini -->", data)
 	actualizacionDesktop(data);
 });
 socket.on('alem', function(data) {
@@ -52,6 +55,7 @@ socket.on('san_martin', function(data) {
 	actualizacionDesktop(data);
 });
 socket.on('juan_b_justo', function(data) {
+	console.log("juan_b_justo -->", data)
 	actualizacionDesktop(data);
 });
 socket.on('cordoba', function(data) {
@@ -70,6 +74,7 @@ socket.on('alcorta', function(data) {
 	actualizacionDesktop(data);
 });
 socket.on('libertador', function(data) {
+	console.log("libertador -->", data)
 	actualizacionDesktop(data);
 });
 

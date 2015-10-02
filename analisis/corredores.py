@@ -54,6 +54,13 @@ def buildSegmentos(segment):
     }
 
 
+def ordenar(template):
+    for corredor in ("juan_b_justo", "libertador", "cerrito", "9_de_julio", "pellegrini"):
+        template['corredores'][corredor]['segmentos_capital'].reverse()
+        template['corredores'][corredor]['segmentos_provincia'].reverse()
+    return template
+
+
 def parserEmitData(self, template):
     """
             buildCorredores(
@@ -61,23 +68,23 @@ def parserEmitData(self, template):
             evaluar si el segmentos corresponde a un corredor y si ese mismo es para prov o capi
     """
     corredores = {
-        '9_de_julio': [13, 17, 15, 19], # ok
-        'cerrito': [16, 20], # ok
-        'pellegrini': [14, 18], # ok
-        'Illia': [12, 57, 11, 56], # ok
-        'alcorta': [54, 55], # ok dudoso, esto no es libertador?
-        'alem': [21, 22], # ok mal
-        'av_de_mayo': [25], # ok
-        'cabildo': [40, 42, 45, 41, 43, 44], # ok mal
-        'cordoba': [36, 37], # ok
-        'corrientes': [23], # ok
-        'independencia': [10], # ok
-        'juan_b_justo': [31, 32, 35, 30, 33, 34], # ok
-        'libertador': [49, 51, 53, 48, 50, 52], # ok
-        'paseo_colon': [39, 38], # ok
-        'pueyrredon': [47, 46], # ok
-        'rivadavia': [24], # ok
-        'san_martin': [26, 28, 27, 29] # ok
+        '9_de_julio': [13, 17, 15, 19],  # ok
+        'cerrito': [16, 20],  # ok
+        'pellegrini': [14, 18],  # ok
+        'Illia': [12, 57, 11, 56],  # ok
+        'alcorta': [54, 55],  # ok
+        'alem': [21, 22],  # ok mal
+        'av_de_mayo': [25],  # ok
+        'cabildo': [40, 42, 45, 41, 43, 44],  # ok mal
+        'cordoba': [36, 37],  # ok
+        'corrientes': [23],  # ok
+        'independencia': [10],  # ok
+        'juan_b_justo': [31, 32, 35, 30, 33, 34],  # ok
+        'libertador': [49, 51, 53, 48, 50, 52],  # ok
+        'paseo_colon': [39, 38],  # ok
+        'pueyrredon': [47, 46],  # ok
+        'rivadavia': [24],  # ok
+        'san_martin': [26, 28, 27, 29]  # ok
     }
 
     referencia = {
@@ -92,25 +99,27 @@ def parserEmitData(self, template):
             for corredor, segmentosids in corredores.iteritems():
                 if update[i][0] in segmentosids:
                     if update[i][0] in referencia['centro']:
-                        # logger.info("{0} {1} {2}".format(update[i][0], c,
-                        # 'centro'))
+                        #logger.info("{0} {1} {2}".format(update[i][0], c,'centro'))
                         template['corredores'][corredor][
                             'segmentos_capital'].append(buildSegmentos(update[i]))
                     else:
-                        # logger.info("{0} {1} {2}".format(update[i][0], c,
-                        # 'prov'))
+                        #logger.info("{0} {1} {2}".format(update[i][0], c, 'prov'))
                         template['corredores'][corredor][
                             'segmentos_provincia'].append(buildSegmentos(update[i]))
                 else:
                     continue
 
+        for corredor in ("juan_b_justo", "libertador", "cerrito", "9_de_julio", "pellegrini"):
+            template['corredores'][corredor]['segmentos_capital'].reverse()
+            template['corredores'][corredor]['segmentos_provincia'].reverse()
+
         for channell in corredores.keys():
-            # logger.info("channel {0} template {1}".format(channell,
-            # template['corredores'][channell]))
-            self.emit(channell, template['corredores'][channell])
+            #logger.info("channel {0} template {1}".format(channell, template['corredores'][channell]))
             logger.info("updateo channel {0}".format(channell))
+            self.emit(channell, template['corredores'][channell])
             # time.sleep(0.5)update[0][1]
-            ultima_actualizacion = (datetime.datetime.now() - dateutil.parser.parse(str(update[0][1]))).seconds/60
+        ultima_actualizacion = (
+            datetime.datetime.now() - dateutil.parser.parse(str(update[0][1]))).seconds / 60
         self.emit("ultima_actualizacion", ultima_actualizacion)
     else:
         logger.info("sin datos en tabla")
