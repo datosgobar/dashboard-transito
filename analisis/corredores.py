@@ -118,8 +118,7 @@ def parserEmitData(self, template):
             logger.info("updateo channel {0}".format(channell))
             self.emit(channell, template['corredores'][channell])
             # time.sleep(0.5)update[0][1]
-        ultima_actualizacion = (
-            datetime.datetime.now() - dateutil.parser.parse(str(update[0][1]))).seconds / 60
+            ultima_actualizacion = (datetime.datetime.now() - dateutil.parser.parse(str(update[0][1]))).seconds / 60
         self.emit("ultima_actualizacion", ultima_actualizacion)
     else:
         logger.info("sin datos en tabla")
