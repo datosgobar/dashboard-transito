@@ -41,8 +41,8 @@
 
          <div class="panelMenu centrado centro">
             <a href="/anomalies"><div class="buttonMenu" id="boton-videowall">Videowall</div></a>
-            <a href="/desktop"><div class="buttonMenu">Operador</div></a>
-            <a href=""><div class="buttonMenu">Histórico</div></a>
+            <a href="/desktop"><div class="buttonMenu" id="boton-operador">Operador</div></a>
+            <a href=""><div class="buttonMenu" id="boton-planificacion" >Histórico</div></a>
         </div>
 
         <div class="bottom">
