@@ -189,10 +189,10 @@ function llenaPantallaActualizacion(corredor){
     $("#corredores .etiquetasProvincia").append('<div class="nombreCorredor der">' + nombresDeCorredores[cor[cor.length-1]].nombreSegmento.split(" - ")[1] + '</div>');
 
     if (cappro[1] === 0 ){
-        $("#avisoProvincia").append('<div id="aviso">El trayecto no tiene dirección hacia Provincia</div>');        
+        $("#avisoProvincia").append('<div id="aviso">El trayecto no tiene sentido Provincia</div>');        
     }
     if (cappro[0] === 0 ){
-        $("#avisoCapital").append('<div id="aviso">El trayecto no tiene dirección hacia Capital</div>');
+        $("#avisoCapital").append('<div id="aviso">El trayecto no tiene sentido Capital</div>');
     }
 
     //armo segmentos
@@ -361,7 +361,7 @@ function actualizacionDesktop(data) {
                 maximoEstado = data.segmentos_capital[i].anomalia;
             }
 
-            nombresDeCorredores[data.segmentos_capital[i].id].sentido = "capital";
+            nombresDeCorredores[data.segmentos_capital[i].id].sentido = "Capital";
             nombresDeCorredores[data.segmentos_capital[i].id].anomalia = data.segmentos_capital[i].anomalia;
             nombresDeCorredores[data.segmentos_capital[i].id].anomalia_id = data.segmentos_capital[i].anomalia_id;
             nombresDeCorredores[data.segmentos_capital[i].id].tipo_corte = data.segmentos_capital[i].tipo_corte;
@@ -393,7 +393,7 @@ function actualizacionDesktop(data) {
                 maximoEstado = data.segmentos_provincia[p].anomalia;
             }
 
-            nombresDeCorredores[data.segmentos_provincia[p].id].sentido = "provincia";
+            nombresDeCorredores[data.segmentos_provincia[p].id].sentido = "Provincia";
             nombresDeCorredores[data.segmentos_provincia[p].id].anomalia = data.segmentos_provincia[p].anomalia;
             nombresDeCorredores[data.segmentos_provincia[p].id].anomalia_id = data.segmentos_provincia[p].anomalia_id;
             nombresDeCorredores[data.segmentos_provincia[p].id].tipo_corte = data.segmentos_provincia[p].tipo_corte;
