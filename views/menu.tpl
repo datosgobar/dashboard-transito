@@ -4,70 +4,51 @@
     <title>Dashboard de Tránsito</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <script type="text/javascript" src="_static/js/jquery-2.1.3.min.js"></script>
-	<link rel="icon" href="favicon.ico"/>
-    <style>
+    <link rel="stylesheet" href="_static/css/estilos-menu.min.css" />
 
-        @font-face {
-          font-family: 'Gotham';
-          font-style: normal;
-          font-weight: normal;
-          src:  url("_static/css/fonts/gotham.eot?#iefix") format("embedded-opentype"),
-                url("_static/css/fonts/gotham.woff2") format("woff2"),
-                url("_static/css/fonts/gotham.woff") format("woff"),
-                url("_static/css/fonts/gotham.ttf") format("truetype"),
-                url("_static/css/fonts/gotham.svg#Gotham") format("svg");
-        }
-        html, body {
-            background: #282D33 url("_static/css/img/login.jpg") no-repeat center center;
-            font-family: "Gotham", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	<link rel="icon" href="favicon.ico"/> 
 
-        }
+    <script type="text/javascript">
 
-        .centro .panelMenu {
-            padding: 0;
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            margin: auto;
-            width: 100%;
-            height: 150px;
-            z-index: 999
-        }
+        $( document ).ready(function() {
 
-        .centrado {
-            text-align: center
-        }
+            $("#salir").click(function() {
+                window.location = "/logout";
+            });
 
-        .buttonMenu{
-            width: 150px;
-            height: 150px;
-            border-radius: 75px;
-            background-color: white;
-            display: inline-block;
-            line-height: 340px;
-            font-size: 1em;
-            color: white;
-            text-transform: uppercase;
-        }
-        a, a:hover{
-            margin-left: 20px;
-            margin-right: 20px;
-            color: black;
-            text-decoration: none;
-        }
-    </style>    
+            //Vuelvo al home cuando clickeo el logo
+            $("#logo").click(function() {
+                window.location = "/";
+            });
+        });
+
+    </script>
 
 </head>
 
 <body>
+    <div id="contenido">
+        <div id="header">
+            <div id="logo"></div>
+            <div id="status"><button id="salir">salir</div></div>
+            
+    </div>
+
     <div class="centro">
-        <div class="panelMenu centrado">
-            <a href=""><div class="buttonMenu">icono 1</div></a>
-            <a href=""><div class="buttonMenu">icono 2</div></a>
-            <a href=""><div class="buttonMenu">icono 3</div></a>
+        <div class="top">
+            
         </div>
+
+         <div class="panelMenu centrado centro">
+            <a href="/anomalies"><div class="buttonMenu" id="boton-videowall">Videowall</div></a>
+            <a href="/desktop"><div class="buttonMenu">Operador</div></a>
+            <a href=""><div class="buttonMenu">Histórico</div></a>
+        </div>
+
+        <div class="bottom">
+            
+        </div>
+       
     </div>
 </body>
 </html>
