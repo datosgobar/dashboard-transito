@@ -37,6 +37,7 @@ html, body {
     background: #16191C url("img/login.jpg") no-repeat center center;
     font-family: "Gotham", "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #AAAAAA; 
+    margin: 0;
 }
 
 #contenido #header {
@@ -44,7 +45,7 @@ html, body {
   width: 100%;
   height: 70px;
   background-color: #1C2023;
-  z-index: 999; }
+   }
   #contenido #header #logo {
     float: left;
     background: url("img/logo-ba-invertido.png") no-repeat left center;
@@ -70,7 +71,6 @@ html, body {
     margin: auto;
     width: 100%;
     height: 150px;
-    z-index: 999
 }
 
 .top {
@@ -80,6 +80,22 @@ html, body {
     font-family: Gotham,"Helvetica Neue",Helvetica,Arial,sans-serif;
     text-shadow: 0 0 1px #000;
     font-weight: lighter;
+    position: absolute;
+    width: 100%;
+
+    #nombre-proyecto {
+      padding: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      width: 600px;
+      height: 0px;
+      background: 0 0;
+      z-index: 10;
+      bottom: 400px;
+    }
 }
 
 .bottom {
@@ -88,7 +104,6 @@ html, body {
     width: 100%;
     height: 50%;
     bottom: 0;
-    z-index: 10;
 }
 
 .centrado {
@@ -106,7 +121,7 @@ html, body {
     width: 700px;
     height: 145px;
     background: 0 0;
-    z-index: 999;
+    z-index: 1;
 }
 
 .buttonMenu{
@@ -130,7 +145,11 @@ html, body {
 }
 
 #boton-planificacion {
+    opacity: 0.5;
+    background-color: #000;
+    filter: alpha(opacity=50);
     background: #16191C url("img/boton-historico.png") no-repeat center center;
+    cursor: default;
 }
 
 a, a:hover{
