@@ -53,7 +53,7 @@ def getData(url):
         except:
             return None
         if i == 3:
-            #send_email_error(error_msg)
+            send_email_error(error_msg)
             time.sleep(3)
     return None
 
