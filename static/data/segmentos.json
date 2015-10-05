@@ -118,7 +118,7 @@
     },
     "14": {
         "corredor": "Pellegrini",
-        "nombreSegmento": "Corrientes - Arroyo",
+        "nombreSegmento": "Arroyo - Corrientes",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -220,7 +220,7 @@
 
     },
     "25": {
-        "corredor": "Av. de mayo",
+        "corredor": "Av. de Mayo",
         "nombreSegmento": "Montevideo- Plaza de Mayo",
         "sentido": "",
         "anomalia": "",
