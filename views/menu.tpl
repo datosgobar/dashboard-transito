@@ -30,19 +30,25 @@
     <div id="contenido">
         <div id="header">
             <div id="logo"></div>
-            <div id="status"><button id="salir">salir</div></div>
-            
+            <div id="status">
+                <button id="salir">salir</button>
+            </div>
+        </div>    
     </div>
 
     <div class="centro">
         <div class="top">
-            
+            <div id="nombre-proyecto" class="centrado">
+                <h1>
+                    Monitoreo de Tránsito
+                </h1>
+            </div>
         </div>
 
          <div class="panelMenu centrado centro">
-            <a href="/anomalies"><div class="buttonMenu" id="boton-videowall">Videowall</div></a>
-            <a href="/desktop"><div class="buttonMenu" id="boton-operador">Operador</div></a>
-            <a href=""><div class="buttonMenu" id="boton-planificacion" >Histórico</div></a>
+            <a href="/anomalies"><div class="buttonMenu" id="boton-videowall">Monitoreo</div></a>
+            <a href="/desktop"><div class="buttonMenu" id="boton-operador">Operación</div></a>
+            <a href=""><div class="buttonMenu" id="boton-planificacion" >Seguimiento</div></a>
         </div>
 
         <div class="bottom">
