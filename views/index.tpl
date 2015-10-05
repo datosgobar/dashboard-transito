@@ -15,7 +15,7 @@
     <div id="cards">
         <img src="_static/css/img/beta.png" id="beta">
         <div id="sinAnomalia" class="oculta">
-            Analizando posibles anomalías<br>
+            En este momento no se registran anomalías<br>
             <img src="_static/css/img/loader.gif">
         </div>
         <div id="noResueltos">
