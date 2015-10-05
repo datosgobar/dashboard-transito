@@ -84,9 +84,9 @@ function actualizoRegistro() {
     });
 }
 
-// muestro el mapa al 100% cuando hago clic en el logo de la ciudad
+//Vuelvo al home cuando clickeo el logo
 $("#logo").click(function() {
-    cierroEdicion ()
+    window.location = "/";
 });
 
 function cierroEdicion (){

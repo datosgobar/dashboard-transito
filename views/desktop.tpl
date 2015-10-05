@@ -42,7 +42,6 @@
                 <div id="cRiva" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
                 <div id="cSanm" class="corredor shadow listado cargando"><span class="titulo">...</span><div class="icono"></div></div>
 
-                <button id="verAnomalias">ver anomalías</button>
             </div>
 
             <div id="rightPanel">
