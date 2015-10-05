@@ -16,6 +16,31 @@ db_url = config.db_url
 engine = create_engine(db_url)
 logger = dashboard_logging(config="logging.json", name=__name__)
 
+referencia_corredores = {
+    '9_de_julio': [13, 17, 15, 19],  # ok
+    'cerrito': [16, 20],  # ok
+    'pellegrini': [14, 18],  # ok
+    'Illia': [12, 57, 11, 56],  # ok
+    'alcorta': [54, 55],  # ok
+    'alem': [21, 22],  # ok mal
+    'av_de_mayo': [25],  # ok
+    'cabildo': [40, 42, 45, 41, 43, 44],  # ok mal
+    'cordoba': [36, 37],  # ok
+    'corrientes': [23],  # ok
+    'independencia': [10],  # ok
+    'juan_b_justo': [31, 32, 35, 30, 33, 34],  # ok
+    'libertador': [49, 51, 53, 48, 50, 52],  # ok
+    'paseo_colon': [39, 38],  # ok
+    'pueyrredon': [47, 46],  # ok
+    'rivadavia': [24],  # ok
+    'san_martin': [26, 28, 27, 29]  # ok
+}
+
+referencia_sentidos = {
+    "centro": [10, 12, 57, 53, 51, 49, 22, 15, 40, 37, 36, 31, 17, 35, 14, 18, 23, 24, 25, 26, 28, 32, 47, 38, 43, 44],
+    "provincia": [11, 56, 54, 55, 41, 16, 42, 21, 19, 20, 10, 13, 27, 29, 34, 39, 46, 50, 52, 48, 30, 33, 45]
+}
+
 
 def readSnapshot():
     """
@@ -60,30 +85,9 @@ def parserEmitData(self, template):
                 corredores=corredores, template=template, update=result)
             evaluar si el segmentos corresponde a un corredor y si ese mismo es para prov o capi
     """
-    corredores = {
-        '9_de_julio': [13, 17, 15, 19],  # ok
-        'cerrito': [16, 20],  # ok
-        'pellegrini': [14, 18],  # ok
-        'Illia': [12, 57, 11, 56],  # ok
-        'alcorta': [54, 55],  # ok
-        'alem': [21, 22],  # ok mal
-        'av_de_mayo': [25],  # ok
-        'cabildo': [40, 42, 45, 41, 43, 44],  # ok mal
-        'cordoba': [36, 37],  # ok
-        'corrientes': [23],  # ok
-        'independencia': [10],  # ok
-        'juan_b_justo': [31, 32, 35, 30, 33, 34],  # ok
-        'libertador': [49, 51, 53, 48, 50, 52],  # ok
-        'paseo_colon': [39, 38],  # ok
-        'pueyrredon': [47, 46],  # ok
-        'rivadavia': [24],  # ok
-        'san_martin': [26, 28, 27, 29]  # ok
-    }
+    corredores = referencia_corredores
 
-    referencia = {
-        "centro": [10, 12, 57, 53, 51, 49, 22, 15, 40, 37, 36, 31, 17, 35, 14, 18, 23, 24, 25, 26, 28, 32, 47, 38, 43, 44],
-        "provincia": [11, 56, 54, 55, 41, 16, 42, 21, 19, 20, 10, 13, 27, 29, 34, 39, 46, 50, 52, 48, 30, 33, 45]
-    }
+    referencia = referencia_sentidos
 
     update = readSnapshot()
 
