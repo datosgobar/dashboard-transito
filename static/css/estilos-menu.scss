@@ -95,6 +95,10 @@ html, body {
       background: 0 0;
       z-index: 10;
       bottom: 400px;
+      font-family: AvenirNext-Regular,"Helvetica Neue",Helvetica,Arial,sans-serif;
+      line-height: 45px;
+      font-size: 24px;
+      color: #AAAAAA;
     }
 }
 
@@ -145,11 +149,9 @@ html, body {
 }
 
 #boton-planificacion {
-    opacity: 0.5;
-    background-color: #000;
-    filter: alpha(opacity=50);
-    background: #16191C url("img/boton-historico.png") no-repeat center center;
+    background: #16191C url("img/boton-historico-deshabilitado.png") no-repeat center center;
     cursor: default;
+    color: #3C434D;
 }
 
 a, a:hover{
