@@ -117,7 +117,7 @@
 
     },
     "14": {
-        "corredor": "Pellegrini",
+        "corredor": "Cerrito",
         "nombreSegmento": "Arroyo - Corrientes",
         "sentido": "",
         "anomalia": "",
@@ -143,7 +143,7 @@
 
     },
     "16": {
-        "corredor": "Cerrito",
+        "corredor": "Pellegrini",
         "nombreSegmento": "Corrientes - Arroyo",
         "sentido": "",
         "anomalia": "",
@@ -154,6 +154,7 @@
         "descripcion":""
 
     },
+
     "20": {
         "corredor": "Cerrito",
         "nombreSegmento": "Corrientes - San Juan",
