@@ -162,13 +162,8 @@ function llenaPantallaActualizacion(corredor){
     $("#panelesProvincia").html("");
     $("#panelesCapital").html("");
 
-    //pregunto si hay segmentos de provincia
-    if ( typeof(corredores[corredor].provincia) != "undefined"){
-        cantidad = corredores[corredor].provincia.length;
-        cor = corredores[corredor].provincia;
-        corPro = corredores[corredor].provincia;
-        cappro[1] = 1;
-    }
+    var htmlEtiquetasCapital = "";
+    var htmlEtiquetasProvincia = "";
 
     //pregunto si hay segmentos de capital
     if ( typeof(corredores[corredor].capital) != "undefined"){
@@ -176,22 +171,48 @@ function llenaPantallaActualizacion(corredor){
         cor = corredores[corredor].capital;
         corCap = corredores[corredor].capital;
         cappro[0] = 1;
+
+        // armo etiquetas capital
+        for (var i = 0 ; i < cor.length ; i++){
+            var alineado = "cen";
+            if (i === 0){alineado = "izq";}
+            htmlEtiquetasCapital += ('<div class="nombreCorredor ' + alineado + '">' + nombresDeCorredores[cor[i]].nombreSegmento.split(" - ")[0] + '</div>' );
+        }
+        htmlEtiquetasCapital += ('<div class="nombreCorredor der">' + nombresDeCorredores[cor[cor.length-1]].nombreSegmento.split(" - ")[1] + '</div>');
+
     }
 
-    // armo etiquetas
-    for (var i = 0 ; i < cor.length ; i++){
-        var alineado = "cen";
-        if (i === 0){alineado = "izq";}
-        $("#corredores .etiquetasCapital").append('<div class="nombreCorredor ' + alineado + '">' + nombresDeCorredores[cor[i]].nombreSegmento.split(" - ")[0] + '</div>' );
-        $("#corredores .etiquetasProvincia").append('<div class="nombreCorredor ' + alineado + '">' + nombresDeCorredores[cor[i]].nombreSegmento.split(" - ")[0] + '</div>' );
-    }
-    $("#corredores .etiquetasCapital").append('<div class="nombreCorredor der">' + nombresDeCorredores[cor[cor.length-1]].nombreSegmento.split(" - ")[1] + '</div>');
-    $("#corredores .etiquetasProvincia").append('<div class="nombreCorredor der">' + nombresDeCorredores[cor[cor.length-1]].nombreSegmento.split(" - ")[1] + '</div>');
+    $("#corredores .etiquetasCapital").append(htmlEtiquetasCapital);
+    
+    //pregunto si hay segmentos de provincia
+    if ( typeof(corredores[corredor].provincia) != "undefined"){
+        cantidad = corredores[corredor].provincia.length;
+        cor = corredores[corredor].provincia;
+        corPro = corredores[corredor].provincia;
+        cappro[1] = 1;
+    
 
+        // armo etiquetas provincia
+        for (var i = 0 ; i < cor.length ; i++){
+            var alineado = "cen";
+            if (i === 0){alineado = "izq";}
+            htmlEtiquetasProvincia += ('<div class="nombreCorredor ' + alineado + '">' + nombresDeCorredores[cor[i]].nombreSegmento.split(" - ")[1] + '</div>' );
+        }
+        htmlEtiquetasProvincia += ('<div class="nombreCorredor der">' + nombresDeCorredores[cor[cor.length-1]].nombreSegmento.split(" - ")[0] + '</div>');
+
+    }
+
+    $("#corredores .etiquetasProvincia").append(htmlEtiquetasProvincia);
+
+
+    // Si no hay alguno de los dos sentidos, copio las labels y pongo el aviso
     if (cappro[1] === 0 ){
+        $("#corredores .etiquetasProvincia").append(htmlEtiquetasCapital);
         $("#avisoProvincia").append('<div id="aviso">El trayecto no tiene sentido Provincia</div>');        
     }
+
     if (cappro[0] === 0 ){
+        $("#corredores .etiquetasCapital").append(htmlEtiquetasProvincia);
         $("#avisoCapital").append('<div id="aviso">El trayecto no tiene sentido Capital</div>');
     }
 
