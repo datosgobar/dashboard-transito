@@ -35,7 +35,6 @@ html, body {
   margin: 0; }
 
 #contenido #header {
-  position: absolute;
   width: 100%;
   height: 70px;
   background-color: #1C2023; }
@@ -154,7 +153,8 @@ a, a:hover {
   font-family: "AvenirNext-Demi", "Helvetica Neue", Helvetica, Arial, sans-serif;
   padding: 5px 10px 5px 10px;
   margin-left: 20px;
-  text-transform: uppercase; }
+  text-transform: uppercase;
+  z-index: 100; }
 
 #salir:hover {
   background-color: #282D33; }
