@@ -84,9 +84,9 @@ function actualizoRegistro() {
     });
 }
 
-// muestro el mapa al 100% cuando hago clic en el logo de la ciudad
+//Vuelvo al home cuando clickeo el logo
 $("#logo").click(function() {
-    cierroEdicion ()
+    window.location = "/";
 });
 
 function cierroEdicion (){
@@ -162,13 +162,8 @@ function llenaPantallaActualizacion(corredor){
     $("#panelesProvincia").html("");
     $("#panelesCapital").html("");
 
-    //pregunto si hay segmentos de provincia
-    if ( typeof(corredores[corredor].provincia) != "undefined"){
-        cantidad = corredores[corredor].provincia.length;
-        cor = corredores[corredor].provincia;
-        corPro = corredores[corredor].provincia;
-        cappro[1] = 1;
-    }
+    var htmlEtiquetasCapital = "";
+    var htmlEtiquetasProvincia = "";
 
     //pregunto si hay segmentos de capital
     if ( typeof(corredores[corredor].capital) != "undefined"){
@@ -176,23 +171,49 @@ function llenaPantallaActualizacion(corredor){
         cor = corredores[corredor].capital;
         corCap = corredores[corredor].capital;
         cappro[0] = 1;
+
+        // armo etiquetas capital
+        for (var i = 0 ; i < cor.length ; i++){
+            var alineado = "cen";
+            if (i === 0){alineado = "izq";}
+            htmlEtiquetasCapital += ('<div class="nombreCorredor ' + alineado + '">' + nombresDeCorredores[cor[i]].nombreSegmento.split(" - ")[0] + '</div>' );
+        }
+        htmlEtiquetasCapital += ('<div class="nombreCorredor der">' + nombresDeCorredores[cor[cor.length-1]].nombreSegmento.split(" - ")[1] + '</div>');
+
     }
 
-    // armo etiquetas
-    for (var i = 0 ; i < cor.length ; i++){
-        var alineado = "cen";
-        if (i === 0){alineado = "izq";}
-        $("#corredores .etiquetasCapital").append('<div class="nombreCorredor ' + alineado + '">' + nombresDeCorredores[cor[i]].nombreSegmento.split(" - ")[0] + '</div>' );
-        $("#corredores .etiquetasProvincia").append('<div class="nombreCorredor ' + alineado + '">' + nombresDeCorredores[cor[i]].nombreSegmento.split(" - ")[0] + '</div>' );
-    }
-    $("#corredores .etiquetasCapital").append('<div class="nombreCorredor der">' + nombresDeCorredores[cor[cor.length-1]].nombreSegmento.split(" - ")[1] + '</div>');
-    $("#corredores .etiquetasProvincia").append('<div class="nombreCorredor der">' + nombresDeCorredores[cor[cor.length-1]].nombreSegmento.split(" - ")[1] + '</div>');
+    $("#corredores .etiquetasCapital").append(htmlEtiquetasCapital);
+    
+    //pregunto si hay segmentos de provincia
+    if ( typeof(corredores[corredor].provincia) != "undefined"){
+        cantidad = corredores[corredor].provincia.length;
+        cor = corredores[corredor].provincia;
+        corPro = corredores[corredor].provincia;
+        cappro[1] = 1;
+    
 
+        // armo etiquetas provincia
+        for (var i = 0 ; i < cor.length ; i++){
+            var alineado = "cen";
+            if (i === 0){alineado = "izq";}
+            htmlEtiquetasProvincia += ('<div class="nombreCorredor ' + alineado + '">' + nombresDeCorredores[cor[i]].nombreSegmento.split(" - ")[1] + '</div>' );
+        }
+        htmlEtiquetasProvincia += ('<div class="nombreCorredor der">' + nombresDeCorredores[cor[cor.length-1]].nombreSegmento.split(" - ")[0] + '</div>');
+
+    }
+
+    $("#corredores .etiquetasProvincia").append(htmlEtiquetasProvincia);
+
+
+    // Si no hay alguno de los dos sentidos, copio las labels y pongo el aviso
     if (cappro[1] === 0 ){
-        $("#avisoProvincia").append('<div id="aviso">El trayecto no tiene dirección hacia Provincia</div>');        
+        $("#corredores .etiquetasProvincia").append(htmlEtiquetasCapital);
+        $("#avisoProvincia").append('<div id="aviso">El trayecto no tiene sentido Provincia</div>');        
     }
+
     if (cappro[0] === 0 ){
-        $("#avisoCapital").append('<div id="aviso">El trayecto no tiene dirección hacia Capital</div>');
+        $("#corredores .etiquetasCapital").append(htmlEtiquetasProvincia);
+        $("#avisoCapital").append('<div id="aviso">El trayecto no tiene sentido Capital</div>');
     }
 
     //armo segmentos
@@ -321,8 +342,9 @@ function llenoPantallaEdicion(idSegmento){
 
     if ( nombresDeCorredores[idSegmento].anomalia_id != 0 ) {
         // oculto cartel de edicion..
+        // console.log(nombresDeCorredores[idSegmento])
         $("#oculta").css("display", "none");
-        $("#anomaly_frm").attr("value", nombresDeCorredores[idSegmento].anomalia);
+        $("#anomaly_frm").attr("value", nombresDeCorredores[idSegmento].anomalia_id);
         $("#corte_frm").val(nombresDeCorredores[idSegmento].tipo_corte);
         $("#causa_frm").val(nombresDeCorredores[idSegmento].causa_id);
         $("#descripcion_frm").val(nombresDeCorredores[idSegmento].comentario_causa);
@@ -361,7 +383,7 @@ function actualizacionDesktop(data) {
                 maximoEstado = data.segmentos_capital[i].anomalia;
             }
 
-            nombresDeCorredores[data.segmentos_capital[i].id].sentido = "capital";
+            nombresDeCorredores[data.segmentos_capital[i].id].sentido = "Capital";
             nombresDeCorredores[data.segmentos_capital[i].id].anomalia = data.segmentos_capital[i].anomalia;
             nombresDeCorredores[data.segmentos_capital[i].id].anomalia_id = data.segmentos_capital[i].anomalia_id;
             nombresDeCorredores[data.segmentos_capital[i].id].tipo_corte = data.segmentos_capital[i].tipo_corte;
@@ -393,7 +415,7 @@ function actualizacionDesktop(data) {
                 maximoEstado = data.segmentos_provincia[p].anomalia;
             }
 
-            nombresDeCorredores[data.segmentos_provincia[p].id].sentido = "provincia";
+            nombresDeCorredores[data.segmentos_provincia[p].id].sentido = "Provincia";
             nombresDeCorredores[data.segmentos_provincia[p].id].anomalia = data.segmentos_provincia[p].anomalia;
             nombresDeCorredores[data.segmentos_provincia[p].id].anomalia_id = data.segmentos_provincia[p].anomalia_id;
             nombresDeCorredores[data.segmentos_provincia[p].id].tipo_corte = data.segmentos_provincia[p].tipo_corte;

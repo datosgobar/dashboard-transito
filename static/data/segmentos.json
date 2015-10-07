@@ -117,8 +117,8 @@
 
     },
     "14": {
-        "corredor": "Pellegrini",
-        "nombreSegmento": "Corrientes - Arroyo",
+        "corredor": "Cerrito",
+        "nombreSegmento": "Arroyo - Corrientes",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -143,7 +143,7 @@
 
     },
     "16": {
-        "corredor": "Cerrito",
+        "corredor": "Pellegrini",
         "nombreSegmento": "Corrientes - Arroyo",
         "sentido": "",
         "anomalia": "",
@@ -154,6 +154,7 @@
         "descripcion":""
 
     },
+
     "20": {
         "corredor": "Cerrito",
         "nombreSegmento": "Corrientes - San Juan",
@@ -220,8 +221,8 @@
 
     },
     "25": {
-        "corredor": "Av. de mayo",
-        "nombreSegmento": "Montevideo- Plaza de Mayo",
+        "corredor": "Av. de Mayo",
+        "nombreSegmento": "Montevideo - Plaza de Mayo",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",

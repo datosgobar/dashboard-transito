@@ -82,20 +82,3 @@ plt.title('Cantidad de anomalias en las ultimas 4 semanas')
 plt.savefig("/home/lmokto/Desktop/dashboard-operativo-transito/static/planificacion/test.png")
 #plt.show()
 #############
-
-"""
-
-    1) Cantidad anomalias por semana x sentido (prov, centro) y (desde hoy a los ultimos 7 dias pasados) y tiempo promedio (de esa semana)  
-            (comparalo 4 semanas) ??
-
-    2) Media duracion anomalia por corredor por sentido
-        (agrupar todas las anomalias por corredor y generar el promedio de duracion)
-
-
-    3) Duracion de cada anomalia
-        agrupar todas las anomalias por niveles y cual es la duracion ?? es algo mas complejo, solicitar a pablo
-
-
-    4) 
-
-"""

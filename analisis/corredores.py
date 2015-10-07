@@ -18,8 +18,8 @@ logger = dashboard_logging(config="logging.json", name=__name__)
 
 referencia_corredores = {
     '9_de_julio': [13, 17, 15, 19],  # ok
-    'cerrito': [16, 20],  # ok
-    'pellegrini': [14, 18],  # ok
+    'cerrito': [14, 20],  # ok
+    'pellegrini': [16, 18],  # ok
     'Illia': [12, 57, 11, 56],  # ok
     'alcorta': [54, 55],  # ok
     'alem': [21, 22],  # ok mal
@@ -37,8 +37,8 @@ referencia_corredores = {
 }
 
 referencia_sentidos = {
-    "centro": [10, 12, 57, 53, 51, 49, 22, 15, 40, 37, 36, 31, 17, 35, 14, 18, 23, 24, 25, 26, 28, 32, 47, 38, 43, 44],
-    "provincia": [11, 56, 54, 55, 41, 16, 42, 21, 19, 20, 10, 13, 27, 29, 34, 39, 46, 50, 52, 48, 30, 33, 45]
+    "centro": [10, 12, 57, 53, 51, 49, 22, 15, 40, 37, 36, 31, 17, 35, 16, 18, 23, 24, 25, 26, 28, 32, 47, 38, 43, 44],
+    "provincia": [11, 56, 54, 55, 41, 14, 42, 21, 19, 20, 10, 13, 27, 29, 34, 39, 46, 50, 52, 48, 30, 33, 45]
 }
 
 
@@ -85,8 +85,8 @@ def parserEmitData(self, template):
                 corredores=corredores, template=template, update=result)
             evaluar si el segmentos corresponde a un corredor y si ese mismo es para prov o capi
     """
-    corredores = referencia_corredores
 
+    corredores = referencia_corredores
     referencia = referencia_sentidos
 
     update = readSnapshot()
@@ -106,7 +106,7 @@ def parserEmitData(self, template):
                 else:
                     continue
 
-        for corredor in ("juan_b_justo", "libertador", "cerrito", "9_de_julio", "pellegrini"):
+        for corredor in ("juan_b_justo", "libertador", "cerrito", "9_de_julio", "pellegrini", "alcorta"):
             template['corredores'][corredor]['segmentos_capital'].reverse()
             template['corredores'][corredor]['segmentos_provincia'].reverse()
 

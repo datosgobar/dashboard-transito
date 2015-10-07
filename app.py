@@ -144,10 +144,16 @@ def views_index():
     return bottle.template('planificacion')
 
 
+@bottle.route('/desktop')
+def menu():
+    bottle_auth.require(fail_redirect='/login')
+    return bottle.template('desktop')
+
+
 @bottle.route('/')
 def root():
     bottle_auth.require(fail_redirect='/login')
-    return bottle.template('desktop')
+    return bottle.template('menu')
 
 
 @bottle.route('/_public/<filepath:path>')
@@ -171,6 +177,7 @@ def send_data():
         comentario = request.forms.get("comentario", "")
         tipo_corte = request.forms.get("tipo_corte", 0)
         if anomaly_id and causa_id:
+            logger.info("anomaly_id {}".format(anomaly_id))
             queryAnomaly = session.query(Anomaly).filter_by(id=anomaly_id)
             if queryAnomaly.count():
                 queryAnomaly.update({
