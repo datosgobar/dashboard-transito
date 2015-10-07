@@ -102,7 +102,7 @@ def parserEmitData(self, template):
                 else:
                     continue
 
-        for corredor in ("juan_b_justo", "libertador", "cerrito", "9_de_julio", "pellegrini"):
+        for corredor in ("juan_b_justo", "libertador", "cerrito", "9_de_julio", "pellegrini", "alcorta"):
             template['corredores'][corredor]['segmentos_capital'].reverse()
             template['corredores'][corredor]['segmentos_provincia'].reverse()
 
