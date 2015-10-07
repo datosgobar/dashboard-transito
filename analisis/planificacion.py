@@ -26,12 +26,6 @@ import misc_helpers
 conn_sql = instanceSQL(cfg=config)
 conn_sql.createDBEngine()
 
-Causa = conn_sql.instanceTable(unique_table='causa')
-Anomaly = conn_sql.instanceTable(unique_table='anomaly')
-Historical = conn_sql.instanceTable(unique_table='historical')
-SegmentSnapshot = conn_sql.instanceTable(unique_table='segment_snapshot')
-
-
 
 # Datos de los de corredores
 corrdata = []
@@ -41,13 +35,13 @@ for (idseg, data) in misc_helpers.corrdata.items():
     corrdata += [d]
 
 corrdata = pd.DataFrame(corrdata)
-valids = pd.read_csv("/home/lmokto/Desktop/dump_anomaly.csv", sep=";")
+valids = pd.read_sql_table("anomaly", conn_sql._instanceSQL__engine)
 
 valids["timestamp_start"] = pd.to_datetime(valids["timestamp_start"])
 valids["timestamp_end"] = pd.to_datetime(valids["timestamp_end"])
 valids["iddevice"] = valids[["id_segment"]]
-valids = valids[
-    (valids["timestamp_end"] - valids["timestamp_start"]).dt.seconds >= 20 * 60]
+
+valids = valids[(valids["timestamp_end"] - valids["timestamp_start"]).dt.seconds >= 20 * 60]
 valids = valids[["iddevice", "timestamp_start", "timestamp_end"]].copy()
 
 
@@ -85,7 +79,8 @@ ax = aux[["semana", "promedio"]].plot(x='semana', color="r")
 ax = aux[["semana", "centro", "provincia"]].plot(x='semana', kind='bar', ax=ax)
 
 plt.title('Cantidad de anomalias en las ultimas 4 semanas')
-plt.show()
+plt.savefig("/home/lmokto/Desktop/dashboard-operativo-transito/static/planificacion/test.png")
+#plt.show()
 #############
 
 """

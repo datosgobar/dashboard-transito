@@ -138,6 +138,12 @@ def views_index():
     return bottle.template('index')
 
 
+@bottle.route('/planificacion')
+def views_index():
+    bottle_auth.require(fail_redirect='/login')
+    return bottle.template('planificacion')
+
+
 @bottle.route('/')
 def root():
     bottle_auth.require(fail_redirect='/login')
