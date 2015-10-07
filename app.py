@@ -171,6 +171,7 @@ def send_data():
         comentario = request.forms.get("comentario", "")
         tipo_corte = request.forms.get("tipo_corte", 0)
         if anomaly_id and causa_id:
+            logger.info("anomaly_id {}".format(anomaly_id))
             queryAnomaly = session.query(Anomaly).filter_by(id=anomaly_id)
             if queryAnomaly.count():
                 queryAnomaly.update({

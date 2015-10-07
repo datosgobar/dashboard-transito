@@ -342,8 +342,9 @@ function llenoPantallaEdicion(idSegmento){
 
     if ( nombresDeCorredores[idSegmento].anomalia_id != 0 ) {
         // oculto cartel de edicion..
+        // console.log(nombresDeCorredores[idSegmento])
         $("#oculta").css("display", "none");
-        $("#anomaly_frm").attr("value", nombresDeCorredores[idSegmento].anomalia);
+        $("#anomaly_frm").attr("value", nombresDeCorredores[idSegmento].anomalia_id);
         $("#corte_frm").val(nombresDeCorredores[idSegmento].tipo_corte);
         $("#causa_frm").val(nombresDeCorredores[idSegmento].causa_id);
         $("#descripcion_frm").val(nombresDeCorredores[idSegmento].comentario_causa);
