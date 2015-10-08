@@ -47,7 +47,7 @@
              <div class="panelMenu centrado centro">
                 <a href="/anomalies"><div class="buttonMenu" id="boton-videowall">Monitoreo</div></a>
                 <a href="/desktop"><div class="buttonMenu" id="boton-operador">Operación</div></a>
-                <a href=""><div class="buttonMenu" id="boton-planificacion" >Reporte</div></a>
+                <a href=""><div class="buttonMenu" id="boton-planificacion" >Estadísticas</div></a>
             </div>
 
             <div class="bottom"></div>
