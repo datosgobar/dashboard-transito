@@ -137,8 +137,7 @@ def login_post():
     params = {'secret': config.captcha_secret, 'response': captcha_response}
     r = requests.Session()
     r.mount('https://', MyAdapter())
-    r = requests.post(
-        "https://www.google.com/recaptcha/api/siteverify", data=params, verify=False)
+    r = r.post("https://www.google.com/recaptcha/api/siteverify", data=params)
     if not r.json()['success']:
         return bottle.template('login', error="Captcha inválido.", site_key=config.captcha_site_key)
     logger.info("requests captcha {}".format(r.json()))
