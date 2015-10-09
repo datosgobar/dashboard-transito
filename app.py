@@ -53,7 +53,9 @@ def auth_sqlalchemy():
     sqlalchemy_backend = SqlAlchemyBackend(config.db_url)
     return sqlalchemy_backend
 
+
 auth = auth_sqlalchemy()
+auth._engine.echo = config.db["debug"] #DB del Login en modo debug si es true
 bottle_auth = Cork(backend=auth)
 
 app = bottle.app()
@@ -133,6 +135,8 @@ def login_post():
     # Chequear con Google que el captcha sea valido
     captcha_response = request.POST.get("g-recaptcha-response", "").strip()
     params = {'secret': config.captcha_secret, 'response': captcha_response}
+    r = requests.Session()
+    r.mount('https://', MyAdapter())
     r = requests.post(
         "https://www.google.com/recaptcha/api/siteverify", data=params, verify=False)
     if not r.json()['success']:
