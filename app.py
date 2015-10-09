@@ -43,6 +43,7 @@ def auth_sqlalchemy():
     return sqlalchemy_backend
 
 auth = auth_sqlalchemy()
+auth._engine.echo = config.db["debug"]
 bottle_auth = Cork(backend=auth)
 
 app = bottle.app()
@@ -126,7 +127,7 @@ def login_post():
         "https://www.google.com/recaptcha/api/siteverify", data=params)
     if not r.json()['success']:
         return bottle.template('login', error="Captcha inválido.", site_key=config.captcha_site_key)
-
+    logger.info("requests captcha {}".format(r.json()))
     logger.info("login {0}".format(username))
     if not bottle_auth.login(username, password, success_redirect='/'):
         return bottle.template('login', error="Usuario y Contraseña inválidos.", site_key=config.captcha_site_key)
@@ -136,12 +137,6 @@ def login_post():
 def views_index():
     bottle_auth.require(fail_redirect='/login')
     return bottle.template('index')
-
-
-@bottle.route('/planificacion')
-def views_index():
-    bottle_auth.require(fail_redirect='/login')
-    return bottle.template('planificacion')
 
 
 @bottle.route('/desktop')
