@@ -27,22 +27,28 @@ function armoTemplateCard(data) {
 
     card = card + "<div class='contenedor'><div class='etiquetas'>";
     if (data.segmentos_capital.length > 0) { // hay de capital
-        nombres = data.segmentos_capital;
-    } else {
-        nombres = data.segmentos_provincia;
-    }
-
-    for (var i = 0; i < segmentos; i++) {
-        if (i === 0) {
-            card = card + "<div class='segmento izquierda'>" + nombreDeCorredor(nombres[i].id).split("-")[0] + "</div>";
-        } else {
-            card = card + "<div class='segmento centro'>" + nombreDeCorredor(nombres[i].id).split("-")[0] + "</div>";
+        nombres_capi = data.segmentos_capital;
+        for (var i = 0; i < segmentos; i++) {
+            if (i === 0) {
+                card = card + "<div class='segmento izquierda'>" + nombreDeCorredor(nombres_capi[i].id).split("-")[0] + "</div>";
+            } else {
+                card = card + "<div class='segmento centro'>" + nombreDeCorredor(nombres_capi[i].id).split("-")[0] + "</div>";
+            }
         }
-
+        card = card + "<div class='segmento derecha'>" + nombreDeCorredor(nombres_capi[segmentos-1].id).split("-")[1] +"</div>";
+    } else {
+        nombres_prov = data.segmentos_provincia;
+        for (var i = 0; i < segmentos; i++) {
+            if (i === 0) {
+                card = card + "<div class='segmento izquierda'>" + nombreDeCorredor(nombres_prov[i].id).split("-")[1] + "</div>";
+            } else {
+                card = card + "<div class='segmento centro'>" + nombreDeCorredor(nombres_prov[i].id).split("-")[1] + "</div>";
+            }
+        }
+        card = card + "<div class='segmento derecha'>" + nombreDeCorredor(nombres_prov[segmentos-1].id).split("-")[0] +"</div>";
     }
-    card = card + "<div class='segmento derecha'>" + nombreDeCorredor(nombres[segmentos-1].id).split("-")[1] +"</div>";
+    
     card = card + "</div></div>";
-
 
 
 

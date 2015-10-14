@@ -26,6 +26,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.poolmanager import PoolManager
+import ssl
+
 bottle.debug(True)
 Base = automap_base()
 db_url = config.db_url
@@ -38,9 +42,17 @@ monkey.patch_all()
 logger = dashboard_logging(config="analisis/logging.json", name=__name__)
 
 
+class MyAdapter(HTTPAdapter):
+    def init_poolmanager(self, connections, maxsize, block=False):
+        self.poolmanager = PoolManager(num_pools=connections,
+                                       maxsize=maxsize,
+                                       block=block,
+                                       ssl_version=ssl.PROTOCOL_TLSv1)
+
 def auth_sqlalchemy():
     sqlalchemy_backend = SqlAlchemyBackend(config.db_url)
     return sqlalchemy_backend
+
 
 auth = auth_sqlalchemy()
 auth._engine.echo = config.db["debug"]
@@ -123,8 +135,9 @@ def login_post():
     # Chequear con Google que el captcha sea valido
     captcha_response = request.POST.get("g-recaptcha-response", "").strip()
     params = {'secret': config.captcha_secret, 'response': captcha_response}
-    r = requests.post(
-        "https://www.google.com/recaptcha/api/siteverify", data=params)
+    r = requests.Session()
+    r.mount('https://', MyAdapter())
+    r = r.post("https://www.google.com/recaptcha/api/siteverify", data=params)
     if not r.json()['success']:
         return bottle.template('login', error="Captcha inválido.", site_key=config.captcha_site_key)
     logger.info("requests captcha {}".format(r.json()))

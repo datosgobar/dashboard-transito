@@ -48,7 +48,7 @@ def init():
 roles = Table('roles', meta,
               Column('role', String(128), primary_key=True),
               Column('level', Integer, nullable=False)
-              )
+            )
 
 users = Table('users', meta,
               Column('username', Unicode(128), primary_key=True),
@@ -58,7 +58,7 @@ users = Table('users', meta,
               Column('desc', String(128)),
               Column('creation_date', String(128), nullable=False),
               Column('last_login', String(128), nullable=False)
-              )
+            )
 
 
 def upgrade(migrate_engine):

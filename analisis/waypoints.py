@@ -1,18 +1,23 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 waypoints_config = [
     {
-        'name': 'Corredor independencia',
-        'description': 'Desde paseo colon hasta 9 de julio',
+        'corredor': 'Independencia',
+        'segmento': 'Paseo Colón - 9 de julio',
+        'sentido' : 'centro',
         'id': 10,
         'from': '-34.617132, -58.369498',
         'to': '-34.617584, -58.380221',
         'waypoints': [
             "-34.617178, -58.372625",
             "-34.617354, -58.376659"
-        ]
+        ],
     },
     {
-        'name': 'Corredor illia',
-        'description': 'Desde sarmiento hasta general paz',
+        'corredor': 'Illia',
+        'segmento': 'Sarmiento - General Paz',
+        'sentido' : 'provincia',
         'id': 11,
         'id_hml': 15,
         'from': '-34.567044, -58.407682',
@@ -21,11 +26,12 @@ waypoints_config = [
             "-34.557510, -58.422456",
             "-34.549204, -58.436253",
             "-34.541551, -58.449782"
-        ]
+        ],
+
     },
     {
-        'name': 'Corredor illia',
-        'description': 'Desde general paz hasta sarmiento',
+        'corredor': 'Illia',
+        'segmento': 'General Paz - Sarmiento',
         'id': 12,
         'id_hml': 16,
         'from': '-34.534799, -58.465800',
@@ -38,8 +44,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor 9 de julio interna',
-        'description': 'Desde arroyo hasta corrientes',
+        'corredor': '9 de julio',
+        'segmento': 'Arroyo - Corrientes',
         'id': 13,
         'id_hml': 17,
         'from': '-34.591657, -58.382086',
@@ -50,8 +56,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor 9 de julio externa',
-        'description': 'Desde arroyo hasta corrientes',
+        'corredor': 'Cerrito',
+        'segmento': 'Arroyo - Corrientes',
         'id': 14,
         'id_hml': 18,
         'from': '-34.591573, -58.382939',
@@ -62,10 +68,10 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor 9 de julio interna',
+        'corredor': '9 de julio',
         'id': 15,
         'id_hml': 19,
-        'description': 'Desde corrientes hasta arroyo',
+        'segmento': 'Corrientes - Arroyo',
         'from': '-34.603575, -58.381227',
         'to': '-34.591665, -58.381887',
         'waypoints': [
@@ -74,10 +80,10 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor 9 de julio externa',
+        'corredor': 'Pellegrini',
         'id': 16,
         'id_hml': 20,
-        'description': 'Desde corrientes hasta arroyo',
+        'segmento': 'Corrientes - Arroyo',
         'from': '-34.603606, -58.380969',
         'to': '-34.591657, -58.381587',
         'waypoints': [
@@ -86,8 +92,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor 9 de julio interna',
-        'description': 'Desde san juan hasta corrientes',
+        'corredor': '9 de julio',
+        'segmento': 'San Juan - Corrientes',
         'id': 17,
         'id_hml': 21,
         'from': '-34.622146, -58.380568',
@@ -100,8 +106,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor 9 de julio externa',
-        'description': 'Desde san juan hasta corrientes',
+        'corredor': 'Pellegrini',
+        'segmento': 'San Juan - Corrientes',
         'id': 18,
         'id_hml': 22,
         'from': '-34.622133, -58.379994',
@@ -114,8 +120,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor 9 de julio interna',
-        'description': 'Desde corrientes hasta san juan',
+        'corredor': '9 de julio',
+        'segmento': 'Corrientes - San Juan',
         'id': 19,
         'id_hml': 23,
         'from': '-34.60372, -58.38210',
@@ -128,8 +134,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor 9 de julio externa',
-        'description': 'Desde corrientes hasta san juan',
+        'corredor': 'Cerrito',
+        'segmento': 'Corrientes - San Juan',
         'id': 20,
         'id_hml': 44,
         'from': '-34.60374, -58.38222',
@@ -143,8 +149,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor alem',
-        'description': 'Desde rojas hasta casa rosada',
+        'corredor': 'Alem',
+        'segmento': 'Rojas - Casa Rosada',
         'id': 21,
         'id_hml': 45,
         'from': '-34.59501, -58.37287',
@@ -156,8 +162,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor alem',
-        'description': 'Desde casa rosada hasta rojas',
+        'corredor': 'Alem',
+        'segmento': 'Casa Rosada - Rojas',
         'id': 22,
         'id_hml': 46,
         'from': '-34.60660, -58.36964',
@@ -169,8 +175,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor corrientes',
-        'description': 'Desde medrano hasta obelisco',
+        'corredor': 'Corrientes',
+        'segmento': 'Medrano - Obelisco ',
         'id': 23,
         'id_hml': 47,
         'from': '-34.60317, -58.42099',
@@ -183,8 +189,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor rivadavia',
-        'description': 'Desde pueyrredon hasta montevideo',
+        'corredor': 'Rivadavia',
+        'segmento': 'Pueyrredón - Montevideo',
         'id': 24,
         'id_hml': 48,
         'from': '-34.60914, -58.38913',
@@ -196,8 +202,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor av de mayo',
-        'description': 'Desde montevideo hasta plaza de mayo',
+        'corredor': 'Av. de Mayo',
+        'segmento': 'Montevideo - Plaza de Mayo',
         'id': 25,
         'id_hml': 49,
         'from': '-34.60859, -58.37350',
@@ -209,8 +215,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor san martin',
-        'description': 'Desde general paz hasta beiro',
+        'corredor': 'San Martín',
+        'segmento': 'General Paz - Beiró',
         'id': 26,
         'id_hml': 50,
         'from': '-34.58947, -58.51822',
@@ -222,8 +228,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor san martin',
-        'description': 'Desde beiro hasta general paz',
+        'corredor': 'San Martín',
+        'segmento': 'Beiró - General Paz',
         'id': 27,
         'id_hml': 51,
         'from': '-34.59677, -58.49717',
@@ -235,8 +241,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor san martin',
-        'description': 'Desde beiro hasta juan b justo',
+        'corredor': 'San Martín',
+        'segmento': 'Beiró - Juan B. Justo',
         'id': 28,
         'id_hml': 52,
         'from': '-34.59677, -58.49717',
@@ -250,8 +256,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor san martin',
-        'description': 'Desde juan b justo hasta beiro',
+        'corredor': 'San Martín',
+        'segmento': 'Juan B. Justo - Beiró',
         'id': 29,
         'id_hml': 53,
         'from': '-34.60451, -58.45864',
@@ -265,8 +271,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor juan b justo',
-        'description': 'Desde santa fe hasta corrientes',
+        'corredor': 'Juan B. Justo',
+        'segmento': 'Santa Fé - Corrientes',
         'id': 30,
         'id_hml': 54,
         'from': '-34.57824, -58.42660',
@@ -278,8 +284,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor juan b justo',
-        'description': 'Desde corrientes hasta santa fe',
+        'corredor': 'Juan B. Justo',
+        'segmento': 'Corrientes - Santa Fé',
         'id': 31,
         'id_hml': 55,
         'from': '-34.59472, -58.44439',
@@ -291,8 +297,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor juan b justo',
-        'description': 'Desde nazca hasta corrientes',
+        'corredor': 'Juan B. Justo',
+        'segmento': 'Nazca - Corrientes',
         'id': 32,
         'id_hml': 56,
         'from': '-34.61803, -58.47614',
@@ -305,8 +311,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor juan b justo',
-        'description': 'Desde corrientes hasta nazca',
+        'corredor': 'Juan B. Justo',
+        'segmento': 'Corrientes - Nazca',
         'id': 33,
         'id_hml': 57,
         'from': '-34.59472, -58.44439',
@@ -319,8 +325,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor juan b justo',
-        'description': 'Desde nazca hasta general paz',
+        'corredor': 'Juan B. Justo',
+        'segmento': 'Nazca - General Paz',
         'id': 34,
         'id_hml': 58,
         'from': '-34.61803, -58.47614',
@@ -334,8 +340,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor juan b justo',
-        'description': 'Desde general paz hasta nazca',
+        'corredor': 'Juan B. Justo',
+        'segmento': 'General Paz - Nazca',
         'id': 35,
         'id_hml': 59,
         'from': '-34.63474, -58.52899',
@@ -349,8 +355,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor cordoba',
-        'description': 'Desde 9 de julio hasta estado de israel',
+        'corredor': 'Córdoba',
+        'segmento': '9 de julio - Estado de Israel',
         'id': 36,
         'id_hml': 60,
         'from': '-34.59908, -58.38193',
@@ -364,8 +370,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor cordoba',
-        'description': 'Desde estado de israel hasta dorrego',
+        'corredor': 'Córdoba',
+        'segmento': 'Estado de Israel - Dorrego',
         'id': 37,
         'id_hml': 61,
         'from': '-34.59768, -58.42352',
@@ -378,10 +384,10 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor paseo colon',
+        'corredor': 'Paseo Colón',
+        'segmento': 'San Juan - Casa Rosada',
         'id': 38,
         'id_hml': 62,
-        'description': 'Desde san juan hasta casa rosada',
         'from': '-34.62172, -58.36835',
         'to': '-34.60944, -58.36932',
         'waypoints': [
@@ -391,10 +397,10 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor paseo colon',
+        'corredor': 'Paseo Colón',
+        'segmento': 'Casa Rosada - San Juan',
         'id': 39,
         'id_hml': 63,
-        'description': 'Desde casa rosada hasta san juan',
         'from': '-34.60951, -58.36957',
         'to': '-34.62168, -58.36835',
         'waypoints': [
@@ -404,8 +410,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor cabildo',
-        'description': 'Desde general paz hasta congreso',
+        'corredor': 'Cabildo',
+        'segmento': 'General Paz - Congreso',
         'id': 40,
         'id_hml': 64,
         'from': '-34.53942, -58.47538',
@@ -417,8 +423,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor cabildo',
-        'description': 'Desde congreso hasta general paz',
+        'corredor': 'Cabildo',
+        'segmento': 'Congreso - General Paz',
         'id': 41,
         'id_hml': 65,
         'from': '-34.55524, -58.46264',
@@ -431,8 +437,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor cabildo',
-        'description': 'Desde lacroze hasta congreso',
+        'corredor': 'Cabildo',
+        'segmento': 'Lacroze - Congreso',
         'id': 42,
         'id_hml': 66,
         'from': '-34.56994, -58.44491',
@@ -445,8 +451,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor cabildo',
-        'description': 'Desde congreso hasta lacroze',
+        'corredor': 'Cabildo',
+        'segmento': 'Congreso - Lacroze',
         'id': 43,
         'id_hml': 67,
         'from': '-34.55547, -58.46253',
@@ -459,8 +465,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor cabildo',
-        'description': 'Desde lacroze hasta juan b justo',
+        'corredor': 'Cabildo',
+        'segmento': 'Lacroze - Juan B. Justo',
         'id': 44,
         'id_hml': 68,
         'from': '-34.56994, -58.44491',
@@ -471,8 +477,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor cabildo',
-        'description': 'Desde juan b justo hasta lacroze',
+        'corredor': 'Cabildo',
+        'segmento': 'Juan B. Justo - Lacroze',
         'id': 45,
         'id_hml': 69,
         'from': '-34.57818, -58.42663',
@@ -483,8 +489,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor pueyrredon',
-        'description': 'Desde mitre hasta cordoba',
+        'corredor': 'Pueyrredón',
+        'segmento': 'Mitre - Córdoba',
         'id': 46,
         'id_hml': 70,
         'from': '-34.60888, -58.40605',
@@ -495,8 +501,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor pueyrredon',
-        'description': 'Desde cordoba hasta mitre',
+        'corredor': 'Pueyrredón',
+        'segmento': 'Córdoba - Mitre',
         'id': 47,
         'id_hml': 71,
         'from': '-34.59849, -58.40376',
@@ -507,8 +513,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor libertador',
-        'description': 'Desde cerrito hasta sarmiento',
+        'corredor': 'Libertador',
+        'segmento': 'Cerrito - Sarmiento',
         'id': 48,
         'id_hml': 16,
         'from': '-34.58878, -58.38193',
@@ -521,8 +527,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor libertador',
-        'description': 'Desde sarmiento hasta cerrito',
+        'corredor': 'Libertador',
+        'segmento': 'Desde sarmiento hasta cerrito',
         'id': 49,
         'from': '-34.57547, -58.41399',
         'to': '-34.58878, -58.38193',
@@ -534,8 +540,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor libertador',
-        'description': 'Desde sarmiento hasta la pampa',
+        'corredor': 'Libertador',
+        'segmento': 'Sarmiento - La Pampa',
         'id': 50,
         'from': '-34.57489, -58.41509',
         'to': '-34.55943, -58.44534',
@@ -548,8 +554,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor libertador',
-        'description': 'Desde la pampa hasta sarmiento',
+        'corredor': 'Libertador',
+        'segmento': 'La Pampa - Sarmiento',
         'id': 51,
         'from': '-34.55943, -58.44534',
         'to': '-34.57489, -58.41509',
@@ -562,8 +568,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor libertador',
-        'description': 'Desde la pampa hasta general paz',
+        'corredor': 'Libertador',
+        'segmento': 'La Pampa - General Paz',
         'id': 52,
         'from': '-34.55954, -58.44530',
         'to': '-34.53584, -58.46684',
@@ -577,8 +583,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor libertador',
-        'description': 'Desde general paz hasta la pampa',
+        'corredor': 'Libertador',
+        'segmento': 'General Paz - La Pampa',
         'id': 53,
         'from': '-34.53584, -58.46684',
         'to': '-34.55954, -58.44530',
@@ -592,8 +598,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor alcorta',
-        'description': 'Desde cerrito hasta sarmiento',
+        'corredor': 'Alcorta',
+        'segmento': 'Cerrito - Sarmiento',
         'id': 54,
         'from': '-34.58512, -58.38854',
         'to': '-34.57161, -58.41189',
@@ -604,8 +610,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor alcorta',
-        'description': 'Desde sarmiento hasta udaondo',
+        'corredor': 'Alcorta',
+        'segmento': 'Sarmiento - Udaondo',
         'id': 55,
         'from': '-34.57161, -58.41189',
         'to': '-34.54629, -58.45211',
@@ -620,8 +626,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor illia',
-        'description': 'Desde 9 de julio hasta sarmiento',
+        'corredor': 'Illia',
+        'segmento': '9 de julio - Sarmiento',
         'id': 56,
         'from': '-34.59127, -58.38180',
         'to': '-34.56703, -58.40772',
@@ -634,8 +640,8 @@ waypoints_config = [
         ]
     },
     {
-        'name': 'Corredor illia',
-        'description': 'Desde sarmiento hasta 9 de julio',
+        'corredor': 'Illia',
+        'segmento': 'Sarmiento - 9 de julio',
         'id': 57,
         'from': '-34.56736, -58.40795',
         'to': '-34.59116, -58.38207',

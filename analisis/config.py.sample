@@ -30,7 +30,7 @@ else:
         password='password',
         host='localhost',
         db='dashboardoperativo',
-        debug='False',
+        debug=True
     )
     db_url = db['engine'] + "://" + db['user'] + ":" + \
         db['password'] + "@" + db['host'] + "/" + db['db']

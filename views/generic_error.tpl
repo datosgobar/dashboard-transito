@@ -68,7 +68,6 @@
         <div class="error"> Error {{ error }} </div>
         <a href="/" id="volver"> volver al inicio</a>
     </div>
-
     <script type="text/javascript" src="_public/js/jquery-2.1.3.min.js"></script>
     <link rel="stylesheet" href="_public/css/estilos-login.min.css" />
 </body>
