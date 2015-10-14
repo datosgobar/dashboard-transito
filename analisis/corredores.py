@@ -17,23 +17,23 @@ engine = create_engine(db_url)
 logger = dashboard_logging(config="logging.json", name=__name__)
 
 referencia_corredores = {
-    '9_de_julio': [13, 17, 15, 19],  # ok
-    'cerrito': [14, 20],  # ok
-    'pellegrini': [16, 18],  # ok
-    'Illia': [12, 57, 11, 56],  # ok
-    'alcorta': [54, 55],  # ok
-    'alem': [21, 22],  # ok mal
-    'av_de_mayo': [25],  # ok
-    'cabildo': [40, 42, 45, 41, 43, 44],  # ok mal
-    'cordoba': [36, 37],  # ok
-    'corrientes': [23],  # ok
-    'independencia': [10],  # ok
-    'juan_b_justo': [31, 32, 35, 30, 33, 34],  # ok
-    'libertador': [49, 51, 53, 48, 50, 52],  # ok
-    'paseo_colon': [39, 38],  # ok
-    'pueyrredon': [47, 46],  # ok
-    'rivadavia': [24],  # ok
-    'san_martin': [26, 28, 27, 29]  # ok
+    '9_de_julio': [13, 17, 15, 19],
+    'cerrito': [14, 20],
+    'pellegrini': [16, 18],
+    'Illia': [12, 57, 11, 56],
+    'alcorta': [54, 55],
+    'alem': [21, 22],
+    'av_de_mayo': [25],
+    'cabildo': [40, 42, 45, 41, 43, 44],
+    'cordoba': [36, 37],
+    'corrientes': [23],
+    'independencia': [10],
+    'juan_b_justo': [31, 32, 35, 30, 33, 34],
+    'libertador': [49, 51, 53, 48, 50, 52],
+    'paseo_colon': [39, 38],
+    'pueyrredon': [47, 46],
+    'rivadavia': [24],
+    'san_martin': [26, 28, 27, 29]
 }
 
 referencia_sentidos = {

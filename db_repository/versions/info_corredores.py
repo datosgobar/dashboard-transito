@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-waypoints_config = [
+corredores = [
     {
         'corredor': 'Independencia',
         'segmento': 'Paseo Colón - 9 de julio',
@@ -32,6 +32,7 @@ waypoints_config = [
     {
         'corredor': 'Illia',
         'segmento': 'General Paz - Sarmiento',
+        'sentido' : 'centro',
         'id': 12,
         'id_hml': 16,
         'from': '-34.534799, -58.465800',
@@ -46,6 +47,7 @@ waypoints_config = [
     {
         'corredor': '9 de julio',
         'segmento': 'Arroyo - Corrientes',
+        "sentido": "provincia",
         'id': 13,
         'id_hml': 17,
         'from': '-34.591657, -58.382086',
@@ -58,6 +60,7 @@ waypoints_config = [
     {
         'corredor': 'Cerrito',
         'segmento': 'Arroyo - Corrientes',
+        'sentido': 'provincia',
         'id': 14,
         'id_hml': 18,
         'from': '-34.591573, -58.382939',
@@ -69,9 +72,10 @@ waypoints_config = [
     },
     {
         'corredor': '9 de julio',
+        'segmento': 'Corrientes - Arroyo',
+        'sentido':'centro',
         'id': 15,
         'id_hml': 19,
-        'segmento': 'Corrientes - Arroyo',
         'from': '-34.603575, -58.381227',
         'to': '-34.591665, -58.381887',
         'waypoints': [
@@ -81,9 +85,10 @@ waypoints_config = [
     },
     {
         'corredor': 'Pellegrini',
+        'segmento': 'Corrientes - Arroyo',
+        'sentido': 'centro',
         'id': 16,
         'id_hml': 20,
-        'segmento': 'Corrientes - Arroyo',
         'from': '-34.603606, -58.380969',
         'to': '-34.591657, -58.381587',
         'waypoints': [
@@ -94,6 +99,7 @@ waypoints_config = [
     {
         'corredor': '9 de julio',
         'segmento': 'San Juan - Corrientes',
+        'sentido' : 'centro',
         'id': 17,
         'id_hml': 21,
         'from': '-34.622146, -58.380568',
@@ -108,6 +114,7 @@ waypoints_config = [
     {
         'corredor': 'Pellegrini',
         'segmento': 'San Juan - Corrientes',
+        'sentido': 'centro',
         'id': 18,
         'id_hml': 22,
         'from': '-34.622133, -58.379994',
@@ -122,6 +129,7 @@ waypoints_config = [
     {
         'corredor': '9 de julio',
         'segmento': 'Corrientes - San Juan',
+        'sentido': 'provincia',
         'id': 19,
         'id_hml': 23,
         'from': '-34.60372, -58.38210',
@@ -136,6 +144,7 @@ waypoints_config = [
     {
         'corredor': 'Cerrito',
         'segmento': 'Corrientes - San Juan',
+        'sentido' : 'provincia',
         'id': 20,
         'id_hml': 44,
         'from': '-34.60374, -58.38222',
@@ -151,6 +160,7 @@ waypoints_config = [
     {
         'corredor': 'Alem',
         'segmento': 'Rojas - Casa Rosada',
+        'sentido': 'provincia',
         'id': 21,
         'id_hml': 45,
         'from': '-34.59501, -58.37287',
@@ -164,6 +174,7 @@ waypoints_config = [
     {
         'corredor': 'Alem',
         'segmento': 'Casa Rosada - Rojas',
+        'sentido' : 'centro',
         'id': 22,
         'id_hml': 46,
         'from': '-34.60660, -58.36964',
@@ -177,6 +188,7 @@ waypoints_config = [
     {
         'corredor': 'Corrientes',
         'segmento': 'Medrano - Obelisco ',
+        'sentido' : 'centro',
         'id': 23,
         'id_hml': 47,
         'from': '-34.60317, -58.42099',
@@ -191,6 +203,7 @@ waypoints_config = [
     {
         'corredor': 'Rivadavia',
         'segmento': 'Pueyrredón - Montevideo',
+        'sentido': 'centro',
         'id': 24,
         'id_hml': 48,
         'from': '-34.60914, -58.38913',
@@ -204,6 +217,7 @@ waypoints_config = [
     {
         'corredor': 'Av. de Mayo',
         'segmento': 'Montevideo - Plaza de Mayo',
+        'sentido': 'centro',
         'id': 25,
         'id_hml': 49,
         'from': '-34.60859, -58.37350',
@@ -217,6 +231,7 @@ waypoints_config = [
     {
         'corredor': 'San Martín',
         'segmento': 'General Paz - Beiró',
+        'sentido' : 'centro',
         'id': 26,
         'id_hml': 50,
         'from': '-34.58947, -58.51822',
@@ -230,6 +245,7 @@ waypoints_config = [
     {
         'corredor': 'San Martín',
         'segmento': 'Beiró - General Paz',
+        'sentido' : 'provincia',
         'id': 27,
         'id_hml': 51,
         'from': '-34.59677, -58.49717',
@@ -243,6 +259,7 @@ waypoints_config = [
     {
         'corredor': 'San Martín',
         'segmento': 'Beiró - Juan B. Justo',
+        'sentido' : 'centro',
         'id': 28,
         'id_hml': 52,
         'from': '-34.59677, -58.49717',
@@ -258,6 +275,7 @@ waypoints_config = [
     {
         'corredor': 'San Martín',
         'segmento': 'Juan B. Justo - Beiró',
+        'sentido' : 'provincia',
         'id': 29,
         'id_hml': 53,
         'from': '-34.60451, -58.45864',
@@ -273,6 +291,7 @@ waypoints_config = [
     {
         'corredor': 'Juan B. Justo',
         'segmento': 'Santa Fé - Corrientes',
+        'sentido': 'provincia',
         'id': 30,
         'id_hml': 54,
         'from': '-34.57824, -58.42660',
@@ -286,6 +305,7 @@ waypoints_config = [
     {
         'corredor': 'Juan B. Justo',
         'segmento': 'Corrientes - Santa Fé',
+        'sentido' : 'centro',
         'id': 31,
         'id_hml': 55,
         'from': '-34.59472, -58.44439',
@@ -299,6 +319,7 @@ waypoints_config = [
     {
         'corredor': 'Juan B. Justo',
         'segmento': 'Nazca - Corrientes',
+        'sentido' : 'centro',
         'id': 32,
         'id_hml': 56,
         'from': '-34.61803, -58.47614',
@@ -313,6 +334,7 @@ waypoints_config = [
     {
         'corredor': 'Juan B. Justo',
         'segmento': 'Corrientes - Nazca',
+        'sentido' : 'provincia',
         'id': 33,
         'id_hml': 57,
         'from': '-34.59472, -58.44439',
@@ -327,6 +349,7 @@ waypoints_config = [
     {
         'corredor': 'Juan B. Justo',
         'segmento': 'Nazca - General Paz',
+        'sentido' : 'provincia',
         'id': 34,
         'id_hml': 58,
         'from': '-34.61803, -58.47614',
@@ -342,6 +365,7 @@ waypoints_config = [
     {
         'corredor': 'Juan B. Justo',
         'segmento': 'General Paz - Nazca',
+        'sentido' : 'centro',
         'id': 35,
         'id_hml': 59,
         'from': '-34.63474, -58.52899',
@@ -357,6 +381,7 @@ waypoints_config = [
     {
         'corredor': 'Córdoba',
         'segmento': '9 de julio - Estado de Israel',
+        'sentido' : 'centro',
         'id': 36,
         'id_hml': 60,
         'from': '-34.59908, -58.38193',
@@ -372,6 +397,7 @@ waypoints_config = [
     {
         'corredor': 'Córdoba',
         'segmento': 'Estado de Israel - Dorrego',
+        'sentido' : 'centro',
         'id': 37,
         'id_hml': 61,
         'from': '-34.59768, -58.42352',
@@ -386,6 +412,7 @@ waypoints_config = [
     {
         'corredor': 'Paseo Colón',
         'segmento': 'San Juan - Casa Rosada',
+        'sentido' : 'centro',
         'id': 38,
         'id_hml': 62,
         'from': '-34.62172, -58.36835',
@@ -399,6 +426,7 @@ waypoints_config = [
     {
         'corredor': 'Paseo Colón',
         'segmento': 'Casa Rosada - San Juan',
+        'sentido': 'provincia',
         'id': 39,
         'id_hml': 63,
         'from': '-34.60951, -58.36957',
@@ -412,6 +440,7 @@ waypoints_config = [
     {
         'corredor': 'Cabildo',
         'segmento': 'General Paz - Congreso',
+        'sentido' : 'centro',
         'id': 40,
         'id_hml': 64,
         'from': '-34.53942, -58.47538',
@@ -425,6 +454,7 @@ waypoints_config = [
     {
         'corredor': 'Cabildo',
         'segmento': 'Congreso - General Paz',
+        'sentido' : 'provincia',
         'id': 41,
         'id_hml': 65,
         'from': '-34.55524, -58.46264',
@@ -439,6 +469,7 @@ waypoints_config = [
     {
         'corredor': 'Cabildo',
         'segmento': 'Lacroze - Congreso',
+        'sentido' : 'provincia',
         'id': 42,
         'id_hml': 66,
         'from': '-34.56994, -58.44491',
@@ -453,6 +484,7 @@ waypoints_config = [
     {
         'corredor': 'Cabildo',
         'segmento': 'Congreso - Lacroze',
+        'sentido': 'centro',
         'id': 43,
         'id_hml': 67,
         'from': '-34.55547, -58.46253',
@@ -467,6 +499,7 @@ waypoints_config = [
     {
         'corredor': 'Cabildo',
         'segmento': 'Lacroze - Juan B. Justo',
+        'sentido' : 'centro',
         'id': 44,
         'id_hml': 68,
         'from': '-34.56994, -58.44491',
@@ -479,6 +512,7 @@ waypoints_config = [
     {
         'corredor': 'Cabildo',
         'segmento': 'Juan B. Justo - Lacroze',
+        'sentido' : 'provincia',
         'id': 45,
         'id_hml': 69,
         'from': '-34.57818, -58.42663',
@@ -491,6 +525,7 @@ waypoints_config = [
     {
         'corredor': 'Pueyrredón',
         'segmento': 'Mitre - Córdoba',
+        'sentido' : 'provincia',
         'id': 46,
         'id_hml': 70,
         'from': '-34.60888, -58.40605',
@@ -503,6 +538,7 @@ waypoints_config = [
     {
         'corredor': 'Pueyrredón',
         'segmento': 'Córdoba - Mitre',
+        'sentido' : 'centro',
         'id': 47,
         'id_hml': 71,
         'from': '-34.59849, -58.40376',
@@ -515,6 +551,7 @@ waypoints_config = [
     {
         'corredor': 'Libertador',
         'segmento': 'Cerrito - Sarmiento',
+        'sentido' : 'provincia',
         'id': 48,
         'id_hml': 16,
         'from': '-34.58878, -58.38193',
@@ -528,7 +565,8 @@ waypoints_config = [
     },
     {
         'corredor': 'Libertador',
-        'segmento': 'Desde sarmiento hasta cerrito',
+        'segmento': 'Sarmiento - Cerrito',
+        'sentido' : 'centro',
         'id': 49,
         'from': '-34.57547, -58.41399',
         'to': '-34.58878, -58.38193',
@@ -542,6 +580,7 @@ waypoints_config = [
     {
         'corredor': 'Libertador',
         'segmento': 'Sarmiento - La Pampa',
+        'sentido': 'provincia',
         'id': 50,
         'from': '-34.57489, -58.41509',
         'to': '-34.55943, -58.44534',
@@ -556,6 +595,7 @@ waypoints_config = [
     {
         'corredor': 'Libertador',
         'segmento': 'La Pampa - Sarmiento',
+        'sentido': 'centro',
         'id': 51,
         'from': '-34.55943, -58.44534',
         'to': '-34.57489, -58.41509',
@@ -570,6 +610,7 @@ waypoints_config = [
     {
         'corredor': 'Libertador',
         'segmento': 'La Pampa - General Paz',
+        'sentido' : 'provincia',
         'id': 52,
         'from': '-34.55954, -58.44530',
         'to': '-34.53584, -58.46684',
@@ -585,6 +626,7 @@ waypoints_config = [
     {
         'corredor': 'Libertador',
         'segmento': 'General Paz - La Pampa',
+        'sentido' : 'centro',
         'id': 53,
         'from': '-34.53584, -58.46684',
         'to': '-34.55954, -58.44530',
@@ -600,6 +642,7 @@ waypoints_config = [
     {
         'corredor': 'Alcorta',
         'segmento': 'Cerrito - Sarmiento',
+        'sentido' : 'provincia',
         'id': 54,
         'from': '-34.58512, -58.38854',
         'to': '-34.57161, -58.41189',
@@ -612,6 +655,7 @@ waypoints_config = [
     {
         'corredor': 'Alcorta',
         'segmento': 'Sarmiento - Udaondo',
+        'sentido' : 'provincia',
         'id': 55,
         'from': '-34.57161, -58.41189',
         'to': '-34.54629, -58.45211',
@@ -628,6 +672,7 @@ waypoints_config = [
     {
         'corredor': 'Illia',
         'segmento': '9 de julio - Sarmiento',
+        'sentido': 'provincia',
         'id': 56,
         'from': '-34.59127, -58.38180',
         'to': '-34.56703, -58.40772',
@@ -642,6 +687,7 @@ waypoints_config = [
     {
         'corredor': 'Illia',
         'segmento': 'Sarmiento - 9 de julio',
+        'sentido' : 'centro',
         'id': 57,
         'from': '-34.56736, -58.40795',
         'to': '-34.59116, -58.38207',
