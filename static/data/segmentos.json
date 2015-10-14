@@ -1,7 +1,7 @@
 {
     "10": {
-        "corredor": "Independencia",
-        "nombreSegmento": "Paseo Colón - 9 de julio",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -13,8 +13,8 @@
 
     },
     "11": {
-        "corredor": "Illia",
-        "nombreSegmento": "Sarmiento - General Paz",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -26,8 +26,8 @@
 
     },
     "56": {
-        "corredor": "Illia",
-        "nombreSegmento": "9 de julio - Sarmiento",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -39,8 +39,8 @@
 
     },
     "12": {
-        "corredor": "Illia",
-        "nombreSegmento": "General Paz - Sarmiento",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -52,8 +52,8 @@
 
     },
     "57": {
-        "corredor": "Illia",
-        "nombreSegmento": "Sarmiento - 9 de julio",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -65,8 +65,8 @@
 
     },
     "13": {
-        "corredor": "9 de julio",
-        "nombreSegmento": "Arroyo - Corrientes",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -78,8 +78,8 @@
 
     },
     "17": {
-        "corredor": "9 de julio",
-        "nombreSegmento": "San Juan - Corrientes",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -91,8 +91,8 @@
 
     },
     "15": {
-        "corredor": "9 de julio",
-        "nombreSegmento": "Corrientes - Arroyo",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -104,8 +104,8 @@
 
     },
     "19": {
-        "corredor": "9 de julio",
-        "nombreSegmento": "Corrientes - San Juan",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -117,8 +117,8 @@
 
     },
     "14": {
-        "corredor": "Cerrito",
-        "nombreSegmento": "Arroyo - Corrientes",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -130,8 +130,8 @@
 
     },
     "18": {
-        "corredor": "Pellegrini",
-        "nombreSegmento": "San Juan - Corrientes",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -143,8 +143,8 @@
 
     },
     "16": {
-        "corredor": "Pellegrini",
-        "nombreSegmento": "Corrientes - Arroyo",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -156,8 +156,8 @@
     },
 
     "20": {
-        "corredor": "Cerrito",
-        "nombreSegmento": "Corrientes - San Juan",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -169,8 +169,8 @@
 
     },
     "21": {
-        "corredor": "Alem",
-        "nombreSegmento": "Rojas - Casa Rosada",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -182,8 +182,8 @@
 
     },
     "22": {
-        "corredor": "Alem",
-        "nombreSegmento": "Casa Rosada - Rojas",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -195,8 +195,8 @@
 
     },
     "23": {
-        "corredor": "Corrientes",
-        "nombreSegmento": "Medrano - Obelisco",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -208,8 +208,8 @@
 
     },
     "24": {
-        "corredor": "Rivadavia",
-        "nombreSegmento": "Pueyrredón - Montevideo",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -221,8 +221,8 @@
 
     },
     "25": {
-        "corredor": "Av. de Mayo",
-        "nombreSegmento": "Montevideo - Plaza de Mayo",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -234,8 +234,8 @@
 
     },
     "26": {
-        "corredor": "San Martín",
-        "nombreSegmento": "General Paz - Beiró",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -247,8 +247,8 @@
 
     },
     "28": {
-        "corredor": "San Martín",
-        "nombreSegmento": "Beiró - Juan B. Justo",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -260,8 +260,8 @@
 
     },
     "27": {
-        "corredor": "San Martín",
-        "nombreSegmento": "Beiró - General Paz",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -273,8 +273,8 @@
 
     },
     "29": {
-        "corredor": "San Martín",
-        "nombreSegmento": "Juan B. Justo - Beiró",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -286,8 +286,8 @@
 
     },
     "31": {
-        "corredor": "Juan B. Justo",
-        "nombreSegmento": "Corrientes - Santa Fé",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -299,8 +299,8 @@
 
     },
     "32": {
-        "corredor": "Juan B. Justo",
-        "nombreSegmento": "Nazca - Corrientes",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -312,8 +312,8 @@
 
     },
     "35": {
-        "corredor": "Juan B. Justo",
-        "nombreSegmento": "General Paz - Nazca",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -325,8 +325,8 @@
 
     },
     "30": {
-        "corredor": "Juan B. Justo",
-        "nombreSegmento": "Santa Fé - Corrientes",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -338,8 +338,8 @@
 
     },
     "33": {
-        "corredor": "Juan B. Justo",
-        "nombreSegmento": "Corrientes - Nazca",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -351,8 +351,8 @@
 
     },
     "34": {
-        "corredor": "Juan B. Justo",
-        "nombreSegmento": "Nazca - General Paz",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -364,8 +364,8 @@
 
     },
     "36": {
-        "corredor": "Córdoba",
-        "nombreSegmento": "9 de julio - Estado de Israel",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -377,8 +377,8 @@
 
     },
     "37": {
-        "corredor": "Córdoba",
-        "nombreSegmento": "Estado de Israel - Dorrego",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -390,8 +390,8 @@
 
     },
     "38": {
-        "corredor": "Paseo Colón",
-        "nombreSegmento": "San Juan - Casa Rosada",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -403,8 +403,8 @@
 
     },
     "39": {
-        "corredor": "Paseo Colón",
-        "nombreSegmento": "Casa Rosada - San Juan",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -416,8 +416,8 @@
 
     },
     "41": {
-        "corredor": "Cabildo",
-        "nombreSegmento": "Congreso - General Paz",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -429,8 +429,8 @@
 
     },
     "43": {
-        "corredor": "Cabildo",
-        "nombreSegmento": "Congreso - Lacroze",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -442,8 +442,8 @@
 
     },
     "44": {
-        "corredor": "Cabildo",
-        "nombreSegmento": "Lacroze - Juan B. Justo",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -455,8 +455,8 @@
 
     },
     "40": {
-        "corredor": "Cabildo",
-        "nombreSegmento": "General Paz - Congreso",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -468,8 +468,8 @@
 
     },
     "42": {
-        "corredor": "Cabildo",
-        "nombreSegmento": "Lacroze - Congreso",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -481,8 +481,8 @@
 
     },
     "45": {
-        "corredor": "Cabildo",
-        "nombreSegmento": "Juan B. Justo - Lacroze",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -494,8 +494,8 @@
 
     },
     "46": {
-        "corredor": "Pueyrredón",
-        "nombreSegmento": "Mitre - Córdoba",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -507,8 +507,8 @@
 
     },
     "47": {
-        "corredor": "Pueyrredón",
-        "nombreSegmento": "Córdoba - Mitre",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -520,8 +520,8 @@
 
     },
     "49": {
-        "corredor": "Libertador",
-        "nombreSegmento": "Sarmiento - Cerrito",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -533,8 +533,8 @@
 
     },
     "51": {
-        "corredor": "Libertador",
-        "nombreSegmento": "La Pampa - Sarmiento",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -546,8 +546,8 @@
 
     },
     "53": {
-        "corredor": "Libertador",
-        "nombreSegmento": "General Paz - La Pampa",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -559,8 +559,8 @@
 
     },
     "48": {
-        "corredor": "Libertador",
-        "nombreSegmento": "Cerrito - Sarmiento",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -572,8 +572,8 @@
 
     },
     "50": {
-        "corredor": "Libertador",
-        "nombreSegmento": "Sarmiento - La Pampa",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -585,8 +585,8 @@
 
     },
     "52": {
-        "corredor": "Libertador",
-        "nombreSegmento": "La Pampa - General Paz",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -598,8 +598,8 @@
 
     },
     "54": {
-        "corredor": "Alcorta",
-        "nombreSegmento": "Cerrito - Sarmiento",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",
@@ -611,8 +611,8 @@
 
     },
     "55": {
-        "corredor": "Alcorta",
-        "nombreSegmento": "Sarmiento - Udaondo",
+        "corredor": "",
+        "nombreSegmento": "",
         "sentido": "",
         "anomalia": "",
         "tiempo": "",

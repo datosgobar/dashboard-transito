@@ -16,30 +16,52 @@ db_url = config.db_url
 engine = create_engine(db_url)
 logger = dashboard_logging(config="logging.json", name=__name__)
 
-referencia_corredores = {
-    '9_de_julio': [13, 17, 15, 19],
-    'cerrito': [14, 20],
-    'pellegrini': [16, 18],
-    'Illia': [12, 57, 11, 56],
-    'alcorta': [54, 55],
-    'alem': [21, 22],
-    'av_de_mayo': [25],
-    'cabildo': [40, 42, 45, 41, 43, 44],
-    'cordoba': [36, 37],
-    'corrientes': [23],
-    'independencia': [10],
-    'juan_b_justo': [31, 32, 35, 30, 33, 34],
-    'libertador': [49, 51, 53, 48, 50, 52],
-    'paseo_colon': [39, 38],
-    'pueyrredon': [47, 46],
-    'rivadavia': [24],
-    'san_martin': [26, 28, 27, 29]
-}
+table_corredores = session.query(Corredores).all()
 
-referencia_sentidos = {
-    "centro": [10, 12, 57, 53, 51, 49, 22, 15, 40, 37, 36, 31, 17, 35, 16, 18, 23, 24, 25, 26, 28, 32, 47, 38, 43, 44],
-    "provincia": [11, 56, 54, 55, 41, 14, 42, 21, 19, 20, 10, 13, 27, 29, 34, 39, 46, 50, 52, 48, 30, 33, 45]
-}
+def asignacion(tabla_corredores):
+
+    referencia_corredores = {
+        '9_de_julio': [],
+        'cerrito': [],
+        'pellegrini': [],
+        'Illia': [],
+        'alcorta': [],
+        'alem': [],
+        'av_de_mayo': [],
+        'cabildo': [],
+        'cordoba': [],
+        'corrientes': [],
+        'independencia': [],
+        'juan_b_justo': [],
+        'libertador': [],
+        'paseo_colon': [],
+        'pueyrredon': [],
+        'rivadavia': [],
+        'san_martin': []
+    }
+
+    referencia_sentidos = {
+        "centro": [corredor.id for corredor in tabla_corredores if corredor.sentido == "centro"],
+        "provincia": [corredor.id for corredor in tabla_corredores if corredor.sentido == "provincia"]
+    }
+    
+    if tabla_corredores:
+
+        for nombre_corredor, segmentos_ids in referencia_corredores.iteritems():
+            for corredor in tabla_corredores:
+                if nombre_corredor.title() == corredor.corredor:
+                    referencia_corredores[nombre_corredor].append(corredor.id)
+                else:
+                    norm_corredor = corredor.corredor.replace(
+                        ".", "").replace(" ", "_")
+                    if nombre_corredor.title() == norm_corredor.title():
+                        referencia_corredores[nombre_corredor].append(corredor.id)
+
+    return referencia_corredores, referencia_sentidos
+
+
+referencia_corredores, referencia_sentidos = asignacion(table_corredores)
+            
 
 
 def readSnapshot():

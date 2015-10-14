@@ -1,9 +1,13 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from sqlalchemy import *
 from migrate import *
 
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from info_corredores import corredores
+from unidecode import unidecode
 
 import sys
 import os
@@ -39,14 +43,17 @@ def init():
     add_corredores(Base, session)
 
 
+def encode_unicode(s):
+    return unidecode(s.decode('utf-8'))
+
 def add_corredores(Base, session):
     Corredores = Base.classes.corredores
     Waypoints = Base.classes.waypoints
     for info_corredores in corredores:
         session.add(Corredores(
             id=info_corredores['id'],
-            corredor=info_corredores['corredor'],
-            segmento=info_corredores['segmento'],
+            corredor=encode_unicode(info_corredores['corredor']),
+            segmento=encode_unicode(info_corredores['segmento']),
             sentido=info_corredores['sentido']
         ))
         session.add(Waypoints(
@@ -63,6 +70,7 @@ def upgrade(migrate_engine):
     meta.bind = migrate_engine
     Corredores.create()
     Waypoints.create()
+    init()
 
 
 def downgrade(migrate_engine):
