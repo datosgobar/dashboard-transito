@@ -93,8 +93,7 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
 
         logger.info("connect, emit data")
         while True:
-            self.clean()
-            parserEmitData(self, self.template)
+            parserEmitData(self)
             time.sleep(60)
 
     def recv_disconnect(self):
