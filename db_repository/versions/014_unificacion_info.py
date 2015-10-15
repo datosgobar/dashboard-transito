@@ -22,6 +22,7 @@ Corredores = Table(
     'corredores', meta,
     Column('id', Integer, primary_key=True),
     Column('corredor', String(240), nullable=False),
+    Column('ids', String(10), nullable=False),
     Column('segmento', String(240), nullable=False),
     Column('sentido', String(240), nullable=False)
 )
@@ -53,6 +54,7 @@ def add_corredores(Base, session):
         session.add(Corredores(
             id=info_corredores['id'],
             corredor=encode_unicode(info_corredores['corredor']),
+            ids=encode_unicode(info_corredores['ids']),
             segmento=encode_unicode(info_corredores['segmento']),
             sentido=info_corredores['sentido']
         ))

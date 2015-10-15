@@ -7,6 +7,7 @@ corredores = [
         'segmento': 'Paseo Colón - 9 de julio',
         'sentido' : 'centro',
         'id': 10,
+        'ids': 'cInde',
         'from': '-34.617132, -58.369498',
         'to': '-34.617584, -58.380221',
         'waypoints': [
@@ -19,7 +20,7 @@ corredores = [
         'segmento': 'Sarmiento - General Paz',
         'sentido' : 'provincia',
         'id': 11,
-        'id_hml': 15,
+        'ids':'cIlli',
         'from': '-34.567044, -58.407682',
         'to': '-34.534481, -58.465146',
         'waypoints': [
@@ -34,7 +35,7 @@ corredores = [
         'segmento': 'General Paz - Sarmiento',
         'sentido' : 'centro',
         'id': 12,
-        'id_hml': 16,
+        'ids':'cIlli',
         'from': '-34.534799, -58.465800',
         'to': '-34.567291, -58.407972',
         'waypoints': [
@@ -49,7 +50,7 @@ corredores = [
         'segmento': 'Arroyo - Corrientes',
         "sentido": "provincia",
         'id': 13,
-        'id_hml': 17,
+        'ids': 'c9int',
         'from': '-34.591657, -58.382086',
         'to': '-34.603760, -58.382123',
         'waypoints': [
@@ -62,7 +63,7 @@ corredores = [
         'segmento': 'Arroyo - Corrientes',
         'sentido': 'provincia',
         'id': 14,
-        'id_hml': 18,
+        'ids':'cCerr',
         'from': '-34.591573, -58.382939',
         'to': '-34.603742, -58.382290',
         'waypoints': [
@@ -75,7 +76,7 @@ corredores = [
         'segmento': 'Corrientes - Arroyo',
         'sentido':'centro',
         'id': 15,
-        'id_hml': 19,
+        'ids': 'c9int',
         'from': '-34.603575, -58.381227',
         'to': '-34.591665, -58.381887',
         'waypoints': [
@@ -88,7 +89,7 @@ corredores = [
         'segmento': 'Corrientes - Arroyo',
         'sentido': 'centro',
         'id': 16,
-        'id_hml': 20,
+        'ids': 'cPell',
         'from': '-34.603606, -58.380969',
         'to': '-34.591657, -58.381587',
         'waypoints': [
@@ -101,7 +102,7 @@ corredores = [
         'segmento': 'San Juan - Corrientes',
         'sentido' : 'centro',
         'id': 17,
-        'id_hml': 21,
+        'ids': 'c9int',
         'from': '-34.622146, -58.380568',
         'to': '-34.603577, -58.381222',
         'waypoints': [
@@ -116,7 +117,7 @@ corredores = [
         'segmento': 'San Juan - Corrientes',
         'sentido': 'centro',
         'id': 18,
-        'id_hml': 22,
+        'ids': 'cPell',
         'from': '-34.622133, -58.379994',
         'to': '-34.603608, -58.380970',
         'waypoints': [
@@ -131,7 +132,7 @@ corredores = [
         'segmento': 'Corrientes - San Juan',
         'sentido': 'provincia',
         'id': 19,
-        'id_hml': 23,
+        'ids': 'c9int',
         'from': '-34.60372, -58.38210',
         'to': '-34.62213, -58.38102',
         'waypoints': [
@@ -146,7 +147,7 @@ corredores = [
         'segmento': 'Corrientes - San Juan',
         'sentido' : 'provincia',
         'id': 20,
-        'id_hml': 44,
+        'ids':'cCerr',
         'from': '-34.60374, -58.38222',
         'to': '-34.62215, -58.38143',
         'waypoints': [
@@ -162,7 +163,7 @@ corredores = [
         'segmento': 'Rojas - Casa Rosada',
         'sentido': 'provincia',
         'id': 21,
-        'id_hml': 45,
+        'ids':'cAlem',
         'from': '-34.59501, -58.37287',
         'to': '-34.60727, -58.37029',
         'waypoints': [
@@ -176,7 +177,7 @@ corredores = [
         'segmento': 'Casa Rosada - Rojas',
         'sentido' : 'centro',
         'id': 22,
-        'id_hml': 46,
+        'ids':'cAlem',
         'from': '-34.60660, -58.36964',
         'to': '-34.59497, -58.37265',
         'waypoints': [
@@ -190,7 +191,7 @@ corredores = [
         'segmento': 'Medrano - Obelisco ',
         'sentido' : 'centro',
         'id': 23,
-        'id_hml': 47,
+        'ids':'cCorr',
         'from': '-34.60317, -58.42099',
         'to': '-34.60371, -58.38207',
         'waypoints': [
@@ -205,7 +206,7 @@ corredores = [
         'segmento': 'Pueyrredón - Montevideo',
         'sentido': 'centro',
         'id': 24,
-        'id_hml': 48,
+        'ids':'cRiva',
         'from': '-34.60914, -58.38913',
         'to': '-34.61012, -58.40598',
         'waypoints': [
@@ -219,7 +220,7 @@ corredores = [
         'segmento': 'Montevideo - Plaza de Mayo',
         'sentido': 'centro',
         'id': 25,
-        'id_hml': 49,
+        'ids':'cAvdm',
         'from': '-34.60859, -58.37350',
         'to': '-34.60915, -58.38916',
         'waypoints': [
@@ -233,7 +234,7 @@ corredores = [
         'segmento': 'General Paz - Beiró',
         'sentido' : 'centro',
         'id': 26,
-        'id_hml': 50,
+        'ids':'cSanm',
         'from': '-34.58947, -58.51822',
         'to': '-34.59677, -58.49717',
         'waypoints': [
@@ -247,7 +248,7 @@ corredores = [
         'segmento': 'Beiró - General Paz',
         'sentido' : 'provincia',
         'id': 27,
-        'id_hml': 51,
+        'ids':'cSanm',
         'from': '-34.59677, -58.49717',
         'to': '-34.58947, -58.51822',
         'waypoints': [
@@ -261,7 +262,7 @@ corredores = [
         'segmento': 'Beiró - Juan B. Justo',
         'sentido' : 'centro',
         'id': 28,
-        'id_hml': 52,
+        'ids':'cSanm',
         'from': '-34.59677, -58.49717',
         'to': '-34.60451, -58.45864',
         'waypoints': [
@@ -277,7 +278,7 @@ corredores = [
         'segmento': 'Juan B. Justo - Beiró',
         'sentido' : 'provincia',
         'id': 29,
-        'id_hml': 53,
+        'ids':'cSanm',
         'from': '-34.60451, -58.45864',
         'to': '-34.59677, -58.49717',
         'waypoints': [
@@ -293,7 +294,7 @@ corredores = [
         'segmento': 'Santa Fé - Corrientes',
         'sentido': 'provincia',
         'id': 30,
-        'id_hml': 54,
+        'ids': 'cJuan',
         'from': '-34.57824, -58.42660',
         'to': '-34.59472, -58.44439',
         'waypoints': [
@@ -307,7 +308,7 @@ corredores = [
         'segmento': 'Corrientes - Santa Fé',
         'sentido' : 'centro',
         'id': 31,
-        'id_hml': 55,
+        'ids': 'cJuan',
         'from': '-34.59472, -58.44439',
         'to': '-34.57824, -58.42660',
         'waypoints': [
@@ -321,7 +322,7 @@ corredores = [
         'segmento': 'Nazca - Corrientes',
         'sentido' : 'centro',
         'id': 32,
-        'id_hml': 56,
+        'ids': 'cJuan',
         'from': '-34.61803, -58.47614',
         'to': '-34.59472, -58.44439',
         'waypoints': [
@@ -336,7 +337,7 @@ corredores = [
         'segmento': 'Corrientes - Nazca',
         'sentido' : 'provincia',
         'id': 33,
-        'id_hml': 57,
+        'ids': 'cJuan',
         'from': '-34.59472, -58.44439',
         'to': '-34.61803, -58.47614',
         'waypoints': [
@@ -351,7 +352,7 @@ corredores = [
         'segmento': 'Nazca - General Paz',
         'sentido' : 'provincia',
         'id': 34,
-        'id_hml': 58,
+        'ids': 'cJuan',
         'from': '-34.61803, -58.47614',
         'to': '-34.63474, -58.52899',
         'waypoints': [
@@ -367,7 +368,7 @@ corredores = [
         'segmento': 'General Paz - Nazca',
         'sentido' : 'centro',
         'id': 35,
-        'id_hml': 59,
+        'ids': 'cJuan',
         'from': '-34.63474, -58.52899',
         'to': '-34.61803, -58.47614',
         'waypoints': [
@@ -383,7 +384,7 @@ corredores = [
         'segmento': '9 de julio - Estado de Israel',
         'sentido' : 'centro',
         'id': 36,
-        'id_hml': 60,
+        'ids': 'cCord',
         'from': '-34.59908, -58.38193',
         'to': '-34.59768, -58.42352',
         'waypoints': [
@@ -399,7 +400,7 @@ corredores = [
         'segmento': 'Estado de Israel - Dorrego',
         'sentido' : 'centro',
         'id': 37,
-        'id_hml': 61,
+        'ids': 'cCord',
         'from': '-34.59768, -58.42352',
         'to': '-34.58452, -58.44478',
         'waypoints': [
@@ -414,7 +415,7 @@ corredores = [
         'segmento': 'San Juan - Casa Rosada',
         'sentido' : 'centro',
         'id': 38,
-        'id_hml': 62,
+        'ids':'cPase',
         'from': '-34.62172, -58.36835',
         'to': '-34.60944, -58.36932',
         'waypoints': [
@@ -428,7 +429,7 @@ corredores = [
         'segmento': 'Casa Rosada - San Juan',
         'sentido': 'provincia',
         'id': 39,
-        'id_hml': 63,
+        'ids':'cPase',
         'from': '-34.60951, -58.36957',
         'to': '-34.62168, -58.36835',
         'waypoints': [
@@ -442,7 +443,7 @@ corredores = [
         'segmento': 'General Paz - Congreso',
         'sentido' : 'centro',
         'id': 40,
-        'id_hml': 64,
+        'ids':'cCabi',
         'from': '-34.53942, -58.47538',
         'to': '-34.55533, -58.46268',
         'waypoints': [
@@ -456,7 +457,7 @@ corredores = [
         'segmento': 'Congreso - General Paz',
         'sentido' : 'provincia',
         'id': 41,
-        'id_hml': 65,
+        'ids':'cCabi',
         'from': '-34.55524, -58.46264',
         'to': '-34.53934, -58.47532',
         'waypoints': [
@@ -471,7 +472,7 @@ corredores = [
         'segmento': 'Lacroze - Congreso',
         'sentido' : 'provincia',
         'id': 42,
-        'id_hml': 66,
+        'ids':'cCabi',
         'from': '-34.56994, -58.44491',
         'to': '-34.55547, -58.46253',
         'waypoints': [
@@ -486,7 +487,7 @@ corredores = [
         'segmento': 'Congreso - Lacroze',
         'sentido': 'centro',
         'id': 43,
-        'id_hml': 67,
+        'ids':'cCabi',
         'from': '-34.55547, -58.46253',
         'to': '-34.56994, -58.44491',
         'waypoints': [
@@ -501,7 +502,7 @@ corredores = [
         'segmento': 'Lacroze - Juan B. Justo',
         'sentido' : 'centro',
         'id': 44,
-        'id_hml': 68,
+        'ids':'cCabi',
         'from': '-34.56994, -58.44491',
         'to': '-34.57818, -58.42663',
         'waypoints': [
@@ -514,7 +515,7 @@ corredores = [
         'segmento': 'Juan B. Justo - Lacroze',
         'sentido' : 'provincia',
         'id': 45,
-        'id_hml': 69,
+        'ids':'cCabi',
         'from': '-34.57818, -58.42663',
         'to': '-34.56994, -58.44491',
         'waypoints': [
@@ -527,7 +528,7 @@ corredores = [
         'segmento': 'Mitre - Córdoba',
         'sentido' : 'provincia',
         'id': 46,
-        'id_hml': 70,
+        'ids':'cPuey',
         'from': '-34.60888, -58.40605',
         'to': '-34.59849, -58.40376',
         'waypoints': [
@@ -540,7 +541,7 @@ corredores = [
         'segmento': 'Córdoba - Mitre',
         'sentido' : 'centro',
         'id': 47,
-        'id_hml': 71,
+        'ids':'cPuey',
         'from': '-34.59849, -58.40376',
         'to': '-34.60888, -58.40605',
         'waypoints': [
@@ -553,7 +554,7 @@ corredores = [
         'segmento': 'Cerrito - Sarmiento',
         'sentido' : 'provincia',
         'id': 48,
-        'id_hml': 16,
+        'ids':'cLibe',
         'from': '-34.58878, -58.38193',
         'to': '-34.57547, -58.41399',
         'waypoints': [
@@ -568,6 +569,7 @@ corredores = [
         'segmento': 'Sarmiento - Cerrito',
         'sentido' : 'centro',
         'id': 49,
+        'ids':'cLibe',
         'from': '-34.57547, -58.41399',
         'to': '-34.58878, -58.38193',
         'waypoints': [
@@ -582,6 +584,7 @@ corredores = [
         'segmento': 'Sarmiento - La Pampa',
         'sentido': 'provincia',
         'id': 50,
+        'ids':'cLibe',
         'from': '-34.57489, -58.41509',
         'to': '-34.55943, -58.44534',
         'waypoints': [
@@ -597,6 +600,7 @@ corredores = [
         'segmento': 'La Pampa - Sarmiento',
         'sentido': 'centro',
         'id': 51,
+        'ids':'cLibe',
         'from': '-34.55943, -58.44534',
         'to': '-34.57489, -58.41509',
         'waypoints': [
@@ -612,6 +616,7 @@ corredores = [
         'segmento': 'La Pampa - General Paz',
         'sentido' : 'provincia',
         'id': 52,
+        'ids':'cLibe',
         'from': '-34.55954, -58.44530',
         'to': '-34.53584, -58.46684',
         'waypoints': [
@@ -628,6 +633,7 @@ corredores = [
         'segmento': 'General Paz - La Pampa',
         'sentido' : 'centro',
         'id': 53,
+        'ids': 'cLibe',
         'from': '-34.53584, -58.46684',
         'to': '-34.55954, -58.44530',
         'waypoints': [
@@ -644,6 +650,7 @@ corredores = [
         'segmento': 'Cerrito - Sarmiento',
         'sentido' : 'provincia',
         'id': 54,
+        'ids':'cAlco',
         'from': '-34.58512, -58.38854',
         'to': '-34.57161, -58.41189',
         'waypoints': [
@@ -657,6 +664,7 @@ corredores = [
         'segmento': 'Sarmiento - Udaondo',
         'sentido' : 'provincia',
         'id': 55,
+        'ids':'cAlco',
         'from': '-34.57161, -58.41189',
         'to': '-34.54629, -58.45211',
         'waypoints': [
@@ -674,6 +682,7 @@ corredores = [
         'segmento': '9 de julio - Sarmiento',
         'sentido': 'provincia',
         'id': 56,
+        'ids':'cIlli',
         'from': '-34.59127, -58.38180',
         'to': '-34.56703, -58.40772',
         'waypoints': [
@@ -689,6 +698,7 @@ corredores = [
         'segmento': 'Sarmiento - 9 de julio',
         'sentido' : 'centro',
         'id': 57,
+        'ids':'cIlli',
         'from': '-34.56736, -58.40795',
         'to': '-34.59116, -58.38207',
         'waypoints': [

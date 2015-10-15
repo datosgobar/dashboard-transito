@@ -43,11 +43,13 @@ logger = dashboard_logging(config="analisis/logging.json", name=__name__)
 
 
 class MyAdapter(HTTPAdapter):
+
     def init_poolmanager(self, connections, maxsize, block=False):
         self.poolmanager = PoolManager(num_pools=connections,
                                        maxsize=maxsize,
                                        block=block,
                                        ssl_version=ssl.PROTOCOL_TLSv1)
+
 
 def auth_sqlalchemy():
     sqlalchemy_backend = SqlAlchemyBackend(config.db_url)
@@ -81,16 +83,6 @@ logger.info("Listening on port {0} ip {1}".format(ip, port))
 
 class dataSemaforos(BaseNamespace, BroadcastMixin):
 
-    def init(self):
-        with open(os.path.abspath("analisis/template.json")) as templatecorredores:
-            template_buffer = buffer(templatecorredores.read())
-            self.template = json.loads(template_buffer.__str__())
-
-    def clean(self):
-        for key, value in self.template['corredores'].iteritems():
-            self.template['corredores'][key]['segmentos_provincia'] = []
-            self.template['corredores'][key]['segmentos_capital'] = []
-
     # metodo que escucha on_<<CHANNELL>>(self, msg) enviado desde el front
     def on_receive(self, msg):
 
@@ -99,7 +91,6 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
 
     def recv_connect(self):
 
-        self.init()
         logger.info("connect, emit data")
         while True:
             self.clean()

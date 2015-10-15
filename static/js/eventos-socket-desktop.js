@@ -24,7 +24,7 @@ socket.on('disconnect', function(e) {
 socket.on('independencia', function(data) {
 	actualizacionDesktop(data);
 });
-socket.on('Illia', function(data) {
+socket.on('illia', function(data) {
 	actualizacionDesktop(data);
 });
 socket.on('9_de_julio', function(data) {
@@ -45,13 +45,13 @@ socket.on('corrientes', function(data) {
 socket.on('rivadavia', function(data) {
 	actualizacionDesktop(data);
 });
-socket.on('av_de_mayo', function(data) {
+socket.on('av._de_mayo', function(data) {
 	actualizacionDesktop(data);
 });
 socket.on('san_martin', function(data) {
 	actualizacionDesktop(data);
 });
-socket.on('juan_b_justo', function(data) {
+socket.on('juan_b._justo', function(data) {
 	actualizacionDesktop(data);
 });
 socket.on('cordoba', function(data) {
