@@ -55,7 +55,7 @@ referencia_corredores, referencia_sentidos = asignacion(
 def buildSegmentos(segment):
     return {
         "id": int(segment.id),
-        "nombreSegmento": "",
+        "nombreSegmento": [corredor.segmento for corredor in tabla_corredores if corredor.id == int(segment.id)][0],
         "timestamp_medicion": str(segment.timestamp_medicion),
         "tiempo": int(segment.tiempo),
         "velocidad": int(segment.velocidad),
@@ -71,41 +71,38 @@ def buildSegmentos(segment):
 
 def parserEmitData(self):
 
-    update = tabla_segment_snapshot
-
-    template = {'corredores': {nombre: {'nombre': '', 'id': '', 'segmentos_capital': [], 'segmentos_provincia': []} for nombre in corredores.keys() if nombre}}
+    template = {'corredores': {nombre: {'nombre': '', 'id': '', 'segmentos_capital': [], 'segmentos_provincia': []}
+                               for nombre in corredores.keys() if nombre}}
 
     for corredor, ids in corredores.iteritems():
         template['corredores'][corredor]['id'] = ids
         template['corredores'][corredor][
             'nombre'] = corredor.replace("_", " ").title()
 
-    if len(update):
-        for i in range(len(update)):
+    if len(tabla_segment_snapshot):
+        for segment in tabla_segment_snapshot:
             for corredor, segmentosids in referencia_corredores.iteritems():
-                if update[i][0] in segmentosids:
-                    if update[i][0] in referencia_sentidos['centro']:
-                        #logger.info("{0} {1} {2}".format(update[i][0], c,'centro'))
+                if segment.id in segmentosids:
+                    if segment.id in referencia_sentidos['centro']:
                         template['corredores'][corredor][
-                            'segmentos_capital'].append(buildSegmentos(update[i]))
+                            'segmentos_capital'].append(buildSegmentos(segment))
                     else:
-                        #logger.info("{0} {1} {2}".format(update[i][0], c, 'prov'))
                         template['corredores'][corredor][
-                            'segmentos_provincia'].append(buildSegmentos(update[i]))
+                            'segmentos_provincia'].append(buildSegmentos(segment))
                 else:
                     continue
 
-        for corredor in ("juan_b_justo", "libertador", "cerrito", "9_de_julio", "pellegrini", "alcorta"):
+        for corredor in ("juan_b._justo", "libertador", "cerrito", "9_de_julio", "pellegrini", "alcorta"):
             template['corredores'][corredor]['segmentos_capital'].reverse()
             template['corredores'][corredor]['segmentos_provincia'].reverse()
 
         for channell in referencia_corredores.keys():
-            #logger.info("channel {0} template {1}".format(channell, template['corredores'][channell]))
+            # logger.info("channel {0} template {1}".format(channell, template['corredores'][channell]))
             logger.info("updateo channel {0}".format(channell))
             self.emit(channell, template['corredores'][channell])
             # time.sleep(0.5)update[0][1]
-            ultima_actualizacion = (
-                datetime.datetime.now() - dateutil.parser.parse(str(update[0][1]))).seconds / 60
+            ultima_actualizacion = (datetime.datetime.now(
+            ) - dateutil.parser.parse(str(tabla_segment_snapshot[0].timestamp_medicion))).seconds / 60
         self.emit("ultima_actualizacion", ultima_actualizacion)
     else:
         logger.info("sin datos en tabla")
