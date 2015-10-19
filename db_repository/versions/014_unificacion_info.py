@@ -6,7 +6,7 @@ from migrate import *
 
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
-from info_corredores import corredores
+from info_corredores import corredores, latlng_mapa
 from unidecode import unidecode
 
 import sys
@@ -32,6 +32,7 @@ Waypoints = Table(
     Column('id', ForeignKey("corredores.id"), primary_key=True),
     Column('desde', String(240), nullable=False),
     Column('hasta', String(240), nullable=False),
+    Column('latlngmapa', String(240), nullable=False),
     Column('linestring', String(240), nullable=False),
 )
 
@@ -62,6 +63,7 @@ def add_corredores(Base, session):
             id=info_corredores['id'],
             desde=info_corredores['from'],
             hasta=info_corredores['to'],
+            latlngmapa=latlng_mapa[info_corredores['ids']]['latlng'],
             linestring=info_corredores['waypoints']
         ))
     session.commit()

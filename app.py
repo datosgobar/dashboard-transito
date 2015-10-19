@@ -37,6 +37,13 @@ engine = create_engine(db_url)
 Base.prepare(engine, reflect=True)
 Anomaly = Base.classes.anomaly
 Corredores = Base.classes.corredores
+Causas = Base.classes.causa
+TipoCorte = Base.classes.tipo_corte
+Waypoints = Base.classes.waypoints
+
+tabla_waypoints = session.query(Waypoints).all()
+tabla_causas = session.query(Causas).all()
+tabla_cortes = session.query(TipoCorte).all()
 tabla_corredores = session.query(Corredores).all()
 monkey.patch_all()
 
@@ -150,10 +157,36 @@ import json
 @bottle.route('/segmentos')
 def views_info():
     bottle_auth.require(fail_redirect='/login')
-    return {"success": True,  "nombresDeCorredores": {
-        str(corredor.id): {"corredor": corredor.corredor, "nombreSegmento": corredor.segmento}
-        for corredor in tabla_corredores if corredor}
-    }
+    corredores = {str(corredor.id): {"corredor": corredor.corredor, "nombreSegmento": corredor.segmento}
+                  for corredor in tabla_corredores if corredor}
+    return {"success": True,  "nombresDeCorredores": corredores}
+
+
+@bottle.route('/geolocalizacion')
+def views_info():
+    bottle_auth.require(fail_redirect='/login')
+    ref = dict({(c.id, c.ids) for c in tabla_corredores if c})
+    geo = dict(set((ref[point.id], ("latlng", point.latlngmapa))
+                   for point in tabla_waypoints if point))
+    for key in geo:
+        geo[key] = dict([geo[key]])
+    return {"success": True,  "geolocalizacion": geo}
+
+
+@bottle.route('/tipos_cortes')
+def views_info():
+    bottle_auth.require(fail_redirect='/login')
+    tipos_cortes = [{"id": cortes.id, "descripcion": cortes.descripcion}
+                    for cortes in tabla_cortes if cortes]
+    return {"success": True,  "cortes": tipos_cortes}
+
+
+@bottle.route('/causas')
+def views_info():
+    bottle_auth.require(fail_redirect='/login')
+    causas = [{"id": causas.id, "descripcion": causas.descripcion}
+              for causas in tabla_causas if causas]
+    return {"success": True,  "causas": causas}
 
 
 @bottle.route('/desktop')

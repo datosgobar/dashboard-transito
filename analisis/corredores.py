@@ -55,7 +55,7 @@ referencia_corredores, referencia_sentidos = asignacion(
 def buildSegmentos(segment):
     return {
         "id": int(segment.id),
-        "nombreSegmento": [corredor.segmento for corredor in tabla_corredores if corredor.id == int(segment.id)][0],
+#        "nombreSegmento": [corredor.segmento for corredor in tabla_corredores if corredor.id == int(segment.id)][0],
         "timestamp_medicion": str(segment.timestamp_medicion),
         "tiempo": int(segment.tiempo),
         "velocidad": int(segment.velocidad),
@@ -95,9 +95,9 @@ def parserEmitData(self):
                 else:
                     continue
 
-        for corredor in ("juan_b._justo", "libertador", "cerrito", "9_de_julio", "pellegrini", "alcorta"):
+        for corredor in ("juan_b._justo", "libertador", "pellegrini", "alcorta"):
             template['corredores'][corredor]['segmentos_capital'].reverse()
-            template['corredores'][corredor]['segmentos_provincia'].reverse()
+            template['corredores'][corredor]['segmentos_provincia'].reverse()    
 
         for channell in referencia_corredores.keys():
             # logger.info("channel {0} template {1}".format(channell, template['corredores'][channell]))

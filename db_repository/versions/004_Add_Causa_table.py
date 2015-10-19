@@ -9,6 +9,7 @@ import sys
 import os
 import json
 
+from info_corredores import causas
 sys.path.insert(1, "../")
 import config
 
@@ -34,10 +35,7 @@ def add_causas(Base, session):
     """
     # pdb.set_trace()
     Causa = Base.classes.causa
-    file_causas = os.path.realpath("../dashboard-operativo-transito/static/data/causas.json")
-    with open(file_causas) as causas_data:
-        causas = json.load(causas_data)
-    for causa in causas['causas']:
+    for causa in causas:
         if not session.query(Causa).filter(Causa.id == causa['id']).count():
             session.add(
                 Causa(descripcion=causa['descripcion'].encode('utf-8'), id=causa['id']))

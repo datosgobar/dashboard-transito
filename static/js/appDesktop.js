@@ -4,11 +4,7 @@ var anomaliasDescripcion = ["--","Intermedia","Grave"]
 
 // Trae JSON con listado de segmentos
 var nombresDeCorredores = (function () {
-
-    var info = {"corredor": "", "nombreSegmento": "",  "sentido": "",
-        "anomalia": "", "tiempo": "",  "demora": "", "corte": "", "causa": "", "descripcion":""}
-    corredores = {}
-    
+    corredores = {}  
     $.ajax({
         'async': false,
         'global': false,
@@ -16,13 +12,21 @@ var nombresDeCorredores = (function () {
         'dataType': "json",
         'success': function (data) {
             for (var i = 10; i<58;i++){
-                corredores[parseInt(i).toString()] = { "corredor": data['nombresDeCorredores'][i]['corredor'], "nombreSegmento": data['nombresDeCorredores'][i]['nombreSegmento'], "sentido": "", "anomalia": "", "tiempo": "",  "demora": "", "corte": "", "causa": "", "descripcion":"" }
+                corredores[parseInt(i).toString()] = {
+                        "anomalia": "",
+                        "causa": "",
+                        "corredor": data['nombresDeCorredores'][i]['corredor'],
+                        "corte": "",
+                        "demora": "",
+                        "descripcion": "",
+                        "nombreSegmento": data['nombresDeCorredores'][i]['nombreSegmento'],
+                        "sentido": "",
+                        "tiempo": ""
+                 }
             }
         }
     });
-
     return corredores;
-
 })();
 
 // Trae JSON con geolocalizacion de los corredores
@@ -31,13 +35,13 @@ var geolocalizacion = (function () {
     $.ajax({
         'async': false,
         'global': false,
-        'url': "_static/data/geolocalizacion.json",
+        'url': "/geolocalizacion",
         'dataType': "json",
         'success': function (data) {
             archivo = data;
         }
     });
-    return archivo;
+    return archivo['geolocalizacion'];
 })(); 
 
 // Trae JSON con listado de causas de una anomalia
@@ -46,7 +50,7 @@ var causasAnomalias = (function() {
     $.ajax({
         'async': false,
         'global': false,
-        'url': "_static/data/causas.json",
+        'url': "/causas",
         'dataType': "json",
         'success': function(data) {
             archivo = data;
