@@ -5,24 +5,24 @@ var anomaliasDescripcion = ["--","Intermedia","Grave"]
 // Trae JSON con listado de segmentos
 var nombresDeCorredores = (function () {
 
-    var info = {"corredor": "", "nombreSegmento": "",  "sentido": "", 
+    var info = {"corredor": "", "nombreSegmento": "",  "sentido": "",
         "anomalia": "", "tiempo": "",  "demora": "", "corte": "", "causa": "", "descripcion":""}
     corredores = {}
-    for (var i = 10; i<58;i++){
-        corredores[parseInt(i).toString()] = info
-    }
-    // var archivo = null;
-    // $.ajax({
-    //     'async': false,
-    //     'global': false,
-    //     'url': "_static/data/segmentos.json",
-    //     'dataType': "json",
-    //     'success': function (data) {
-    //         archivo = data;
-    //     }
-    // });
+    
+    $.ajax({
+        'async': false,
+        'global': false,
+        'url': "/segmentos",
+        'dataType': "json",
+        'success': function (data) {
+            for (var i = 10; i<58;i++){
+                corredores[parseInt(i).toString()] = { "corredor": data['nombresDeCorredores'][i]['corredor'], "nombreSegmento": data['nombresDeCorredores'][i]['nombreSegmento'], "sentido": "", "anomalia": "", "tiempo": "",  "demora": "", "corte": "", "causa": "", "descripcion":"" }
+            }
+        }
+    });
 
     return corredores;
+
 })();
 
 // Trae JSON con geolocalizacion de los corredores

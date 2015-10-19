@@ -150,6 +150,6 @@
 		var trafico = new google.maps.TrafficLayer();
   		trafico.setMap(map);
 	</script>		
-    <script type="text/javascript" src="_static/js/appDesktop.min.js"></script>
+    <script type="text/javascript" src="_static/js/appDesktop.js"></script>
 </body>
 </html>

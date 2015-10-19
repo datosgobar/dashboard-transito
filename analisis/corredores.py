@@ -69,6 +69,10 @@ def buildSegmentos(segment):
     }
 
 
+def nombre_corredor(ids):
+    return [corredor.corredor for corredor in tabla_corredores if corredor.ids == ids]
+
+
 def parserEmitData(self):
 
     template = {'corredores': {nombre: {'nombre': '', 'id': '', 'segmentos_capital': [], 'segmentos_provincia': []}
@@ -76,8 +80,7 @@ def parserEmitData(self):
 
     for corredor, ids in corredores.iteritems():
         template['corredores'][corredor]['id'] = ids
-        template['corredores'][corredor][
-            'nombre'] = corredor.replace("_", " ").title()
+        template['corredores'][corredor]['nombre'] = nombre_corredor(ids)[0]
 
     if len(tabla_segment_snapshot):
         for segment in tabla_segment_snapshot:

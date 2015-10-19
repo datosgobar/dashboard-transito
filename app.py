@@ -36,7 +36,8 @@ db_url = config.db_url
 engine = create_engine(db_url)
 Base.prepare(engine, reflect=True)
 Anomaly = Base.classes.anomaly
-
+Corredores = Base.classes.corredores
+tabla_corredores = session.query(Corredores).all()
 monkey.patch_all()
 
 logger = dashboard_logging(config="analisis/logging.json", name=__name__)
@@ -85,14 +86,15 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
 
     # metodo que escucha on_<<CHANNELL>>(self, msg) enviado desde el front
     def on_receive(self, msg):
-
-        if msg:
-            logger.info("{0}".format(msg))
+        logger.info("{0}".format(msg))
+        logger.info("esto llega desde el front {0}".format(msg))
 
     def recv_connect(self):
 
         logger.info("connect, emit data")
+
         while True:
+            time.sleep(2)
             parserEmitData(self)
             time.sleep(60)
 
@@ -140,6 +142,18 @@ def login_post():
 def views_index():
     bottle_auth.require(fail_redirect='/login')
     return bottle.template('index')
+
+
+import json
+
+
+@bottle.route('/segmentos')
+def views_info():
+    bottle_auth.require(fail_redirect='/login')
+    return {"success": True,  "nombresDeCorredores": {
+        str(corredor.id): {"corredor": corredor.corredor, "nombreSegmento": corredor.segmento}
+        for corredor in tabla_corredores if corredor}
+    }
 
 
 @bottle.route('/desktop')
