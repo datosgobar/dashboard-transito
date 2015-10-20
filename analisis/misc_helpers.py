@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from waypoints import waypoints_config
-
 import json
 import pandas as pd
 import numpy as np
@@ -17,6 +15,21 @@ import json
 
 from corredores import referencia_corredores, referencia_sentidos
 from pprint import pprint
+
+from conn_sql import sqlalchemyDEBUG, instanceSQL
+from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy import create_engine, exc, event
+
+conn_sql = instanceSQL(cfg=config)
+conn_sql.createDBEngine()
+session = conn_sql.session()
+
+Corredores = conn_sql.instanceTable(unique_table='corredores')
+Waypoints = conn_sql.instanceTable(unique_table='waypoints')
+
+tabla_corredores = session.query(Corredores).all()
+tabla_cw = session.query(Corredores).join(
+    Waypoints, Corredores.id == Waypoints.id).all()
 
 
 def loadData(infn):
@@ -43,8 +56,9 @@ def loadData(infn):
 acentro = referencia_sentidos['centro']
 aprovincia = referencia_sentidos['provincia']
 
-corrdata = dict([(wp["id"], {"name": wp["name"], "description":wp[
-                "description"]}) for wp in waypoints_config])
+corrdata = dict(
+    [(wp.id, {"name": wp.corredor, "description": wp.segmento}) for wp in tabla_corredores])
+
 for k in corrdata.keys():
     corrdata[k][
         "label"] = "%s - %s" % (corrdata[k]["name"], corrdata[k]["description"])
@@ -54,21 +68,21 @@ for k in corrdata.keys():
         corrdata[k]["corr"] = "%s_%s" % (corrdata[k]["name"], "aprovincia")
 
 
-import waypoints
 data = []
 coords = []
 split_latlng = lambda s: map(float, s.split(", "))
-for e in waypoints.waypoints_config:
+for e in tabla_cw:
     data += [{
-        "name": e["name"],
-        "description": e["description"],
-        "id": e["id"],
-        "corr": corrdata[e["id"]]["corr"],
-        "num_waypoints": 2 + len(e["waypoints"])
+        "name": e.corredor,
+        "description": e.segmento,
+        "id": e.id,
+        "corr": corrdata[e.id]["corr"],
+        "num_waypoints": 2 + len(set(eval(e.waypoints_collection[0].linestring)))
     }]
-    for (i, (lat, lng)) in enumerate(map(split_latlng, [e["from"]] + e["waypoints"] + [e["to"]])):
+    for (i, (lat, lng)) in enumerate(map(split_latlng, [e.waypoints_collection[0].desde] +
+                                         list(eval(e.waypoints_collection[0].linestring)) + [e.waypoints_collection[0].hasta])):
         coords += [{
-            "id": e["id"],
+            "id": e.id,
             "wp_index": i,
             "lat": lat,
             "lng": lng,

@@ -33,9 +33,9 @@ Anomaly = conn_sql.instanceTable(unique_table='anomaly')
 Historical = conn_sql.instanceTable(unique_table='historical')
 SegmentSnapshot = conn_sql.instanceTable(unique_table='segment_snapshot')
 
+
 session = conn_sql.session()
-detection_params_fn = os.path.dirname(
-    os.path.realpath(__file__)) + "/detection_params.json"
+detection_params_fn = os.path.dirname(os.path.realpath(__file__)) + "/detection_params.json"
 
 
 def getData(url):
