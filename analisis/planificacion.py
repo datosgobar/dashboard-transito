@@ -15,7 +15,7 @@ import json
 
 import pandas as pd
 import numpy as np
-#import statsmodels.api as sm
+
 import seaborn as sns
 import matplotlib.pyplot as plt
 import json
@@ -45,22 +45,15 @@ valids = valids[(valids["timestamp_end"] - valids["timestamp_start"]).dt.seconds
 valids = valids[["iddevice", "timestamp_start", "timestamp_end"]].copy()
 
 
-reportdata = pd.merge(
-    valids, corrdata[["iddevice", "corr", "name"]], on=["iddevice"])
+reportdata = pd.merge(valids, corrdata[["iddevice", "corr", "name"]], on=["iddevice"])
 reportdata = reportdata.rename(columns={"name": "corr_name"})
-reportdata["duration"] = (
-    reportdata.timestamp_end - reportdata.timestamp_start).dt.seconds / 60.
+reportdata["duration"] = (reportdata.timestamp_end - reportdata.timestamp_start).dt.seconds / 60.
 
-reportdata["daytype"] = anomalyDetection.dfdaytype.loc[
-    reportdata.timestamp_start.dt.weekday].values[:, 0]
+reportdata["daytype"] = anomalyDetection.dfdaytype.loc[reportdata.timestamp_start.dt.weekday].values[:, 0]
+reportdata["corr"] = corrdata.set_index("iddevice").loc[reportdata["iddevice"]].reset_index()["corr"]
+reportdata.loc[reportdata["corr"].str.endswith("_acentro"), "sentido"] = "centro"
 
-reportdata["corr"] = corrdata.set_index(
-    "iddevice").loc[reportdata["iddevice"]].reset_index()["corr"]
-
-reportdata.loc[
-    reportdata["corr"].str.endswith("_acentro"), "sentido"] = "centro"
-reportdata.loc[
-    reportdata["corr"].str.endswith("_aprovincia"), "sentido"] = "provincia"
+reportdata.loc[reportdata["corr"].str.endswith("_aprovincia"), "sentido"] = "provincia"
 
 
 #############

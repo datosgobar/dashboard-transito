@@ -12,7 +12,7 @@ import pandas as pd
 import dateutil.parser
 import datetime
 import json
-
+import config
 from corredores import referencia_corredores, referencia_sentidos
 from pprint import pprint
 
@@ -28,8 +28,7 @@ Corredores = conn_sql.instanceTable(unique_table='corredores')
 Waypoints = conn_sql.instanceTable(unique_table='waypoints')
 
 tabla_corredores = session.query(Corredores).all()
-tabla_cw = session.query(Corredores).join(
-    Waypoints, Corredores.id == Waypoints.id).all()
+tabla_cw = session.query(Corredores).join(Waypoints, Corredores.id == Waypoints.id).all()
 
 
 def loadData(infn):

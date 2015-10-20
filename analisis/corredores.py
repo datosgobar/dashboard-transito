@@ -87,8 +87,7 @@ def parserEmitData(self):
             for corredor, segmentosids in referencia_corredores.iteritems():
                 if segment.id in segmentosids:
                     if segment.id in referencia_sentidos['centro']:
-                        template['corredores'][corredor][
-                            'segmentos_capital'].append(buildSegmentos(segment))
+                        template['corredores'][corredor]['segmentos_capital'].append(buildSegmentos(segment))
                     else:
                         template['corredores'][corredor][
                             'segmentos_provincia'].append(buildSegmentos(segment))
