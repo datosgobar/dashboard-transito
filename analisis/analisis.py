@@ -31,6 +31,7 @@ conn_sql.createDBEngine()
 Causa = conn_sql.instanceTable(unique_table='causa')
 Anomaly = conn_sql.instanceTable(unique_table='anomaly')
 Historical = conn_sql.instanceTable(unique_table='historical')
+Corredores = conn_sql.instanceTable(unique_table='corredores')
 SegmentSnapshot = conn_sql.instanceTable(unique_table='segment_snapshot')
 
 session = conn_sql.session()
@@ -213,9 +214,7 @@ def executeLoop(desde, hasta, dontdownload=False):
         hasta = "2015-07-12T00:00:01-00:00"
     """
 
-    sensores = [10, 12, 57, 53, 51, 49, 40, 43, 37, 36, 21, 31, 33, 35, 13, 14, 18, 17, 23,
-                24, 25, 26, 28, 30, 32, 45, 47, 38, 44, 48, 48, 11, 56, 54, 55, 41, 22, 16, 15,
-                19, 20, 10, 27, 29, 34, 39, 42, 46, 50, 52]
+    sensores = [c[0] for c in session.query(Corredores.id).all() if c]
 
     if dontdownload:
         has_new_records = True
@@ -538,10 +537,7 @@ def performAnomalyAnalysis(ahora=None):
 
 def downloadAndLoadLastMonth():
 
-    sensores = [10, 12, 57, 53,
-                51, 49, 40, 43, 37, 36, 21, 31, 33, 35, 13, 14, 18, 17, 23, 24, 25, 26,
-                28, 30, 32, 45, 47, 38, 44, 48, 48, 11, 56, 54, 55, 41, 22, 16, 15, 19,
-                20, 10, 27, 29, 34, 39, 42, 46, 50, 52]
+    sensores = [c[0] for c in session.query(Corredores.id).all() if c]
 
     hasta = datetime.datetime.now()
     desde = hasta - datetime.timedelta(days=28)
