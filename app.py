@@ -101,7 +101,6 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
         logger.info("connect, emit data")
 
         while True:
-            time.sleep(2)
             parserEmitData(self)
             time.sleep(60)
 
