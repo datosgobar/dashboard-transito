@@ -40,11 +40,13 @@ Corredores = Base.classes.corredores
 Causas = Base.classes.causa
 TipoCorte = Base.classes.tipo_corte
 Waypoints = Base.classes.waypoints
+Estadisticas = Base.classes.estadisticas
 
 tabla_waypoints = session.query(Waypoints).all()
 tabla_causas = session.query(Causas).all()
 tabla_cortes = session.query(TipoCorte).all()
 tabla_corredores = session.query(Corredores).all()
+tabla_estadisticas = session.query(Estadisticas).all()
 monkey.patch_all()
 
 logger = dashboard_logging(config="analisis/logging.json", name=__name__)
@@ -186,6 +188,16 @@ def views_info():
     causas = [{"id": causas.id, "descripcion": causas.descripcion}
               for causas in tabla_causas if causas]
     return {"success": True,  "causas": causas}
+
+
+@bottle.route('/estadisticas')
+def views_info():
+    """
+        los graficos generados se tienen que extraer de la tabla y bindearlos al front
+    """    
+    bottle_auth.require(fail_redirect='/login')
+    graficos_ids = [{"id":grafico.id, "filename":grafico.filename.replace(".png", ""), "name":grafico.id} for grafico in tabla_estadisticas if grafico]
+    return bottle.template('planificacion', graficos_ids=graficos_ids)
 
 
 @bottle.route('/desktop')

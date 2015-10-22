@@ -21,9 +21,8 @@ TablaSegmentSnapshot = conn_sql.instanceTable(unique_table='segment_snapshot')
 session = conn_sql.session()
 
 logger = dashboard_logging(config="logging.json", name=__name__)
-
 tabla_corredores = session.query(TablaCorredores).all()
-tabla_segment_snapshot = session.query(TablaSegmentSnapshot).all()
+
 
 corredores = dict(set(
     [(c.corredor.lower().replace(" ", "_"), c.ids) for c in tabla_corredores if c.ids]))
@@ -74,6 +73,8 @@ def nombre_corredor(ids):
 
 
 def parserEmitData(self):
+    
+    tabla_segment_snapshot = session.query(TablaSegmentSnapshot).all()
 
     template = {'corredores': {nombre: {'nombre': '', 'id': '', 'segmentos_capital': [], 'segmentos_provincia': []}
                                for nombre in corredores.keys() if nombre}}

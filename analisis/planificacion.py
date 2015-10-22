@@ -26,7 +26,7 @@ import misc_helpers
 
 conn_sql = instanceSQL(cfg=config)
 conn_sql.createDBEngine()
-
+Estadisticas = conn_sql.instanceTable(unique_table='estadisticas')
 
 # Datos de los de corredores
 corrdata = []
@@ -47,7 +47,7 @@ def asignacion_frame(tabla, **args):
         for e, col in enumerate(args):
             columns.append(args.get('col{0}'.format(e)))
     valids = pd.read_sql_table(
-        "anomaly", conn_sql._instanceSQL__engine, columns=["timestamp_asignacion"])
+        tabla, conn_sql._instanceSQL__engine, columns=columns)
     return valids
 
 
@@ -62,26 +62,20 @@ def generacion_tabla():
 valids["timestamp_start"] = pd.to_datetime(valids["timestamp_start"])
 valids["timestamp_end"] = pd.to_datetime(valids["timestamp_end"])
 valids["iddevice"] = valids[["id_segment"]]
-
 valids = valids[
     (valids["timestamp_end"] - valids["timestamp_start"]).dt.seconds >= 20 * 60]
-
 valids = valids[["iddevice", "timestamp_start", "timestamp_end"]].copy()
+
 
 reportdata = pd.merge(
     valids, corrdata[["iddevice", "corr", "name"]], on=["iddevice"])
-
 reportdata = reportdata.rename(columns={"name": "corr_name"})
-
 reportdata["duration"] = (
     reportdata.timestamp_end - reportdata.timestamp_start).dt.seconds / 60.
-
 reportdata["daytype"] = anomalyDetection.dfdaytype.loc[
     reportdata.timestamp_start.dt.weekday].values[:, 0]
-
 reportdata["corr"] = corrdata.set_index(
     "iddevice").loc[reportdata["iddevice"]].reset_index()["corr"]
-
 reportdata.loc[
     reportdata["corr"].str.endswith("_acentro"), "sentido"] = "centro"
 reportdata.loc[reportdata["corr"].str.endswith(
@@ -104,7 +98,6 @@ aux.columns.name = None
 
 aux["promedio"] = (aux["centro"] + aux["provincia"]) / 2
 aux["semana"] = aux["semana"].astype(str)
-
 ax = aux[["semana", "promedio"]].plot(x='semana', color="r")
 ax = aux[["semana", "centro", "provincia"]].plot(x='semana', kind='bar', ax=ax)
 
@@ -115,12 +108,26 @@ def generador_csv(tabla):
     pass
 
 
-def guardar_grafico(grafico):
-    pass
+def guardar_grafico(**grafico):
+    """
+        los graficos generados se tienen que almacenar en una tabla con su 
+        filename, identificador y periodo generado
 
+        tabla, csv y carpeta
+    """
+    session = conn_sql.session()
+    __filename__ = "{0}_bar.png".format(grafico.get('filename'))
+    nuevo_grafico = Estadisticas(id="bar1", name="bar", filename=__filename__, timestamp_start="2015-09-22", timestamp_end="2015-10-22")
+    session.add(nuevo_grafico)
+    session.commit()
+    plt.savefig(os.path.abspath(".") + "/static/img/{0}".format(__filename__))
 
-__filename__ = "{0}_{1}_semana_bar.png".format(timestamp_start, timestamp_end)
-plt.savefig(
-    os.path.abspath(".") + "/static/planificacion/{0}".format(__filename__))
 # plt.show()
 #############
+
+
+def main():
+    guardar_grafico(filename="test_bar")
+
+if __name__ == '__main__':
+    main()

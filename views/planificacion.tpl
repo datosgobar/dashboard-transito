@@ -12,14 +12,26 @@
 <body>
     <div>
         <h2 style="color:white">Filtros</h2>
-<select>
-  <option>Filtro 1</option>
-  <option>Filtro 2</option>
-  <option>Filtro 3</option>
-</select> 
+        <select id="filtros">
+          % for grafico in graficos_ids:
+            <option id="{{ grafico['filename'] }}">{{ grafico['name'] }}</option>
+          % end 
+        </select>
         <h1 style="color:white">Super Planificacion</h1>
-        <img src="_static/planificacion/test.png"></img>
+        <img id="select_img"></img>
     </div>
+  <script type="text/javascript">
+    $('body').on('change', '#filtros', function (){
+      $( "#filtros option:selected").attr('id', function(a, id_selc, c){
+        $("#select_img").attr("src", "_static/css/img/" + id_selc + ".png");
+      })
+    });
+
+    $( document ).ready(function() {
+      var id_selc = $( "#filtros option:selected").attr('id')
+      $("#select_img").attr("src", "_static/img/" + id_selc + ".png");
+    });
+  </script>
 </body>
 </html>
 
