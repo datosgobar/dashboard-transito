@@ -186,6 +186,14 @@ Para parar todos los procesos correr
 $ supervisorctl stop all
 ```
 
+### Planificacion - estadisticas.
+
+Generacion de graficos
+
+```sh
+$ python analisis/planificacion.py
+```
+
 
 * Abrir el navegador en [http://127.0.0.1:8080/](http://127.0.0.1:8080/)
 

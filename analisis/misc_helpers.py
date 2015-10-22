@@ -25,10 +25,7 @@ conn_sql.createDBEngine()
 session = conn_sql.session()
 
 Corredores = conn_sql.instanceTable(unique_table='corredores')
-Waypoints = conn_sql.instanceTable(unique_table='waypoints')
-
 tabla_corredores = session.query(Corredores).all()
-tabla_cw = session.query(Corredores).join(Waypoints, Corredores.id == Waypoints.id).all()
 
 
 def loadData(infn):
@@ -70,7 +67,7 @@ for k in corrdata.keys():
 data = []
 coords = []
 split_latlng = lambda s: map(float, s.split(", "))
-for e in tabla_cw:
+for e in tabla_corredores:
     data += [{
         "name": e.corredor,
         "description": e.segmento,
