@@ -194,9 +194,10 @@ def views_info():
 def views_info():
     """
         los graficos generados se tienen que extraer de la tabla y bindearlos al front
-    """    
+    """
     bottle_auth.require(fail_redirect='/login')
-    graficos_ids = [{"id":grafico.id, "filename":grafico.filename.replace(".png", ""), "name":grafico.id} for grafico in tabla_estadisticas if grafico]
+    graficos_ids = [{"id": grafico.id,  "filename": grafico.filename.replace(".png", ""),
+                     "name": "{0} - {1}".format(grafico.timestamp_start, grafico.timestamp_end)} for grafico in tabla_estadisticas if grafico]
     return bottle.template('planificacion', graficos_ids=graficos_ids)
 
 

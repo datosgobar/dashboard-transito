@@ -8,8 +8,8 @@ estadisticas = Table(
     Column('id', String(240), primary_key=True),
     Column('name', String(240), nullable=False),
     Column('filename', String(240), nullable=False),
-    Column('timestamp_start', DateTime, nullable=False),
-    Column('timestamp_end', DateTime, nullable=False)
+    Column('timestamp_start', Date, nullable=False),
+    Column('timestamp_end', Date, nullable=False)
 )
 
 
