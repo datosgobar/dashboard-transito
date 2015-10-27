@@ -1,11 +1,15 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from sqlalchemy import *
 from migrate import *
+from sqlalchemy.schema import Sequence
 
 meta = MetaData()
 
 estadisticas = Table(
     'estadisticas', meta,
-    Column('id', String(240), primary_key=True),
+    Column('idg', String(40), primary_key=True),
     Column('name', String(240), nullable=False),
     Column('filename', String(240), nullable=False),
     Column('timestamp_start', Date, nullable=False),

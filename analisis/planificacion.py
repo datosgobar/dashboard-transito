@@ -27,13 +27,22 @@ import misc_helpers
 
 conn_sql = instanceSQL(cfg=config)
 conn_sql.createDBEngine()
+
 Estadisticas = conn_sql.instanceTable(unique_table='estadisticas')
+Historical = conn_sql.instanceTable(unique_table='historical')
 
 
 class GraficosPlanificacion(object):
 
     def __init__(self):
 
+        self.metadata = {'id': '', 'name': '', 'filename': '',
+                         'timestamp_start': '', 'timestamp_end': ''}
+        self.savepath_file = os.path.abspath(".") + "/static/img/{0}"
+        self.savepath_csv = None
+        self.timestamp_end = datetime.datetime.now().date()
+        self.timestamp_start = self.timestamp_end - datetime.timedelta(weeks=4)
+        self.__flg = False
         self.corrdata = []
         self.valids = None
         self.reportdata = None
@@ -44,14 +53,46 @@ class GraficosPlanificacion(object):
             self.corrdata += [d]
 
         self.__grp = {
-            'mensaules': [
-                "anomalias_ultimomes", "duracion_media_anomalias",
-                "duracion_perceniles", "cant_anomalias_pc",  "indice_anomalias_cuadras"
+            'mensuales': [
+                "anomalias_ultimo_mes", "duracion_media_anomalias",
+                "duracion_perceniles", "cant_anomalias_xcorredores",  "indice_anomalias_xcuadras"
             ],
             'semanales': []
         }
 
-    def anomalias_ultimomes(self):
+    def generacion_graficos(self, tipo="mensuales"):
+        for grafico in self.__grp[tipo]:
+            eval("self.{0}()".format(grafico))
+
+    def generador_csv(self):
+        pass
+
+    def guardar_grafico(self, grafico={}):
+        """
+            los graficos generados se tienen que almacenar en una tabla con su 
+            filename, identificador y periodo generado
+
+            tabla, csv y carpeta
+        """
+        session = conn_sql.session()
+        nuevo_grafico = Estadisticas(id=grafico.get("id"), name=grafico.get('name'),
+                                     filename=grafico.get('filename'), timestamp_start=grafico.get('timestamp_start'),
+                                     timestamp_end=grafico.get('timestamp_end')
+                                     )
+        session.add(nuevo_grafico)
+        session.commit()
+        plt.savefig(self.save_path.format(grafico.get("filename")))
+
+    def __instanciar_args(self, **args):
+        if show:
+            plt.show()
+        if csv:
+            # self.generador_csv()
+        if save:
+            self.guardar_grafico(grafico=args.get('params'))
+        plt.close()
+
+    def anomalias_ultimo_mes(self, save=True, csv=True, show=False):
         """
             Cantidad total de anomalias en las ultimas 4 semanas
         """
@@ -68,10 +109,15 @@ class GraficosPlanificacion(object):
         ax = aux[["semana", "promedio"]].plot(x='semana', color="r")
         ax = aux[["semana", "centro", "provincia"]].plot(
             x='semana', kind='bar', ax=ax)
-        plt.title('Cantidad de anomalias en las ultimas 4 semanas')
-        plt.close()
+        self.__instanciar_args(ifsave=save, ifcsv=csv, ifshow=show, params={
+            'id': 'aum{0}{1}'.format(self.timestamp_start.day, self.timestamp_end.day)
+            "name": "Cantidad total de anomalias en las ultimas 4 semanas",
+            'filename': '.png',
+            'timestamp_start': self.timestamp_start,
+            'timestamp_end': self.timestamp_end
+        })
 
-    def duracion_media_anomalias(slef):
+    def duracion_media_anomalias(self, save=True, csv=True, show=False):
         """
             Duracion media de anomalias por corredor
         """
@@ -83,7 +129,7 @@ class GraficosPlanificacion(object):
         # plt.show()
         plt.close()
 
-    def duracion_perceniles(self):
+    def duracion_perceniles(self, save=True, csv=True, show=False):
         """
             Duracion en Perceniles
         """
@@ -95,7 +141,7 @@ class GraficosPlanificacion(object):
         # plt.show()
         plt.close()
 
-    def cant_anomalias_pc(self):
+    def cant_anomalias_xcorredores(self, save=True, csv=True, show=False):
         """
             Cantidad de anomalias por corredor
         """
@@ -109,35 +155,47 @@ class GraficosPlanificacion(object):
         # plt.show()
         plt.close()
 
-    def indice_anomalias_cuadras(self):
+    def indice_anomalias_xcuadras(self, save=True, csv=True, show=False):
         """
             Indice # anomalias por cuadra
         """
-        aux = self.reportdata.groupby(["corr", "corr_name", "sentido"]).apply(lambda e: e.shape[0]).reset_index()
-        aux = pd.merge(aux, misc_helpers.corrlenghts, on="corr").reset_index(drop=True)
-        aux = aux.rename(columns={0:"anomalias","len":"cuadras"})
-        aux["indice"] = aux["anomalias"] / (aux["cuadras"]/100.)
-        aux = aux[["corr", "indice", "corr_name", "cuadras", "anomalias", "sentido"]].sort("indice", ascending=False)
+        aux = self.reportdata.groupby(["corr", "corr_name", "sentido"]).apply(
+            lambda e: e.shape[0]).reset_index()
+        aux = pd.merge(
+            aux, misc_helpers.corrlenghts, on="corr").reset_index(drop=True)
+        aux = aux.rename(columns={0: "anomalias", "len": "cuadras"})
+        aux["indice"] = aux["anomalias"] / (aux["cuadras"] / 100.)
+        aux = aux[["corr", "indice", "corr_name", "cuadras", "anomalias", "sentido"]].sort(
+            "indice", ascending=False)
         aux["indice"] = aux["indice"].round(2)
-        aux["cuadras"] = (aux["cuadras"]/100).astype(int)
-        display(aux[["corr_name","sentido","indice","cuadras","anomalias"]])
-        sns.barplot(x="corr_name", y="indice", hue="sentido" , data=aux)
+        aux["cuadras"] = (aux["cuadras"] / 100).astype(int)
+        display(
+            aux[["corr_name", "sentido", "indice", "cuadras", "anomalias"]])
+        sns.barplot(x="corr_name", y="indice", hue="sentido", data=aux)
         plt.xticks(rotation=90)
-        #plt.show()
+        # plt.show()
         plt.close()
 
-    def asignacion_frame(self, **args):
+    def asignacion_frame(self):
+    # def asignacion_frame(self, tabla=Estadisticas, **args):
         """
            valids = asignacion_frame('anomaly', col1="id", col2="timestamp_end", col3="timestamp_end")
            # parse_dates={"timestamp_asignacion": (lambda X: "" if X == None else X)}
         """
-        columns = []
-        if args:
-            args.update({'col0': 'id'})
-            for e, col in enumerate(args):
-                columns.append(args.get('col{0}'.format(e)))
-        self.valids = pd.read_sql_table(
-            tabla, conn_sql._instanceSQL__engine, columns=columns)
+        # columns = []
+        # if args:
+        #     args.update({'col0': 'id'})
+        #     for e, col in enumerate(args):
+        #         columns.append(args.get('col{0}'.format(e)))
+
+        self.valids = pd.read_sql(
+            ('select * from "anomaly" where "timestamp_start" BETWEEN %(dstart)s AND %(dfinish)s'),
+            conn_sql._instanceSQL__engine, params={
+                "dstart": self.timestamp_start, "dfinish": self.timestamp_end
+            }, index_col=['timestamp_start'], columns=["id"]
+        )
+
+        # self.valids = pd.read_sql_table(tabla, conn_sql._instanceSQL__engine, columns=columns)
         return self.valids
 
     def generacion_dataframe(self):
@@ -150,7 +208,6 @@ class GraficosPlanificacion(object):
             (self.valids["timestamp_end"] - self.valids["timestamp_start"]).dt.seconds >= 20 * 60]
         self.valids = self.valids[
             ["iddevice", "timestamp_start", "timestamp_end"]].copy()
-
         self.reportdata = pd.merge(
             valids, corrdata[["iddevice", "corr", "name"]], on=["iddevice"])
         self.reportdata = self.reportdata.rename(columns={"name": "corr_name"})
@@ -164,28 +221,6 @@ class GraficosPlanificacion(object):
             self.reportdata["corr"].str.endswith("_acentro"), "sentido"] = "centro"
         self.reportdata.loc[
             self.reportdata["corr"].str.endswith("_aprovincia"), "sentido"] = "provincia"
-
-    def generacion_grafico(self):
-        pass
-
-    def generador_csv(self):
-        pass
-
-    def guardar_grafico(self, **grafico):
-        """
-            los graficos generados se tienen que almacenar en una tabla con su 
-            filename, identificador y periodo generado
-
-            tabla, csv y carpeta
-        """
-        session = conn_sql.session()
-        __filename__ = "{0}_bar.png".format(grafico.get('filename'))
-        nuevo_grafico = Estadisticas(
-            id="bar2", name=grafico.get('name'), filename=__filename__, timestamp_start="2015-09-22", timestamp_end="2015-10-22")
-        session.add(nuevo_grafico)
-        session.commit()
-        plt.savefig(
-            os.path.abspath(".") + "/static/img/{0}".format(__filename__))
 
 
 def main():
