@@ -2,6 +2,7 @@ node_modules/
 .sass-cache/
 dist/
 build/
+static/img/*.png
 dashboard_operativo_transito.egg-info/
 node_modules/
 *.egg-info/
