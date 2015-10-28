@@ -13,6 +13,7 @@ import dateutil.parser
 import pdb
 import config
 import json
+import os.path
 
 import pandas as pd
 import numpy as np
@@ -46,6 +47,7 @@ class GraficosPlanificacion(object):
         self.valids = {}
         self.reportdata = None
         self.session = conn_sql.session()
+        self.aux = None
 
         for (idseg, data) in misc_helpers.corrdata.items():
             d = data.copy()
@@ -55,7 +57,7 @@ class GraficosPlanificacion(object):
         self.mensuales = {
             "anomalias_ultimo_mes": "Cantidad total de anomalias en las ultimas 4 semanas",
             "duracion_media_anomalias": "Duracion media de anomalias por corredor",
-            "duracion_perceniles": "Duracion en Perceniles",
+            "duracion_en_perceniles": "Duracion en Perceniles",
             "cant_anomalias_xcorredores": "Cantidad de anomalias por corredor",
             "indice_anomalias_xcuadras": "Indice de anomalias por cuadra"
         }
@@ -67,10 +69,15 @@ class GraficosPlanificacion(object):
             'semanales': self.semanales.keys()
         }
 
-        self.asignacion_frame()
-        self.generacion_dataframe()
+        # metodos privados
+        self.__asignacion_frame()
+        self.__generacion_dataframe()
 
     def generacion_graficos(self, tipo="mensuales"):
+        """
+           grafico.generacion_graficos(tipo="mensuales") 
+           grafico.generacion_graficos(tipo="semanales")
+        """
         for grafico in self.__grp[tipo]:
             eval("self.{0}()".format(grafico))
 
@@ -79,35 +86,44 @@ class GraficosPlanificacion(object):
 
     def guardar_grafico(self, grafico={}):
         """
-            los graficos generados se tienen que almacenar en una tabla con su 
-            filename, identificador y periodo generado
-
-            tabla, csv y carpeta
+            grafico.guardar_grafico(grafico={'idg': 'aum3028', 'timestamp_start': datetime.date(2015, 9, 30), 
+                'timestamp_end': datetime.date(2015, 10, 28), 'name': 'Cantidad total de anomalias en las ultimas 4 semanas', 
+                'filename': 'anomalias_ultimo_mes_2015_09_30_2015_10_28.png'})
         """
-        nuevo_grafico = Estadisticas(idg=grafico.get("idg"), name=grafico.get('name'),
-                                     filename=grafico.get('filename'), timestamp_start=grafico.get('timestamp_start'),
-                                     timestamp_end=grafico.get('timestamp_end')
-                                     )
-        self.session.add(nuevo_grafico)
-        self.session.commit()
-        plt.savefig(self.savepath_file.format(grafico.get("filename")))
+        filesave = self.savepath_file.format(grafico.get("filename"))
+        query = self.session.query(Estadisticas)
+        if_count_id = query.filter(Estadisticas.idg == grafico.get("idg")).count()
+        if not if_count_id:
+            nuevo_grafico = Estadisticas(
+                idg=grafico.get("idg"), name=grafico.get('name'), filename=grafico.get('filename'),
+                timestamp_start=grafico.get('timestamp_start'), timestamp_end=grafico.get('timestamp_end')
+            )
+            self.session.add(nuevo_grafico)
+            self.session.commit()
+        if not os.path.exists(filesave):
+            plt.savefig(filesave)
 
     def __instanciar_save(self, **args):
-        print args
-        if args.get("ifshow") == True:
-            print "show"
-            plt.show()
         if args.get("ifcsv") == True:
-            print "csv"
             self.generador_csv()
         if args.get("ifsave"):
-            print "save"
             params = args.get('params')
-            print params
             self.guardar_grafico(grafico=params)
+        if args.get("ifshow") == True:
+            plt.show()
         plt.close()
 
+    def __wrpsave(self, name_func, **args):
+        metadata = self.generar_metadata(name=name_func)
+        self.__instanciar_save(ifsave=args.get("save"), ifcsv=args.get(
+            "csv"), ifshow=args.get("show"), params=metadata)
+
     def generar_metadata(self, name):
+        """
+            grafico.generar_metadata(name=grafico.anomalias_ultimo_mes.__name__)
+            Params
+                name: Nombre del metodo que genera el grafico, segun el tipo, se guarda en self.mensuales o self.semanales| dic
+        """
         start = self.timestamp_start.date()
         end = self.timestamp_end.date()
         filename = "{0}_{1}_{2}.png".format(
@@ -130,35 +146,33 @@ class GraficosPlanificacion(object):
             Cantidad total de anomalias en las ultimas 4 semanas
             grafico.anomalias_ultimo_mes(save=False, csv=False, show=True)
         """
-        aux = self.reportdata.copy()
-        aux = aux.groupby(
-            [aux["timestamp_start"].dt.week, aux["sentido"]]).size()
-        aux = aux.reset_index().rename(
-            columns={"level_0": "semana", 0: "count"})
-        aux = aux.pivot(
-            index='semana', columns='sentido', values='count').reset_index()
-        aux.columns.name = None
-        aux["promedio"] = (aux["centro"] + aux["provincia"]) / 2
-        aux["semana"] = aux["semana"].astype(str)
-        ax = aux[["semana", "promedio"]].plot(x='semana', color="r")
-        ax = aux[["semana", "centro", "provincia"]].plot(
-            x='semana', kind='bar', ax=ax)
-        metadata = self.generar_metadata(
-            name=self.anomalias_ultimo_mes.__name__)
-        self.__instanciar_save(
-            ifsave=save, ifcsv=csv, ifshow=show, params=metadata)
+        self.aux = self.reportdata.copy()
+        self.aux = self.aux.groupby([self.aux["timestamp_start"].dt.week, self.aux["sentido"]]).size()
+        self.aux = self.aux.reset_index().rename(columns={"level_0": "semana", 0: "count"})
+        self.aux = self.aux.pivot(index='semana', columns='sentido', values='count').reset_index()
+        self.aux.columns.name = "Referencia"
+        self.aux["promedio"] = (self.aux["centro"] + self.aux["provincia"]) / 2
+        self.aux["semana"] = self.aux["semana"].astype(str)
+        self.ax = self.aux[["semana", "promedio"]].plot(x='semana', color="r")
+        self.ax = self.aux[["semana", "centro", "provincia"]].plot(x='semana', kind='bar', ax=self.ax)
+        self.__wrpsave(self.anomalias_ultimo_mes.__name__, save=save, csv=csv, show=show)
 
     def duracion_media_anomalias(self, save=True, csv=True, show=False):
         """
             Duracion media de anomalias por corredor
+            grafico.anomalias_ultimo_mes(save=True, csv=True, show=True)
+                Params
+                    save: Guarda su metadata en una tabla en la base de datos.
+                    csv: Guarda la tabla que genera el grafico en un csv
+                    show: Muestra el grafico en pantalla
         """
-        aux = self.reportdata.copy()
-        aux = self.reportdata.groupby(
-            ["corr", "corr_name", "sentido"]).mean()["duration"].reset_index()
-        sns.barplot(x="corr_name", y="duration", hue="sentido", data=aux)
+        self.aux = self.reportdata.copy()
+        self.aux = self.reportdata.groupby(["corr", "corr_name", "sentido"]).mean()["duration"].reset_index()
+        sns.barplot(x="corr_name", y="duration", hue="sentido", data=self.aux)
         plt.xticks(rotation=90)
+        self.__wrpsave(self.duracion_media_anomalias.__name__, save=save, csv=csv, show=show)
 
-    def duracion_perceniles(self, save=True, csv=True, show=False):
+    def duracion_en_perceniles(self, save=True, csv=True, show=False):
         """
             Duracion en Perceniles
         """
@@ -167,39 +181,39 @@ class GraficosPlanificacion(object):
         plt.title('Duracion de en percentiles')
         plt.xlabel("Percentil")
         plt.ylabel("Duracion en minutos")
+        self.__wrpsave(self.duracion_en_perceniles.__name__, save=save, csv=csv, show=show)
 
     def cant_anomalias_xcorredores(self, save=True, csv=True, show=False):
         """
             Cantidad de anomalias por corredor
         """
-        aux = self.reportdata.copy()
-        aux = aux.groupby(["corr", "sentido"]).size().reset_index().rename(
+        self.aux = self.reportdata.copy()
+        self.aux = self.aux.groupby(["corr", "sentido"]).size().reset_index().rename(
             columns={0: "size"})
         f, axarr = plt.subplots(1, 2, sharey=True)
-        aux[aux["sentido"] == "centro"].plot(x="corr", kind="bar", ax=axarr[0])
-        aux[aux["sentido"] == "provincia"].plot(
+        self.aux[self.aux["sentido"] == "centro"].plot(x="corr", kind="bar", ax=axarr[0])
+        self.aux[self.aux["sentido"] == "provincia"].plot(
             x="corr", kind="bar", ax=axarr[1])
+        self.__wrpsave(
+            self.cant_anomalias_xcorredores.__name__, save=save, csv=csv, show=show)
 
     def indice_anomalias_xcuadras(self, save=True, csv=True, show=False):
         """
             Indice de anomalias por cuadra
         """
-        aux = self.reportdata.groupby(["corr", "corr_name", "sentido"]).apply(
-            lambda e: e.shape[0]).reset_index()
-        aux = pd.merge(
-            aux, misc_helpers.corrlenghts, on="corr").reset_index(drop=True)
-        aux = aux.rename(columns={0: "anomalias", "len": "cuadras"})
-        aux["indice"] = aux["anomalias"] / (aux["cuadras"] / 100.)
-        aux = aux[["corr", "indice", "corr_name", "cuadras", "anomalias", "sentido"]].sort(
-            "indice", ascending=False)
-        aux["indice"] = aux["indice"].round(2)
-        aux["cuadras"] = (aux["cuadras"] / 100).astype(int)
-        display(
-            aux[["corr_name", "sentido", "indice", "cuadras", "anomalias"]])
-        sns.barplot(x="corr_name", y="indice", hue="sentido", data=aux)
+        self.aux = self.reportdata.groupby(["corr", "corr_name", "sentido"]).apply(lambda e: e.shape[0]).reset_index()
+        self.aux = pd.merge(self.aux, misc_helpers.corrlenghts, on="corr").reset_index(drop=True)
+        self.aux = self.aux.rename(columns={0: "anomalias", "len": "cuadras"})
+        self.aux["indice"] = self.aux["anomalias"] / (self.aux["cuadras"] / 100.)
+        self.aux = self.aux[["corr", "indice", "corr_name", "cuadras", "anomalias", "sentido"]].sort("indice", ascending=False)
+        self.aux["indice"] = self.aux["indice"].round(2)
+        self.aux["cuadras"] = (self.aux["cuadras"] / 100).astype(int)
+        display(self.aux[["corr_name", "sentido", "indice", "cuadras", "anomalias"]])
+        sns.barplot(x="corr_name", y="indice", hue="sentido", data=self.aux)
         plt.xticks(rotation=90)
+        self.__wrpsave(self.indice_anomalias_xcuadras.__name__, save=save, csv=csv, show=show)
 
-    def asignacion_frame(self):
+    def __asignacion_frame(self):
         # def asignacion_frame(self, tabla=Estadisticas, **args):
         """
            valids = asignacion_frame('anomaly', col1="id", col2="timestamp_end", col3="timestamp_end")
@@ -221,7 +235,7 @@ class GraficosPlanificacion(object):
         # self.valids = pd.read_sql_table(tabla, conn_sql._instanceSQL__engine, columns=columns)
         return self.valids
 
-    def generacion_dataframe(self):
+    def __generacion_dataframe(self):
 
         self.corrdata = pd.DataFrame(self.corrdata)
         self.valids["timestamp_start"] = pd.to_datetime(
@@ -250,8 +264,9 @@ class GraficosPlanificacion(object):
 
 
 def main():
-    grafico = planificacion.GraficosPlanificacion()
-    grafico.anomalias_ultimo_mes()
+    grafico = GraficosPlanificacion()
+    grafico.generacion_graficos()
+    # grafico.anomalias_ultimo_mes()
 
 if __name__ == '__main__':
     main()
