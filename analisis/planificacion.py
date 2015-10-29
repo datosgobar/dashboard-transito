@@ -38,10 +38,23 @@ class GraficosPlanificacion(object):
     def __init__(self):
 
         self.metadata = []
-        self.savepath_file = os.path.abspath(".") + "/static/img/{0}"
-        self.savepath_csv = None
+        self.savepath_folder = os.path.abspath(".") + "/static/graficos/"
+
         self.timestamp_end = datetime.datetime.now()
         self.timestamp_start = self.timestamp_end - datetime.timedelta(weeks=4)
+
+        if not os.path.exists(self.savepath_folder):
+            os.mkdir(self.savepath_folder)
+
+        self.savepath_folder = self.savepath_folder + "{0}_{1}".format(str(self.timestamp_start.date()).replace(
+            "-", ""), str(self.timestamp_end.date()).replace("-", ""))
+
+        if not os.path.exists(self.savepath_folder):
+            os.mkdir(self.savepath_folder)
+
+        self.savepath_file = self.savepath_folder + "/{0}"
+        self.savepath_csv = None
+
         self.__flg = False
         self.corrdata = []
         self.valids = {}
