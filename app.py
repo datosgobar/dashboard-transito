@@ -46,7 +46,6 @@ tabla_waypoints = session.query(Waypoints).all()
 tabla_causas = session.query(Causas).all()
 tabla_cortes = session.query(TipoCorte).all()
 tabla_corredores = session.query(Corredores).all()
-tabla_estadisticas = session.query(Estadisticas).all()
 monkey.patch_all()
 
 logger = dashboard_logging(config="analisis/logging.json", name=__name__)
@@ -190,15 +189,23 @@ def views_info():
     return {"success": True,  "causas": causas}
 
 
+@bottle.route('/info_graficos')
+def graficos():
+    bottle_auth.require(fail_redirect='/login')
+    tabla_estadisticas = session.query(Estadisticas).all()
+    graficoslist = [{"id": grafico.idg,  "filename": grafico.filename, "title": grafico.name,
+                     "timestamp_start": str(grafico.timestamp_start), "timestamp_end": str(grafico.timestamp_end),
+                     "name": "{0} - {1}".format(grafico.timestamp_start, grafico.timestamp_end)} for grafico in tabla_estadisticas if grafico]
+    return {"success": True,  "graficos": graficoslist}
+
+
 @bottle.route('/estadisticas')
 def views_info():
     """
         los graficos generados se tienen que extraer de la tabla y bindearlos al front
     """
     bottle_auth.require(fail_redirect='/login')
-    graficos_ids = [{"id": grafico.id,  "filename": grafico.filename.replace(".png", ""),
-                     "name": "{0} - {1}".format(grafico.timestamp_start, grafico.timestamp_end)} for grafico in tabla_estadisticas if grafico]
-    return bottle.template('planificacion', graficos_ids=graficos_ids)
+    return bottle.template('planificacion')
 
 
 @bottle.route('/desktop')

@@ -11,26 +11,55 @@
 <body>
     <div>
         <h2 style="color:white">ESTADISTICAS MENSUALES</h2>
-        <select id="filtros">
-          % for grafico in graficos_ids:
-            <option id="{{ grafico['filename'] }}">{{ grafico['name'] }}</option>
-          % end 
-        </select>
-        <h1 style="color:white"></h1>
+        <select id="filtros"></select>
+        <h1 id="title" style="color:white"></h1>
         <img id="select_img"></img>
     </div>
     <script type="text/javascript">
-      //var graficos = {{ graficos_ids }}
+
+      var graficos = (function () {
+          var archivo = null;
+          $.ajax({
+              'async': false,
+              'global': false,
+              'url': "/info_graficos",
+              'dataType': "json",
+              'success': function (data) {
+                  archivo = data;
+              }
+          });
+          return archivo['graficos'];
+      })();
+      
+      $.each(graficos, function (i, grafico){
+          $('#filtros').append($('<option>',{
+              value: grafico.name,
+              text : grafico.name,
+              id : grafico.filename
+          }));
+      });
+      
       $('body').on('change', '#filtros', function (){
         $( "#filtros option:selected").attr('id', function(a, id_selc, c){
-          $("#select_img").attr("src", "_static/img/" + id_selc + ".png");
+          $("#select_img").attr("src", "_static/img/" + id_selc);
+          for (var i=0;i<graficos.length;i++){
+            if (graficos[i].filename == id_selc){
+              $("h1").text(graficos[i].title)
+            }
+          }
         })
       });
 
       $( document ).ready(function() {
         var id_selc = $( "#filtros option:selected").attr('id')
-        $("#select_img").attr("src", "_static/img/" + id_selc + ".png");
+        $("#select_img").attr("src", "_static/img/" + id_selc);
+        for (var i=0;i<graficos.length;i++){
+          if (graficos[i].filename == id_selc){
+            $("h1").text(graficos[i].title)
+          }
+        }        
       });
+
     </script>
 </body>
 </html>

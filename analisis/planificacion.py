@@ -92,7 +92,8 @@ class GraficosPlanificacion(object):
         """
         filesave = self.savepath_file.format(grafico.get("filename"))
         query = self.session.query(Estadisticas)
-        if_count_id = query.filter(Estadisticas.idg == grafico.get("idg")).count()
+        if_count_id = query.filter(
+            Estadisticas.idg == grafico.get("idg")).count()
         if not if_count_id:
             nuevo_grafico = Estadisticas(
                 idg=grafico.get("idg"), name=grafico.get('name'), filename=grafico.get('filename'),
@@ -147,15 +148,20 @@ class GraficosPlanificacion(object):
             grafico.anomalias_ultimo_mes(save=False, csv=False, show=True)
         """
         self.aux = self.reportdata.copy()
-        self.aux = self.aux.groupby([self.aux["timestamp_start"].dt.week, self.aux["sentido"]]).size()
-        self.aux = self.aux.reset_index().rename(columns={"level_0": "semana", 0: "count"})
-        self.aux = self.aux.pivot(index='semana', columns='sentido', values='count').reset_index()
+        self.aux = self.aux.groupby(
+            [self.aux["timestamp_start"].dt.week, self.aux["sentido"]]).size()
+        self.aux = self.aux.reset_index().rename(
+            columns={"level_0": "semana", 0: "count"})
+        self.aux = self.aux.pivot(
+            index='semana', columns='sentido', values='count').reset_index()
         self.aux.columns.name = "Referencia"
         self.aux["promedio"] = (self.aux["centro"] + self.aux["provincia"]) / 2
         self.aux["semana"] = self.aux["semana"].astype(str)
         self.ax = self.aux[["semana", "promedio"]].plot(x='semana', color="r")
-        self.ax = self.aux[["semana", "centro", "provincia"]].plot(x='semana', kind='bar', ax=self.ax)
-        self.__wrpsave(self.anomalias_ultimo_mes.__name__, save=save, csv=csv, show=show)
+        self.ax = self.aux[["semana", "centro", "provincia"]].plot(
+            x='semana', kind='bar', ax=self.ax)
+        self.__wrpsave(
+            self.anomalias_ultimo_mes.__name__, save=save, csv=csv, show=show)
 
     def duracion_media_anomalias(self, save=True, csv=True, show=False):
         """
@@ -167,10 +173,12 @@ class GraficosPlanificacion(object):
                     show: Muestra el grafico en pantalla
         """
         self.aux = self.reportdata.copy()
-        self.aux = self.reportdata.groupby(["corr", "corr_name", "sentido"]).mean()["duration"].reset_index()
+        self.aux = self.reportdata.groupby(
+            ["corr", "corr_name", "sentido"]).mean()["duration"].reset_index()
         sns.barplot(x="corr_name", y="duration", hue="sentido", data=self.aux)
         plt.xticks(rotation=90)
-        self.__wrpsave(self.duracion_media_anomalias.__name__, save=save, csv=csv, show=show)
+        self.__wrpsave(
+            self.duracion_media_anomalias.__name__, save=save, csv=csv, show=show)
 
     def duracion_en_perceniles(self, save=True, csv=True, show=False):
         """
@@ -181,7 +189,8 @@ class GraficosPlanificacion(object):
         plt.title('Duracion de en percentiles')
         plt.xlabel("Percentil")
         plt.ylabel("Duracion en minutos")
-        self.__wrpsave(self.duracion_en_perceniles.__name__, save=save, csv=csv, show=show)
+        self.__wrpsave(
+            self.duracion_en_perceniles.__name__, save=save, csv=csv, show=show)
 
     def cant_anomalias_xcorredores(self, save=True, csv=True, show=False):
         """
@@ -191,7 +200,8 @@ class GraficosPlanificacion(object):
         self.aux = self.aux.groupby(["corr", "sentido"]).size().reset_index().rename(
             columns={0: "size"})
         f, axarr = plt.subplots(1, 2, sharey=True)
-        self.aux[self.aux["sentido"] == "centro"].plot(x="corr", kind="bar", ax=axarr[0])
+        self.aux[self.aux["sentido"] == "centro"].plot(
+            x="corr", kind="bar", ax=axarr[0])
         self.aux[self.aux["sentido"] == "provincia"].plot(
             x="corr", kind="bar", ax=axarr[1])
         self.__wrpsave(
@@ -201,17 +211,23 @@ class GraficosPlanificacion(object):
         """
             Indice de anomalias por cuadra
         """
-        self.aux = self.reportdata.groupby(["corr", "corr_name", "sentido"]).apply(lambda e: e.shape[0]).reset_index()
-        self.aux = pd.merge(self.aux, misc_helpers.corrlenghts, on="corr").reset_index(drop=True)
+        self.aux = self.reportdata.groupby(["corr", "corr_name", "sentido"]).apply(
+            lambda e: e.shape[0]).reset_index()
+        self.aux = pd.merge(
+            self.aux, misc_helpers.corrlenghts, on="corr").reset_index(drop=True)
         self.aux = self.aux.rename(columns={0: "anomalias", "len": "cuadras"})
-        self.aux["indice"] = self.aux["anomalias"] / (self.aux["cuadras"] / 100.)
-        self.aux = self.aux[["corr", "indice", "corr_name", "cuadras", "anomalias", "sentido"]].sort("indice", ascending=False)
+        self.aux["indice"] = self.aux[
+            "anomalias"] / (self.aux["cuadras"] / 100.)
+        self.aux = self.aux[["corr", "indice", "corr_name", "cuadras", "anomalias", "sentido"]].sort(
+            "indice", ascending=False)
         self.aux["indice"] = self.aux["indice"].round(2)
         self.aux["cuadras"] = (self.aux["cuadras"] / 100).astype(int)
-        display(self.aux[["corr_name", "sentido", "indice", "cuadras", "anomalias"]])
+        display(
+            self.aux[["corr_name", "sentido", "indice", "cuadras", "anomalias"]])
         sns.barplot(x="corr_name", y="indice", hue="sentido", data=self.aux)
         plt.xticks(rotation=90)
-        self.__wrpsave(self.indice_anomalias_xcuadras.__name__, save=save, csv=csv, show=show)
+        self.__wrpsave(
+            self.indice_anomalias_xcuadras.__name__, save=save, csv=csv, show=show)
 
     def __asignacion_frame(self):
         # def asignacion_frame(self, tabla=Estadisticas, **args):
@@ -264,9 +280,9 @@ class GraficosPlanificacion(object):
 
 
 def main():
+
     grafico = GraficosPlanificacion()
     grafico.generacion_graficos()
-    # grafico.anomalias_ultimo_mes()
 
 if __name__ == '__main__':
     main()
