@@ -41,10 +41,10 @@
       
       $('body').on('change', '#filtros', function (){
         $( "#filtros option:selected").attr('id', function(a, id_selc, c){
-          $("#select_img").attr("src", "_static/img/" + id_selc);
           for (var i=0;i<graficos.length;i++){
             if (graficos[i].filename == id_selc){
               $("h1").text(graficos[i].title)
+              $("#select_img").attr("src", graficos[i].filename);
             }
           }
         })
@@ -52,10 +52,10 @@
 
       $( document ).ready(function() {
         var id_selc = $( "#filtros option:selected").attr('id')
-        $("#select_img").attr("src", "_static/img/" + id_selc);
         for (var i=0;i<graficos.length;i++){
           if (graficos[i].filename == id_selc){
             $("h1").text(graficos[i].title)
+            $("#select_img").attr("src", graficos[i].filename);
           }
         }        
       });

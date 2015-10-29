@@ -109,7 +109,7 @@ class GraficosPlanificacion(object):
             Estadisticas.idg == grafico.get("idg")).count()
         if not if_count_id:
             nuevo_grafico = Estadisticas(
-                idg=grafico.get("idg"), name=grafico.get('name'), filename=grafico.get('filename'),
+                idg=grafico.get("idg"), name=grafico.get('name'), filename=filesave.replace(os.path.abspath(".") + "/static/", "/_static/"),
                 timestamp_start=grafico.get('timestamp_start'), timestamp_end=grafico.get('timestamp_end')
             )
             self.session.add(nuevo_grafico)
