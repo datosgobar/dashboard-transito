@@ -11,10 +11,14 @@
 <body>
     <div>
         <h2 style="color:white">ESTADISTICAS MENSUALES</h2>
-        <select id="filtros"></select>
+        <select id="filtros">
+          <option id='mensuales'>MENSUALES</option>
+          <option id='semanales'>SEMANALES</option>
+        </select>
         <h1 id="title" style="color:white"></h1>
         <img id="select_img"></img>
     </div>
+    <div id="entry"></div>
     <script type="text/javascript">
 
       var graficos = (function () {
@@ -31,37 +35,32 @@
           return archivo['graficos'];
       })();
       
-      $.each(graficos, function (i, grafico){
-          $('#filtros').append($('<option>',{
-              value: grafico.name,
-              text : grafico.name,
-              id : grafico.filename
-          }));
-      });
-      
+      var insert_graficos = function(periodo){
+        $.each(graficos[periodo], function (i, grafico){
+            $('#entry').append(
+              $('<h2>',{
+                text : grafico.title,
+                style : "color:white"
+              }),
+              $('<img>',{
+                value: grafico.name,
+                text : grafico.title,
+                src : grafico.filename
+              })
+            )
+        });
+      }
+
       $('body').on('change', '#filtros', function (){
         $( "#filtros option:selected").attr('id', function(a, id_selc, c){
-          for (var i=0;i<graficos.length;i++){
-            if (graficos[i].filename == id_selc){
-              $("h1").text(graficos[i].title)
-              $("#select_img").attr("src", graficos[i].filename);
-            }
-          }
+          insert_graficos(id_selc)
         })
       });
 
       $( document ).ready(function() {
-        var id_selc = $( "#filtros option:selected").attr('id')
-        for (var i=0;i<graficos.length;i++){
-          if (graficos[i].filename == id_selc){
-            $("h1").text(graficos[i].title)
-            $("#select_img").attr("src", graficos[i].filename);
-          }
-        }        
+        insert_graficos("mensuales")
       });
 
     </script>
 </body>
 </html>
-
-

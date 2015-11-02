@@ -143,8 +143,7 @@ class GraficosPlanificacion(object):
         filename = "{0}_{1}_{2}.png".format(
             name, str(start).replace("-", "_"), str(end).replace("-", "_"))
         idn = name.split("_")
-        _id = "{0}{1}{2}{3}{4}".format(
-            idn[0][0], idn[1][0], idn[2][0], start.day, end.day)
+        _id = "{0}{1}{2}{3}{4}".format(idn[0][0], idn[1][0], idn[2][0], str(start).replace("-", ""), end.day)
         metadata_grafico = {
             "idg": _id,
             "name": self.mensuales[name],
