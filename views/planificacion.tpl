@@ -22,7 +22,7 @@
     <script type="text/javascript">
 
       var graficos = (function () {
-          var archivo = null;
+          var info_graficos = null;
           $.ajax({
               'async': false,
               'global': false,
@@ -32,10 +32,17 @@
                   archivo = data;
               }
           });
-          return archivo['graficos'];
+          return info_graficos['graficos'];
       })();
-      
+
+      var remove_elem  = function(elem){
+        for (var i =0;i<elem.length;i++){
+          $(elem[i]).remove()
+        }
+      }
+
       var insert_graficos = function(periodo){
+        remove_elem(['h2', 'img'])
         $.each(graficos[periodo], function (i, grafico){
             $('#entry').append(
               $('<h2>',{

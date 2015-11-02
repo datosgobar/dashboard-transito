@@ -193,9 +193,10 @@ def views_info():
 def graficos():
     bottle_auth.require(fail_redirect='/login')
     tabla_estadisticas = session.query(Estadisticas).all()
-    graficoslist = {"mensuales": [{"id": grafico.idg,  "filename": grafico.filename, "title": grafico.name,
-                     "timestamp_start": str(grafico.timestamp_start), "timestamp_end": str(grafico.timestamp_end),
-                     "name": "{0} - {1}".format(grafico.timestamp_start, grafico.timestamp_end)} for grafico in tabla_estadisticas if grafico], "semanales": []}
+    graficoslist = {"mensuales": [
+        {"id": grafico.idg,  "filename": grafico.filename, "title": grafico.name,
+         "timestamp_start": str(grafico.timestamp_start), "timestamp_end": str(grafico.timestamp_end),
+         "name": "{0} - {1}".format(grafico.timestamp_start, grafico.timestamp_end)} for grafico in tabla_estadisticas if grafico],  "semanales": []}
     return {"success": True,  "graficos": graficoslist}
 
 
