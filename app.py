@@ -12,7 +12,7 @@ import requests
 
 from analisis import *
 from analisis import config
-from bottle import error, request, redirect, response
+from bottle import error, request, redirect, response, hook, route
 from socketio import socketio_manage
 from socketio.mixins import BroadcastMixin
 from socketio.namespace import BaseNamespace
@@ -43,11 +43,13 @@ logger = dashboard_logging(config="analisis/logging.json", name=__name__)
 
 
 class MyAdapter(HTTPAdapter):
+
     def init_poolmanager(self, connections, maxsize, block=False):
         self.poolmanager = PoolManager(num_pools=connections,
                                        maxsize=maxsize,
                                        block=block,
                                        ssl_version=ssl.PROTOCOL_TLSv1)
+
 
 def auth_sqlalchemy():
     sqlalchemy_backend = SqlAlchemyBackend(config.db_url)
@@ -55,7 +57,7 @@ def auth_sqlalchemy():
 
 
 auth = auth_sqlalchemy()
-auth._engine.echo = config.db["debug"] #DB del Login en modo debug si es true
+auth._engine.echo = config.db["debug"]  # DB del Login en modo debug si es true
 bottle_auth = Cork(backend=auth)
 
 app = bottle.app()
@@ -110,6 +112,11 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
         logger.info("discconect")
 
 # genero ruta / que envia template index
+
+
+@hook('after_request')
+def x_frame_same_origin():
+    response.headers["X-Frame-Options"] = 'sameorigin'
 
 
 @bottle.route('/login')
