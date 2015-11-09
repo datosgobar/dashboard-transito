@@ -128,10 +128,12 @@ La función que se llama periódicamente es executeLoop() ejecutada por schedule
 ```sh
 $ python analisis/schedule.py 
 ```
+
 Para el ambiente de proudccion correr:
 ```sh
 $ python analisis/schedule.py production 
 ```
+
 * Instanciar Python Server en Local
 ```sh
 $ gunicorn -b 0.0.0.0:8080 --worker-class socketio.sgunicorn.GeventSocketIOWorker app:app 
