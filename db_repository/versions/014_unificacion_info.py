@@ -64,7 +64,7 @@ def add_corredores(Base, session):
             desde=info_corredores['from'],
             hasta=info_corredores['to'],
             latlngmapa=latlng_mapa[info_corredores['ids']]['latlng'],
-            linestring=info_corredores['waypoints']
+            linestring=str(info_corredores['waypoints'])
         ))
     session.commit()
     session.close()
