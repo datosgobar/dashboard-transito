@@ -129,10 +129,11 @@ def log(msj):
         log_file.write("%s\n" % msj)
 
 
-def getDataFromGoogle():
+def getDataFromGoogle(production):
     now_date = datetime.datetime.now()
     data = fetch_data()
-    # push_to_api(data, now_date)
+    if production:
+        push_to_api(data, now_date)
     raw_data = []
     timestamp = now_date.strftime('%Y-%m-%dT%H:%M:%S-03:00')
     for k in data.keys():

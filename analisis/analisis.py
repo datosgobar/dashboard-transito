@@ -193,7 +193,7 @@ def loadApiDump(fn):
     has_new_records = updateDB(filtered_data)
 
 
-def executeLoop(desde, hasta, dontdownload=False):
+def executeLoop(desde, hasta, dontdownload=False, production=False):
     """
         datetime.datetime.strptime(
             "2015-07-15T18:00:00-00:00"[:-6], '%Y-%m-%dT%H:%M:%S')
@@ -205,7 +205,7 @@ def executeLoop(desde, hasta, dontdownload=False):
     if dontdownload:
         has_new_records = True
     else:
-        raw_data = getDataFromGoogle()
+        raw_data = getDataFromGoogle(production=production)
         filtered_data = filterDuplicateRecords(raw_data, desde, hasta)
         has_new_records = updateDB(filtered_data)
     if has_new_records:
