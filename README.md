@@ -48,6 +48,7 @@ $ sudo pip install numpy==1.9.2
 $ sudo pip install pandas==0.16.2
 $ sudo pip install gunicorn==19.3.0
 $ sudo pip install supervisor==3.1.3
+$ sudo pip install requests==2.7.0
 ```
 
 ## Instalacion bajo Mac
