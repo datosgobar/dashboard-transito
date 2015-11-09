@@ -22,7 +22,7 @@
     <script type="text/javascript">
 
       var graficos = (function () {
-          var info_graficos = null;
+          var archivo = null;
           $.ajax({
               'async': false,
               'global': false,
@@ -32,7 +32,7 @@
                   archivo = data;
               }
           });
-          return info_graficos['graficos'];
+          return archivo['graficos'];
       })();
 
       var remove_elem  = function(elem){

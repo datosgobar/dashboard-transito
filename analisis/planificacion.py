@@ -18,6 +18,7 @@ import os.path
 import pandas as pd
 import numpy as np
 
+import csv
 import os
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -38,22 +39,23 @@ class GraficosPlanificacion(object):
     def __init__(self):
 
         self.metadata = []
-        self.savepath_folder = os.path.abspath(".") + "/static/graficos/"
+        self.savepath_folder = os.path.abspath(".") + "/static/graficos/{0}/"
+        self._mkdir(self.savepath_folder.replace("/{0}/", "/"))
 
         self.timestamp_end = datetime.datetime.now()
         self.timestamp_start = self.timestamp_end - datetime.timedelta(weeks=4)
 
-        if not os.path.exists(self.savepath_folder):
-            os.mkdir(self.savepath_folder)
+        self.__mkdir(self.savepath_folder, ['csv', 'img'])
 
-        self.savepath_folder = self.savepath_folder + "{0}_{1}".format(str(self.timestamp_start.date()).replace(
-            "-", ""), str(self.timestamp_end.date()).replace("-", ""))
+        self.savepath_folder = self.savepath_folder + "{0}_{1}".format(
+            str(self.timestamp_start.date()).replace("-", ""),
+            str(self.timestamp_end.date()).replace("-", "")
+        )
 
-        if not os.path.exists(self.savepath_folder):
-            os.mkdir(self.savepath_folder)
+        self.__mkdir(self.savepath_folder, ['csv', 'img'])
 
-        self.savepath_file = self.savepath_folder + "/{0}"
-        self.savepath_csv = None
+        self.savepath_file = self.savepath_folder.format('img') + "/{0}"
+        self.savepath_csv = self.savepath_folder.format('csv') + "/{0}"
 
         self.__flg = False
         self.corrdata = []
@@ -82,25 +84,37 @@ class GraficosPlanificacion(object):
             'semanales': self.semanales.keys()
         }
 
-        # metodos privados
         self.__asignacion_frame()
         self.__generacion_dataframe()
 
+    def _mkdir(self, folder):
+        print folder
+        if not os.path.exists(folder):
+            os.mkdir(folder)
+
+    def __mkdir(self, path, folders):
+
+        for folder in folders:
+            __folder = path.format(folder)
+            self._mkdir(__folder)
+
     def generacion_graficos(self, tipo="mensuales"):
         """
-           grafico.generacion_graficos(tipo="mensuales") 
+           grafico.generacion_graficos(tipo="mensuales")
            grafico.generacion_graficos(tipo="semanales")
         """
         for grafico in self.__grp[tipo]:
             eval("self.{0}()".format(grafico))
 
-    def generador_csv(self):
-        pass
+    def generador_csv(self, filename, tabla):
+
+        filesave = self.savepath_csv.format(filename.replace(".png", ".csv"))
+        self.aux.to_csv(filesave)
 
     def guardar_grafico(self, grafico={}):
         """
-            grafico.guardar_grafico(grafico={'idg': 'aum3028', 'timestamp_start': datetime.date(2015, 9, 30), 
-                'timestamp_end': datetime.date(2015, 10, 28), 'name': 'Cantidad total de anomalias en las ultimas 4 semanas', 
+            grafico.guardar_grafico(grafico={'idg': 'aum3028', 'timestamp_start': datetime.date(2015, 9, 30),
+                'timestamp_end': datetime.date(2015, 10, 28), 'name': 'Cantidad total de anomalias en las ultimas 4 semanas',
                 'filename': 'anomalias_ultimo_mes_2015_09_30_2015_10_28.png'})
         """
         filesave = self.savepath_file.format(grafico.get("filename"))
@@ -118,14 +132,14 @@ class GraficosPlanificacion(object):
             plt.savefig(filesave)
 
     def __instanciar_save(self, **args):
+        params = args.get('params')
         if args.get("ifcsv") == True:
-            self.generador_csv()
+            self.generador_csv(params.get("filename"), self.aux)
         if args.get("ifsave"):
-            params = args.get('params')
             self.guardar_grafico(grafico=params)
         if args.get("ifshow") == True:
             plt.show()
-        plt.close()
+            plt.close()
 
     def __wrpsave(self, name_func, **args):
         metadata = self.generar_metadata(name=name_func)
@@ -143,7 +157,8 @@ class GraficosPlanificacion(object):
         filename = "{0}_{1}_{2}.png".format(
             name, str(start).replace("-", "_"), str(end).replace("-", "_"))
         idn = name.split("_")
-        _id = "{0}{1}{2}{3}{4}".format(idn[0][0], idn[1][0], idn[2][0], str(start).replace("-", ""), end.day)
+        _id = "{0}{1}{2}{3}{4}".format(
+            idn[0][0], idn[1][0], idn[2][0], str(start).replace("-", ""), end.day)
         metadata_grafico = {
             "idg": _id,
             "name": self.mensuales[name],
@@ -174,6 +189,12 @@ class GraficosPlanificacion(object):
             x='semana', kind='bar', ax=self.ax)
         self.__wrpsave(
             self.anomalias_ultimo_mes.__name__, save=save, csv=csv, show=show)
+
+    def tiempo_promedio_xcorredor(self):
+        self.aux = self.reportdata.copy()
+        self.aux = self.aux.groupby(
+            [self.aux["iddevice"], self.aux["duration"]]).size()
+        # dict(self.aux.keys()).keys()
 
     def duracion_media_anomalias(self, save=True, csv=True, show=False):
         """
@@ -244,8 +265,10 @@ class GraficosPlanificacion(object):
     def __asignacion_frame(self):
         # def asignacion_frame(self, tabla=Estadisticas, **args):
         """
-           valids = asignacion_frame('anomaly', col1="id", col2="timestamp_end", col3="timestamp_end")
-           # parse_dates={"timestamp_asignacion": (lambda X: "" if X == None else X)}
+           valids = asignacion_frame(
+               'anomaly', col1="id", col2="timestamp_end", col3="timestamp_end")
+           # parse_dates={"timestamp_asignacion": (lambda X: "" if X == None
+           # else X)}
         """
         # columns = []
         # if args:
@@ -260,7 +283,8 @@ class GraficosPlanificacion(object):
             }
         )
 
-        # self.valids = pd.read_sql_table(tabla, conn_sql._instanceSQL__engine, columns=columns)
+        # self.valids = pd.read_sql_table(tabla, conn_sql._instanceSQL__engine,
+        # columns=columns)
         return self.valids
 
     def __generacion_dataframe(self):
