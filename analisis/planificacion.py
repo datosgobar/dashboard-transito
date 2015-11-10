@@ -246,11 +246,9 @@ class GraficosPlanificacion(object):
         """
         self.aux = self.reportdata.groupby(["corr", "corr_name", "sentido"]).apply(
             lambda e: e.shape[0]).reset_index()
-        self.aux = pd.merge(
-            self.aux, misc_helpers.corrlenghts, on="corr").reset_index(drop=True)
+        self.aux = pd.merge(self.aux, misc_helpers.corrlenghts, on="corr").reset_index(drop=True)
         self.aux = self.aux.rename(columns={0: "anomalias", "len": "cuadras"})
-        self.aux["indice"] = self.aux[
-            "anomalias"] / (self.aux["cuadras"] / 100.)
+        self.aux["indice"] = self.aux["anomalias"] / (self.aux["cuadras"] / 100.)
         self.aux = self.aux[["corr", "indice", "corr_name", "cuadras", "anomalias", "sentido"]].sort(
             "indice", ascending=False)
         self.aux["indice"] = self.aux["indice"].round(2)

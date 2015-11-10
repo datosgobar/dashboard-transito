@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from sqlalchemy import *
 from migrate import *
 from migrate.changeset import *
@@ -10,6 +13,7 @@ def upgrade(migrate_engine):
     anomaly.c.tipo_corte.drop()
     tipo_corte = Column('tipo_corte', Integer)
     tipo_corte.create(anomaly)
+
 
 def downgrade(migrate_engine):
     meta = MetaData(bind=migrate_engine)

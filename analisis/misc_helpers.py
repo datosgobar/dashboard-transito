@@ -2,19 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import json
-import pandas as pd
 import numpy as np
-import requests
-import datetime
-import dateutil.parser
-import multiprocessing
 import pandas as pd
-import dateutil.parser
 import datetime
-import json
+import dateutil.parser
 import config
-from corredores import referencia_corredores, referencia_sentidos
-from pprint import pprint
+
 
 from conn_sql import sqlalchemyDEBUG, instanceSQL
 from sqlalchemy.orm import Session, sessionmaker
@@ -26,6 +19,7 @@ session = conn_sql.session()
 
 Corredores = conn_sql.instanceTable(unique_table='corredores')
 tabla_corredores = session.query(Corredores).all()
+from corredores import referencia_corredores, referencia_sentidos
 
 
 def loadData(infn):
@@ -52,8 +46,7 @@ def loadData(infn):
 acentro = referencia_sentidos['centro']
 aprovincia = referencia_sentidos['provincia']
 
-corrdata = dict(
-    [(wp.id, {"name": wp.corredor, "description": wp.segmento}) for wp in tabla_corredores])
+corrdata = dict([(wp.id, {"name": wp.corredor, "description": wp.segmento}) for wp in tabla_corredores])
 
 for k in corrdata.keys():
     corrdata[k][
@@ -100,11 +93,9 @@ def coords_to_meters(lat0, lng0, lat1, lng1):
     arc = np.arccos(cos)
     return arc * 6371. * 1000
 
-aux = coordsdf.groupby("id").agg({"lng": {"lng0": "first", "lng1": "last"}, "lat": {
-    "lat0": "first", "lat1": "last"}}).reset_index()
+aux = coordsdf.groupby("id").agg({"lng": {"lng0": "first", "lng1": "last"}, "lat": {"lat0": "first", "lat1": "last"}}).reset_index()
 aux.columns = aux.columns.droplevel()
 aux = aux.rename(columns={"": "id"})
-aux["len"] = coords_to_meters(
-    aux["lat0"], aux["lng0"], aux["lat1"], aux["lng1"])
+aux["len"] = coords_to_meters(aux["lat0"], aux["lng0"], aux["lat1"], aux["lng1"])
 corrdatadf = pd.merge(corrdatadf, aux, on="id")
 corrlenghts = corrdatadf.groupby("corr").sum()["len"].reset_index()
