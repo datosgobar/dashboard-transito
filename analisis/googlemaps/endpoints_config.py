@@ -1,4 +1,6 @@
-base_url = "https://apisensores.buenosaires.gob.ar/api"
+from ..analisis import config
+
+base_url = config.api['host'] + '/api/'
 account = {
     "get_all": {
         "method": "GET",

@@ -3,9 +3,10 @@ import urllib
 import urllib2
 import json
 import sys
+from ..analisis import config
 
 log_requests = False
-token = '80176b952ffa5d0c8f5f5c916994d037'
+token = config.api['token']
 
 
 class Endpoint(object):
