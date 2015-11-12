@@ -3,9 +3,10 @@ import urllib
 import urllib2
 import json
 import sys
+from dashboard_logging import dashboard_logging
 from ..analisis import config
 
-log_requests = False
+logger = dashboard_logging(config="logging.json", name=__name__)
 token = config.api['token']
 
 
@@ -35,13 +36,15 @@ class Endpoint(object):
         else:
             json_response = {'codigo': 204, 'error': []}
 
-        if log_requests:
-            sys.stdout.write("%s %s\n" % (config['method'], url))
-            sys.stdout.write("%s %s\n" % (json_response['codigo'], json_response['mensaje']))
-            sys.stdout.write("%d bytes sent in the request's body\n" % sys.getsizeof(data))
-            sys.stdout.write("%d bytes received response's body\n" % sys.getsizeof(response))
+        log_str = "%s %s\n%s %s\n%d bytes sent in the request's body\n%d bytes received response's body\n"
+        log_params = (
+            config['method'], url, json_response['codigo'], json_response['mensaje'],
+            sys.getsizeof(data), sys.getsizeof(response)
+        )
+        log_info = log_str % log_params
+        logger.info(log_info)
         if len(json_response['error']) > 0:
-            raise ValueError(str(json_response['error']) + '\n')
+            logger.error(str(json_response['error']), traceback=True)
 
         return json_response
 
