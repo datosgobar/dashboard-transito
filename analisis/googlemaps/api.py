@@ -4,7 +4,7 @@ import urllib2
 import json
 import sys
 from dashboard_logging import dashboard_logging
-from ..analisis import config
+from analisis import config
 
 logger = dashboard_logging(config="logging.json", name=__name__)
 token = config.api['token']

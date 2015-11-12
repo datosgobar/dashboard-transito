@@ -1,4 +1,4 @@
-from ..analisis import config
+from analisis import config
 
 base_url = config.api['host'] + '/api/'
 account = {
