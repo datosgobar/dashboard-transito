@@ -9,12 +9,13 @@ import requests
 import json
 import api
 from waypoints import waypoints_config
+from analisis import config
 
 
 class Segment:
-    base_url = "https://maps.googleapis.com/maps/api/directions/json"
-    client_id = "gme-telventtraficoytransporte"
-    client_secret = "KUIqWghCQfrUN8Plym-Uwj6lhps="
+    base_url = config.googlemaps['base_url']
+    client_id = config.googlemaps['client_id']
+    client_secret = config.googlemaps['client_secret']
 
     def __init__(self, origin, destination, waypoints):
         self._from = origin
