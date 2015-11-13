@@ -30,6 +30,7 @@ conn_sql = instanceSQL(cfg=config)
 conn_sql.createDBEngine()
 
 Estadisticas = conn_sql.instanceTable(unique_table='estadisticas')
+Anomaly = conn_sql.instanceTable(unique_table='anomaly')
 Historical = conn_sql.instanceTable(unique_table='historical')
 
 
@@ -37,6 +38,7 @@ class GraficosPlanificacion(object):
 
     def __init__(self):
 
+        self.query_all = None
         self.metadata = []
         self.savepath_folder = os.path.abspath(".") + "/static/graficos/{0}/"
         self._mkdir(self.savepath_folder.replace("/{0}/", "/"))
@@ -312,43 +314,35 @@ class GraficosPlanificacion(object):
         #     for e, col in enumerate(args):
         #         columns.append(args.get('col{0}'.format(e)))
 
-        self.valids = pd.read_sql(
-            ('select * from "anomaly" where "timestamp_start" BETWEEN %(dstart)s AND %(dfinish)s'),
-            conn_sql._instanceSQL__engine, params={
-                "dstart": self.timestamp_start, "dfinish": self.timestamp_end
-            }
-        )
+        # valids2 = pd.read_sql(
+        #     ('select * from "anomaly" where "timestamp_start" BETWEEN %(dstart)s AND %(dfinish)s'),
+        #     conn_sql._instanceSQL__engine, params={
+        #         "dstart": timestamp_start, "dfinish": timestamp_end
+        #     }
+        # )
+        
+        self.query = self.session.query(Anomaly)
+        self.query_all = self.query.filter(Anomaly.timestamp_start >= self.timestamp_start).all()
+        self.valids = pd.read_sql(self.query.statement, self.query.session.bind)
 
-        #self.valids = pd.read_sql_table(Estadisticas, conn_sql._instanceSQL__engine)
-        #, columns=columns)
         return self.valids
 
     def __generacion_dataframe(self):
 
         self.corrdata = pd.DataFrame(self.corrdata)
-        self.valids["timestamp_start"] = pd.to_datetime(
-            self.valids["timestamp_start"])
-        self.valids["timestamp_end"] = pd.to_datetime(
-            self.valids["timestamp_end"])
+        self.valids["timestamp_start"] = pd.to_datetime(self.valids["timestamp_start"])
+        self.valids["timestamp_end"] = pd.to_datetime(self.valids["timestamp_end"])
         self.valids["iddevice"] = self.valids[["id_segment"]]
-        self.valids = self.valids[
-            (self.valids["timestamp_end"] - self.valids["timestamp_start"]).dt.seconds >= 20 * 60]
-        self.valids = self.valids[
-            ["iddevice", "timestamp_start", "timestamp_end"]].copy()
+        self.valids = self.valids[(self.valids["timestamp_end"] - self.valids["timestamp_start"]).dt.seconds >= 20 * 60]
+        self.valids = self.valids[["iddevice", "timestamp_start", "timestamp_end"]].copy()
 
-        self.reportdata = pd.merge(
-            self.valids, self.corrdata[["iddevice", "corr", "name"]], on=["iddevice"])
+        self.reportdata = pd.merge(self.valids, self.corrdata[["iddevice", "corr", "name"]], on=["iddevice"])
         self.reportdata = self.reportdata.rename(columns={"name": "corr_name"})
-        self.reportdata["duration"] = (
-            self.reportdata.timestamp_end - self.reportdata.timestamp_start).dt.seconds / 60.
-        self.reportdata["daytype"] = anomalyDetection.dfdaytype.loc[
-            self.reportdata.timestamp_start.dt.weekday].values[:, 0]
-        self.reportdata["corr"] = self.corrdata.set_index(
-            "iddevice").loc[self.reportdata["iddevice"]].reset_index()["corr"]
-        self.reportdata.loc[
-            self.reportdata["corr"].str.endswith("_acentro"), "sentido"] = "centro"
-        self.reportdata.loc[
-            self.reportdata["corr"].str.endswith("_aprovincia"), "sentido"] = "provincia"
+        self.reportdata["duration"] = (self.reportdata.timestamp_end - self.reportdata.timestamp_start).dt.seconds / 60.
+        self.reportdata["daytype"] = anomalyDetection.dfdaytype.loc[self.reportdata.timestamp_start.dt.weekday].values[:, 0]
+        self.reportdata["corr"] = self.corrdata.set_index("iddevice").loc[self.reportdata["iddevice"]].reset_index()["corr"]
+        self.reportdata.loc[self.reportdata["corr"].str.endswith("_acentro"), "sentido"] = "centro"
+        self.reportdata.loc[self.reportdata["corr"].str.endswith("_aprovincia"), "sentido"] = "provincia"
 
 
 def main():
