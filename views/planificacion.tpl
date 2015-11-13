@@ -19,6 +19,12 @@
         <img id="select_img"></img>
     </div>
     <div id="entry"></div>
+    <style type="text/css">
+      h2 {
+        font-family: "Arial";
+        font-size: 21px;
+      }
+    </style>
     <script type="text/javascript">
 
       var graficos = (function () {
