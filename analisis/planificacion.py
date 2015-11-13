@@ -5,7 +5,6 @@ from conn_sql import sqlalchemyDEBUG, instanceSQL
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy import create_engine, exc, event
 from corredores import referencia_sentidos, referencia_corredores
-from IPython.display import display, HTML
 
 import config
 import datetime
