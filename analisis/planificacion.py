@@ -204,8 +204,9 @@ class GraficosPlanificacion(object):
         """
         self.aux = self.reportdata.copy()
         self.aux = self.reportdata.groupby(["corr", "corr_name", "sentido"]).mean()["duration"].reset_index()
-        graph = sns.factorplot(x="corr_name", y="duration", hue='sentido', data=self.aux, saturation=.5, kind="bar", ci=None, size=4, aspect=2)
+        graph = sns.factorplot(x="corr_name", y="duration", hue='sentido', data=self.aux, kind="bar", palette="muted", size=4, aspect=2.3)
         graph.set_axis_labels("", "Duracion en Minutos").despine(left=True)
+        graph.despine(left=True)
         #sns.factorplot(x="corr_name", y="duration", hue="sentido", kind="bar", data=self.aux, size=5, aspect=2)
         plt.xticks(rotation=17)
         #plt.ylabel('Duracion en minutos')
@@ -224,6 +225,10 @@ class GraficosPlanificacion(object):
         self.__wrpsave(self.distribucion_horaria_sumarizada.__name__, save=save, csv=csv, show=show)
 
     def anomalias_por_franjahoraria(self, save=True, csv=True, show=False):
+        """
+            Duracion media de anomalias por franja horaria
+
+        """
         self.aux = self.reportdata.copy()
         franjas = [
             (0, 7),
@@ -235,17 +240,24 @@ class GraficosPlanificacion(object):
         for (i, (start, end)) in enumerate(franjas):
             self.aux.loc[
                 (self.aux["timestamp_start"].dt.hour >= start) &
-                (self.aux["timestamp_start"].dt.hour < end), "franja"] = i
+                (self.aux["timestamp_start"].dt.hour < end), "franja"] = int(i)
         self.aux = self.aux.rename(columns={'daytype': 'Tipos de Dias', 'duration':'Duracion en Minutos'})
         self.aux.loc[self.aux["Tipos de Dias"].isin(["saturday", "sunday"]), "Tipos de Dias"] = "weekend"
         rplc = self.aux['Tipos de Dias'].str.replace("workingday", "Dias Laborables")
         rplc = rplc.str.replace("weekend", "Fin de Semana")
         self.aux['Tipos de Dias'] = rplc
         try:
-            sns.boxplot(x="Tipos de Dias", y="Duracion en Minutos", hue="franja", hue_order=[0, 1, 2, 3, 4], data=self.aux)
+            sns.boxplot(x="Tipos de Dias", y="Duracion en Minutos", hue='franja', hue_order=[0, 1, 2, 3, 4], data=self.aux)
         except:
             pass
         finally:
+            plt.legend(('00hs - 07hs', '08hs - 10hs', '11hs - 17hs', '16hs - 20hs', '21hs - 24hs'), loc=(0.01, 0.55))
+            ltext = plt.gca().get_legend().get_texts()
+            ltext[0].set_color('g')
+            ltext[1].set_color('r')
+            ltext[2].set_color('m')
+            ltext[3].set_color('y')
+            #ltext[4].set_color('c')
             self.__wrpsave(self.anomalias_por_franjahoraria.__name__, save=save, csv=csv, show=show)
 
     def duracion_en_perceniles(self, save=True, csv=True, show=False):
