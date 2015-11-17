@@ -238,6 +238,9 @@ class GraficosPlanificacion(object):
                 (self.aux["timestamp_start"].dt.hour < end), "franja"] = i
         self.aux = self.aux.rename(columns={'daytype': 'Tipos de Dias', 'duration':'Duracion en Minutos'})
         self.aux.loc[self.aux["Tipos de Dias"].isin(["saturday", "sunday"]), "Tipos de Dias"] = "weekend"
+        rplc = self.aux['Tipos de Dias'].str.replace("workingday", "Dias Laborables")
+        rplc = rplc.str.replace("weekend", "Fin de Semana")
+        self.aux['Tipos de Dias'] = rplc
         try:
             sns.boxplot(x="Tipos de Dias", y="Duracion en Minutos", hue="franja", hue_order=[0, 1, 2, 3, 4], data=self.aux)
         except:
