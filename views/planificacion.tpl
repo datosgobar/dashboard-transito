@@ -6,9 +6,19 @@
     <script type="text/javascript" src="_static/js/socket.io.js"></script>
     <script type="text/javascript" src="_static/js/jquery-2.1.3.min.js"></script>
     <link rel="stylesheet" href="_static/css/estilos.min.css" />
-    <link rel="icon" href="favicon.ico"/>
+    <link rel="icon" href="favicon.ico"/> 
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="_static/js/jquery-2.1.3.min.js"></script>
+    <link rel="stylesheet" href="_static/css/estilos-desktop.min.css" />
+</head>    
 </head>
 <body>
+    <div id="header">
+        <div id="logo"></div>
+        <div id="status">última actualización: hace <span id="ultimaActualizacion">--</span> min.<button id="salir">salir</div></div>
+        
+    </div>
     <div>
         <h2 style="color:white">ESTADISTICAS MENSUALES</h2>
         <select id="filtros">
