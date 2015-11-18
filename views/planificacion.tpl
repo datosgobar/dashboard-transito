@@ -16,8 +16,7 @@
 <body>
     <div id="header">
         <div id="logo"></div>
-        <div id="status">última actualización: hace <span id="ultimaActualizacion">--</span> min.<button id="salir">salir</div></div>
-        
+        <button id="salir">salir
     </div>
     <div>
         <h2 style="color:white">ESTADISTICAS MENSUALES</h2>
