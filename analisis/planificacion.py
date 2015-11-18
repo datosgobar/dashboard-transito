@@ -77,7 +77,8 @@ class GraficosPlanificacion(object):
             "cant_anomalias_xcorredores": "Cantidad de anomalias por corredor",
             "indice_anomalias_xcuadras": "Indice de anomalias por cuadra",
             "distribucion_horaria_sumarizada": "Distribucion horaria sumarizada",
-            "anomalias_por_franjahoraria": "Duracion media de anomalias por franja horaria"
+            "duracion_anomalias_media_xfranjahoraria": "Duracion media de anomalias por franja horaria",
+            "duracion_anomalias_xfranjahoraria": "Duracion de anomalias por franja horaria",
         }
 
         self.semanales = {}
@@ -203,15 +204,17 @@ class GraficosPlanificacion(object):
                     show: Muestra el grafico en pantalla
         """
         self.aux = self.reportdata.copy()
-        self.aux = self.reportdata.groupby(["corr", "corr_name", "sentido"]).mean()["duration"].reset_index()
-        graph = sns.factorplot(x="corr_name", y="duration", hue='sentido', data=self.aux, kind="bar", palette="muted", size=4, aspect=2.3)
+        self.aux = self.reportdata.groupby(
+            ["corr", "corr_name", "sentido"]).mean()["duration"].reset_index()
+        graph = sns.factorplot(
+            x="corr_name", y="duration", hue='sentido', data=self.aux, kind="bar", size=4, aspect=2.3)
         graph.set_axis_labels("", "Duracion en Minutos").despine(left=True)
         graph.despine(left=True)
-        #sns.factorplot(x="corr_name", y="duration", hue="sentido", kind="bar", data=self.aux, size=5, aspect=2)
         plt.xticks(rotation=17)
-        #plt.ylabel('Duracion en minutos')
-        #plt.xlabel('')
-        self.__wrpsave(self.duracion_media_anomalias.__name__, save=save, csv=csv, show=show)
+        plt.legend(loc="upper right", frameon=True, fancybox=True, shadow=True)
+       # plt.show()
+        self.__wrpsave(
+            self.duracion_media_anomalias.__name__, save=save, csv=csv, show=show)
 
     def distribucion_horaria_sumarizada(self, save=True, csv=True, show=False):
         """
@@ -220,47 +223,89 @@ class GraficosPlanificacion(object):
         self.aux = self.reportdata.copy()
         self.aux["Franja Horaria"] = self.aux["timestamp_start"].dt.hour
         self.aux = self.aux.rename(columns={'daytype': 'Tipos de Dias'})
-        sns.factorplot("Franja Horaria", col="Tipos de Dias", hue="sentido", kind="count", data=self.aux, order=range(0, 24))
+        rplc = self.aux['Tipos de Dias'].str.replace(
+            "workingday", "Dias Laborables")
+        rplc = rplc.str.replace("saturday", "Sabado")
+        rplc = rplc.str.replace("sunday", "Domingo")
+        self.aux['Tipos de Dias'] = rplc
+        sns.factorplot("Franja Horaria", col="Tipos de Dias",
+                       hue="sentido", kind="count", data=self.aux, order=range(0, 24))
         plt.ylabel("Duracion en Minutos")
-        self.__wrpsave(self.distribucion_horaria_sumarizada.__name__, save=save, csv=csv, show=show)
+        self.__wrpsave(
+            self.distribucion_horaria_sumarizada.__name__, save=save, csv=csv, show=show)
 
-    def anomalias_por_franjahoraria(self, save=True, csv=True, show=False):
+    def duracion_anomalias_xfranjahoraria(self, save=True, csv=False, show=False):
         """
-            Duracion media de anomalias por franja horaria
-
+            Duracion de anomalias por franja horaria
         """
         self.aux = self.reportdata.copy()
-        franjas = [
-            (0, 7),
-            (7, 10),
-            (10, 17),
-            (17, 20),
-            (20, 24),
-        ]
+
+        franjas = [(23, 6), (7, 9), (10, 16), (17, 19), (20, 23)]
+
+        for (i, (start, end)) in enumerate(franjas):
+            self.aux.loc[(self.aux["timestamp_start"].dt.hour >= start) & (
+                self.aux["timestamp_start"].dt.hour <= end), "Franja Horaria"] = i
+
+        self.aux["Franja Horaria"] = self.aux["Franja Horaria"].astype(int)
+        self.aux.loc[self.aux["daytype"] == "saturday", "daytype"] = "weekend"
+        self.aux.loc[self.aux["daytype"] == "sunday", "daytype"] = "weekend"
+        self.aux = self.aux.sort("Franja Horaria")
+        self.aux = self.aux.rename(columns={'daytype': 'Tipos de Dias', 'duration': 'Duracion en Minutos'})
+        rplc = self.aux['Tipos de Dias'].str.replace("workingday", "Dias Laborables")
+        rplc = rplc.str.replace("weekend", "Fin de Semana")
+        self.aux['Tipos de Dias'] = rplc
+        sns.factorplot(x="Franja Horaria", y="Duracion en Minutos", col="Tipos de Dias", hue_order=[0, 1, 2, 3, 4], data=self.aux, kind="box")
+        plt.legend(('23hs - 07hs', '08hs - 10hs', '11hs - 17hs', '18hs - 20hs', '21hs - 24hs'), loc="upper right", frameon=True, fancybox=True, shadow=True)
+        ltext = plt.gca().get_legend().get_texts()
+        ltext[0].set_color('b')
+        ltext[1].set_color('g')
+        ltext[2].set_color('r')
+        ltext[3].set_color('m')
+        ltext[4].set_color('y')
+        #plt.show()
+        self.__wrpsave(self.duracion_anomalias_xfranjahoraria.__name__, save=save, csv=csv, show=show)
+
+    def duracion_anomalias_media_xfranjahoraria(self, save=True, csv=True, show=False, **args):
+        """
+            Duracion media de anomalias por franja horaria
+        """
+        #sentido = args.pop('sentido')
+        #self.aux = self.reportdata[self.reportdata['sentido'] == sentido].copy()
+        self.aux = self.reportdata.copy()
+
+        franjas = [(23, 6), (7, 9), (10, 16), (17, 19), (20, 23)]
+
         for (i, (start, end)) in enumerate(franjas):
             self.aux.loc[
                 (self.aux["timestamp_start"].dt.hour >= start) &
-                (self.aux["timestamp_start"].dt.hour < end), "franja"] = int(i)
-        self.aux = self.aux.rename(columns={'daytype': 'Tipos de Dias', 'duration':'Duracion en Minutos'})
-        self.aux.loc[self.aux["Tipos de Dias"].isin(["saturday", "sunday"]), "Tipos de Dias"] = "weekend"
+                (self.aux["timestamp_start"].dt.hour <= end), "franja"] = i
+        self.aux["franja"] = self.aux["franja"].astype(int)
+        self.aux = self.aux.rename(columns={'daytype': 'Tipos de Dias', 'duration': 'Duracion en Minutos'})
+        self.aux.loc[self.aux["Tipos de Dias"].isin(
+            ["saturday", "sunday"]), "Tipos de Dias"] = "weekend"
         rplc = self.aux['Tipos de Dias'].str.replace("workingday", "Dias Laborables")
         rplc = rplc.str.replace("weekend", "Fin de Semana")
         self.aux['Tipos de Dias'] = rplc
         try:
-            sns.boxplot(x="Tipos de Dias", y="Duracion en Minutos", hue='franja', hue_order=[0, 1, 2, 3, 4], data=self.aux)
+            sns.boxplot(x="Tipos de Dias", y="Duracion en Minutos",
+                        hue='franja', hue_order=[0, 1, 2, 3, 4], data=self.aux)
         except:
             pass
         finally:
-            plt.legend(('00hs - 07hs', '08hs - 10hs', '11hs - 17hs', '16hs - 20hs', '21hs - 24hs'), loc=(0.01, 0.55))
+            #
+            plt.legend(('23hs - 07hs', '08hs - 10hs', '11hs - 17hs',
+                        '18hs - 20hs', '21hs - 24hs'), loc=(0.01, 0.55))
             ltext = plt.gca().get_legend().get_texts()
-            ltext[0].set_color('g')
-            ltext[1].set_color('r')
-            ltext[2].set_color('m')
-            ltext[3].set_color('y')
-            #ltext[4].set_color('c')
-            self.__wrpsave(self.anomalias_por_franjahoraria.__name__, save=save, csv=csv, show=show)
+            ltext[0].set_color('b')
+            ltext[1].set_color('g')
+            ltext[2].set_color('r')
+            ltext[3].set_color('m')
+            ltext[4].set_color('y')
+            #plt.show()
+            self.__wrpsave(
+                self.duracion_anomalias_media_xfranjahoraria.__name__, save=save, csv=csv, show=show)
 
-    def duracion_en_perceniles(self, save=True, csv=True, show=False):
+    def duracion_en_perceniles(self, save=True, csv=False, show=False):
         """
             Duracion en Perceniles
         """
@@ -268,39 +313,50 @@ class GraficosPlanificacion(object):
         #plt.title('Duracion de en percentiles')
         plt.xlabel("Percentil")
         plt.ylabel("Duracion en minutos")
-        self.__wrpsave(self.duracion_en_perceniles.__name__, save=save, csv=csv, show=show)
+        self.__wrpsave(
+            self.duracion_en_perceniles.__name__, save=save, csv=csv, show=show)
 
     def cant_anomalias_xcorredores(self, save=True, csv=True, show=False):
         """
             Cantidad de anomalias por corredor
         """
         self.aux = self.reportdata.copy()
-        self.aux = self.aux.groupby(["corr_name", "sentido"]).size().reset_index().rename(columns={0: "Cantidad", "corr_name": "Nombre de Corredor"})
+        self.aux = self.aux.groupby(["corr_name", "sentido"]).size().reset_index().rename(
+            columns={0: "Cantidad", "corr_name": "Nombre de Corredor"})
         f, axarr = plt.subplots(1, 2)
-        self.aux[self.aux["sentido"] == "centro"].plot(x="Nombre de Corredor", kind="barh", ax=axarr[0], figsize=(11, 5))
-        self.aux[self.aux["sentido"] == "provincia"].plot(x="Nombre de Corredor", kind="barh", ax=axarr[1], figsize=(11, 5))
+        self.aux[self.aux["sentido"] == "centro"].plot(
+            x="Nombre de Corredor", kind="barh", ax=axarr[0], figsize=(11, 5))
+        self.aux[self.aux["sentido"] == "provincia"].plot(
+            x="Nombre de Corredor", kind="barh", ax=axarr[1], figsize=(11, 5))
         plt.xlabel('Duracion en minutos')
         plt.ylabel('')
-        self.__wrpsave(self.cant_anomalias_xcorredores.__name__, save=save, csv=csv, show=show)
+        self.__wrpsave(
+            self.cant_anomalias_xcorredores.__name__, save=save, csv=csv, show=show)
 
     def indice_anomalias_xcuadras(self, save=True, csv=True, show=False):
         """
             Indice de anomalias por cuadra
         """
-        self.aux = self.reportdata.groupby(["corr", "corr_name", "sentido"]).apply(lambda e: e.shape[0]).reset_index()
-        self.aux = pd.merge(self.aux, misc_helpers.corrlenghts, on="corr").reset_index(drop=True)
+        self.aux = self.reportdata.groupby(["corr", "corr_name", "sentido"]).apply(
+            lambda e: e.shape[0]).reset_index()
+        self.aux = pd.merge(
+            self.aux, misc_helpers.corrlenghts, on="corr").reset_index(drop=True)
         self.aux = self.aux.rename(columns={0: "anomalias", "len": "cuadras"})
-        self.aux["indice"] = self.aux["anomalias"] / (self.aux["cuadras"] / 100.)
-        self.aux = self.aux[["corr", "indice", "corr_name", "cuadras", "anomalias", "sentido"]].sort("indice", ascending=False)
+        self.aux["indice"] = self.aux[
+            "anomalias"] / (self.aux["cuadras"] / 100.)
+        self.aux = self.aux[["corr", "indice", "corr_name", "cuadras", "anomalias", "sentido"]].sort(
+            "indice", ascending=False)
         self.aux["indice"] = self.aux["indice"].round(2)
         self.aux["cuadras"] = (self.aux["cuadras"] / 100).astype(int)
         #display(self.aux[["corr_name", "sentido", "indice", "cuadras", "anomalias"]])
         #sns.barplot(x="corr_name", y="indice", hue="sentido", data=self.aux)
-        sns.factorplot(x="corr_name", y="indice", data=self.aux, hue="sentido", kind="bar", size=4, aspect=2)
+        sns.factorplot(x="corr_name", y="indice", data=self.aux,
+                       hue="sentido", kind="bar", size=4, aspect=2)
         plt.xticks(rotation=12, size="8")
         plt.ylabel('Duracion en minutos')
         plt.xlabel('')
-        self.__wrpsave(self.indice_anomalias_xcuadras.__name__, save=save, csv=csv, show=show)
+        self.__wrpsave(
+            self.indice_anomalias_xcuadras.__name__, save=save, csv=csv, show=show)
 
     def __asignacion_frame(self):
         # def asignacion_frame(self, tabla=Estadisticas, **args):
@@ -322,29 +378,41 @@ class GraficosPlanificacion(object):
         #         "dstart": timestamp_start, "dfinish": timestamp_end
         #     }
         # )
-        
+
         self.query = self.session.query(Anomaly)
-        self.query_all = self.query.filter(Anomaly.timestamp_start >= self.timestamp_start).all()
-        self.valids = pd.read_sql(self.query.statement, self.query.session.bind)
+        self.query_all = self.query.filter(
+            Anomaly.timestamp_start >= self.timestamp_start).all()
+        self.valids = pd.read_sql(
+            self.query.statement, self.query.session.bind)
 
         return self.valids
 
     def __generacion_dataframe(self):
 
         self.corrdata = pd.DataFrame(self.corrdata)
-        self.valids["timestamp_start"] = pd.to_datetime(self.valids["timestamp_start"])
-        self.valids["timestamp_end"] = pd.to_datetime(self.valids["timestamp_end"])
+        self.valids["timestamp_start"] = pd.to_datetime(
+            self.valids["timestamp_start"])
+        self.valids["timestamp_end"] = pd.to_datetime(
+            self.valids["timestamp_end"])
         self.valids["iddevice"] = self.valids[["id_segment"]]
-        self.valids = self.valids[(self.valids["timestamp_end"] - self.valids["timestamp_start"]).dt.seconds >= 20 * 60]
-        self.valids = self.valids[["iddevice", "timestamp_start", "timestamp_end"]].copy()
+        self.valids = self.valids[
+            (self.valids["timestamp_end"] - self.valids["timestamp_start"]).dt.seconds >= 20 * 60]
+        self.valids = self.valids[
+            ["iddevice", "timestamp_start", "timestamp_end"]].copy()
 
-        self.reportdata = pd.merge(self.valids, self.corrdata[["iddevice", "corr", "name"]], on=["iddevice"])
+        self.reportdata = pd.merge(
+            self.valids, self.corrdata[["iddevice", "corr", "name"]], on=["iddevice"])
         self.reportdata = self.reportdata.rename(columns={"name": "corr_name"})
-        self.reportdata["duration"] = (self.reportdata.timestamp_end - self.reportdata.timestamp_start).dt.seconds / 60.
-        self.reportdata["daytype"] = anomalyDetection.dfdaytype.loc[self.reportdata.timestamp_start.dt.weekday].values[:, 0]
-        self.reportdata["corr"] = self.corrdata.set_index("iddevice").loc[self.reportdata["iddevice"]].reset_index()["corr"]
-        self.reportdata.loc[self.reportdata["corr"].str.endswith("_acentro"), "sentido"] = "centro"
-        self.reportdata.loc[self.reportdata["corr"].str.endswith("_aprovincia"), "sentido"] = "provincia"
+        self.reportdata["duration"] = (
+            self.reportdata.timestamp_end - self.reportdata.timestamp_start).dt.seconds / 60.
+        self.reportdata["daytype"] = anomalyDetection.dfdaytype.loc[
+            self.reportdata.timestamp_start.dt.weekday].values[:, 0]
+        self.reportdata["corr"] = self.corrdata.set_index(
+            "iddevice").loc[self.reportdata["iddevice"]].reset_index()["corr"]
+        self.reportdata.loc[
+            self.reportdata["corr"].str.endswith("_acentro"), "sentido"] = "centro"
+        self.reportdata.loc[
+            self.reportdata["corr"].str.endswith("_aprovincia"), "sentido"] = "provincia"
 
 
 def main():

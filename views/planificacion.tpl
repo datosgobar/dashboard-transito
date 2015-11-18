@@ -22,12 +22,13 @@
     <div>
         <h2 style="color:white">ESTADISTICAS MENSUALES</h2>
         <select id="filtros">
-          <option id='mensuales'>MENSUALES</option>
-          <option id='semanales'>SEMANALES</option>
+          <option id='mensuales'>Generar Mensual</option>
+          <option id='corredores'>Corredor Particular</option>
         </select>
         <h1 id="title" style="color:white"></h1>
         <img id="select_img"></img>
     </div>
+    <div id='select_corredores'></div>
     <div id="entry"></div>
     <style type="text/css">
       h2 {
@@ -77,6 +78,9 @@
       $('body').on('change', '#filtros', function (){
         $( "#filtros option:selected").attr('id', function(a, id_selc, c){
           insert_graficos(id_selc)
+          if(id_selc == 'corredores'){
+            $("#select_corredores")
+          }
         })
       });
 
