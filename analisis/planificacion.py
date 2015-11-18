@@ -240,7 +240,13 @@ class GraficosPlanificacion(object):
         """
         self.aux = self.reportdata.copy()
 
-        franjas = [(23, 6), (7, 9), (10, 16), (17, 19), (20, 23)]
+        franjas = [
+            (0, 7),
+            (7, 10),
+            (10, 17),
+            (17, 20),
+            (20, 24),
+        ]
 
         for (i, (start, end)) in enumerate(franjas):
             self.aux.loc[(self.aux["timestamp_start"].dt.hour >= start) & (
@@ -273,8 +279,14 @@ class GraficosPlanificacion(object):
         #self.aux = self.reportdata[self.reportdata['sentido'] == sentido].copy()
         self.aux = self.reportdata.copy()
 
-        franjas = [(23, 6), (7, 9), (10, 16), (17, 19), (20, 23)]
-
+        franjas = [
+            (0, 7),
+            (7, 10),
+            (10, 17),
+            (17, 20),
+            (20, 24),
+        ]
+        
         for (i, (start, end)) in enumerate(franjas):
             self.aux.loc[
                 (self.aux["timestamp_start"].dt.hour >= start) &
