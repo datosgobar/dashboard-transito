@@ -11,21 +11,25 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <script type="text/javascript" src="_static/js/jquery-2.1.3.min.js"></script>
     <link rel="stylesheet" href="_static/css/estilos-desktop.min.css" />
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>    
 </head>    
 </head>
 <body>
+
     <div id="header">
         <div id="logo"></div>
         <button id="salir">salir
     </div>
-    <div>
-        <h2 style="color:white">ESTADISTICAS MENSUALES</h2>
-        <select id="filtros">
-          <option id='mensuales'>Generar Mensual</option>
-          <option id='corredores'>Corredor Particular</option>
-        </select>
-        <h1 id="title" style="color:white"></h1>
-        <img id="select_img"></img>
+    <h2 style="color:white">ESTADISTICAS MENSUALES</h2>
+    <select id="filtros">
+      <option id='mensuales'>Generar Mensual</option>
+      <option id='corredores'>Corredor Particular</option>
+    </select>
+    <h1 id="title" style="color:white"></h1>
+    <img id="select_img"></img>
     </div>
     <div id='select_corredores'></div>
     <div id="entry"></div>
@@ -58,14 +62,14 @@
       }
 
       var insert_graficos = function(periodo){
-        remove_elem(['h2', 'img'])
+        remove_elem(['h2', 'embed'])
         $.each(graficos[periodo], function (i, grafico){
             $('#entry').append(
               $('<h2>',{
                 text : grafico.title,
                 style : "color:white"
               }),
-              $('<img>',{
+              $('<embed>',{
                 value: grafico.name,
                 text : grafico.title,
                 src : grafico.filename
