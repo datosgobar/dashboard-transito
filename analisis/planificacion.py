@@ -35,7 +35,7 @@ conn_sql.createDBEngine()
 Estadisticas = conn_sql.instanceTable(unique_table='estadisticas')
 Anomaly = conn_sql.instanceTable(unique_table='anomaly')
 Historical = conn_sql.instanceTable(unique_table='historical')
-
+Corredores = conn_sql.instanceTable(unique_table='corredores')
 
 class GraficosPlanificacion(object):
 
@@ -45,27 +45,42 @@ class GraficosPlanificacion(object):
         self.metadata = []
         self.savepath_folder = os.path.abspath(".") + "/static/graficos/{0}/"
         self._mkdir(self.savepath_folder.replace("/{0}/", "/"))
+        self.session = conn_sql.session()
+
+        tabla_corredores = self.session.query(Corredores)
+        corredores = list(set([ c.corredor.lower().replace(" ", "_") for c in tabla_corredores if c]))
 
         self.timestamp_end = datetime.datetime.now()
         self.timestamp_start = self.timestamp_end - datetime.timedelta(weeks=8)
 
-        self.__mkdir(self.savepath_folder, ['csv', 'svg'])
+        self.__mkdir(self.savepath_folder, ['mensuales', 'corredores', "mensuales/csv", "mensuales/svg"])
+        self.__mkdir(self.savepath_folder, ["corredores/{0}".format(c) for c in corredores if c])
 
-        self.savepath_folder = self.savepath_folder + "{0}_{1}".format(
-            str(self.timestamp_start.date()).replace("-", ""),
-            str(self.timestamp_end.date()).replace("-", "")
-        )
+        for f in ['svg', 'csv']:
+            self.__mkdir(self.savepath_folder, ["corredores/{0}/{1}".format(key, f) for key in corredores if key])
 
-        self.__mkdir(self.savepath_folder, ['csv', 'svg'])
+        append_date = "{0}_{1}/".format(str(self.timestamp_start.date()).replace("-", ""), str(self.timestamp_end.date()).replace("-", ""))
 
-        self.savepath_file = self.savepath_folder.format('svg') + "/{0}"
-        self.savepath_csv = self.savepath_folder.format('csv') + "/{0}"
+        self.__folders = {
+            "corredores": {
+                "svg": "corredores/{0}/svg/" + append_date,
+                "csv":"corredores/{0}/csv/" + append_date
+            },
+            "mensuales": {
+                "svg":"mensuales/svg/" + append_date,
+                "csv":"mensuales/csv/" + append_date
+            }
+        }
+
+        for f in ['svg', 'csv']:
+            self.__mkdir(self.savepath_folder, [self.__folders['mensuales'][f]])
+            self.__mkdir(self.savepath_folder, [self.__folders['corredores'][f].format(c) for c in corredores if c])
+
 
         self.__flg = False
         self.corrdata = []
         self.valids = {}
         self.reportdata = None
-        self.session = conn_sql.session()
         self.aux = None
 
         for (idseg, data) in misc_helpers.corrdata.items():
@@ -453,7 +468,6 @@ class GraficosPlanificacion(object):
         #     ltext[4].set_color('y')
         # plt.show()
         
-
     def duracion_en_perceniles(self, save=True, tipo='mensual', corredor=None, csv=False, show=False):
         """
             Duracion en Perceniles
@@ -525,7 +539,6 @@ class GraficosPlanificacion(object):
 
         add_chart(centro, 'capital')
         add_chart(provincia, 'provincia')
-
 
     def indice_anomalias_xcuadras(self, save=True, csv=True, show=False):
         """
