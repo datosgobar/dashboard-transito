@@ -48,20 +48,20 @@ class GraficosPlanificacion(object):
         self.session = conn_sql.session()
 
         tabla_corredores = self.session.query(Corredores)
-        corredores = list(set([ c.corredor.lower().replace(" ", "_") for c in tabla_corredores if c]))
+        self.corredores = list(set([ c.corredor.lower().replace(" ", "_") for c in tabla_corredores if c]))
 
         self.timestamp_end = datetime.datetime.now()
         self.timestamp_start = self.timestamp_end - datetime.timedelta(weeks=8)
 
         self.__mkdir(self.savepath_folder, ['mensuales', 'corredores', "mensuales/csv", "mensuales/svg"])
-        self.__mkdir(self.savepath_folder, ["corredores/{0}".format(c) for c in corredores if c])
+        self.__mkdir(self.savepath_folder, ["corredores/{0}".format(c) for c in self.corredores if c])
 
         for f in ['svg', 'csv']:
-            self.__mkdir(self.savepath_folder, ["corredores/{0}/{1}".format(key, f) for key in corredores if key])
+            self.__mkdir(self.savepath_folder, ["corredores/{0}/{1}".format(key, f) for key in self.corredores if key])
 
-        append_date = "{0}_{1}/".format(str(self.timestamp_start.date()).replace("-", ""), str(self.timestamp_end.date()).replace("-", ""))
+        append_date = "{0}_{1}".format(str(self.timestamp_start.date()).replace("-", ""), str(self.timestamp_end.date()).replace("-", ""))
 
-        self.__folders = {
+        self.folders = {
             "corredores": {
                 "svg": "corredores/{0}/svg/" + append_date,
                 "csv":"corredores/{0}/csv/" + append_date
@@ -73,8 +73,8 @@ class GraficosPlanificacion(object):
         }
 
         for f in ['svg', 'csv']:
-            self.__mkdir(self.savepath_folder, [self.__folders['mensuales'][f]])
-            self.__mkdir(self.savepath_folder, [self.__folders['corredores'][f].format(c) for c in corredores if c])
+            self.__mkdir(self.savepath_folder, [self.folders['mensuales'][f]])
+            self.__mkdir(self.savepath_folder, [self.folders['corredores'][f].format(c) for c in self.corredores if c])
 
 
         self.__flg = False
@@ -101,14 +101,19 @@ class GraficosPlanificacion(object):
             "duracion_anomalias_media_xfranjahoraria_laborables": "Duracion media de anomalias por franja horaria - Dias Laborables",
             "duracion_anomalias_media_xfranjahoraria_fin_de_semana": "Duracion media de anomalias por franja horaria - Fin de Semana",
             "duracion_anomalias_xfranjahoraria_laborables": "Duracion de anomalias por franja horaria - Dias Laborables",
-            "duracion_anomalias_xfranjahoraria_fin_de_semana": "Duracion de anomalias por franja horaria - Fin de Semana",
+            "duracion_anomalias_xfranjahoraria_fin_de_semana": "Duracion de anomalias por franja horaria - Fin de Semana"
         }
+        
+        self.folders['mensuales']['svg'] = self.savepath_folder.replace("{0}/",  "") + self.folders['mensuales']['svg']
+        self.folders['mensuales']['csv'] = self.savepath_folder.replace("{0}/",  "") + self.folders['mensuales']['csv']
+        self.folders['corredores']['svg'] = self.savepath_folder.replace("{0}/",  "") + self.folders['corredores']['svg']
+        self.folders['corredores']['csv'] = self.savepath_folder.replace("{0}/",  "") + self.folders['corredores']['csv']
 
-        self.semanales = {}
+        self.corredores = {}
 
         self.__grp = {
             'mensuales': self.mensuales.keys(),
-            'semanales': self.semanales.keys()
+            'corredores': self.corredores.keys()
         }
 
         self.__asignacion_frame()
@@ -136,9 +141,11 @@ class GraficosPlanificacion(object):
         for grafico in mensuales:
             eval("self.{0}()".format(grafico))
 
-    def generador_csv(self, filename, tabla):
+    def generador_csv(self, filename, tipo="mensuales", corredor=None):
 
-        filesave = self.savepath_csv.format(filename.replace(".svg", ".csv"))
+        filesave = self.folders[tipo]['csv'] + "/" + filename
+        if tipo == "corredores":
+            filesave = self.folders[tipo]['csv'].format(corredor) + "/" + filename
         self.aux.to_csv(filesave)
 
     def guardar_grafico(self, grafico={}):
@@ -147,10 +154,12 @@ class GraficosPlanificacion(object):
                 'timestamp_end': datetime.date(2015, 10, 28), 'name': 'Cantidad total de anomalias en las ultimas 4 semanas',
                 'filename': 'anomalias_ultimo_mes_2015_09_30_2015_10_28.png'})
         """
-        filesave = self.savepath_file.format(grafico.get("filename"))
+        import pdb
+        pdb.set_trace()
+        filesave = self.folders[grafico.get("tipo")]['svg'] + "/" + grafico.get("filename")
+        #filesave = self.savepath_file.format(grafico.get("filename"))
         query = self.session.query(Estadisticas)
-        if_count_id = query.filter(
-            Estadisticas.idg == grafico.get("idg")).count()
+        if_count_id = query.filter(Estadisticas.idg == grafico.get("idg")).count()
         if not if_count_id:
             nuevo_grafico = Estadisticas(
                 idg=grafico.get("idg"), name=grafico.get('name'), filename=filesave.replace(os.path.abspath(".") + "/static/", "/_static/"),
@@ -165,7 +174,7 @@ class GraficosPlanificacion(object):
     def __instanciar_save(self, **args):
         params = args.get('params')
         if args.get("ifcsv") == True:
-            self.generador_csv(params.get("filename"), self.aux)
+            self.generador_csv(params.get("filename"), tipo="mensuales")
         if args.get("ifsave"):
             self.guardar_grafico(grafico=params)
         if args.get("ifshow") == True:
@@ -177,7 +186,7 @@ class GraficosPlanificacion(object):
         metadata.update({'instancegraph':args.get('graph')})
         self.__instanciar_save(ifsave=args.get("save"), ifcsv=args.get("csv"), ifshow=args.get("show"), params=metadata)
 
-    def generar_metadata(self, name):
+    def generar_metadata(self, name, tipo="mensuales"):
         """
             grafico.generar_metadata(name=grafico.anomalias_ultimo_mes.__name__)
             Params
@@ -195,7 +204,8 @@ class GraficosPlanificacion(object):
             _id = "{0}{1}{2}{3}{4}{5}".format(idn[0][0], idn[0][1], str(start).replace("-", ""), end.day)
         metadata_grafico = {
             "idg": _id,
-            "name": self.mensuales[name],
+            "tipo": tipo,
+            "name": self.mensuales.get(name, ''),
             "filename": filename,
             "timestamp_start": start,
             "timestamp_end": end
@@ -210,26 +220,21 @@ class GraficosPlanificacion(object):
         """
         if tipo == 'mensual':
             self.aux = self.reportdata.copy()
-            name = self.anomalias_ultimo_mes.__name__
+            name = self.mensuales[self.anomalias_ultimo_mes.__name__]
         else:
-            corredor = "Juan B. Justo"
+            corredor = "juan_b._justo"
             self.aux = self.reportdata.copy()
             self.aux = self.aux[self.aux['corr_name'] == corredor]
-            name = self.anomalias_ultimo_mes.__name__ + "_" + corredor
+            name = corredor + "_" + self.anomalias_ultimo_mes.__name__
 
-        self.aux = self.aux.groupby(
-            [self.aux["timestamp_start"].dt.week, self.aux["sentido"]]).size()
-        self.aux = self.aux.reset_index().rename(
-            columns={"level_0": "semana", 0: "count"})
-        self.aux = self.aux.pivot(
-            index='semana', columns='sentido', values='count').reset_index()
+        self.aux = self.aux.groupby([self.aux["timestamp_start"].dt.week, self.aux["sentido"]]).size()
+        self.aux = self.aux.reset_index().rename(columns={"level_0": "semana", 0: "count"})
+        self.aux = self.aux.pivot(index='semana', columns='sentido', values='count').reset_index()
         self.aux.columns.name = "Referencia"
         self.aux["promedio"] = (self.aux["centro"] + self.aux["provincia"]) / 2
         self.aux["semana"] = self.aux["semana"].astype(str)
-        # .plot(x='semana', color="r")
-        self.ax = self.aux[["semana", "promedio"]]
-        # .plot(x='semana', kind='bar', ax=self.ax)
-        self.ax = self.aux[["semana", "centro", "provincia"]]
+        self.ax = self.aux[["semana", "promedio"]] #.plot(x='semana', color="r")
+        self.ax = self.aux[["semana", "centro", "provincia"]] #.plot(x='semana', kind='bar', ax=self.ax)
 
         CustomGraph = LightGreenStyle(background='white')
         custom_style = Style(label_font_size=12, background='transparent')
@@ -246,7 +251,14 @@ class GraficosPlanificacion(object):
 
         line_chart.add('Capital', map(set_value, self.aux['centro']))
         line_chart.add('Provincia', map(set_value, self.aux['provincia']))
-        self.__wrpsave(name, graph=line_chart, save=save, csv=csv, show=show)
+        if tipo == "mensual":
+            self.__wrpsave(self.anomalias_ultimo_mes.__name__, graph=line_chart, save=save, csv=csv, show=show)
+        else:
+            metadata = self.generar_metadata(name)
+            metadata['name'] = corredor.replace("_", " ").title() + " " + mensuales[self.anomalias_ultimo_mes.__name__]
+            self.generador_csv(metadata.get("filename"), self.aux)
+            self.guardar_grafico(metadata)
+            line_chart(metadata.get("filename"))
 
     def duracion_media_anomalias(self, save=True, csv=True, show=False):
         """
@@ -256,7 +268,7 @@ class GraficosPlanificacion(object):
                     save: Guarda su metadata en una tabla en la base de datos.
                     csv: Guarda la tabla que genera el grafico en un csv
                     show: Muestra el grafico en pantalla
-        """
+        """        
         self.aux = self.reportdata.copy()
         self.aux = self.reportdata.groupby(
             ["corr", "corr_name", "sentido"]).mean()["duration"].reset_index()
