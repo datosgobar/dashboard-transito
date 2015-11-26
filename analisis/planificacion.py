@@ -28,6 +28,9 @@ import misc_helpers
 import pygal
 
 from pygal.style import *
+from dashboard_logging import dashboard_logging
+logger = dashboard_logging(config="logging.json", name=__name__)
+logger.info("inicio planificacion - generacion de graficos")
 
 conn_sql = instanceSQL(cfg=config)
 conn_sql.createDBEngine()
@@ -124,6 +127,7 @@ class GraficosPlanificacion(object):
     def _mkdir(self, folder):
         #print folder
         if not os.path.exists(folder):
+            logger.info("inicio creacion de carpeta {0}".format(folder))
             os.mkdir(folder)
 
     def __mkdir(self, path, folders):

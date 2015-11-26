@@ -49,6 +49,7 @@ $ sudo pip install pandas==0.16.2
 $ sudo pip install gunicorn==19.3.0
 $ sudo pip install supervisor==3.1.3
 $ sudo pip install seaborn==0.6.0
+$ sudo pip install pygal==2.0.11
 ```
 
 ## Instalacion bajo Mac
