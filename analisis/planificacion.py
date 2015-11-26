@@ -122,7 +122,7 @@ class GraficosPlanificacion(object):
         self.__generacion_dataframe()
 
     def _mkdir(self, folder):
-        print folder
+        #print folder
         if not os.path.exists(folder):
             os.mkdir(folder)
 
@@ -672,7 +672,7 @@ def main():
     grafico.generacion_graficos()
 
     for c in grafico.corredores:
-        print c
+        # print c
         grafico.anomalias_ultimo_mes(tipo="corredores", corredor=c)
 
 if __name__ == '__main__':
