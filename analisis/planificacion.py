@@ -47,6 +47,8 @@ class GraficosPlanificacion(object):
         self._mkdir(self.savepath_folder.replace("/{0}/", "/"))
         self.session = conn_sql.session()
 
+        #import pdb
+        #pdb.set_trace()
         tabla_corredores = self.session.query(Corredores)
         self.corredores = list(set([ c.corredor.lower().replace(" ", "_") for c in tabla_corredores if c]))
 
@@ -145,17 +147,17 @@ class GraficosPlanificacion(object):
 
         filesave = self.folders[tipo]['csv'] + "/" + filename
         if tipo == "corredores":
-            filesave = self.folders[tipo]['csv'].format(corredor) + "/" + filename
+            filesave = self.folders[tipo]['csv'].format(corredor) + "/" + filename.replace("svg", "csv")
         self.aux.to_csv(filesave)
 
-    def guardar_grafico(self, grafico={}):
+    def guardar_grafico(self, grafico={}, instancegraph=True):
         """
             grafico.guardar_grafico(grafico={'idg': 'aum3028', 'timestamp_start': datetime.date(2015, 9, 30),
                 'timestamp_end': datetime.date(2015, 10, 28), 'name': 'Cantidad total de anomalias en las ultimas 4 semanas',
                 'filename': 'anomalias_ultimo_mes_2015_09_30_2015_10_28.png'})
         """
-        import pdb
-        pdb.set_trace()
+       # import pdb
+       # pdb.set_trace()
         filesave = self.folders[grafico.get("tipo")]['svg'] + "/" + grafico.get("filename")
         #filesave = self.savepath_file.format(grafico.get("filename"))
         query = self.session.query(Estadisticas)
@@ -168,7 +170,8 @@ class GraficosPlanificacion(object):
             self.session.add(nuevo_grafico)
             self.session.commit()
         if not os.path.exists(filesave):
-            grafico.get("instancegraph").render_to_file(filesave)
+            if instancegraph == True:
+                grafico.get("instancegraph").render_to_file(filesave)
             #plt.savefig(filesave, format='png')
 
     def __instanciar_save(self, **args):
@@ -178,8 +181,9 @@ class GraficosPlanificacion(object):
         if args.get("ifsave"):
             self.guardar_grafico(grafico=params)
         if args.get("ifshow") == True:
-            plt.show()
-        plt.close()
+            pass
+            #plt.show()
+        #plt.close()
 
     def __wrpsave(self, name_func, **args):
         metadata = self.generar_metadata(name=name_func)
@@ -218,23 +222,35 @@ class GraficosPlanificacion(object):
             Cantidad total de anomalias en las ultimas 4 semanas
             grafico.anomalias_ultimo_mes(save=False, csv=True, show=True)
         """
+        
+        # import pdb
+        # pdb.set_trace()
+
         if tipo == 'mensual':
             self.aux = self.reportdata.copy()
             name = self.mensuales[self.anomalias_ultimo_mes.__name__]
-        else:
-            corredor = "juan_b._justo"
+            sentidos = list(set(self.aux['sentido']))
+        elif tipo == "corredores":
             self.aux = self.reportdata.copy()
-            self.aux = self.aux[self.aux['corr_name'] == corredor]
-            name = corredor + "_" + self.anomalias_ultimo_mes.__name__
+            if corredor in list(set(self.reportdata['corr_name'])):
+                self.aux = self.aux[self.aux['corr_name'] == corredor]
+                sentidos = list(set(self.aux['sentido']))
+                name = corredor.replace(" ", "_").lower() + "_" + self.anomalias_ultimo_mes.__name__
+            else:
+                raise Exception("Corredor Inexistente")
 
+        sentidos.sort()
         self.aux = self.aux.groupby([self.aux["timestamp_start"].dt.week, self.aux["sentido"]]).size()
         self.aux = self.aux.reset_index().rename(columns={"level_0": "semana", 0: "count"})
         self.aux = self.aux.pivot(index='semana', columns='sentido', values='count').reset_index()
         self.aux.columns.name = "Referencia"
-        self.aux["promedio"] = (self.aux["centro"] + self.aux["provincia"]) / 2
+        if sentidos == ["centro", "provincia"]:
+            self.aux["promedio"] = (self.aux["centro"] + self.aux["provincia"]) / len(sentidos)
+        else:
+            self.aux["promedio"] = self.aux[sentidos[0]]
         self.aux["semana"] = self.aux["semana"].astype(str)
-        self.ax = self.aux[["semana", "promedio"]] #.plot(x='semana', color="r")
-        self.ax = self.aux[["semana", "centro", "provincia"]] #.plot(x='semana', kind='bar', ax=self.ax)
+        self.ax = self.aux[["semana", "promedio"]] # .plot(x='semana', color="r")
+        self.ax = self.aux[['semana'] + sentidos] # .plot(x='semana', kind='bar', ax=self.ax)
 
         CustomGraph = LightGreenStyle(background='white')
         custom_style = Style(label_font_size=12, background='transparent')
@@ -249,16 +265,24 @@ class GraficosPlanificacion(object):
                 x = 0
             return int(x)
 
-        line_chart.add('Capital', map(set_value, self.aux['centro']))
-        line_chart.add('Provincia', map(set_value, self.aux['provincia']))
+        if sentidos == ["centro", "provincia"]:
+            line_chart.add('Capital', map(set_value, self.aux['centro']))
+            line_chart.add('Provincia', map(set_value, self.aux['provincia']))
+        elif sentidos == ["centro"]:
+            line_chart.add('Capital', map(set_value, self.aux['centro']))
+        elif sentidos == ["provincia"]:
+            line_chart.add('Provincia', map(set_value, self.aux['provincia']))
+        else:
+            raise Exception("Corredor sin Sentidos")
+
         if tipo == "mensual":
             self.__wrpsave(self.anomalias_ultimo_mes.__name__, graph=line_chart, save=save, csv=csv, show=show)
         else:
-            metadata = self.generar_metadata(name)
-            metadata['name'] = corredor.replace("_", " ").title() + " " + mensuales[self.anomalias_ultimo_mes.__name__]
-            self.generador_csv(metadata.get("filename"), self.aux)
-            self.guardar_grafico(metadata)
-            line_chart(metadata.get("filename"))
+            metadata = self.generar_metadata(name, tipo='corredores')
+            metadata['name'] = corredor + " " + self.mensuales[self.anomalias_ultimo_mes.__name__]
+            self.generador_csv(metadata.get("filename"), tipo="corredores", corredor=corredor.replace(" ", "_").lower())
+            self.guardar_grafico(metadata, instancegraph=False)
+            line_chart.render_to_file(self.folders['corredores']['svg'].format(corredor.replace(" ", "_").lower()) + "/" + metadata.get("filename"))
 
     def duracion_media_anomalias(self, save=True, csv=True, show=False):
         """
@@ -638,12 +662,18 @@ class GraficosPlanificacion(object):
             self.reportdata["corr"].str.endswith("_acentro"), "sentido"] = "centro"
         self.reportdata.loc[
             self.reportdata["corr"].str.endswith("_aprovincia"), "sentido"] = "provincia"
+        self.corredores = list(set(self.reportdata['corr_name']))
 
 
 def main():
 
     grafico = GraficosPlanificacion()
+    
     grafico.generacion_graficos()
+
+    for c in grafico.corredores:
+        print c
+        grafico.anomalias_ultimo_mes(tipo="corredores", corredor=c)
 
 if __name__ == '__main__':
     main()
