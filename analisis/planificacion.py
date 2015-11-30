@@ -95,7 +95,7 @@ class GraficosPlanificacion(object):
         self.corrdata = []
         self.valids = {}
         self.reportdata = None
-            self.aux = None
+        self.aux = None
 
         for (idseg, data) in misc_helpers.corrdata.items():
             d = data.copy()
@@ -727,8 +727,8 @@ class GraficosPlanificacion(object):
 
         def add_chart(sentido, name):
             bar_chart = pygal.HorizontalBar(no_data_text='Sin Datos', tooltip_border_radius=10,
-                                            x_title='Cantidad de Anomalias, Sentido {0}'.format(
-                                                name.title()),
+                                            x_title='Sentido {0}'.format(
+                                                    name.title()),
                                             width=600, height=400,  style=custom_style, explicit_size=True)
             for key in sentido.values:
                 bar_chart.add(key[0], key[1])
