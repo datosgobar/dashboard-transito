@@ -119,15 +119,15 @@ class GraficosPlanificacion(object):
             self.corrdata += [d]
 
         self.mensuales = {
-            "anomalias_ultimo_mes": "Cantidad total de anomalias en las ultimas 4 semanas",
-            "duracion_media_anomalias": "Duracion media de anomalias por corredor",
-            "duracion_en_percentiles": "Duracion en Percentil",
-            "cant_anomalias_xcorredores_capital": "Cantidad de anomalias por corredor - Sentido Capital",
-            "cant_anomalias_xcorredores_provincia": "Cantidad de anomalias por corredor - Sentido Provincia",
+            "anomalias_ultimo_mes": "Cantidad de anomalias",
+            "duracion_media_anomalias": "Duracion media de anomalias",
+            "duracion_en_percentiles": "Duracion de anomalias en Percentil",
+            "cant_anomalias_xcorredores_capital": "Cantidad de anomalias - Sentido Capital",
+            "cant_anomalias_xcorredores_provincia": "Cantidad de anomalias - Sentido Provincia",
             "indice_anomalias_xcuadras": "Indice de anomalias por cuadra",
-            "distribucion_horaria_sumarizada_laborables": "Distribucion horaria sumarizada - Dias Laborables",
-            "distribucion_horaria_sumarizada_sabado": "Distribucion horaria sumarizada - Sabado",
-            "distribucion_horaria_sumarizada_domingo": "Distribucion horaria sumarizada - Domingo",
+            "distribucion_horaria_sumarizada_laborables": "Distribucion horaria de anomalias - Dias Laborables",
+            "distribucion_horaria_sumarizada_sabado": "Distribucion horaria de anomalias - Sabado",
+            "distribucion_horaria_sumarizada_domingo": "Distribucion horaria de anomalias - Domingo",
             "duracion_anomalias_media_xfranjahoraria_laborables": "Duracion media de anomalias por franja horaria - Dias Laborables",
             "duracion_anomalias_media_xfranjahoraria_fin_de_semana": "Duracion media de anomalias por franja horaria - Fin de Semana",
             "duracion_anomalias_xfranjahoraria_laborables": "Duracion de anomalias por franja horaria - Dias Laborables",
@@ -463,7 +463,8 @@ class GraficosPlanificacion(object):
 
         def make_bar(tipodia, name_dia):
 
-            bar_chart = pygal.Bar(explicit_size=True, width=700, height=450)
+            bar_chart = pygal.Bar(explicit_size=True,
+                                  width=700, height=450, y_title="Cantidad")
             #bar_chart.title = 'Distribucion Horaria Sumarizada - {0}'.format(name_dia.title())
             bar_chart.x_labels = map(lambda x: str(x), range(1, 25))
 

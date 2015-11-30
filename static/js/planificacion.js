@@ -37,12 +37,13 @@ $(document).ready(function() {
   var graficos = get_endpoint('/graficos')
   var corredores = graficos['graficos']['corredores']
   var periodos = graficos['graficos']['periodos']
+  
+  var id_grafico_seleccionado = 0;
+
 
   var graphs = {
     'graficos': []
   }
-
-  var id_grafico_seleccionado = 0;
 
   var each_array = function(array, id) {
     $.each(array, function(i, elem) {
@@ -62,9 +63,7 @@ $(document).ready(function() {
   var insert_graficos = function(id) {
     console.log("id", id)
 
-    remove_elem(['h2', 'embed'])
-
-    graphs = {
+    var graphs = {
       'graficos': []
     }
 
@@ -72,11 +71,11 @@ $(document).ready(function() {
     select_filtros = $("#filtros option:selected").attr('id')
 
     if (id == "generales") {
-      $("#list_corredores").hide()
+      $("#filtros_corredores").hide()
       graphs = get_endpoint('/generales' + "/" + select_periodo)
     } else if (id == 'corredores') {
       select_corredor = $("#list_corredores option:selected").attr('id').twoReplace(" ", "_").toLowerCase()
-      $("#list_corredores").show()
+      $("#filtros_corredores").show()
       graphs = get_endpoint('/corredores' + "/" + select_periodo + "/" + select_corredor)
     } else if (id == 'periodos') {
       if (select_filtros == 'generales') {
@@ -87,9 +86,11 @@ $(document).ready(function() {
       }
     }
 
+    remove_elem(['h2', 'embed', '.graficos'])
 
-    $.each(graphs['graficos'], function(i, grafico) {
-      $('#leftPanel').append('<div class="graficos shadow listado" order="'+ i +'"><span class="titulo">'+ grafico.name +'</span></div>');
+
+   $.each(graphs['graficos'], function(i, grafico) {
+      $('#leftPanel').append('<div class="graficos shadow listado" order="'+ i +'"><span class="">'+ grafico.name +'</span></div>');
       
       var style = "display:none"
       if (i == id_grafico_seleccionado) {
@@ -109,10 +110,16 @@ $(document).ready(function() {
           order: i
         })
       );
-
     });
 
-  }
+    $(".graficos").click(function() {
+      id_grafico_seleccionado = $(this).attr('order');
+      $('#entry h2').hide();
+      $('#entry embed').hide();
+      $('#entry').find('[order = '+ id_grafico_seleccionado +']').show();
+    })
+
+  };
 
   $('body').on('change', '#filtros', function() {
     $("#filtros option:selected").attr('id', function(a, id_selc, c) {
@@ -138,14 +145,9 @@ $(document).ready(function() {
     })
   });
 
+
   insert_graficos("generales")
 
-  $(".graficos").click(function() {
-      id_grafico_seleccionado = $(this).attr('order');
-      $('#entry h2').hide();
-      $('#entry embed').hide();
-      $('#entry').find('[order = '+ id_grafico_seleccionado +']').show();
-  })
 
   $("#salir").click(function() {
     window.location = "/logout";
@@ -155,5 +157,4 @@ $(document).ready(function() {
   $("#logo").click(function() {
     window.location = "/";
   });
-
 });

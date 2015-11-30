@@ -310,13 +310,6 @@ body {
         margin-bottom: 4px;
     }
 
-    .subtitulo,label{
-        font-family: $fontset-avenir-demi;
-        font-size: 11px;
-        color: $texto-claro;
-        text-transform: uppercase;
-
-    }
     .dato{
         font-family: $fontset-avenir-regular;
         font-size: 12px;
@@ -339,18 +332,6 @@ body {
 
     .inputs{
         text-align: right;
-    }
-
-    select{
-        float: right;
-        padding: 5px;
-        font-size: 12px;
-        margin-left: 13px;
-        width: 150px;
-        border: 0;
-        background-color: $fondo-claro;
-        color: $texto-claro;
-        border-radius: 3px;
     }
 
     textarea {
@@ -388,6 +369,14 @@ body {
         float: left;
     }
 
+
+}
+
+.subtitulo,label{
+    font-family: $fontset-avenir-demi;
+    font-size: 11px;
+    color: $texto-claro;
+    text-transform: uppercase;
 
 }
 
@@ -438,6 +427,18 @@ body {
 .shadow:hover {
     transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 0.5);
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25);
+}
+
+select{
+    float: right;
+    padding: 5px;
+    font-size: 12px;
+    margin-left: 13px;
+    width: 150px;
+    border: 0;
+    background-color: $fondo-claro;
+    color: $texto-claro;
+    border-radius: 3px;
 }
 
 #salir {
