@@ -39,16 +39,15 @@
         </div>
 
         <div id="paneles">
-            <div id="leftPanel">
-                <div class="corredor shadow listado"><span class="titulo">...</span></div>
+            <div id="leftPanel">                
             </div>
+
+            <div id="rightPanel">
+                <h1 id="title" style="color:white"></h1>
+                <div id="entry"></div>
+            </div>
+    
         </div>
-
-        <h1 id="title" style="color:white"></h1>
-
-        <div id="entry"></div>
-
-
     </div>
 </body>
   <script type="text/javascript" src="_static/js/planificacion.js"></script>
