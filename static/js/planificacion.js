@@ -79,16 +79,14 @@ var insert_graficos = function(id) {
     }
   }
 
-
   $.each(graphs['graficos'], function(i, grafico) {
     $('#entry').append(
       $('<h2>', {
-        text: grafico.title,
+        text: grafico.name,
         style: "color:white"
       }),
       $('<embed>', {
         value: grafico.name,
-        text: grafico.title,
         src: grafico.filename
       })
     )

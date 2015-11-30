@@ -11,7 +11,12 @@
     <script type="text/javascript" src="_static/js/jquery-2.1.3.min.js"></script>
 </head>
 <body>
-
+    <style type="text/css">
+      h2 {
+        font-family: "Arial";
+        font-size: 21px;
+      }
+    </style>
     <div id="contenido">
         <div id="header">
             <div id="logo"></div>

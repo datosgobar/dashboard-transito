@@ -95,7 +95,7 @@ class GraficosPlanificacion(object):
         self.corrdata = []
         self.valids = {}
         self.reportdata = None
-        self.aux = None
+            self.aux = None
 
         for (idseg, data) in misc_helpers.corrdata.items():
             d = data.copy()
@@ -449,8 +449,7 @@ class GraficosPlanificacion(object):
         def make_bar(tipodia, name_dia):
 
             bar_chart = pygal.Bar(explicit_size=True, width=700, height=450)
-            bar_chart.title = 'Distribucion Horaria Sumarizada - {0}'.format(
-                name_dia.title())
+            #bar_chart.title = 'Distribucion Horaria Sumarizada - {0}'.format(name_dia.title())
             bar_chart.x_labels = map(lambda x: str(x), range(1, 25))
 
             franjacentro = tipodia[tipodia['sentido'] == 'centro'][
@@ -545,7 +544,7 @@ class GraficosPlanificacion(object):
                 mode='pstdev', label_font_size=12, background='white')
             box_plot = pygal.Box(no_data_text='Sin Datos', fill=True, interpolate='cubic',
                                  tooltip_border_radius=10, width=700, height=450, style=custom_style, explicit_size=True)
-            box_plot.title = '{0}'.format(name_dia.title())
+            #box_plot.title = '{0}'.format(name_dia.title())
             box_plot.add(
                 '0hs - 07hs', list(franja[franja['franja'] == 0]['Duracion en Minutos']))
             box_plot.add(
@@ -628,7 +627,7 @@ class GraficosPlanificacion(object):
                 mode='pstdev', label_font_size=12, background='white')
             box_plot = pygal.Box(no_data_text='Sin Datos', tooltip_border_radius=10,
                                  width=700, height=450, style=custom_style, explicit_size=True)
-            box_plot.title = '{0}'.format(name_dia.title())
+            #box_plot.title = '{0}'.format(name_dia.title())
             box_plot.add(
                 '0hs - 07hs', list(franja[franja['franja'] == 0]['Duracion en Minutos']))
             box_plot.add(
