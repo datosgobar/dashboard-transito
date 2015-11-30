@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="_static/css/estilos.min.css" />
     <link rel="icon" href="favicon.ico"/> 
     <link rel="stylesheet" href="_static/css/estilos-menu.min.css" />
+    <link rel="stylesheet" href="_static/css/estilos-planificacion.min.css" />
 </head>    
 </head>
 <body>
@@ -20,22 +21,38 @@
             <div id="status"><button id="salir">salir</button></div>
         </div>
 
-        <div class="centro">
-            <h2 style="color:white">ESTADISTICAS MENSUALES</h2>
-            
-            <select id="filtros">
-              <option id='generales'>Generar Mensual</option>
-              <option id='corredores'>Corredor Particular</option>
-            </select>
+        <div id="header_filtros">
 
-            <select id="periodos"></select>
-            
-            <select id="list_corredores"></select>
-            <h1 id="title" style="color:white"></h1>
+            <div id="content_filtros">
+                <label for="filtros">Tipo</label>
+                <select id="filtros">
+                  <option id='generales'>Generar Mensual</option>
+                  <option id='corredores'>Corredor Particular</option>
+                </select>
 
-            <div id="entry"></div>
+                <span id="corredores">
+                    <label for="list_corredores">Corredor</label>
+                    <select id="list_corredores"></select>
+                </span>
 
+                <label for="periodos">Fecha</label>
+                <select id="periodos"></select>
+
+                <h1 id="title" style="color:white"></h1>
+            </div>
         </div>
+
+        <div id="paneles">
+            <div id="leftPanel">
+                <div class="corredor shadow listado"><span class="titulo">...</span></div>
+            </div>
+        </div>
+
+
+        <div id="entry"></div>
+
+
+
     </div>
 
     <script type="text/javascript">
@@ -97,20 +114,22 @@
         }));
       });
 
+      var graphs = {'graficos':[]}
+
       var insert_graficos = function(id){
 
         remove_elem(['h2', 'embed'])
         console.log(id)
         
-        var graphs = {'graficos':[]}
+        graphs = {'graficos':[]}
         select_periodo = $("#periodos option:selected").attr('id').replace(" ", "_")
 
         if (id == "generales"){
-          $("#list_corredores").hide()
+          $("#corredores").hide()
           graphs = get_endpoint('/generales' + "/" + select_periodo)
         } else {
           select_corredor = $("#list_corredores option:selected").attr('id').twoReplace(" ", "_").toLowerCase()
-          $("#list_corredores").show()
+          $("#corredores").show()
           graphs = get_endpoint('/corredores' + "/" + select_periodo + "/" + select_corredor)
         }
         

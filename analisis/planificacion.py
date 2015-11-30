@@ -29,6 +29,7 @@ import misc_helpers
 import pygal
 
 from pygal.style import *
+
 from dashboard_logging import dashboard_logging
 logger = dashboard_logging(config="logging.json", name=__name__)
 logger.info("inicio planificacion - generacion de graficos")
@@ -42,6 +43,21 @@ Historical = conn_sql.instanceTable(unique_table='historical')
 Corredores = conn_sql.instanceTable(unique_table='corredores')
 
 
+style_planificacion = Style(
+    plot_background='#FFFFFF',
+    foreground='#53E89B',
+    foreground_strong='#53A0E8',
+    foreground_subtle='#630C0D',
+    opacity='.6',
+    opacity_hover='.9',
+    transition='400ms ease-in',
+    colors=('#E853A0', '#E8537A', '#E95355', '#E87653', '#E89B53'),
+    label_font_size=12,
+    background='transparent',
+    font_family='googlefont:AvenirNextLTPro',
+    lable_font_family='googlefont:AvenirNextLTPro')
+
+
 class GraficosPlanificacion(object):
 
     def __init__(self):
@@ -52,7 +68,7 @@ class GraficosPlanificacion(object):
         self._mkdir(self.savepath_folder.replace("/{0}/", "/"))
         self.session = conn_sql.session()
         self.name_corredor = None
-        #import pdb
+        # import pdb
         # pdb.set_trace()
         tabla_corredores = self.session.query(Corredores)
         self.corredores = list(
@@ -183,7 +199,7 @@ class GraficosPlanificacion(object):
         else:
             filesave = self.folders["mensuales"][
                 'svg'] + "/" + grafico.get("filename")
-        #filesave = self.savepath_file.format(grafico.get("filename"))
+        # filesave = self.savepath_file.format(grafico.get("filename"))
         query = self.session.query(Estadisticas)
         if_count_id = query.filter(
             Estadisticas.idg == grafico.get("idg")).count()
@@ -197,7 +213,7 @@ class GraficosPlanificacion(object):
         if not os.path.exists(filesave):
             if instancegraph == True:
                 grafico.get("instancegraph").render_to_file(filesave)
-            #plt.savefig(filesave, format='png')
+            # plt.savefig(filesave, format='png')
 
     def __instanciar_save(self, **args):
         params = args.get('params')
@@ -301,7 +317,7 @@ class GraficosPlanificacion(object):
         self.ax = self.aux[['semana'] + sentidos]
 
         CustomGraph = LightGreenStyle(background='white')
-        custom_style = Style(label_font_size=12, background='transparent')
+
         line_chart = pygal.Bar(no_data_text='Sin Datos', include_x_axis=True, tyle=CleanStyle(no_data_font_size=40),
                                tooltip_border_radius=10, x_title='Semanas',
                                human_readable=False, y_title='Duracion en Minutos', width=600, height=400,
@@ -379,9 +395,8 @@ class GraficosPlanificacion(object):
             lc[co] = dict(self.aux[self.aux['corr_name'] == co].groupby(
                 ['sentido', 'duration'])['duration'].all().to_dict().keys())
 
-        custom_style = Style(label_font_size=12, background='white')
         bar_chart = pygal.Bar(no_data_text='Sin Datos', tooltip_border_radius=10, y_title='Duracion en Minutos',
-                              width=700, height=450, legend_at_bottom=True, style=custom_style, explicit_size=True,
+                              width=700, height=450, legend_at_bottom=True, style=style_planificacion, explicit_size=True,
                               x_label_rotation=x_label_rotation)
         bar_chart.x_labels = list(set(self.aux['corr_name']))
 
@@ -624,10 +639,10 @@ class GraficosPlanificacion(object):
         findesemana = self.aux[self.aux['Tipos de Dias'] == 'Fin de Semana']
 
         def make_box(franja, name_dia):
-            custom_style = Style(
-                mode='pstdev', label_font_size=12, background='white')
+            # style_planificacion = Style(
+            #     mode='pstdev', label_font_size=12, background='white')
             box_plot = pygal.Box(no_data_text='Sin Datos', tooltip_border_radius=10,
-                                 width=700, height=450, style=custom_style, explicit_size=True)
+                                 width=700, height=450, style=style_planificacion, explicit_size=True)
             box_plot.title = '{0}'.format(name_dia.title())
             box_plot.add(
                 '0hs - 07hs', list(franja[franja['franja'] == 0]['Duracion en Minutos']))
@@ -686,12 +701,10 @@ class GraficosPlanificacion(object):
                 s = "%s %s" % (s, x % 60)
             return s
 
-        from pygal.style import BlueStyle
         x = [.1 * i for i in range(1, 11)]
         y = list(self.aux)
-        custom_style = BlueStyle(label_font_size=12, background='white')
         line_chart = pygal.Line(interpolate='quadratic', interpolation_precision=3, tooltip_border_radius=10,
-                                width=700, legend_at_bottom=True, height=500, explicit_size=True, style=custom_style)
+                                width=700, legend_at_bottom=True, height=500, explicit_size=True, style=style_planificacion)
         line_chart.x_labels = x
         line_chart.x_title = 'Percentil'
         line_chart.y_title = 'Duracion en Minutos'
@@ -724,15 +737,14 @@ class GraficosPlanificacion(object):
             ['corredor', 'cantidad']).all().reset_index()[['corredor', 'cantidad']]
         provincia = self.aux[self.aux["sentido"] == "provincia"].groupby(
             ['corredor', 'cantidad']).all().reset_index()[['corredor', 'cantidad']]
-        custom_style = Style(label_font_size=12, background='white')
 
         def add_chart(sentido, name):
             bar_chart = pygal.HorizontalBar(no_data_text='Sin Datos', tooltip_border_radius=10,
                                             x_title='Cantidad de Anomalias, Sentido {0}'.format(
                                                 name.title()),
-                                            width=600, height=400,  style=custom_style, explicit_size=True)
+                                            width=600, height=400,  style=style_planificacion, explicit_size=True)
             for key in sentido.values:
-                bar_chart.add(key[0], key[1])
+                bar_chart.add(key[0], int(key[1]))
 
             name = self.cant_anomalias_xcorredores.__name__ + \
                 "_" + name.replace(" ", "_")
@@ -773,9 +785,8 @@ class GraficosPlanificacion(object):
         for co in lc.keys():
             lc[co] = dict(self.aux[self.aux['corr_name'] == co].groupby(
                 ['sentido', 'indice'])['indice'].all().to_dict().keys())
-        custom_style = CleanStyle(label_font_size=12, background='white')
         bar_chart = pygal.Bar(no_data_text='Sin Datos', tooltip_border_radius=10, y_title='Indice',
-                              width=700, height=450, legend_at_bottom=True, style=custom_style,
+                              width=700, height=450, legend_at_bottom=True, style=style_planificacion,
                               explicit_size=True, x_label_rotation=90)
         bar_chart.x_labels = list(set(self.aux['corr_name']))
         bar_chart.add('Provincia', set_items(lprov, 'provincia'))
