@@ -25,7 +25,7 @@
     </div>
     <h2 style="color:white">ESTADISTICAS MENSUALES</h2>
     <select id="filtros">
-      <option id='mensuales'>Generar Mensual</option>
+      <option id='generales'>Generar Mensual</option>
       <option id='corredores'>Corredor Particular</option>
     </select>
     <h1 id="title" style="color:white"></h1>
@@ -41,19 +41,23 @@
     </style>
     <script type="text/javascript">
 
-      var graficos = (function () {
+      var get_endpoint = function (url) {
           var archivo = null;
           $.ajax({
               'async': false,
               'global': false,
-              'url': "/info_graficos",
+              'url': url,
               'dataType': "json",
               'success': function (data) {
                   archivo = data;
               }
           });
-          return archivo['graficos'];
-      })();
+          return archivo;
+      };
+
+      var graficos = get_endpoint('/graficos')
+      var corredores = graficos['graficos']['corredores']
+
 
       var remove_elem  = function(elem){
         for (var i =0;i<elem.length;i++){
@@ -61,9 +65,17 @@
         }
       }
 
-      var insert_graficos = function(periodo){
+      var periodos = graficos['graficos']['periodos']
+
+      var insert_graficos = function(id){
         remove_elem(['h2', 'embed'])
-        $.each(graficos[periodo], function (i, grafico){
+        console.log(id)
+        var graphs = {'graficos':[]}
+        if (id == "generales"){
+          graphs = get_endpoint('/generales' + "/" + periodos[0])
+        }
+        console.log(graphs.length)
+        $.each(graphs['graficos'], function (i, grafico){
             $('#entry').append(
               $('<h2>',{
                 text : grafico.title,
@@ -88,7 +100,7 @@
       });
 
       $( document ).ready(function() {
-        insert_graficos("mensuales")
+        insert_graficos("generales")
       });
 
     </script>
