@@ -26,9 +26,12 @@
               <option id='corredores'>Corredor Particular</option>
             </select>
 
-            <select id="periodos"></select>
+            <select id="periodos">
+            </select>
             
-            <select id="list_corredores"></select>
+            <select id="list_corredores">
+            </select>
+
             <h1 id="title" style="color:white"></h1>
             <div id="entry"></div>
 

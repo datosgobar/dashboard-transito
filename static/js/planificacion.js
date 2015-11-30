@@ -52,6 +52,7 @@ each_array(periodos, 'periodos')
 each_array(corredores, 'list_corredores')
 
 var insert_graficos = function(id) {
+  console.log("id", id)
 
   remove_elem(['h2', 'embed'])
 
@@ -60,14 +61,22 @@ var insert_graficos = function(id) {
   }
 
   select_periodo = $("#periodos option:selected").attr('id').replace(" ", "_")
+  select_filtros = $("#filtros option:selected").attr('id')
 
   if (id == "generales") {
     $("#list_corredores").hide()
     graphs = get_endpoint('/generales' + "/" + select_periodo)
-  } else {
+  } else if (id == 'corredores') {
     select_corredor = $("#list_corredores option:selected").attr('id').twoReplace(" ", "_").toLowerCase()
     $("#list_corredores").show()
     graphs = get_endpoint('/corredores' + "/" + select_periodo + "/" + select_corredor)
+  } else if (id == 'periodos') {
+    if (select_filtros == 'generales') {
+      graphs = get_endpoint('/generales' + "/" + select_periodo)
+    } else {
+      select_corredor = $("#list_corredores option:selected").attr('id').twoReplace(" ", "_").toLowerCase()
+      graphs = get_endpoint('/corredores' + "/" + select_periodo + "/" + select_corredor)
+    }
   }
 
 
@@ -89,6 +98,7 @@ var insert_graficos = function(id) {
 
 $('body').on('change', '#filtros', function() {
   $("#filtros option:selected").attr('id', function(a, id_selc, c) {
+    console.log("selecciono el periodo filtros")
     insert_graficos(id_selc)
     if (id_selc == 'corredores') {
       $("#select_corredores")
@@ -98,7 +108,15 @@ $('body').on('change', '#filtros', function() {
 
 $('body').on('change', '#list_corredores', function() {
   $("#list_corredores option:selected").attr('id', function(a, id_selc, c) {
+    console.log("selecciono el periodo list_corredores")
     insert_graficos("corredores")
+  })
+});
+
+$('body').on('change', '#periodos', function() {
+  $("#periodos option:selected").attr('id', function(a, id_selc, c) {
+    console.log("selecciono el periodo periodos")
+    insert_graficos("periodos")
   })
 });
 
