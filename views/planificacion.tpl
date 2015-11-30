@@ -49,7 +49,6 @@
 
         <div id="entry"></div>
 
-
     </div>
 </body>
 </html>
