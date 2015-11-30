@@ -304,7 +304,7 @@ class GraficosPlanificacion(object):
         custom_style = Style(label_font_size=12, background='transparent')
         line_chart = pygal.Bar(no_data_text='Sin Datos', include_x_axis=True, tyle=CleanStyle(no_data_font_size=40),
                                tooltip_border_radius=10, x_title='Semanas',
-                               human_readable=False, y_title='Duracion en Minutos', width=600, height=400,
+                               human_readable=False, y_title='Cantidad', width=600, height=400,
                                legend_at_bottom=True, fill=False, interpolate='cubic', style=CustomGraph, stroke_style={'width': 2},
                                explicit_size=True, show_y_guides=True)
         line_chart.x_labels = list(self.aux['semana'])
@@ -542,7 +542,7 @@ class GraficosPlanificacion(object):
             from pygal.style import LightGreenStyle
             custom_style = LightGreenStyle(
                 mode='pstdev', label_font_size=12, background='white')
-            box_plot = pygal.Box(no_data_text='Sin Datos', fill=True, interpolate='cubic',
+            box_plot = pygal.Box(no_data_text='Sin Datos', fill=True, interpolate='cubic', y_title='Duracion en Minutos',
                                  tooltip_border_radius=10, width=700, height=450, style=custom_style, explicit_size=True)
             #box_plot.title = '{0}'.format(name_dia.title())
             box_plot.add(
@@ -625,7 +625,7 @@ class GraficosPlanificacion(object):
         def make_box(franja, name_dia):
             custom_style = Style(
                 mode='pstdev', label_font_size=12, background='white')
-            box_plot = pygal.Box(no_data_text='Sin Datos', tooltip_border_radius=10,
+            box_plot = pygal.Box(no_data_text='Sin Datos', tooltip_border_radius=10, y_title='Duracion en Minutos',
                                  width=700, height=450, style=custom_style, explicit_size=True)
             #box_plot.title = '{0}'.format(name_dia.title())
             box_plot.add(
@@ -728,7 +728,7 @@ class GraficosPlanificacion(object):
         def add_chart(sentido, name):
             bar_chart = pygal.HorizontalBar(no_data_text='Sin Datos', tooltip_border_radius=10,
                                             x_title='Sentido {0}'.format(
-                                                    name.title()),
+                                                name.title()),
                                             width=600, height=400,  style=custom_style, explicit_size=True)
             for key in sentido.values:
                 bar_chart.add(key[0], key[1])
