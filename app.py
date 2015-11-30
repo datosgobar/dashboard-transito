@@ -12,7 +12,7 @@ import requests
 
 from analisis import *
 from analisis import config
-from bottle import error, request, redirect, response
+from bottle import error, request, redirect, response, hook, route
 from socketio import socketio_manage
 from socketio.mixins import BroadcastMixin
 from socketio.namespace import BaseNamespace
@@ -67,7 +67,7 @@ def auth_sqlalchemy():
 
 
 auth = auth_sqlalchemy()
-auth._engine.echo = config.db["debug"]
+auth._engine.echo = config.db["debug"]  # DB del Login en modo debug si es true
 bottle_auth = Cork(backend=auth)
 
 app = bottle.app()
@@ -110,6 +110,11 @@ class dataSemaforos(BaseNamespace, BroadcastMixin):
         logger.info("discconect")
 
 # genero ruta / que envia template index
+
+
+@hook('after_request')
+def x_frame_same_origin():
+    response.headers["X-Frame-Options"] = 'sameorigin'
 
 
 @bottle.route('/login')
@@ -193,7 +198,8 @@ def views_info():
 def get_tablas():
     tabla_estadisticas = session.query(Estadisticas).all()
     tabla_corredores = session.query(Corredores).all()
-    corredores = list(set([c.corredor.lower().replace(" ", "_") for c in tabla_corredores if c]))
+    corredores = list(set([c.corredor.lower().replace(" ", "_")
+                           for c in tabla_corredores if c]))
     periodos = list(set(["{0}_{1}".format(
         grafico.timestamp_start.isoformat(),
         grafico.timestamp_end.isoformat()
@@ -210,7 +216,7 @@ def filtro(periodo, tipo="mensuales", corredor=None):
         Estadisticas.tipo_grafico == tipo
     ).filter(Estadisticas.timestamp_start >= start).filter(Estadisticas.timestamp_start <= end).all()
     session.close()
-    return [{"filename":graph.filename, "name":graph.name} for graph in query if graph]
+    return [{"filename": graph.filename, "name": graph.name} for graph in query if graph]
 
 
 @bottle.route("/corredores/<periodo>/<corredor>", method="GET")
@@ -221,9 +227,9 @@ def get_corredor(periodo='', corredor=''):
     logger.info("corredor {0}".format(corredor))
     result = filtro(periodo, tipo="corredores", corredor=corredor)
     if corredor in corredores and periodo in periodos:
-        return { "success" : True, "graficos" : result }
+        return {"success": True, "graficos": result}
     else:
-        return { "success" : False, "error" : "solicitud mal formada" }
+        return {"success": False, "error": "solicitud mal formada"}
 
 
 @bottle.route("/generales/<periodo>", method="GET")
@@ -233,16 +239,16 @@ def get_generales(periodo=''):
     logger.info("periodo {0}".format(periodo))
     if periodo in periodos:
         result = filtro(periodo)
-        return { "success" : True, "graficos" : result }
+        return {"success": True, "graficos": result}
     else:
-        return { "success" : False, "graficos" : "periodo inexistente" }
+        return {"success": False, "graficos": "periodo inexistente"}
 
 
 @bottle.route("/graficos")
 def graficos():
     bottle_auth.require(fail_redirect='/login')
     periodos, corredores = get_tablas()
-    return { "success" : True, "graficos" : {"periodos" : periodos, "corredores": corredores } }
+    return {"success": True, "graficos": {"periodos": periodos, "corredores": corredores}}
 
 
 @bottle.route('/estadisticas')

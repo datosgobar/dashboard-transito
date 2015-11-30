@@ -46,10 +46,12 @@ def getData(url):
             if (response.status_code == 200):
                 return response.json()
             else:
-                error_msg = "hubo timeout del count:{0} request en {1} codigo:{2}".format(i, url, response.status_code)
+                error_msg = "hubo error del count:{0} request en {1} codigo:{2}".format(
+                    i, url, response.status_code)
                 logger.error(error_msg)
         except requests.exceptions.Timeout, e:
-            error_msg = "hubo timeout del count:{0} request en {1}".format(i, url)
+            error_msg = "hubo timeout del count:{0} request en {1}".format(
+                i, url)
             logger.error(error_msg, traceback=True)
         except:
             return None
@@ -73,7 +75,8 @@ def downloadData(sensor_ids, step, download_startdate, download_enddate, outfn=N
     # vsensids = virtsens["id_sensor"].unique()
     token = config.api['token']
     host = config.api['host']
-    urltpl = "{0}/api/data/%s?token=%s&fecha_desde=%s&fecha_hasta=%s".format(host)
+    urltpl = "{0}/api/data/%s?token=%s&fecha_desde=%s&fecha_hasta=%s".format(
+        host)
 
     # end = dateutil.parser.parse(download_enddate)
     start = download_startdate
@@ -318,7 +321,7 @@ def getCurrentSegmentState(anomalies, lastrecords):
         lastrecords index 0 [57, 611, datetime.datetime(2015, 8, 27, 13, 40, 9)]
     """
 
-    #pdb.set_trace()
+    # pdb.set_trace()
 
     segments = {}
     for r in lastrecords:
@@ -412,7 +415,7 @@ def upsertAnomalies(newanomalydata):
         newanomalydata index 0 {'timestamp': datetime.datetime(2015, 8, 27, 15, 5), 'isanomaly': True, \
             'id_segment': 37, 'indicador_anomalia': 3.39, 'threshold': 664.5, 'evalfield': 1010}
     """
-    #pdb.set_trace()
+    # pdb.set_trace()
     liveanomalies = []
     for a in newanomalydata:
         window_older = a["timestamp"] - datetime.timedelta(minutes=20)
