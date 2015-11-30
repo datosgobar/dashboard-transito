@@ -75,7 +75,7 @@ class GraficosPlanificacion(object):
             set([c.corredor.lower().replace(" ", "_") for c in tabla_corredores if c]))
 
         self.timestamp_end = datetime.datetime.now()
-        self.timestamp_start = self.timestamp_end - datetime.timedelta(weeks=8)
+        self.timestamp_start = self.timestamp_end - datetime.timedelta(weeks=4)
 
         self.__mkdir(self.savepath_folder, [
                      'mensuales', 'corredores', "mensuales/csv", "mensuales/svg"])
@@ -320,7 +320,7 @@ class GraficosPlanificacion(object):
 
         line_chart = pygal.Bar(no_data_text='Sin Datos', include_x_axis=True, tyle=CleanStyle(no_data_font_size=40),
                                tooltip_border_radius=10, x_title='Semanas',
-                               human_readable=False, y_title='Duracion en Minutos', width=600, height=400,
+                               human_readable=False, y_title='Cantidad', width=600, height=400,
                                legend_at_bottom=True, fill=False, interpolate='cubic', style=CustomGraph, stroke_style={'width': 2},
                                explicit_size=True, show_y_guides=True)
         line_chart.x_labels = list(self.aux['semana'])
@@ -464,8 +464,7 @@ class GraficosPlanificacion(object):
         def make_bar(tipodia, name_dia):
 
             bar_chart = pygal.Bar(explicit_size=True, width=700, height=450)
-            bar_chart.title = 'Distribucion Horaria Sumarizada - {0}'.format(
-                name_dia.title())
+            #bar_chart.title = 'Distribucion Horaria Sumarizada - {0}'.format(name_dia.title())
             bar_chart.x_labels = map(lambda x: str(x), range(1, 25))
 
             franjacentro = tipodia[tipodia['sentido'] == 'centro'][
@@ -558,9 +557,9 @@ class GraficosPlanificacion(object):
             from pygal.style import LightGreenStyle
             custom_style = LightGreenStyle(
                 mode='pstdev', label_font_size=12, background='white')
-            box_plot = pygal.Box(no_data_text='Sin Datos', fill=True, interpolate='cubic',
+            box_plot = pygal.Box(no_data_text='Sin Datos', fill=True, interpolate='cubic', y_title='Duracion en Minutos',
                                  tooltip_border_radius=10, width=700, height=450, style=custom_style, explicit_size=True)
-            box_plot.title = '{0}'.format(name_dia.title())
+            #box_plot.title = '{0}'.format(name_dia.title())
             box_plot.add(
                 '0hs - 07hs', list(franja[franja['franja'] == 0]['Duracion en Minutos']))
             box_plot.add(
@@ -639,11 +638,12 @@ class GraficosPlanificacion(object):
         findesemana = self.aux[self.aux['Tipos de Dias'] == 'Fin de Semana']
 
         def make_box(franja, name_dia):
-            # style_planificacion = Style(
-            #     mode='pstdev', label_font_size=12, background='white')
-            box_plot = pygal.Box(no_data_text='Sin Datos', tooltip_border_radius=10,
-                                 width=700, height=450, style=style_planificacion, explicit_size=True)
-            box_plot.title = '{0}'.format(name_dia.title())
+
+            custom_style = Style(
+                mode='pstdev', label_font_size=12, background='white')
+            box_plot = pygal.Box(no_data_text='Sin Datos', tooltip_border_radius=10, y_title='Duracion en Minutos',
+                                 width=700, height=450, style=custom_style, explicit_size=True)
+            #box_plot.title = '{0}'.format(name_dia.title())
             box_plot.add(
                 '0hs - 07hs', list(franja[franja['franja'] == 0]['Duracion en Minutos']))
             box_plot.add(
@@ -740,7 +740,7 @@ class GraficosPlanificacion(object):
 
         def add_chart(sentido, name):
             bar_chart = pygal.HorizontalBar(no_data_text='Sin Datos', tooltip_border_radius=10,
-                                            x_title='Cantidad de Anomalias, Sentido {0}'.format(
+                                            x_title='Sentido {0}'.format(
                                                 name.title()),
                                             width=600, height=400,  style=style_planificacion, explicit_size=True)
             for key in sentido.values:
