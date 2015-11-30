@@ -30,6 +30,7 @@ from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.poolmanager import PoolManager
 import ssl
 
+
 bottle.debug(True)
 Base = automap_base()
 db_url = config.db_url
@@ -189,19 +190,59 @@ def views_info():
     return {"success": True,  "causas": causas}
 
 
-@bottle.route('/info_graficos')
+def get_tablas():
+    tabla_estadisticas = session.query(Estadisticas).all()
+    tabla_corredores = session.query(Corredores).all()
+    corredores = list(set([c.corredor.lower().replace(" ", "_") for c in tabla_corredores if c]))
+    periodos = list(set(["{0}_{1}".format(
+        grafico.timestamp_start.isoformat(),
+        grafico.timestamp_end.isoformat()
+    ) for grafico in tabla_estadisticas if grafico]))
+    session.close()
+    return periodos, corredores
+
+
+def filtro(periodo, tipo="mensuales", corredor=None):
+    if tipo == "corredores":
+        tipo = corredor.replace("_", " ")
+    start, end = periodo.split("_")
+    query = session.query(Estadisticas).filter(
+        Estadisticas.tipo_grafico == tipo
+    ).filter(Estadisticas.timestamp_start >= start).filter(Estadisticas.timestamp_start <= end).all()
+    session.close()
+    return [{"filename":graph.filename, "name":graph.name} for graph in query if graph]
+
+
+@bottle.route("/corredores/<periodo>/<corredor>", method="GET")
+def get_corredor(periodo='', corredor=''):
+    bottle_auth.require(fail_redirect='/login')
+    periodos, corredores = get_tablas()
+    logger.info("periodo {0}".format(periodo))
+    logger.info("corredor {0}".format(corredor))
+    result = filtro(periodo, tipo="corredores", corredor=corredor)
+    if corredor in corredores and periodo in periodos:
+        return { "success" : True, "graficos" : result }
+    else:
+        return { "success" : False, "error" : "solicitud mal formada" }
+
+
+@bottle.route("/generales/<periodo>", method="GET")
+def get_generales(periodo=''):
+    bottle_auth.require(fail_redirect='/login')
+    periodos, corredores = get_tablas()
+    logger.info("periodo {0}".format(periodo))
+    if periodo in periodos:
+        result = filtro(periodo)
+        return { "success" : True, "graficos" : result }
+    else:
+        return { "success" : False, "graficos" : "periodo inexistente" }
+
+
+@bottle.route("/graficos")
 def graficos():
     bottle_auth.require(fail_redirect='/login')
-    tabla_estadisticas = session.query(Estadisticas).all()
-    graficoslist = {
-        "mensuales": [
-            {"id": grafico.idg,  "filename": grafico.filename, "title": grafico.name,
-                "timestamp_start": str(grafico.timestamp_start), "timestamp_end": str(grafico.timestamp_end),
-                "name": "{0} - {1}".format(grafico.timestamp_start, grafico.timestamp_end)
-             } for grafico in tabla_estadisticas if grafico],
-        "corredores": []
-    }
-    return {"success": True,  "graficos": graficoslist}
+    periodos, corredores = get_tablas()
+    return { "success" : True, "graficos" : {"periodos" : periodos, "corredores": corredores } }
 
 
 @bottle.route('/estadisticas')
