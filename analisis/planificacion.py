@@ -448,7 +448,7 @@ class GraficosPlanificacion(object):
 
         def make_bar(tipodia, name_dia):
 
-            bar_chart = pygal.Bar(explicit_size=True, width=700, height=450)
+            bar_chart = pygal.Bar(explicit_size=True, width=700, height=450, y_title="Cantidad")
             #bar_chart.title = 'Distribucion Horaria Sumarizada - {0}'.format(name_dia.title())
             bar_chart.x_labels = map(lambda x: str(x), range(1, 25))
 
