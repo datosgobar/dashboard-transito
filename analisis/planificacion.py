@@ -41,9 +41,32 @@ Anomaly = conn_sql.instanceTable(unique_table='anomaly')
 Historical = conn_sql.instanceTable(unique_table='historical')
 Corredores = conn_sql.instanceTable(unique_table='corredores')
 
+color_capital = '#336676'
+color_provincia = '#E853A0'
+
+style_provincia = LightenStyle(
+    color_provincia)
+style_provincia.plot_background = '#FFFFFF'
+style_provincia.label_font_size = 16
+style_provincia.background = '#FFFFFF'
+
+style_capital = LightenStyle(color_capital)
+style_capital.plot_background = '#FFFFFF'
+style_capital.label_font_size = 16
+style_capital.background = '#FFFFFF'
+
 style_planificacion = Style(
     plot_background='#FFFFFF',
-    label_font_size=16
+    background='#FFFFFF',
+    label_font_size=16,
+    colors=(color_capital, color_provincia)
+)
+
+style_franjas = Style(
+    plot_background='#FFFFFF',
+    label_font_size=16,
+    background='#FFFFFF',
+    colors=('#ff8723', '#609f86', '#8322dd', '#004466', '#75ff98')
 )
 
 
@@ -536,10 +559,10 @@ class GraficosPlanificacion(object):
 
         def make_box(franja, name_dia):
             box_plot = pygal.Box(
-                no_data_text='Sin Datos', y_title='Duracion en Minutos', style=style_planificacion)
+                no_data_text='Sin Datos', y_title='Duracion en Minutos', style=style_franjas)
 
             box_plot.add(
-                '0hs - 07hs', list(franja[franja['franja'] == 0]['Duracion en Minutos']))
+                '00hs - 07hs', list(franja[franja['franja'] == 0]['Duracion en Minutos']))
             box_plot.add(
                 '07hs - 10hs', list(franja[franja['franja'] == 1]['Duracion en Minutos']))
             box_plot.add(
@@ -615,7 +638,7 @@ class GraficosPlanificacion(object):
 
         def make_box(franja, name_dia):
             box_plot = pygal.Box(
-                no_data_text='Sin Datos', y_title='Duracion en Minutos', style=style_planificacion)
+                no_data_text='Sin Datos', y_title='Duracion en Minutos', style=style_franjas)
 
             box_plot.add(
                 '00hs - 07hs', list(franja[franja['franja'] == 0]['Duracion en Minutos']))
@@ -708,9 +731,9 @@ class GraficosPlanificacion(object):
         provincia = self.aux[self.aux["sentido"] == "provincia"].groupby(
             ['corredor', 'cantidad']).all().reset_index()[['corredor', 'cantidad']]
 
-        def add_chart(sentido, name):
+        def add_chart(sentido, name, style):
             bar_chart = pygal.HorizontalBar(
-                no_data_text='Sin Datos', x_title='Sentido {0}'.format(name.title()), style=style_planificacion)
+                no_data_text='Sin Datos', x_title='Sentido {0}'.format(name.title()), style=style)
             for key in sentido.values:
                 bar_chart.add(key[0], key[1])
 
@@ -719,8 +742,8 @@ class GraficosPlanificacion(object):
             self.__wrpsave(
                 name, graph=bar_chart, save=save, csv=csv, show=show)
 
-        add_chart(centro, 'capital')
-        add_chart(provincia, 'provincia')
+        add_chart(centro, 'capital', style_capital)
+        add_chart(provincia, 'provincia', style_provincia)
 
     def indice_anomalias_xcuadras(self, save=True, csv=True, show=False):
         """
@@ -755,8 +778,8 @@ class GraficosPlanificacion(object):
         bar_chart = pygal.Bar(no_data_text='Sin Datos', y_title='Indice',
                               style=style_planificacion, x_label_rotation=90)
         bar_chart.x_labels = list(set(self.aux['corr_name']))
-        bar_chart.add('Provincia', set_items(lprov, 'provincia'))
         bar_chart.add('Capital', set_items(lcent, 'centro'))
+        bar_chart.add('Provincia', set_items(lprov, 'provincia'))
         self.__wrpsave(self.indice_anomalias_xcuadras.__name__,
                        graph=bar_chart, save=save, csv=csv, show=show)
 
