@@ -87,7 +87,7 @@ class GraficosPlanificacion(object):
             set([c.corredor.lower().replace(" ", "_") for c in tabla_corredores if c]))
 
         self.timestamp_end = datetime.datetime.now()
-        self.timestamp_start = self.timestamp_end - datetime.timedelta(weeks=4)
+        self.timestamp_start = self.timestamp_end - datetime.timedelta(weeks=8)
 
         self.__mkdir(self.savepath_folder, [
                      'mensuales', 'corredores', "mensuales/csv", "mensuales/svg"])
@@ -491,12 +491,14 @@ class GraficosPlanificacion(object):
                 raise Exception("Corredor sin Sentidos")
 
             if tipo == "mensual":
-                name_m = self.distribucion_horaria_sumarizada.__name__ + "_" + name_dia
+                name_m = self.distribucion_horaria_sumarizada.__name__ + \
+                    "_" + name_dia
                 self.__wrpsave(
                     name_m, graph=bar_chart, save=save, csv=csv, show=show)
             else:
                 name = self.name_corredor + "_" + \
-                    self.distribucion_horaria_sumarizada.__name__ + "_" + name_dia
+                    self.distribucion_horaria_sumarizada.__name__ + \
+                    "_" + name_dia
                 metadata = self.generar_metadata(
                     name, tipo='corredores', corredor=corredor)
                 metadata['name'] = corredor + " " + self.mensuales[
@@ -573,12 +575,14 @@ class GraficosPlanificacion(object):
                 '20hs - 24hs', list(franja[franja['franja'] == 4]['Duracion en Minutos']))
             name_dia = name_dia.replace(" ", "_")
             if tipo == "mensual":
-                name_m = self.duracion_anomalias_xfranjahoraria.__name__ + "_" + name_dia
+                name_m = self.duracion_anomalias_xfranjahoraria.__name__ + \
+                    "_" + name_dia
                 self.__wrpsave(
                     name_m, graph=box_plot, save=save, csv=csv, show=show)
             else:
                 name = self.name_corredor + "_" + \
-                    self.duracion_anomalias_xfranjahoraria.__name__ + "_" + name_dia
+                    self.duracion_anomalias_xfranjahoraria.__name__ + \
+                    "_" + name_dia
                 metadata = self.generar_metadata(
                     name, tipo='corredores', corredor=corredor)
                 metadata['name'] = corredor + " " + self.mensuales[
@@ -652,12 +656,14 @@ class GraficosPlanificacion(object):
                 '20hs - 24hs', list(franja[franja['franja'] == 4]['Duracion en Minutos']))
             name_dia = name_dia.replace(" ", "_")
             if tipo == "mensual":
-                name_m = self.duracion_anomalias_media_xfranjahoraria.__name__ + "_" + name_dia
+                name_m = self.duracion_anomalias_media_xfranjahoraria.__name__ + \
+                    "_" + name_dia
                 self.__wrpsave(
                     name_m, graph=box_plot, save=save, csv=csv, show=show)
             else:
                 name = self.name_corredor + "_" + \
-                    self.duracion_anomalias_media_xfranjahoraria.__name__ + "_" + name_dia
+                    self.duracion_anomalias_media_xfranjahoraria.__name__ + \
+                    "_" + name_dia
                 metadata = self.generar_metadata(
                     name, tipo='corredores', corredor=corredor)
                 metadata['name'] = corredor + " " + self.mensuales[
@@ -791,11 +797,8 @@ class GraficosPlanificacion(object):
            # else X)}
         """
         self.query = self.session.query(Anomaly)
-        self.query_all = self.query.filter(
-            Anomaly.timestamp_start >= self.timestamp_start).all()
-        self.valids = pd.read_sql(
-            self.query.statement, self.query.session.bind)
-
+        self.valids = pd.read_sql(self.query.filter(
+            Anomaly.timestamp_start >= self.timestamp_start).statement, self.query.session.bind)
         return self.valids
 
     def __generacion_dataframe(self):
