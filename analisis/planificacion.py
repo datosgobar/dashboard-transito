@@ -131,17 +131,17 @@ class GraficosPlanificacion(object):
             self.corrdata += [d]
 
         self.mensuales = {
-            "anomalias_ultimo_mes": "Cantidad total de anomalias en las ultimas 4 semanas",
-            "duracion_media_anomalias": "Duracion media de anomalias por corredor",
-            "duracion_en_percentiles": "Duracion en Percentil",
-            "cant_anomalias_xcorredores_capital": "Cantidad de anomalias por corredor - Sentido Capital",
-            "cant_anomalias_xcorredores_provincia": "Cantidad de anomalias por corredor - Sentido Provincia",
-            "indice_anomalias_xcuadras": "Indice de anomalias por cuadra",
-            "distribucion_horaria_sumarizada_laborables": "Distribucion horaria sumarizada - Dias Laborables",
-            "distribucion_horaria_sumarizada_sabado": "Distribucion horaria sumarizada - Sabado",
-            "distribucion_horaria_sumarizada_domingo": "Distribucion horaria sumarizada - Domingo",
-            "duracion_anomalias_media_xfranjahoraria_laborables": "Duracion media de anomalias por franja horaria - Dias Laborables",
-            "duracion_anomalias_media_xfranjahoraria_fin_de_semana": "Duracion media de anomalias por franja horaria - Fin de Semana",
+            "anomalias_ultimo_mes": "Total semanal de anomalías",
+            "duracion_media_anomalias": "Tiempo promedio de anomalías",
+            "duracion_en_percentiles": "Distribución de tiempo para las anomalías",
+            "cant_anomalias_xcorredores_capital": "Cantidad de anomalías - Sentido Capital",
+            "cant_anomalias_xcorredores_provincia": "Cantidad de anomalías - Sentido Provincia",
+            "indice_anomalias_xcuadras": "Anomalías por cuadra",
+            "distribucion_horaria_sumarizada_laborables": "Distribución horaria de anomalías - Dias Laborables",
+            "distribucion_horaria_sumarizada_sabado": "Distribución horaria de anomalías - Sabado",
+            "distribucion_horaria_sumarizada_domingo": "Distribución horaria de anomalías- Domingo",
+            "duracion_anomalias_media_xfranjahoraria_laborables": "Boxplot duración de anomalías - Dias Laborables",
+            "duracion_anomalias_media_xfranjahoraria_fin_de_semana": "Boxplot duración de anomalías - Fin de Semana",
             "duracion_anomalias_xfranjahoraria_laborables": "Duracion de anomalias por franja horaria - Dias Laborables",
             "duracion_anomalias_xfranjahoraria_fin_de_semana": "Duracion de anomalias por franja horaria - Fin de Semana"
         }
