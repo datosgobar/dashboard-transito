@@ -29,7 +29,6 @@ import misc_helpers
 import pygal
 
 from pygal.style import *
-
 from dashboard_logging import dashboard_logging
 logger = dashboard_logging(config="logging.json", name=__name__)
 logger.info("inicio planificacion - generacion de graficos")
@@ -42,20 +41,10 @@ Anomaly = conn_sql.instanceTable(unique_table='anomaly')
 Historical = conn_sql.instanceTable(unique_table='historical')
 Corredores = conn_sql.instanceTable(unique_table='corredores')
 
-
 style_planificacion = Style(
     plot_background='#FFFFFF',
-    foreground='#53E89B',
-    foreground_strong='#53A0E8',
-    foreground_subtle='#630C0D',
-    opacity='.6',
-    opacity_hover='.9',
-    transition='400ms ease-in',
-    colors=('#E853A0', '#E8537A', '#E95355', '#E87653', '#E89B53'),
-    label_font_size=12,
-    background='transparent',
-    font_family='googlefont:AvenirNextLTPro',
-    lable_font_family='googlefont:AvenirNextLTPro')
+    label_font_size=16
+)
 
 
 class GraficosPlanificacion(object):
@@ -119,15 +108,15 @@ class GraficosPlanificacion(object):
             self.corrdata += [d]
 
         self.mensuales = {
-            "anomalias_ultimo_mes": "Cantidad de anomalias",
-            "duracion_media_anomalias": "Duracion media de anomalias",
-            "duracion_en_percentiles": "Duracion de anomalias en Percentil",
-            "cant_anomalias_xcorredores_capital": "Cantidad de anomalias - Sentido Capital",
-            "cant_anomalias_xcorredores_provincia": "Cantidad de anomalias - Sentido Provincia",
+            "anomalias_ultimo_mes": "Cantidad total de anomalias en las ultimas 4 semanas",
+            "duracion_media_anomalias": "Duracion media de anomalias por corredor",
+            "duracion_en_percentiles": "Duracion en Percentil",
+            "cant_anomalias_xcorredores_capital": "Cantidad de anomalias por corredor - Sentido Capital",
+            "cant_anomalias_xcorredores_provincia": "Cantidad de anomalias por corredor - Sentido Provincia",
             "indice_anomalias_xcuadras": "Indice de anomalias por cuadra",
-            "distribucion_horaria_sumarizada_laborables": "Distribucion horaria de anomalias - Dias Laborables",
-            "distribucion_horaria_sumarizada_sabado": "Distribucion horaria de anomalias - Sabado",
-            "distribucion_horaria_sumarizada_domingo": "Distribucion horaria de anomalias - Domingo",
+            "distribucion_horaria_sumarizada_laborables": "Distribucion horaria sumarizada - Dias Laborables",
+            "distribucion_horaria_sumarizada_sabado": "Distribucion horaria sumarizada - Sabado",
+            "distribucion_horaria_sumarizada_domingo": "Distribucion horaria sumarizada - Domingo",
             "duracion_anomalias_media_xfranjahoraria_laborables": "Duracion media de anomalias por franja horaria - Dias Laborables",
             "duracion_anomalias_media_xfranjahoraria_fin_de_semana": "Duracion media de anomalias por franja horaria - Fin de Semana",
             "duracion_anomalias_xfranjahoraria_laborables": "Duracion de anomalias por franja horaria - Dias Laborables",
@@ -316,13 +305,8 @@ class GraficosPlanificacion(object):
         # .plot(x='semana', kind='bar', ax=self.ax)
         self.ax = self.aux[['semana'] + sentidos]
 
-        CustomGraph = LightGreenStyle(background='white')
-
-        line_chart = pygal.Bar(no_data_text='Sin Datos', include_x_axis=True, tyle=CleanStyle(no_data_font_size=40),
-                               tooltip_border_radius=10, x_title='Semanas',
-                               human_readable=False, y_title='Cantidad', width=600, height=400,
-                               legend_at_bottom=True, fill=False, interpolate='cubic', style=CustomGraph, stroke_style={'width': 2},
-                               explicit_size=True, show_y_guides=True)
+        line_chart = pygal.Bar(no_data_text='Sin Datos', include_x_axis=True, style=style_planificacion,
+                               x_title='Semanas', y_title='Cantidad')
         line_chart.x_labels = list(self.aux['semana'])
 
         def set_value(x):
@@ -395,9 +379,8 @@ class GraficosPlanificacion(object):
             lc[co] = dict(self.aux[self.aux['corr_name'] == co].groupby(
                 ['sentido', 'duration'])['duration'].all().to_dict().keys())
 
-        bar_chart = pygal.Bar(no_data_text='Sin Datos', tooltip_border_radius=10, y_title='Duracion en Minutos',
-                              width=700, height=450, legend_at_bottom=True, style=style_planificacion, explicit_size=True,
-                              x_label_rotation=x_label_rotation)
+        bar_chart = pygal.Bar(no_data_text='Sin Datos', y_title='Duracion en Minutos',
+                              style=style_planificacion, x_label_rotation=x_label_rotation)
         bar_chart.x_labels = list(set(self.aux['corr_name']))
 
         if sentidos == ["centro", "provincia"]:
@@ -463,9 +446,8 @@ class GraficosPlanificacion(object):
 
         def make_bar(tipodia, name_dia):
 
-            bar_chart = pygal.Bar(explicit_size=True,
-                                  width=700, height=450, y_title="Cantidad")
-            #bar_chart.title = 'Distribucion Horaria Sumarizada - {0}'.format(name_dia.title())
+            bar_chart = pygal.Bar(y_title="Cantidad",
+                                  style=style_planificacion)
             bar_chart.x_labels = map(lambda x: str(x), range(1, 25))
 
             franjacentro = tipodia[tipodia['sentido'] == 'centro'][
@@ -486,14 +468,12 @@ class GraficosPlanificacion(object):
                 raise Exception("Corredor sin Sentidos")
 
             if tipo == "mensual":
-                name_m = self.distribucion_horaria_sumarizada.__name__ + \
-                    "_" + name_dia
+                name_m = self.distribucion_horaria_sumarizada.__name__ + "_" + name_dia
                 self.__wrpsave(
                     name_m, graph=bar_chart, save=save, csv=csv, show=show)
             else:
                 name = self.name_corredor + "_" + \
-                    self.distribucion_horaria_sumarizada.__name__ + \
-                    "_" + name_dia
+                    self.distribucion_horaria_sumarizada.__name__ + "_" + name_dia
                 metadata = self.generar_metadata(
                     name, tipo='corredores', corredor=corredor)
                 metadata['name'] = corredor + " " + self.mensuales[
@@ -555,12 +535,9 @@ class GraficosPlanificacion(object):
         findesemana = self.aux[self.aux['Tipos de Dias'] == 'Fin de Semana']
 
         def make_box(franja, name_dia):
-            from pygal.style import LightGreenStyle
-            custom_style = LightGreenStyle(
-                mode='pstdev', label_font_size=12, background='white')
-            box_plot = pygal.Box(no_data_text='Sin Datos', fill=True, interpolate='cubic', y_title='Duracion en Minutos',
-                                 tooltip_border_radius=10, width=700, height=450, style=custom_style, explicit_size=True)
-            #box_plot.title = '{0}'.format(name_dia.title())
+            box_plot = pygal.Box(
+                no_data_text='Sin Datos', y_title='Duracion en Minutos', style=style_planificacion)
+
             box_plot.add(
                 '0hs - 07hs', list(franja[franja['franja'] == 0]['Duracion en Minutos']))
             box_plot.add(
@@ -573,14 +550,12 @@ class GraficosPlanificacion(object):
                 '20hs - 24hs', list(franja[franja['franja'] == 4]['Duracion en Minutos']))
             name_dia = name_dia.replace(" ", "_")
             if tipo == "mensual":
-                name_m = self.duracion_anomalias_xfranjahoraria.__name__ + \
-                    "_" + name_dia
+                name_m = self.duracion_anomalias_xfranjahoraria.__name__ + "_" + name_dia
                 self.__wrpsave(
                     name_m, graph=box_plot, save=save, csv=csv, show=show)
             else:
                 name = self.name_corredor + "_" + \
-                    self.duracion_anomalias_xfranjahoraria.__name__ + \
-                    "_" + name_dia
+                    self.duracion_anomalias_xfranjahoraria.__name__ + "_" + name_dia
                 metadata = self.generar_metadata(
                     name, tipo='corredores', corredor=corredor)
                 metadata['name'] = corredor + " " + self.mensuales[
@@ -639,14 +614,11 @@ class GraficosPlanificacion(object):
         findesemana = self.aux[self.aux['Tipos de Dias'] == 'Fin de Semana']
 
         def make_box(franja, name_dia):
+            box_plot = pygal.Box(
+                no_data_text='Sin Datos', y_title='Duracion en Minutos', style=style_planificacion)
 
-            custom_style = Style(
-                mode='pstdev', label_font_size=12, background='white')
-            box_plot = pygal.Box(no_data_text='Sin Datos', tooltip_border_radius=10, y_title='Duracion en Minutos',
-                                 width=700, height=450, style=custom_style, explicit_size=True)
-            #box_plot.title = '{0}'.format(name_dia.title())
             box_plot.add(
-                '0hs - 07hs', list(franja[franja['franja'] == 0]['Duracion en Minutos']))
+                '00hs - 07hs', list(franja[franja['franja'] == 0]['Duracion en Minutos']))
             box_plot.add(
                 '07hs - 10hs', list(franja[franja['franja'] == 1]['Duracion en Minutos']))
             box_plot.add(
@@ -657,14 +629,12 @@ class GraficosPlanificacion(object):
                 '20hs - 24hs', list(franja[franja['franja'] == 4]['Duracion en Minutos']))
             name_dia = name_dia.replace(" ", "_")
             if tipo == "mensual":
-                name_m = self.duracion_anomalias_media_xfranjahoraria.__name__ + \
-                    "_" + name_dia
+                name_m = self.duracion_anomalias_media_xfranjahoraria.__name__ + "_" + name_dia
                 self.__wrpsave(
                     name_m, graph=box_plot, save=save, csv=csv, show=show)
             else:
                 name = self.name_corredor + "_" + \
-                    self.duracion_anomalias_media_xfranjahoraria.__name__ + \
-                    "_" + name_dia
+                    self.duracion_anomalias_media_xfranjahoraria.__name__ + "_" + name_dia
                 metadata = self.generar_metadata(
                     name, tipo='corredores', corredor=corredor)
                 metadata['name'] = corredor + " " + self.mensuales[
@@ -704,8 +674,7 @@ class GraficosPlanificacion(object):
 
         x = [.1 * i for i in range(1, 11)]
         y = list(self.aux)
-        line_chart = pygal.Line(interpolate='quadratic', interpolation_precision=3, tooltip_border_radius=10,
-                                width=700, legend_at_bottom=True, height=500, explicit_size=True, style=style_planificacion)
+        line_chart = pygal.Line(style=style_planificacion)
         line_chart.x_labels = x
         line_chart.x_title = 'Percentil'
         line_chart.y_title = 'Duracion en Minutos'
@@ -740,12 +709,10 @@ class GraficosPlanificacion(object):
             ['corredor', 'cantidad']).all().reset_index()[['corredor', 'cantidad']]
 
         def add_chart(sentido, name):
-            bar_chart = pygal.HorizontalBar(no_data_text='Sin Datos', tooltip_border_radius=10,
-                                            x_title='Sentido {0}'.format(
-                                                name.title()),
-                                            width=600, height=400,  style=style_planificacion, explicit_size=True)
+            bar_chart = pygal.HorizontalBar(
+                no_data_text='Sin Datos', x_title='Sentido {0}'.format(name.title()), style=style_planificacion)
             for key in sentido.values:
-                bar_chart.add(key[0], int(key[1]))
+                bar_chart.add(key[0], key[1])
 
             name = self.cant_anomalias_xcorredores.__name__ + \
                 "_" + name.replace(" ", "_")
@@ -759,7 +726,6 @@ class GraficosPlanificacion(object):
         """
             Indice de anomalias por cuadra
         """
-        from pygal.style import CleanStyle
 
         self.aux = self.reportdata.groupby(["corr", "corr_name", "sentido"]).apply(
             lambda e: e.shape[0]).reset_index()
@@ -786,9 +752,8 @@ class GraficosPlanificacion(object):
         for co in lc.keys():
             lc[co] = dict(self.aux[self.aux['corr_name'] == co].groupby(
                 ['sentido', 'indice'])['indice'].all().to_dict().keys())
-        bar_chart = pygal.Bar(no_data_text='Sin Datos', tooltip_border_radius=10, y_title='Indice',
-                              width=700, height=450, legend_at_bottom=True, style=style_planificacion,
-                              explicit_size=True, x_label_rotation=90)
+        bar_chart = pygal.Bar(no_data_text='Sin Datos', y_title='Indice',
+                              style=style_planificacion, x_label_rotation=90)
         bar_chart.x_labels = list(set(self.aux['corr_name']))
         bar_chart.add('Provincia', set_items(lprov, 'provincia'))
         bar_chart.add('Capital', set_items(lcent, 'centro'))

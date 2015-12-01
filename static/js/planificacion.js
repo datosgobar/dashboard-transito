@@ -63,7 +63,7 @@ $(document).ready(function() {
   var insert_graficos = function(id) {
     console.log("id", id)
 
-    var graphs = {
+    graphs = {
       'graficos': []
     }
 

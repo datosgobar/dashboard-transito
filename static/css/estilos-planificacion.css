@@ -19,7 +19,8 @@
     margin-right: 10px; }
 .planificacion #paneles #leftPanel {
   top: 140px;
-  width: 250px; }
+  width: 250px;
+  overflow: scroll; }
   .planificacion #paneles #leftPanel .graficos {
     cursor: pointer;
     background-color: #1C2023;
@@ -45,6 +46,9 @@
   padding: 10px;
   margin: 20px;
   border-radius: 5px;
-  background-color: #FFF; }
+  background-color: #FFF;
+  width: 100%; }
+.planificacion #entry {
+  width: 600px; }
 .planificacion embed {
   padding: 20px; }
