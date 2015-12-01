@@ -64,7 +64,7 @@ class GraficosPlanificacion(object):
             set([c.corredor.lower().replace(" ", "_") for c in tabla_corredores if c]))
 
         self.timestamp_end = datetime.datetime.now()
-        self.timestamp_start = self.timestamp_end - datetime.timedelta(weeks=8)
+        self.timestamp_start = self.timestamp_end - datetime.timedelta(weeks=4)
 
         self.__mkdir(self.savepath_folder, [
                      'mensuales', 'corredores', "mensuales/csv", "mensuales/svg"])
@@ -118,9 +118,7 @@ class GraficosPlanificacion(object):
             "distribucion_horaria_sumarizada_sabado": "Distribucion horaria sumarizada - Sabado",
             "distribucion_horaria_sumarizada_domingo": "Distribucion horaria sumarizada - Domingo",
             "duracion_anomalias_media_xfranjahoraria_laborables": "Duracion media de anomalias por franja horaria - Dias Laborables",
-            "duracion_anomalias_media_xfranjahoraria_fin_de_semana": "Duracion media de anomalias por franja horaria - Fin de Semana",
-            "duracion_anomalias_xfranjahoraria_laborables": "Duracion de anomalias por franja horaria - Dias Laborables",
-            "duracion_anomalias_xfranjahoraria_fin_de_semana": "Duracion de anomalias por franja horaria - Fin de Semana"
+            "duracion_anomalias_media_xfranjahoraria_fin_de_semana": "Duracion media de anomalias por franja horaria - Fin de Semana"
         }
 
         self.folders['mensuales']['svg'] = self.savepath_folder.replace(
@@ -139,7 +137,10 @@ class GraficosPlanificacion(object):
             'corredores': self.corredores.keys()
         }
 
-        self.__asignacion_frame()
+        self.valids = self.__asignacion_frame(
+            table=Anomaly, column=Anomaly.timestamp_start)
+        self.historico = self.__asignacion_frame(
+            table=Historical, column=Historical.timestamp)        
         self.__generacion_dataframe()
 
     def _mkdir(self, folder):
@@ -160,7 +161,7 @@ class GraficosPlanificacion(object):
            grafico.generacion_graficos(tipo="corredores")
         """
         if tipo == "mensuales":
-            mensuales = ["anomalias_ultimo_mes", "duracion_media_anomalias", "distribucion_horaria_sumarizada", "duracion_anomalias_xfranjahoraria",
+            mensuales = ["anomalias_ultimo_mes", "duracion_media_anomalias", "distribucion_horaria_sumarizada",
                          "duracion_anomalias_media_xfranjahoraria", "duracion_en_percentiles", "cant_anomalias_xcorredores", "indice_anomalias_xcuadras"]
 
         for grafico in mensuales:
@@ -490,89 +491,6 @@ class GraficosPlanificacion(object):
         make_bar(sabado, "sabado")
         make_bar(domingo, "domingo")
 
-    def duracion_anomalias_xfranjahoraria(self, save=True, csv=True, tipo='mensual', corredor=None, show=False, franjas=[]):
-        """
-            Duracion de anomalias por franja horaria
-        """
-        if tipo == "mensual":
-            self.aux = self.reportdata.copy()
-        else:
-            if corredor in list(set(self.reportdata['corr_name'])):
-                self.aux = self.reportdata.copy()
-                self.aux = self.aux[self.aux['corr_name'] == corredor]
-                sentidos = list(set(self.aux['sentido']))
-                self.name_corredor = corredor.replace(" ", "_").lower()
-            else:
-                raise Exception("Corredor Inexistente")
-
-        if franjas == []:
-            franjas = [
-                (0, 7),
-                (7, 10),
-                (10, 17),
-                (17, 20),
-                (20, 24),
-            ]
-
-        for (i, (start, end)) in enumerate(franjas):
-            self.aux.loc[
-                (self.aux["timestamp_start"].dt.hour >= start) &
-                (self.aux["timestamp_start"].dt.hour < end), "franja"] = i
-
-        self.aux["franja"] = self.aux["franja"].astype(int)
-
-        self.aux.loc[self.aux["daytype"] == "saturday", "daytype"] = "weekend"
-        self.aux.loc[self.aux["daytype"] == "sunday", "daytype"] = "weekend"
-        self.aux = self.aux.sort("franja")
-
-        self.aux = self.aux.rename(
-            columns={'daytype': 'Tipos de Dias', 'duration': 'Duracion en Minutos'})
-        rplc = self.aux['Tipos de Dias'].str.replace(
-            "workingday", "Dias Laborables")
-        rplc = rplc.str.replace("weekend", "Fin de Semana")
-        self.aux['Tipos de Dias'] = rplc
-
-        diaslaborables = self.aux[
-            self.aux['Tipos de Dias'] == 'Dias Laborables']
-        findesemana = self.aux[self.aux['Tipos de Dias'] == 'Fin de Semana']
-
-        def make_box(franja, name_dia):
-            box_plot = pygal.Box(
-                no_data_text='Sin Datos', y_title='Duracion en Minutos', style=style_planificacion)
-
-            box_plot.add(
-                '0hs - 07hs', list(franja[franja['franja'] == 0]['Duracion en Minutos']))
-            box_plot.add(
-                '07hs - 10hs', list(franja[franja['franja'] == 1]['Duracion en Minutos']))
-            box_plot.add(
-                '10hs - 17hs', list(franja[franja['franja'] == 2]['Duracion en Minutos']))
-            box_plot.add(
-                '17hs - 20hs', list(franja[franja['franja'] == 3]['Duracion en Minutos']))
-            box_plot.add(
-                '20hs - 24hs', list(franja[franja['franja'] == 4]['Duracion en Minutos']))
-            name_dia = name_dia.replace(" ", "_")
-            if tipo == "mensual":
-                name_m = self.duracion_anomalias_xfranjahoraria.__name__ + \
-                    "_" + name_dia
-                self.__wrpsave(
-                    name_m, graph=box_plot, save=save, csv=csv, show=show)
-            else:
-                name = self.name_corredor + "_" + \
-                    self.duracion_anomalias_xfranjahoraria.__name__ + \
-                    "_" + name_dia
-                metadata = self.generar_metadata(
-                    name, tipo='corredores', corredor=corredor)
-                metadata['name'] = corredor + " " + self.mensuales[
-                    self.duracion_anomalias_xfranjahoraria.__name__ + "_" + name_dia]
-                self.generador_csv(
-                    metadata.get("filename"), tipo="corredores", corredor=self.name_corredor)
-                self.guardar_grafico(metadata, instancegraph=False)
-                box_plot.render_to_file(self.folders['corredores']['svg'].format(
-                    self.name_corredor) + "/" + metadata.get("filename"))
-
-        make_box(diaslaborables, 'laborables')
-        make_box(findesemana, 'fin de semana')
-
     def duracion_anomalias_media_xfranjahoraria(self, save=True, csv=True, tipo='mensual', corredor=None, show=False, franjas=[]):
         """
             Duracion media de anomalias por franja horaria
@@ -766,17 +684,19 @@ class GraficosPlanificacion(object):
         self.__wrpsave(self.indice_anomalias_xcuadras.__name__,
                        graph=bar_chart, save=save, csv=csv, show=show)
 
-    def __asignacion_frame(self):
+    def __asignacion_frame(self, **config):
         """
            valids = asignacion_frame(
                'anomaly', col1="id", col2="timestamp_end", col3="timestamp_end")
            # parse_dates={"timestamp_asignacion": (lambda X: "" if X == None
            # else X)}
         """
-        self.query = self.session.query(Anomaly)
-        self.valids = pd.read_sql(self.query.filter(
-            Anomaly.timestamp_start >= self.timestamp_start).statement, self.query.session.bind)
-        return self.valids
+        Table = config.pop("table")
+        Column = config.pop("column")
+        self.query = self.session.query(Table)
+        result = pd.read_sql(self.query.filter(
+            Column >= self.timestamp_start).statement, self.query.session.bind)
+        return result
 
     def __generacion_dataframe(self):
 
@@ -829,10 +749,6 @@ def main():
         logger.info(
             "Corredor {0} - Grafico {1}".format(nombre_corredor, "Distribucion horaria sumarizada"))
         grafico.distribucion_horaria_sumarizada(
-            tipo="corredores", corredor=nombre_corredor)
-        logger.info(
-            "Corredor {0} - Grafico {1}".format(nombre_corredor, "Duracion de anomalias por franja horaria"))
-        grafico.duracion_anomalias_xfranjahoraria(
             tipo="corredores", corredor=nombre_corredor)
         logger.info("Corredor {0} - Grafico {1}".format(nombre_corredor,
                                                         "Duracion media de anomalias por franja horaria"))
