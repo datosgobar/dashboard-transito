@@ -138,15 +138,15 @@ def login_post():
     password = request.POST.get("password", "").strip()
 
     # Chequear con Google que el captcha sea valido
-    captcha_response = request.POST.get("g-recaptcha-response", "").strip()
-    params = {'secret': config.captcha_secret, 'response': captcha_response}
-    r = requests.Session()
-    r.mount('https://', MyAdapter())
-    r = r.post("https://www.google.com/recaptcha/api/siteverify", data=params)
-    if not r.json()['success']:
-        return bottle.template('login', error="Captcha inválido.", site_key=config.captcha_site_key)
-    logger.info("requests captcha {}".format(r.json()))
-    logger.info("login {0}".format(username))
+    # captcha_response = request.POST.get("g-recaptcha-response", "").strip()
+    # params = {'secret': config.captcha_secret, 'response': captcha_response}
+    # r = requests.Session()
+    # r.mount('https://', MyAdapter())
+    # r = r.post("https://www.google.com/recaptcha/api/siteverify", data=params)
+    # if not r.json()['success']:
+    #     return bottle.template('login', error="Captcha inválido.", site_key=config.captcha_site_key)
+    # logger.info("requests captcha {}".format(r.json()))
+    # logger.info("login {0}".format(username))
     if not bottle_auth.login(username, password, success_redirect='/'):
         return bottle.template('login', error="Usuario y Contraseña inválidos.", site_key=config.captcha_site_key)
 

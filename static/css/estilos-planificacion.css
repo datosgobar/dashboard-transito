@@ -20,6 +20,7 @@
 .planificacion #paneles #leftPanel {
   top: 140px;
   width: 250px;
+  height: auto;
   overflow: scroll; }
   .planificacion #paneles #leftPanel .graficos {
     cursor: pointer;
