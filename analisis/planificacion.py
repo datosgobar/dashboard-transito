@@ -131,17 +131,17 @@ class GraficosPlanificacion(object):
             self.corrdata += [d]
 
         self.mensuales = {
-            "anomalias_ultimo_mes": "Cantidad total de anomalias en las ultimas 4 semanas",
-            "duracion_media_anomalias": "Duracion media de anomalias por corredor",
-            "duracion_en_percentiles": "Duracion en Percentil",
-            "cant_anomalias_xcorredores_capital": "Cantidad de anomalias por corredor - Sentido Capital",
-            "cant_anomalias_xcorredores_provincia": "Cantidad de anomalias por corredor - Sentido Provincia",
-            "indice_anomalias_xcuadras": "Indice de anomalias por cuadra",
-            "distribucion_horaria_sumarizada_laborables": "Distribucion horaria sumarizada - Dias Laborables",
-            "distribucion_horaria_sumarizada_sabado": "Distribucion horaria sumarizada - Sabado",
-            "distribucion_horaria_sumarizada_domingo": "Distribucion horaria sumarizada - Domingo",
-            "duracion_anomalias_media_xfranjahoraria_laborables": "Duracion media de anomalias por franja horaria - Dias Laborables",
-            "duracion_anomalias_media_xfranjahoraria_fin_de_semana": "Duracion media de anomalias por franja horaria - Fin de Semana"
+            "anomalias_ultimo_mes": "Total semanal de anomalías",
+            "duracion_media_anomalias": "Tiempo promedio de anomalías",
+            "duracion_en_percentiles": "Distribución de tiempo para las anomalías",
+            "cant_anomalias_xcorredores_capital": "Cantidad de anomalías - Sentido Capital",
+            "cant_anomalias_xcorredores_provincia": "Cantidad de anomalías - Sentido Provincia",
+            "indice_anomalias_xcuadras": "Anomalías por cuadra",
+            "distribucion_horaria_sumarizada_laborables": "Distribución horaria de anomalías - Dias Laborables",
+            "distribucion_horaria_sumarizada_sabado": "Distribución horaria de anomalías - Sabado",
+            "distribucion_horaria_sumarizada_domingo": "Distribución horaria de anomalías- Domingo",
+            "duracion_anomalias_media_xfranjahoraria_laborables": "Boxplot duración de anomalías - Dias Laborables",
+            "duracion_anomalias_media_xfranjahoraria_fin_de_semana": "Boxplot duración de anomalías - Fin de Semana"
         }
 
         self.folders['mensuales']['svg'] = self.savepath_folder.replace(
@@ -708,18 +708,25 @@ class GraficosPlanificacion(object):
                        graph=bar_chart, save=save, csv=csv, show=show)
 
     def ultima_semana_vs_historico(self, save=True, csv=True, tipo='mensual', corredor=None, show=False):
-        
+
         target_corr_name = "Juan B. Justo"
-        target_corr_data = self.reportdata[self.reportdata["corr_name"] == target_corr_name].copy()
-        corrdata_sel = self.corrdata[self.corrdata["name"] == target_corr_name][["iddevice", "name"]].copy()
-        
-        self.historico = self.historico.rename(columns={'segment': 'iddevice', 'timestamp': 'date'})
+        target_corr_data = self.reportdata[
+            self.reportdata["corr_name"] == target_corr_name].copy()
+        corrdata_sel = self.corrdata[self.corrdata[
+            "name"] == target_corr_name][["iddevice", "name"]].copy()
 
-        target_corr_lastrecordsdf = pd.merge(self.historico, corrdata_sel, on=["iddevice"]).reset_index()
-        target_corr_lastrecordsdf["corr"] = self.corrdata.set_index("iddevice").loc[target_corr_lastrecordsdf["iddevice"]].reset_index()["corr"]
+        self.historico = self.historico.rename(
+            columns={'segment': 'iddevice', 'timestamp': 'date'})
 
-        target_corr_lastrecordsdf.loc[target_corr_lastrecordsdf["corr"].str.endswith("_acentro"), "sentido"] = "centro"
-        target_corr_lastrecordsdf.loc[target_corr_lastrecordsdf["corr"].str.endswith("_aprovincia"), "sentido"] = "provincia"
+        target_corr_lastrecordsdf = pd.merge(
+            self.historico, corrdata_sel, on=["iddevice"]).reset_index()
+        target_corr_lastrecordsdf["corr"] = self.corrdata.set_index(
+            "iddevice").loc[target_corr_lastrecordsdf["iddevice"]].reset_index()["corr"]
+
+        target_corr_lastrecordsdf.loc[target_corr_lastrecordsdf[
+            "corr"].str.endswith("_acentro"), "sentido"] = "centro"
+        target_corr_lastrecordsdf.loc[target_corr_lastrecordsdf[
+            "corr"].str.endswith("_aprovincia"), "sentido"] = "provincia"
 
         aux = target_corr_lastrecordsdf.copy()
 
@@ -729,11 +736,14 @@ class GraficosPlanificacion(object):
         def f(aux, sentido):
             aux = aux[aux["sentido"] == sentido]
             target_week = aux.date.dt.week.max()
-            target_week_data = aux[aux["date"].dt.week == target_week].groupby([aux["date"].dt.weekday, aux["time"]])["data"].mean().reset_index()
+            target_week_data = aux[aux["date"].dt.week == target_week].groupby(
+                [aux["date"].dt.weekday, aux["time"]])["data"].mean().reset_index()
             prev_weeks_data = aux[(aux["date"].dt.week >= (target_week - 4)) &
                                   (aux["date"].dt.week <= target_week)].groupby([aux["date"].dt.weekday, aux["time"]])["data"].mean().reset_index()
-            target_week_data = target_week_data.rename(columns={'level_0': "weekday", "level_1": "time"})
-            prev_weeks_data = prev_weeks_data.rename(columns={'level_0': "weekday", "level_1": "time"})
+            target_week_data = target_week_data.rename(
+                columns={'level_0': "weekday", "level_1": "time"})
+            prev_weeks_data = prev_weeks_data.rename(
+                columns={'level_0': "weekday", "level_1": "time"})
             prev_weeks_data = prev_weeks_data.sort(["weekday", "time"])
             target_week_data = target_week_data.sort(["weekday", "time"])
 
