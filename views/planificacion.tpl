@@ -43,7 +43,6 @@
             <div id="leftPanel"></div>
             <div id="rightPanel">
                 <div class="box-grafico-seleccionado">
-                    <h1 id="title" style="color:white"></h1>
                     <div id="entry"></div>
                 </div>
             </div>

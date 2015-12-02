@@ -8,23 +8,27 @@ body.planificacion {
   display: block;
   float: left;
   color: #CFD1D1;
-  height: 70px;
+  height: 60px;
   width: 100%;
   top: 70px;
-  position: absolute;
-  padding-left: 20px; }
+  position: absolute; }
   .planificacion #header_filtros #content_filtros {
     display: table-cell;
     vertical-align: middle;
-    height: 70px; }
+    height: 60px;
+    padding-left: 20px; }
   .planificacion #header_filtros select {
     float: none;
-    margin-right: 10px; }
+    margin-right: 10px;
+    color: #FFF; }
+  .planificacion #header_filtros label {
+    color: #FFF; }
 .planificacion #paneles #leftPanel {
-  top: 140px;
-  width: 250px;
+  top: 130px;
+  width: 280px;
   height: auto;
-  overflow: scroll; }
+  overflow: scroll;
+  padding-top: 8px; }
   .planificacion #paneles #leftPanel .graficos {
     cursor: pointer;
     background-color: #1C2023;
@@ -34,18 +38,19 @@ body.planificacion {
   .planificacion #paneles #leftPanel .graficos:hover, .planificacion #paneles #leftPanel .graficos.selected {
     background-color: #282D33; }
 .planificacion #paneles #rightPanel {
-  top: 140px;
-  left: 250px;
-  width: auto; }
+  top: 130px;
+  left: 280px;
+  width: 76%; }
 .planificacion h2 {
   font-family: "AvenirNext-Regular", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 21px;
   color: #000;
-  width: 100%;
   border-bottom: 1px solid #CFD1D1;
   padding-bottom: 4px;
   margin-bottom: 4px;
-  display: block; }
+  display: block;
+  margin: 0 auto;
+  padding-top: 20px; }
 .planificacion .box-grafico-seleccionado {
   padding: 10px;
   margin: 20px;
@@ -53,6 +58,8 @@ body.planificacion {
   background-color: #FFF;
   width: 100%; }
 .planificacion #entry {
+  width: 50%;
+  margin: 0 auto;
   width: 600px; }
 .planificacion embed {
-  padding: 20px; }
+  padding-top: 20px; }

@@ -9,31 +9,37 @@ body.planificacion {
         display:block;
         float: left;
         color: #CFD1D1;
-        height: 70px;
+        height: 60px;
         width: 100%;
         top: 70px;
         position: absolute;
-        padding-left: 20px;
 
         #content_filtros {
             display:table-cell;
             vertical-align:middle;
-            height: 70px;
+            height: 60px;
+            padding-left: 20px;
 
         }
 
         select {
             float: none;
             margin-right: 10px;
+            color: #FFF;
+        }
+
+        label {
+            color: #FFF;
         }
     }
 
     #paneles {
         #leftPanel {
-            top: 140px;
-            width: 250px;
+            top: 130px;
+            width: 280px;
             height: auto;
             overflow: scroll;
+            padding-top: 8px;
 
             .graficos {
                 cursor: pointer;
@@ -49,9 +55,9 @@ body.planificacion {
         }
 
         #rightPanel {
-            top: 140px;
-            left: 250px;
-            width: auto;
+            top: 130px;
+            left: 280px;
+            width: 76%;
         }
     }
 
@@ -59,11 +65,12 @@ body.planificacion {
         font-family: "AvenirNext-Regular", "Helvetica Neue", Helvetica, Arial, sans-serif;
         font-size: 21px;
         color: #000;
-        width: 100%;
         border-bottom: 1px solid #CFD1D1;
         padding-bottom: 4px;
         margin-bottom: 4px;
         display: block;
+        margin: 0 auto;
+        padding-top: 20px;
     }
 
     .box-grafico-seleccionado {
@@ -75,11 +82,13 @@ body.planificacion {
     }
 
     #entry {
+        width: 50%;
+        margin: 0 auto;
         width: 600px;
     }
 
     embed {
-        padding: 20px;
+        padding-top: 20px;
     }
 
 
