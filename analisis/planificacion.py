@@ -87,7 +87,7 @@ class GraficosPlanificacion(object):
             set([c.corredor.lower().replace(" ", "_") for c in tabla_corredores if c]))
 
         self.timestamp_end = datetime.datetime.now()
-        self.timestamp_start = self.timestamp_end - datetime.timedelta(weeks=8)
+        self.timestamp_start = self.timestamp_end - datetime.timedelta(weeks=4)
 
         self.__mkdir(self.savepath_folder, [
                      'mensuales', 'corredores', "mensuales/csv", "mensuales/svg"])
