@@ -116,7 +116,8 @@ class GraficosPlanificacion(object):
 
         for f in ['svg', 'csv']:
             self.__mkdir(self.savepath_folder, [self.folders['mensuales'][f]])
-            self.__mkdir(self.savepath_folder, [self.folders['corredores'][f].format(c) for c in self.corredores if c])
+            self.__mkdir(self.savepath_folder, [
+                         self.folders['corredores'][f].format(c) for c in self.corredores if c])
 
         self.__flg = False
         self.corrdata = []
@@ -143,10 +144,14 @@ class GraficosPlanificacion(object):
             "duracion_anomalias_media_xfranjahoraria_fin_de_semana": "Duracion media de anomalias por franja horaria - Fin de Semana"
         }
 
-        self.folders['mensuales']['svg'] = self.savepath_folder.replace("{0}/",  "") + self.folders['mensuales']['svg']
-        self.folders['mensuales']['csv'] = self.savepath_folder.replace("{0}/",  "") + self.folders['mensuales']['csv']
-        self.folders['corredores']['svg'] = self.savepath_folder.replace("{0}/",  "") + self.folders['corredores']['svg']
-        self.folders['corredores']['csv'] = self.savepath_folder.replace("{0}/",  "") + self.folders['corredores']['csv']
+        self.folders['mensuales']['svg'] = self.savepath_folder.replace(
+            "{0}/",  "") + self.folders['mensuales']['svg']
+        self.folders['mensuales']['csv'] = self.savepath_folder.replace(
+            "{0}/",  "") + self.folders['mensuales']['csv']
+        self.folders['corredores']['svg'] = self.savepath_folder.replace(
+            "{0}/",  "") + self.folders['corredores']['svg']
+        self.folders['corredores']['csv'] = self.savepath_folder.replace(
+            "{0}/",  "") + self.folders['corredores']['csv']
 
         self.corredores = {}
 
@@ -702,11 +707,35 @@ class GraficosPlanificacion(object):
         self.__wrpsave(self.indice_anomalias_xcuadras.__name__,
                        graph=bar_chart, save=save, csv=csv, show=show)
 
-    def ultima_semana_vs_historico(self, save=True, csv=True, show=False):
+    def ultima_semana_vs_historico(self, save=True, csv=True, tipo='mensual', corredor=None, show=False):
         
-        x1 = list(sm.tsa.filters.hpfilter(prev_weeks_data["data"],300)[1])
-        x2 = list(sm.tsa.filters.hpfilter(target_week_data["data"],300)[1])
+        target_corr_name = "Juan B. Justo"
+        target_corr_data = self.reportdata[self.reportdata["corr_name"] == target_corr_name].copy()
+        corrdata_sel = self.corrdata[self.corrdata["name"] == target_corr_name][["iddevice", "name"]].copy()
+        
+        self.historico = self.historico.rename(columns={'segment': 'iddevice', 'timestamp': 'date'})
 
+        target_corr_lastrecordsdf = pd.merge(self.historico, corrdata_sel, on=["iddevice"]).reset_index()
+        target_corr_lastrecordsdf["corr"] = self.corrdata.set_index("iddevice").loc[target_corr_lastrecordsdf["iddevice"]].reset_index()["corr"]
+
+        target_corr_lastrecordsdf.loc[target_corr_lastrecordsdf["corr"].str.endswith("_acentro"), "sentido"] = "centro"
+        target_corr_lastrecordsdf.loc[target_corr_lastrecordsdf["corr"].str.endswith("_aprovincia"), "sentido"] = "provincia"
+
+        aux = target_corr_lastrecordsdf.copy()
+
+        aux["data"] = aux["data"] / 60
+        aux["time"] = aux["data"]
+
+        def f(aux, sentido):
+            aux = aux[aux["sentido"] == sentido]
+            target_week = aux.date.dt.week.max()
+            target_week_data = aux[aux["date"].dt.week == target_week].groupby([aux["date"].dt.weekday, aux["time"]])["data"].mean().reset_index()
+            prev_weeks_data = aux[(aux["date"].dt.week >= (target_week - 4)) &
+                                  (aux["date"].dt.week <= target_week)].groupby([aux["date"].dt.weekday, aux["time"]])["data"].mean().reset_index()
+            target_week_data = target_week_data.rename(columns={'level_0': "weekday", "level_1": "time"})
+            prev_weeks_data = prev_weeks_data.rename(columns={'level_0': "weekday", "level_1": "time"})
+            prev_weeks_data = prev_weeks_data.sort(["weekday", "time"])
+            target_week_data = target_week_data.sort(["weekday", "time"])
 
     def __asignacion_frame(self, **config):
         """
