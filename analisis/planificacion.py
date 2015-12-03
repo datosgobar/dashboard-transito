@@ -18,7 +18,6 @@ import random
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-import numpy as np
 
 from scipy import sparse
 from scipy.sparse import dia_matrix, eye as speye
@@ -131,7 +130,7 @@ class GraficosPlanificacion(object):
             set([c.corredor.lower().replace(" ", "_") for c in tabla_corredores if c]))
 
         self.timestamp_end = datetime.datetime.now()
-        self.timestamp_start = self.timestamp_end - datetime.timedelta(weeks=4)
+        self.timestamp_start = self.timestamp_end - datetime.timedelta(weeks=8)
 
         self.__mkdir(self.savepath_folder, [
                      'mensuales', 'corredores', "mensuales/csv", "mensuales/svg"])
@@ -205,15 +204,11 @@ class GraficosPlanificacion(object):
             'corredores': self.corredores.keys()
         }
 
-        self.valids = self.__asignacion_frame(
-            table=Anomaly, column=Anomaly.timestamp_start)
-        self.lastrecordsdf = self.__asignacion_frame(
-            table=Historical, column=Historical.timestamp)
-        self.lastrecordsdf = self.lastrecordsdf.rename(
-            columns={'segment': 'iddevice', 'timestamp': 'date'})
-        self.lastrecordsdf = anomalyDetection.prepareDataFrame(
-            self.lastrecordsdf, timeadjust=pd.Timedelta(hours=-3), doimputation=True)
+        self.valids = self._asignacion_frame(table=Anomaly, column=Anomaly.timestamp_start)
         self.__generacion_dataframe()
+        self.lastrecordsdf = self._asignacion_frame(table=Historical, column=Historical.timestamp)
+        self.lastrecordsdf = self.lastrecordsdf.rename(columns={'segment': 'iddevice', 'timestamp': 'date'})
+        self.lastrecordsdf = anomalyDetection.prepareDataFrame(self.lastrecordsdf, timeadjust=pd.Timedelta(hours=-3), doimputation=True)
 
     def _mkdir(self, folder):
         # print folder
@@ -762,20 +757,14 @@ class GraficosPlanificacion(object):
         else:
             raise Exception("Corredor Inexistente")
 
-        target_corr_data = self.reportdata[
-            self.reportdata["corr_name"] == corredor].copy()
-        corrdata_sel = self.corrdata[self.corrdata["name"] == corredor][
-            ["iddevice", "name"]].copy()
+        target_corr_data = self.reportdata[self.reportdata["corr_name"] == corredor].copy()
+        corrdata_sel = self.corrdata[self.corrdata["name"] == corredor][["iddevice", "name"]].copy()
 
-        target_corr_lastrecordsdf = pd.merge(
-            self.lastrecordsdf, corrdata_sel, on=["iddevice"]).reset_index()
-        target_corr_lastrecordsdf["corr"] = self.corrdata.set_index(
-            "iddevice").loc[target_corr_lastrecordsdf["iddevice"]].reset_index()["corr"]
+        target_corr_lastrecordsdf = pd.merge(self.lastrecordsdf, corrdata_sel, on=["iddevice"]).reset_index()
+        target_corr_lastrecordsdf["corr"] = self.corrdata.set_index("iddevice").loc[target_corr_lastrecordsdf["iddevice"]].reset_index()["corr"]
 
-        target_corr_lastrecordsdf.loc[target_corr_lastrecordsdf[
-            "corr"].str.endswith("_acentro"), "sentido"] = "centro"
-        target_corr_lastrecordsdf.loc[target_corr_lastrecordsdf[
-            "corr"].str.endswith("_aprovincia"), "sentido"] = "provincia"
+        target_corr_lastrecordsdf.loc[target_corr_lastrecordsdf["corr"].str.endswith("_acentro"), "sentido"] = "centro"
+        target_corr_lastrecordsdf.loc[target_corr_lastrecordsdf["corr"].str.endswith("_aprovincia"), "sentido"] = "provincia"
 
         def make_line(aux, sentido):
 
@@ -840,7 +829,7 @@ class GraficosPlanificacion(object):
         aux = aux.pivot("franja", "dayofweek", "count").fillna(0)
         aux = aux[list(aux)]
 
-    def __asignacion_frame(self, **config):
+    def _asignacion_frame(self, **config):
         """
            valids = asignacion_frame(
                'anomaly', col1="id", col2="timestamp_end", col3="timestamp_end")
@@ -850,36 +839,27 @@ class GraficosPlanificacion(object):
         Table = config.pop("table")
         Column = config.pop("column")
         self.query = self.session.query(Table)
-        result = pd.read_sql(self.query.filter(
-            Column >= self.timestamp_start).statement, self.query.session.bind)
+        result = pd.read_sql(self.query.filter(Column >= self.timestamp_start).statement, self.query.session.bind)
         return result
 
     def __generacion_dataframe(self):
 
+        #import pdb
+        #pdb.set_trace()
         self.corrdata = pd.DataFrame(self.corrdata)
-        self.valids["timestamp_start"] = pd.to_datetime(
-            self.valids["timestamp_start"])
-        self.valids["timestamp_end"] = pd.to_datetime(
-            self.valids["timestamp_end"])
+        self.valids["timestamp_start"] = pd.to_datetime(self.valids["timestamp_start"])
+        self.valids["timestamp_end"] = pd.to_datetime(self.valids["timestamp_end"])
         self.valids["iddevice"] = self.valids[["id_segment"]]
-        self.valids = self.valids[
-            (self.valids["timestamp_end"] - self.valids["timestamp_start"]).dt.seconds >= 20 * 60]
-        self.valids = self.valids[
-            ["iddevice", "timestamp_start", "timestamp_end"]].copy()
+        self.valids = self.valids[(self.valids["timestamp_end"] - self.valids["timestamp_start"]).dt.seconds >= 20 * 60]
+        self.valids = self.valids[["iddevice", "timestamp_start", "timestamp_end"]].copy()
 
-        self.reportdata = pd.merge(
-            self.valids, self.corrdata[["iddevice", "corr", "name"]], on=["iddevice"])
+        self.reportdata = pd.merge(self.valids, self.corrdata[["iddevice", "corr", "name"]], on=["iddevice"])
         self.reportdata = self.reportdata.rename(columns={"name": "corr_name"})
-        self.reportdata["duration"] = (
-            self.reportdata.timestamp_end - self.reportdata.timestamp_start).dt.seconds / 60.
-        self.reportdata["daytype"] = anomalyDetection.dfdaytype.loc[
-            self.reportdata.timestamp_start.dt.weekday].values[:, 0]
-        self.reportdata["corr"] = self.corrdata.set_index(
-            "iddevice").loc[self.reportdata["iddevice"]].reset_index()["corr"]
-        self.reportdata.loc[
-            self.reportdata["corr"].str.endswith("_acentro"), "sentido"] = "centro"
-        self.reportdata.loc[
-            self.reportdata["corr"].str.endswith("_aprovincia"), "sentido"] = "provincia"
+        self.reportdata["duration"] = (self.reportdata.timestamp_end - self.reportdata.timestamp_start).dt.seconds / 60.
+        self.reportdata["daytype"] = anomalyDetection.dfdaytype.loc[self.reportdata.timestamp_start.dt.weekday].values[:, 0]
+        self.reportdata["corr"] = self.corrdata.set_index("iddevice").loc[self.reportdata["iddevice"]].reset_index()["corr"]
+        self.reportdata.loc[self.reportdata["corr"].str.endswith("_acentro"), "sentido"] = "centro"
+        self.reportdata.loc[self.reportdata["corr"].str.endswith("_aprovincia"), "sentido"] = "provincia"
         self.corredores = list(set(self.reportdata['corr_name']))
 
 
@@ -916,7 +896,7 @@ def main():
             tipo="corredores", corredor=nombre_corredor)
         logger.info(
             "Corredor {0} - Grafico {1}".format(nombre_corredor, "Ultima semana vs Historico"))
-        grafico.ultima_semana_vs_historico(tipo="corredores", corredor=nombre_corredor))
+        #grafico.ultima_semana_vs_historico(tipo="corredores", corredor=nombre_corredor)
     logger.info(
         "-------------------------------------------------------------------")
     logger.info("Graficos Generados")
