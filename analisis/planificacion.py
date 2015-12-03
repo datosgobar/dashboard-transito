@@ -747,10 +747,9 @@ class GraficosPlanificacion(object):
         bar_chart.x_labels = list(set(self.aux['corr_name']))
         bar_chart.add('Capital', set_items(lcent, 'centro'))
         bar_chart.add('Provincia', set_items(lprov, 'provincia'))
-        self.__wrpsave(self.indice_anomalias_xcuadras.__name__,
-                       graph=bar_chart, save=save, csv=csv, show=show)
+        self.__wrpsave(self.indice_anomalias_xcuadras.__name__, graph=bar_chart, save=save, csv=csv, show=show)
 
-    def ultima_semana_vs_historico(self, save=True, csv=True, tipo='corredores', corredor=None, show=False):
+    def ultima_semana_vs_historico(self, save=True, csv=False, tipo='corredores', corredor=None, show=False):
 
         if corredor in list(set(self.reportdata['corr_name'])):
             self.name_corredor = corredor.replace(" ", "_").lower()
@@ -765,26 +764,25 @@ class GraficosPlanificacion(object):
 
         target_corr_lastrecordsdf.loc[target_corr_lastrecordsdf["corr"].str.endswith("_acentro"), "sentido"] = "centro"
         target_corr_lastrecordsdf.loc[target_corr_lastrecordsdf["corr"].str.endswith("_aprovincia"), "sentido"] = "provincia"
+        target_corr_lastrecordsdf = target_corr_lastrecordsdf.groupby([
+            "date", "weekday", "time", "daytype", "franja", "name", "corr", "sentido", "iddevice"
+            ]).sum()["data"].reset_index()
 
         def make_line(aux, sentido):
 
-            self.aux["data"] = self.aux["data"] / 60
-            self.aux = self.aux[self.aux["sentido"] == sentido]
-
-            target_week = self.aux.date.dt.week.max()
-            target_week_data = self.aux[self.aux["date"].dt.week == target_week].groupby(
-                [self.aux["date"].dt.weekday, self.aux["time"]])["data"].mean().reset_index()
-            prev_weeks_data = self.aux[
-                (self.aux["date"].dt.week >= (target_week - 4)
-                 ) & (self.aux["date"].dt.week <= target_week)
-            ].groupby([self.aux["date"].dt.weekday, self.aux["time"]])["data"].mean().reset_index()
-
-            prev_weeks_data = prev_weeks_data.sort(["weekday", "time"])
+            aux = aux[aux["sentido"] == sentido]
+            target_week = aux.date.dt.week.max()
+            target_week_data = aux[aux["date"].dt.week == target_week].groupby(
+                [aux["date"].dt.weekday, aux["time"]]
+            )["data"].mean().reset_index()
+            prev_weeks_data = aux[(aux["date"].dt.week >= (target_week - 4)) &(aux["date"].dt.week <= target_week)].groupby(
+                    [aux["date"].dt.weekday, aux["time"]])["data"].mean().reset_index()
+            #
+            target_week_data = target_week_data.rename(columns={'level_0': "weekday", "level_1": "time"})
             target_week_data = target_week_data.sort(["weekday", "time"])
-            prev_weeks_data["plotx"] = prev_weeks_data["weekday"].astype(
-                str) + "_" + prev_weeks_data["time"].astype(str)
-            target_week_data["plotx"] = target_week_data["weekday"].astype(
-                str) + "_" + target_week_data["time"].astype(str)
+            prev_weeks_data = prev_weeks_data.rename(columns={'level_0': "weekday", "level_1": "time"})
+            prev_weeks_data["plotx"] = prev_weeks_data["weekday"].astype(str) + "_" + prev_weeks_data["time"].astype(str)
+            target_week_data["plotx"] = target_week_data["weekday"].astype(str) + "_" + target_week_data["time"].astype(str)
 
             x2 = list(hpfilter(prev_weeks_data["data"].values, 300)[1])
             x1 = list(hpfilter(target_week_data["data"].values, 300)[1])
@@ -806,10 +804,20 @@ class GraficosPlanificacion(object):
             line_chart.render_to_file(self.folders['corredores']['svg'].format(
                 self.name_corredor) + "/" + metadata.get("filename"))
 
+        sentidos = list(set(target_corr_lastrecordsdf['sentido']))
+        sentidos.sort()
         self.aux = target_corr_lastrecordsdf.copy()
-        make_line(self.aux, "centro")
-        self.aux = target_corr_lastrecordsdf.copy()
-        make_line(self.aux,  "provincia")
+        self.aux["data"] = self.aux["data"] / 60
+
+        if sentidos == ["centro", "provincia"]:        
+            make_line(self.aux, "centro")
+            make_line(self.aux,  "provincia")
+        elif sentidos == ["centro"]:
+            make_line(self.aux, "centro")
+        elif sentidos == ["provincia"]:
+            make_line(self.aux,  "provincia")
+        else:
+            raise Exception("Corredor sin Sentidos")
 
     def heatmap_calendar_franja(self, save=True, csv=True, tipo='mensual', corredor=None, show=False):
         aux = target_corr_data.copy()
@@ -894,7 +902,7 @@ def main():
             tipo="corredores", corredor=nombre_corredor)
         logger.info(
             "Corredor {0} - Grafico {1}".format(nombre_corredor, "Ultima semana vs Historico"))
-        #grafico.ultima_semana_vs_historico(tipo="corredores", corredor=nombre_corredor)
+        grafico.ultima_semana_vs_historico(tipo="corredores", corredor=nombre_corredor)
     logger.info(
         "-------------------------------------------------------------------")
     logger.info("Graficos Generados")
