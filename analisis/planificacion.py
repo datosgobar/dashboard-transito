@@ -844,8 +844,6 @@ class GraficosPlanificacion(object):
 
     def __generacion_dataframe(self):
 
-        #import pdb
-        #pdb.set_trace()
         self.corrdata = pd.DataFrame(self.corrdata)
         self.valids["timestamp_start"] = pd.to_datetime(self.valids["timestamp_start"])
         self.valids["timestamp_end"] = pd.to_datetime(self.valids["timestamp_end"])
