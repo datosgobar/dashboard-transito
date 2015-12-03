@@ -50,6 +50,7 @@ $ sudo pip install gunicorn==19.3.0
 $ sudo pip install supervisor==3.1.3
 $ sudo pip install seaborn==0.6.0
 $ sudo pip install pygal==2.0.11
+$ sudo apt-get install python-scipy or pip install scipy==0.10.1
 ```
 
 ## Instalacion bajo Mac
