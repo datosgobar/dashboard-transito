@@ -20,6 +20,11 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 
+from scipy import sparse
+from scipy.sparse import dia_matrix, eye as speye
+from scipy.sparse.linalg import spsolve
+import numpy as np
+
 import csv
 import os
 import json
@@ -68,6 +73,40 @@ style_franjas = Style(
     background='#FFFFFF',
     colors=('#ff8723', '#609f86', '#8322dd', '#004466', '#75ff98')
 )
+
+
+def hpfilter(X, lamb=1600):
+    """
+        https://github.com/statsmodels/statsmodels/blob/master/statsmodels/tsa/filters/hp_filter.py        
+    """
+#    _pandas_wrapper = _maybe_get_pandas_wrapper(X)
+    X = np.asarray(X, float)
+    if X.ndim > 1:
+        X = X.squeeze()
+    nobs = len(X)
+    I = speye(nobs, nobs)
+    offsets = np.array([0, 1, 2])
+    data = np.repeat([[1.], [-2.], [1.]], nobs, axis=1)
+    K = dia_matrix((data, offsets), shape=(nobs - 2, nobs))
+
+    import scipy
+    if (X.dtype != np.dtype('<f8') and
+            int(scipy.__version__[:3].split('.')[1]) < 11):
+        # scipy umfpack bug on Big Endian machines, will be fixed in 0.11
+        use_umfpack = False
+    else:
+        use_umfpack = True
+
+    if scipy.__version__[:3] == '0.7':
+        # doesn't have use_umfpack option
+        # will be broken on big-endian machines with scipy 0.7 and umfpack
+        trend = spsolve(I + lamb * K.T.dot(K), X)
+    else:
+        trend = spsolve(I + lamb * K.T.dot(K), X, use_umfpack=use_umfpack)
+    cycle = X - trend
+    # if _pandas_wrapper is not None:
+    #     return _pandas_wrapper(cycle), _pandas_wrapper(trend)
+    return cycle, trend
 
 
 class GraficosPlanificacion(object):
@@ -141,7 +180,8 @@ class GraficosPlanificacion(object):
             "distribucion_horaria_sumarizada_sabado": "Distribucion horaria sumarizada - Sabado",
             "distribucion_horaria_sumarizada_domingo": "Distribucion horaria sumarizada - Domingo",
             "duracion_anomalias_media_xfranjahoraria_laborables": "Duracion media de anomalias por franja horaria - Dias Laborables",
-            "duracion_anomalias_media_xfranjahoraria_fin_de_semana": "Duracion media de anomalias por franja horaria - Fin de Semana"
+            "duracion_anomalias_media_xfranjahoraria_fin_de_semana": "Duracion media de anomalias por franja horaria - Fin de Semana",
+            "ultima_semana_vs_historico": "Ultima semana vs Historico del ultimo mes"
         }
 
         self.folders['mensuales']['svg'] = self.savepath_folder.replace(
@@ -162,8 +202,12 @@ class GraficosPlanificacion(object):
 
         self.valids = self.__asignacion_frame(
             table=Anomaly, column=Anomaly.timestamp_start)
-        self.historico = self.__asignacion_frame(
+        self.lastrecordsdf = self.__asignacion_frame(
             table=Historical, column=Historical.timestamp)
+        self.lastrecordsdf = self.lastrecordsdf.rename(
+            columns={'segment': 'iddevice', 'timestamp': 'date'})
+        self.lastrecordsdf = anomalyDetection.prepareDataFrame(
+            self.lastrecordsdf, timeadjust=pd.Timedelta(hours=-3), doimputation=True)
         self.__generacion_dataframe()
 
     def _mkdir(self, folder):
@@ -540,9 +584,8 @@ class GraficosPlanificacion(object):
             ]
 
         for (i, (start, end)) in enumerate(franjas):
-            self.aux.loc[
-                (self.aux["timestamp_start"].dt.hour >= start) &
-                (self.aux["timestamp_start"].dt.hour < end), "franja"] = i
+            self.aux.loc[(self.aux["timestamp_start"].dt.hour >= start) & (
+                self.aux["timestamp_start"].dt.hour < end), "franja"] = i
 
         self.aux["franja"] = self.aux["franja"].astype(int)
         self.aux = self.aux.rename(
@@ -707,35 +750,80 @@ class GraficosPlanificacion(object):
         self.__wrpsave(self.indice_anomalias_xcuadras.__name__,
                        graph=bar_chart, save=save, csv=csv, show=show)
 
-    def ultima_semana_vs_historico(self, save=True, csv=True, tipo='mensual', corredor=None, show=False):
-        
-        target_corr_name = "Juan B. Justo"
-        target_corr_data = self.reportdata[self.reportdata["corr_name"] == target_corr_name].copy()
-        corrdata_sel = self.corrdata[self.corrdata["name"] == target_corr_name][["iddevice", "name"]].copy()
-        
-        self.historico = self.historico.rename(columns={'segment': 'iddevice', 'timestamp': 'date'})
+    def ultima_semana_vs_historico(self, save=True, csv=True, tipo='corredores', corredor=None, show=False):
 
-        target_corr_lastrecordsdf = pd.merge(self.historico, corrdata_sel, on=["iddevice"]).reset_index()
+        if corredor in list(set(self.reportdata['corr_name'])):
+            self.name_corredor = corredor.replace(" ", "_").lower()
+        else:
+            raise Exception("Corredor Inexistente")
+
+        target_corr_data = self.reportdata[self.reportdata["corr_name"] == corredor].copy()
+        corrdata_sel = self.corrdata[self.corrdata["name"] == corredor][["iddevice", "name"]].copy()
+
+        target_corr_lastrecordsdf = pd.merge(self.lastrecordsdf, corrdata_sel, on=["iddevice"]).reset_index()
         target_corr_lastrecordsdf["corr"] = self.corrdata.set_index("iddevice").loc[target_corr_lastrecordsdf["iddevice"]].reset_index()["corr"]
 
         target_corr_lastrecordsdf.loc[target_corr_lastrecordsdf["corr"].str.endswith("_acentro"), "sentido"] = "centro"
         target_corr_lastrecordsdf.loc[target_corr_lastrecordsdf["corr"].str.endswith("_aprovincia"), "sentido"] = "provincia"
 
-        aux = target_corr_lastrecordsdf.copy()
 
-        aux["data"] = aux["data"] / 60
-        aux["time"] = aux["data"]
+        def make_line(aux, sentido):
+            
+            self.aux["data"] = self.aux["data"] / 60
+            self.aux = self.aux[self.aux["sentido"] == sentido]
 
-        def f(aux, sentido):
-            aux = aux[aux["sentido"] == sentido]
-            target_week = aux.date.dt.week.max()
-            target_week_data = aux[aux["date"].dt.week == target_week].groupby([aux["date"].dt.weekday, aux["time"]])["data"].mean().reset_index()
-            prev_weeks_data = aux[(aux["date"].dt.week >= (target_week - 4)) &
-                                  (aux["date"].dt.week <= target_week)].groupby([aux["date"].dt.weekday, aux["time"]])["data"].mean().reset_index()
+            target_week = self.aux.date.dt.week.max()
+            target_week_data = self.aux[self.aux["date"].dt.week == target_week].groupby(
+                [self.aux["date"].dt.weekday, self.aux["time"]])["data"].mean().reset_index()
+            prev_weeks_data = self.aux[
+                (self.aux["date"].dt.week >= (target_week - 4)
+                 ) & (self.aux["date"].dt.week <= target_week)
+            ].groupby([self.aux["date"].dt.weekday, self.aux["time"]])["data"].mean().reset_index()
+
             target_week_data = target_week_data.rename(columns={'level_0': "weekday", "level_1": "time"})
             prev_weeks_data = prev_weeks_data.rename(columns={'level_0': "weekday", "level_1": "time"})
             prev_weeks_data = prev_weeks_data.sort(["weekday", "time"])
             target_week_data = target_week_data.sort(["weekday", "time"])
+            prev_weeks_data["plotx"] = prev_weeks_data["weekday"].astype(str) + "_" + prev_weeks_data["time"].astype(str)
+            target_week_data["plotx"] = target_week_data["weekday"].astype(str) + "_" + target_week_data["time"].astype(str)
+
+            x2 = list(hpfilter(prev_weeks_data["data"].values, 300)[1])
+            x1 = list(hpfilter(target_week_data["data"].values, 300)[1])
+
+            line_chart = pygal.Line(iterpolation="quadratic")
+            line_chart.add("Ultimo Mes", x1, dots_size=0.1)
+            line_chart.add("Ultima semana", x2, dots_size=0.1)
+
+            name = self.name_corredor + "_" + self.ultima_semana_vs_historico.__name__ + "_" + sentido
+            metadata = self.generar_metadata(name, tipo='corredores', corredor=corredor)
+            metadata['name'] = corredor + " " + self.mensuales[self.ultima_semana_vs_historico.__name__] + " sentido " + sentido
+            self.generador_csv(metadata.get("filename"), tipo="corredores", corredor=self.name_corredor)
+            self.guardar_grafico(metadata, instancegraph=False)
+            line_chart.render_to_file(self.folders['corredores']['svg'].format(self.name_corredor) + "/" + metadata.get("filename"))
+
+        self.aux = target_corr_lastrecordsdf.copy()
+        make_line(self.aux, "centro")
+        self.aux = target_corr_lastrecordsdf.copy()
+        make_line(self.aux,  "provincia")
+
+         
+    def heatmap_calendar_franja(self, save=True, csv=True, tipo='mensual', corredor=None, show=False):
+        aux = target_corr_data.copy()
+        daynames = pd.DataFrame(
+            {"dayname": ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"]})
+        aux["dayofweek"] = daynames.loc[
+            aux["timestamp_start"].dt.dayofweek, "dayname"].values
+        franjas = [(0, 7), (7, 10), (10, 17), (17, 20), (20, 24)]
+        for (i, (start, end)) in enumerate(franjas):
+            aux.loc[
+                (aux["timestamp_start"].dt.hour >= start) &
+                (aux["timestamp_start"].dt.hour < end), "franja"] = i
+        aux["franja"] = aux["franja"].astype(int)
+        aux = aux.groupby(["franja", "dayofweek"]).size()
+        # "level_0" : "franja", "level_1" : "weekday",
+        aux = aux.reset_index().rename(columns={0: "count"})
+        aux = aux.pivot("franja", "dayofweek", "count").fillna(0)
+        aux = aux[list(aux)]
 
     def __asignacion_frame(self, **config):
         """
