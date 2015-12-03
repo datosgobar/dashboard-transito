@@ -89,13 +89,10 @@ $(document).ready(function() {
     remove_elem(['h2', 'embed', '.graficos'])
 
 
-   $.each(graphs['graficos'], function(i, grafico) {
+    $.each(graphs['graficos'], function(i, grafico) {
       $('#leftPanel').append('<div class="graficos shadow listado" order="'+ i +'"><span class="">'+ grafico.name +'</span></div>');
       
       var style = "display:none"
-      if (i == id_grafico_seleccionado) {
-        style = "display:inline"
-      } 
 
       $('#entry').append(
         $('<h2>', {
@@ -117,8 +114,11 @@ $(document).ready(function() {
       $('#entry h2').hide();
       $('#entry embed').hide();
       $('#entry').find('[order = '+ id_grafico_seleccionado +']').show();
+      $('#leftPanel').find(".graficos").removeClass("selected");
+      $('#leftPanel').find('[order = '+ id_grafico_seleccionado +']').addClass("selected");
     })
 
+    $(".graficos")[0].click();
   };
 
   $('body').on('change', '#filtros', function() {

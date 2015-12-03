@@ -12,8 +12,8 @@
     <script type="text/javascript" src="_static/js/jquery-2.1.3.min.js"></script>
     <script type="text/javascript" src="_static/js/planificacion.js"></script>
 </head>
-<body>
-    <div id="contenido" class="planificacion">
+<body class="planificacion">
+    <div id="contenido">
         <div id="header">
             <div id="logo"></div>
             <div id="status"><button id="salir">salir</button></div>
@@ -43,7 +43,6 @@
             <div id="leftPanel"></div>
             <div id="rightPanel">
                 <div class="box-grafico-seleccionado">
-                    <h1 id="title" style="color:white"></h1>
                     <div id="entry"></div>
                 </div>
             </div>

@@ -46,38 +46,43 @@ Anomaly = conn_sql.instanceTable(unique_table='anomaly')
 Historical = conn_sql.instanceTable(unique_table='historical')
 Corredores = conn_sql.instanceTable(unique_table='corredores')
 
-color_capital = '#336676'
-color_provincia = '#E853A0'
+color_capital = '#7DCF30'
+color_provincia = '#00AEFF'
 
-style_provincia = LightenStyle(
+style_provincia = DarkenStyle(
     color_provincia)
 style_provincia.plot_background = '#FFFFFF'
 style_provincia.label_font_size = 16
 style_provincia.background = '#FFFFFF'
 
-style_capital = LightenStyle(color_capital)
+style_capital = DarkenStyle(color_capital)
 style_capital.plot_background = '#FFFFFF'
 style_capital.label_font_size = 16
 style_capital.background = '#FFFFFF'
 
-style_planificacion = Style(
+style_capital_provincia = Style(
     plot_background='#FFFFFF',
     background='#FFFFFF',
     label_font_size=16,
     colors=(color_capital, color_provincia)
 )
 
+style_linea = LightenStyle('#EFC026')
+style_linea.plot_background = '#FFFFFF'
+style_linea.label_font_size = 16
+style_linea.background = '#FFFFFF'
+
 style_franjas = Style(
     plot_background='#FFFFFF',
     label_font_size=16,
     background='#FFFFFF',
-    colors=('#ff8723', '#609f86', '#8322dd', '#004466', '#75ff98')
+    colors=('#1BDBEC', '#EFD426', '#EFA226', '#581DB8', '#2A50B8')
 )
 
 
 def hpfilter(X, lamb=1600):
     """
-        https://github.com/statsmodels/statsmodels/blob/master/statsmodels/tsa/filters/hp_filter.py        
+        https://github.com/statsmodels/statsmodels/blob/master/statsmodels/tsa/filters/hp_filter.py
     """
 #    _pandas_wrapper = _maybe_get_pandas_wrapper(X)
     X = np.asarray(X, float)
@@ -126,7 +131,7 @@ class GraficosPlanificacion(object):
             set([c.corredor.lower().replace(" ", "_") for c in tabla_corredores if c]))
 
         self.timestamp_end = datetime.datetime.now()
-        self.timestamp_start = self.timestamp_end - datetime.timedelta(weeks=8)
+        self.timestamp_start = self.timestamp_end - datetime.timedelta(weeks=4)
 
         self.__mkdir(self.savepath_folder, [
                      'mensuales', 'corredores', "mensuales/csv", "mensuales/svg"])
@@ -373,7 +378,7 @@ class GraficosPlanificacion(object):
         # .plot(x='semana', kind='bar', ax=self.ax)
         self.ax = self.aux[['semana'] + sentidos]
 
-        line_chart = pygal.Bar(no_data_text='Sin Datos', include_x_axis=True, style=style_planificacion,
+        line_chart = pygal.Bar(no_data_text='Sin Datos', include_x_axis=True, style=style_capital_provincia,
                                x_title='Semanas', y_title='Cantidad')
         line_chart.x_labels = list(self.aux['semana'])
 
@@ -448,7 +453,7 @@ class GraficosPlanificacion(object):
                 ['sentido', 'duration'])['duration'].all().to_dict().keys())
 
         bar_chart = pygal.Bar(no_data_text='Sin Datos', y_title='Duracion en Minutos',
-                              style=style_planificacion, x_label_rotation=x_label_rotation)
+                              style=style_capital_provincia, x_label_rotation=x_label_rotation)
         bar_chart.x_labels = list(set(self.aux['corr_name']))
 
         if sentidos == ["centro", "provincia"]:
@@ -515,7 +520,7 @@ class GraficosPlanificacion(object):
         def make_bar(tipodia, name_dia):
 
             bar_chart = pygal.Bar(y_title="Cantidad",
-                                  style=style_planificacion)
+                                  style=style_capital_provincia)
             bar_chart.x_labels = map(lambda x: str(x), range(1, 25))
 
             franjacentro = tipodia[tipodia['sentido'] == 'centro'][
@@ -664,7 +669,7 @@ class GraficosPlanificacion(object):
 
         x = [.1 * i for i in range(1, 11)]
         y = list(self.aux)
-        line_chart = pygal.Line(style=style_planificacion)
+        line_chart = pygal.Line(style=style_linea)
         line_chart.x_labels = x
         line_chart.x_title = 'Percentil'
         line_chart.y_title = 'Duracion en Minutos'
@@ -743,7 +748,7 @@ class GraficosPlanificacion(object):
             lc[co] = dict(self.aux[self.aux['corr_name'] == co].groupby(
                 ['sentido', 'indice'])['indice'].all().to_dict().keys())
         bar_chart = pygal.Bar(no_data_text='Sin Datos', y_title='Indice',
-                              style=style_planificacion, x_label_rotation=90)
+                              style=style_capital_provincia, x_label_rotation=90)
         bar_chart.x_labels = list(set(self.aux['corr_name']))
         bar_chart.add('Capital', set_items(lcent, 'centro'))
         bar_chart.add('Provincia', set_items(lprov, 'provincia'))
@@ -757,18 +762,23 @@ class GraficosPlanificacion(object):
         else:
             raise Exception("Corredor Inexistente")
 
-        target_corr_data = self.reportdata[self.reportdata["corr_name"] == corredor].copy()
-        corrdata_sel = self.corrdata[self.corrdata["name"] == corredor][["iddevice", "name"]].copy()
+        target_corr_data = self.reportdata[
+            self.reportdata["corr_name"] == corredor].copy()
+        corrdata_sel = self.corrdata[self.corrdata["name"] == corredor][
+            ["iddevice", "name"]].copy()
 
-        target_corr_lastrecordsdf = pd.merge(self.lastrecordsdf, corrdata_sel, on=["iddevice"]).reset_index()
-        target_corr_lastrecordsdf["corr"] = self.corrdata.set_index("iddevice").loc[target_corr_lastrecordsdf["iddevice"]].reset_index()["corr"]
+        target_corr_lastrecordsdf = pd.merge(
+            self.lastrecordsdf, corrdata_sel, on=["iddevice"]).reset_index()
+        target_corr_lastrecordsdf["corr"] = self.corrdata.set_index(
+            "iddevice").loc[target_corr_lastrecordsdf["iddevice"]].reset_index()["corr"]
 
-        target_corr_lastrecordsdf.loc[target_corr_lastrecordsdf["corr"].str.endswith("_acentro"), "sentido"] = "centro"
-        target_corr_lastrecordsdf.loc[target_corr_lastrecordsdf["corr"].str.endswith("_aprovincia"), "sentido"] = "provincia"
-
+        target_corr_lastrecordsdf.loc[target_corr_lastrecordsdf[
+            "corr"].str.endswith("_acentro"), "sentido"] = "centro"
+        target_corr_lastrecordsdf.loc[target_corr_lastrecordsdf[
+            "corr"].str.endswith("_aprovincia"), "sentido"] = "provincia"
 
         def make_line(aux, sentido):
-            
+
             self.aux["data"] = self.aux["data"] / 60
             self.aux = self.aux[self.aux["sentido"] == sentido]
 
@@ -780,12 +790,12 @@ class GraficosPlanificacion(object):
                  ) & (self.aux["date"].dt.week <= target_week)
             ].groupby([self.aux["date"].dt.weekday, self.aux["time"]])["data"].mean().reset_index()
 
-            target_week_data = target_week_data.rename(columns={'level_0': "weekday", "level_1": "time"})
-            prev_weeks_data = prev_weeks_data.rename(columns={'level_0': "weekday", "level_1": "time"})
             prev_weeks_data = prev_weeks_data.sort(["weekday", "time"])
             target_week_data = target_week_data.sort(["weekday", "time"])
-            prev_weeks_data["plotx"] = prev_weeks_data["weekday"].astype(str) + "_" + prev_weeks_data["time"].astype(str)
-            target_week_data["plotx"] = target_week_data["weekday"].astype(str) + "_" + target_week_data["time"].astype(str)
+            prev_weeks_data["plotx"] = prev_weeks_data["weekday"].astype(
+                str) + "_" + prev_weeks_data["time"].astype(str)
+            target_week_data["plotx"] = target_week_data["weekday"].astype(
+                str) + "_" + target_week_data["time"].astype(str)
 
             x2 = list(hpfilter(prev_weeks_data["data"].values, 300)[1])
             x1 = list(hpfilter(target_week_data["data"].values, 300)[1])
@@ -794,19 +804,24 @@ class GraficosPlanificacion(object):
             line_chart.add("Ultimo Mes", x1, dots_size=0.1)
             line_chart.add("Ultima semana", x2, dots_size=0.1)
 
-            name = self.name_corredor + "_" + self.ultima_semana_vs_historico.__name__ + "_" + sentido
-            metadata = self.generar_metadata(name, tipo='corredores', corredor=corredor)
-            metadata['name'] = corredor + " " + self.mensuales[self.ultima_semana_vs_historico.__name__] + " sentido " + sentido
-            self.generador_csv(metadata.get("filename"), tipo="corredores", corredor=self.name_corredor)
+            name = self.name_corredor + "_" + \
+                self.ultima_semana_vs_historico.__name__ + "_" + sentido
+            metadata = self.generar_metadata(
+                name, tipo='corredores', corredor=corredor)
+            metadata['name'] = corredor + " " + \
+                self.mensuales[
+                    self.ultima_semana_vs_historico.__name__] + " sentido " + sentido
+            self.generador_csv(
+                metadata.get("filename"), tipo="corredores", corredor=self.name_corredor)
             self.guardar_grafico(metadata, instancegraph=False)
-            line_chart.render_to_file(self.folders['corredores']['svg'].format(self.name_corredor) + "/" + metadata.get("filename"))
+            line_chart.render_to_file(self.folders['corredores']['svg'].format(
+                self.name_corredor) + "/" + metadata.get("filename"))
 
         self.aux = target_corr_lastrecordsdf.copy()
         make_line(self.aux, "centro")
         self.aux = target_corr_lastrecordsdf.copy()
         make_line(self.aux,  "provincia")
 
-         
     def heatmap_calendar_franja(self, save=True, csv=True, tipo='mensual', corredor=None, show=False):
         aux = target_corr_data.copy()
         daynames = pd.DataFrame(
@@ -899,6 +914,9 @@ def main():
                                                         grafico.mensuales[grafico.duracion_en_percentiles.__name__]))
         grafico.duracion_en_percentiles(
             tipo="corredores", corredor=nombre_corredor)
+        logger.info(
+            "Corredor {0} - Grafico {1}".format(nombre_corredor, "Ultima semana vs Historico"))
+        grafico.ultima_semana_vs_historico(tipo="corredores", corredor=nombre_corredor))
     logger.info(
         "-------------------------------------------------------------------")
     logger.info("Graficos Generados")
