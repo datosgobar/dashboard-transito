@@ -30,6 +30,8 @@ from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.poolmanager import PoolManager
 import ssl
 
+import pdb
+
 
 bottle.debug(True)
 Base = automap_base()
@@ -209,14 +211,25 @@ def get_tablas():
 
 
 def filtro(periodo, tipo="mensuales", corredor=None):
-    if tipo == "corredores":
-        tipo = corredor.replace("_", " ")
     start, end = periodo.split("_")
-    query = session.query(Estadisticas).filter(
-        Estadisticas.tipo_grafico == tipo
-    ).filter(Estadisticas.timestamp_start >= start).filter(Estadisticas.timestamp_start <= end).all()
+
+    if (tipo == "corredores"):
+        query = session.query(Estadisticas) \
+            .filter(Estadisticas.tipo_grafico == tipo) \
+            .filter(Estadisticas.timestamp_start >= start) \
+            .filter(Estadisticas.timestamp_start <= end) \
+            .filter(Estadisticas.nombre_corredor == corredor.replace("_", " "))
+    else:
+        query = session.query(Estadisticas) \
+            .filter(Estadisticas.tipo_grafico == tipo) \
+            .filter(Estadisticas.timestamp_start >= start) \
+            .filter(Estadisticas.timestamp_start <= end)
+
+    data = query.all()
+
     session.close()
-    return [{"filename": graph.filename, "name": graph.name} for graph in query if graph]
+
+    return [{"filename": graph.filename, "name": graph.name} for graph in data if graph]
 
 
 @bottle.route("/corredores/<periodo>/<corredor>", method="GET")

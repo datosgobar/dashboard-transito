@@ -49,30 +49,33 @@ style_provincia = DarkenStyle(
 style_provincia.plot_background = '#FFFFFF'
 style_provincia.label_font_size = 16
 style_provincia.background = '#FFFFFF'
+style_provincia.font_family = 'Open Sans, sans-serif'
 
 style_capital = DarkenStyle(color_capital)
 style_capital.plot_background = '#FFFFFF'
 style_capital.label_font_size = 16
 style_capital.background = '#FFFFFF'
+style_capital.font_family = 'Open Sans, sans-serif'
 
 style_capital_provincia = Style(
     plot_background='#FFFFFF',
     background='#FFFFFF',
     label_font_size=16,
-    colors=(color_capital, color_provincia)
-)
+    colors=(color_capital, color_provincia),
+    font_family='Open Sans, sans-serif')
 
 style_linea = LightenStyle('#EFC026')
 style_linea.plot_background = '#FFFFFF'
 style_linea.label_font_size = 16
 style_linea.background = '#FFFFFF'
+style_linea.font_family = 'Open Sans, sans-serif'
 
 style_franjas = Style(
     plot_background='#FFFFFF',
     label_font_size=16,
     background='#FFFFFF',
-    colors=('#1BDBEC', '#EFD426', '#EFA226', '#581DB8', '#2A50B8')
-)
+    colors=('#1BDBEC', '#EFD426', '#EFA226', '#581DB8', '#2A50B8'),
+    font_family='Open Sans, sans-serif')
 
 
 class GraficosPlanificacion(object):
@@ -136,17 +139,19 @@ class GraficosPlanificacion(object):
             self.corrdata += [d]
 
         self.mensuales = {
+
             "anomalias_ultimo_mes": "Total semanal de anomalías",
             "duracion_media_anomalias": "Tiempo promedio de anomalías",
             "duracion_en_percentiles": "Distribución de tiempo para las anomalías",
-            "cant_anomalias_xcorredores_capital": "Cantidad de anomalías - Sentido Capital",
-            "cant_anomalias_xcorredores_provincia": "Cantidad de anomalías - Sentido Provincia",
+            "cant_anomalias_xcorredores_capital": "Cantidad de anomalías",
+            "cant_anomalias_xcorredores_provincia": "Cantidad de anomalías",
             "indice_anomalias_xcuadras": "Anomalías por cuadra",
-            "distribucion_horaria_sumarizada_laborables": "Distribución horaria de anomalías - Dias Laborables",
-            "distribucion_horaria_sumarizada_sabado": "Distribución horaria de anomalías - Sabado",
-            "distribucion_horaria_sumarizada_domingo": "Distribución horaria de anomalías- Domingo",
-            "duracion_anomalias_media_xfranjahoraria_laborables": "Boxplot duración de anomalías - Dias Laborables",
-            "duracion_anomalias_media_xfranjahoraria_fin_de_semana": "Boxplot duración de anomalías - Fin de Semana"
+            "distribucion_horaria_sumarizada_laborables": "Distribución horaria de anomalías",
+            "distribucion_horaria_sumarizada_sabado": "Distribución horaria de anomalías",
+            "distribucion_horaria_sumarizada_domingo": "Distribución horaria de anomalías",
+            "duracion_anomalias_media_xfranjahoraria_laborables": "Boxplot duración de anomalías",
+            "duracion_anomalias_media_xfranjahoraria_fin_de_semana": "Boxplot duración de anomalías",
+            "ultima_semana_vs_historico": "Ultima semana vs Historico del ultimo mes"
         }
 
         self.folders['mensuales']['svg'] = self.savepath_folder.replace(
@@ -204,13 +209,7 @@ class GraficosPlanificacion(object):
         self.aux.to_csv(filesave)
 
     def guardar_grafico(self, grafico={}, instancegraph=True):
-        """
-            grafico.guardar_grafico(grafico={'idg': 'aum3028', 'timestamp_start': datetime.date(2015, 9, 30),
-                'timestamp_end': datetime.date(2015, 10, 28), 'name': 'Cantidad total de anomalias en las ultimas 4 semanas',
-                'filename': 'anomalias_ultimo_mes_2015_09_30_2015_10_28.png'})
-        """
-       # import pdb
-       # pdb.set_trace()
+
         if grafico.get("tipo") != "mensuales":
             filesave = self.folders["corredores"]['svg'].format(
                 self.name_corredor) + "/" + grafico.get("filename")
@@ -221,10 +220,20 @@ class GraficosPlanificacion(object):
         query = self.session.query(Estadisticas)
         if_count_id = query.filter(
             Estadisticas.idg == grafico.get("idg")).count()
+
         if not if_count_id:
             nuevo_grafico = Estadisticas(
-                idg=grafico.get("idg"), name=grafico.get('name'), filename=filesave.replace(os.path.abspath(".") + "/static/", "/_static/"),
-                timestamp_start=grafico.get('timestamp_start'), timestamp_end=grafico.get('timestamp_end'), tipo_grafico=grafico.get("tipo").lower()
+                idg=grafico.get("idg"),
+                name=grafico.get('name'),
+                filename=filesave.replace(
+                    os.path.abspath(".") + "/static/", "/_static/"),
+                timestamp_start=grafico.get('timestamp_start'),
+                timestamp_end=grafico.get('timestamp_end'),
+                tipo_grafico=grafico.get("tipo").lower(),
+                nombre_corredor=grafico.get(
+                    "nombre_corredor", None),
+                periodo=grafico.get("periodo", None),
+                sentido=grafico.get("sentido", None)
             )
             self.session.add(nuevo_grafico)
             self.session.commit()
@@ -247,6 +256,9 @@ class GraficosPlanificacion(object):
     def __wrpsave(self, name_func, **args):
         metadata = self.generar_metadata(name=name_func)
         metadata.update({'instancegraph': args.get('graph')})
+
+        metadata.update(args.get("grafico", {}))
+
         self.__instanciar_save(ifsave=args.get("save"), ifcsv=args.get(
             "csv"), ifshow=args.get("show"), params=metadata)
 
@@ -281,8 +293,7 @@ class GraficosPlanificacion(object):
             if_count_id = query.filter(Estadisticas.idg == _id).count()
             if if_count_id == 0:
                 break
-        if tipo == "corredores":
-            tipo = corredor
+
         metadata_grafico = {
             "idg": _id,
             "tipo": tipo,
@@ -357,10 +368,15 @@ class GraficosPlanificacion(object):
             self.__wrpsave(self.anomalias_ultimo_mes.__name__,
                            graph=line_chart, save=save, csv=csv, show=show)
         else:
+            name = self.name_corredor + "_" + \
+                self.anomalias_ultimo_mes.__name__
             metadata = self.generar_metadata(
                 name, tipo='corredores', corredor=corredor)
-            metadata['name'] = corredor + " " + \
-                self.mensuales[self.anomalias_ultimo_mes.__name__]
+
+            metadata['nombre_corredor'] = corredor
+            metadata['name'] = self.mensuales[
+                self.anomalias_ultimo_mes.__name__]
+
             self.generador_csv(
                 metadata.get("filename"), tipo="corredores", corredor=self.name_corredor)
             self.guardar_grafico(metadata, instancegraph=False)
@@ -428,8 +444,11 @@ class GraficosPlanificacion(object):
         else:
             metadata = self.generar_metadata(
                 name, tipo='corredores', corredor=corredor)
-            metadata['name'] = corredor + " " + \
-                self.mensuales[self.duracion_media_anomalias.__name__]
+
+            metadata['nombre_corredor'] = corredor
+            metadata['name'] = self.mensuales[
+                self.duracion_media_anomalias.__name__]
+
             self.generador_csv(
                 metadata.get("filename"), tipo="corredores", corredor=self.name_corredor)
             self.guardar_grafico(metadata, instancegraph=False)
@@ -473,7 +492,7 @@ class GraficosPlanificacion(object):
                     franja_horaria[key] = franja[key]
             return franja_horaria
 
-        def make_bar(tipodia, name_dia):
+        def make_bar(tipodia, periodo, periodo_txt=None):
 
             bar_chart = pygal.Bar(y_title="Cantidad",
                                   style=style_capital_provincia)
@@ -496,28 +515,31 @@ class GraficosPlanificacion(object):
             else:
                 raise Exception("Corredor sin Sentidos")
 
+            nombre_y_periodo = self.distribucion_horaria_sumarizada.__name__ + \
+                "_" + periodo
+
             if tipo == "mensual":
-                name_m = self.distribucion_horaria_sumarizada.__name__ + \
-                    "_" + name_dia
                 self.__wrpsave(
-                    name_m, graph=bar_chart, save=save, csv=csv, show=show)
+                    nombre_y_periodo, graph=bar_chart, save=save, csv=csv, show=show)
             else:
-                name = self.name_corredor + "_" + \
-                    self.distribucion_horaria_sumarizada.__name__ + \
-                    "_" + name_dia
+                graph_name_full_name = self.name_corredor + "_" + nombre_y_periodo
+
                 metadata = self.generar_metadata(
-                    name, tipo='corredores', corredor=corredor)
-                metadata['name'] = corredor + " " + self.mensuales[
-                    self.distribucion_horaria_sumarizada.__name__ + "_" + name_dia]
+                    graph_name_full_name, tipo='corredores', corredor=corredor)
+
+                metadata['nombre_corredor'] = corredor
+                metadata['name'] = self.mensuales[nombre_y_periodo]
+                metadata['periodo'] = periodo_txt
+
                 self.generador_csv(
                     metadata.get("filename"), tipo="corredores", corredor=self.name_corredor)
                 self.guardar_grafico(metadata, instancegraph=False)
                 bar_chart.render_to_file(self.folders['corredores']['svg'].format(
                     self.name_corredor) + "/" + metadata.get("filename"))
 
-        make_bar(diaslaborables, "laborables")
-        make_bar(sabado, "sabado")
-        make_bar(domingo, "domingo")
+        make_bar(diaslaborables, "laborables", "Días Laborables")
+        make_bar(sabado, "sabado", "Sábado")
+        make_bar(domingo, "domingo", "Domingo")
 
     def duracion_anomalias_media_xfranjahoraria(self, save=True, csv=True, tipo='mensual', corredor=None, show=False, franjas=[]):
         """
@@ -563,7 +585,7 @@ class GraficosPlanificacion(object):
             self.aux['Tipos de Dias'] == 'Dias Laborables']
         findesemana = self.aux[self.aux['Tipos de Dias'] == 'Fin de Semana']
 
-        def make_box(franja, name_dia):
+        def make_box(franja, periodo, periodo_txt):
             box_plot = pygal.Box(
                 no_data_text='Sin Datos', y_title='Duracion en Minutos', style=style_franjas)
 
@@ -577,28 +599,33 @@ class GraficosPlanificacion(object):
                 '17hs - 20hs', list(franja[franja['franja'] == 3]['Duracion en Minutos']))
             box_plot.add(
                 '20hs - 24hs', list(franja[franja['franja'] == 4]['Duracion en Minutos']))
-            name_dia = name_dia.replace(" ", "_")
+
+            name_dia = periodo.replace(" ", "_")
+
+            nombre_y_periodo = self.duracion_anomalias_media_xfranjahoraria.__name__ + "_" + name_dia
+
             if tipo == "mensual":
-                name_m = self.duracion_anomalias_media_xfranjahoraria.__name__ + \
-                    "_" + name_dia
                 self.__wrpsave(
-                    name_m, graph=box_plot, save=save, csv=csv, show=show)
+                    nombre_y_periodo, graph=box_plot, save=save, csv=csv, show=show)
             else:
-                name = self.name_corredor + "_" + \
-                    self.duracion_anomalias_media_xfranjahoraria.__name__ + \
-                    "_" + name_dia
+                name = self.name_corredor + "_" + nombre_y_periodo
                 metadata = self.generar_metadata(
                     name, tipo='corredores', corredor=corredor)
-                metadata['name'] = corredor + " " + self.mensuales[
-                    self.duracion_anomalias_media_xfranjahoraria.__name__ + "_" + name_dia]
+
+                metadata['nombre_corredor'] = corredor
+                metadata['name'] = self.mensuales[nombre_y_periodo]
+                metadata['periodo'] = periodo_txt
+
                 self.generador_csv(
                     metadata.get("filename"), tipo="corredores", corredor=self.name_corredor)
+
                 self.guardar_grafico(metadata, instancegraph=False)
+
                 box_plot.render_to_file(self.folders['corredores']['svg'].format(
                     self.name_corredor) + "/" + metadata.get("filename"))
 
-        make_box(diaslaborables, 'laborables')
-        make_box(findesemana, 'fin de semana')
+        make_box(diaslaborables, 'laborables', "Días Laborables")
+        make_box(findesemana, 'fin de semana', "Fines de Semana")
 
     def duracion_en_percentiles(self, save=True, csv=True, tipo='mensual', corredor=None, show=False):
         """
@@ -636,12 +663,14 @@ class GraficosPlanificacion(object):
             self.__wrpsave(self.duracion_en_percentiles.__name__,
                            graph=line_chart, save=save, csv=csv, show=show)
         else:
-            name = self.name_corredor + "_" + \
-                self.duracion_en_percentiles.__name__
+            name = self.name_corredor + "_" + self.duracion_en_percentiles.__name__
             metadata = self.generar_metadata(
                 name, tipo='corredores', corredor=corredor)
-            metadata['name'] = corredor + " " + \
-                self.mensuales[self.duracion_en_percentiles.__name__]
+
+            metadata['nombre_corredor'] = corredor
+            metadata['name'] = self.mensuales[
+                self.duracion_en_percentiles.__name__]
+
             self.generador_csv(
                 metadata.get("filename"), tipo="corredores", corredor=self.name_corredor)
             self.guardar_grafico(metadata, instancegraph=False)
@@ -666,10 +695,14 @@ class GraficosPlanificacion(object):
             for key in sentido.values:
                 bar_chart.add(key[0], key[1])
 
-            name = self.cant_anomalias_xcorredores.__name__ + \
+            nombre_archivo = self.cant_anomalias_xcorredores.__name__ + \
                 "_" + name.replace(" ", "_")
+
+            grafico = {}
+            grafico['sentido'] = name
+
             self.__wrpsave(
-                name, graph=bar_chart, save=save, csv=csv, show=show)
+                nombre_archivo, graph=bar_chart, save=save, csv=csv, show=show, grafico=grafico)
 
         add_chart(centro, 'capital', style_capital)
         add_chart(provincia, 'provincia', style_provincia)
