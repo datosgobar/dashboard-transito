@@ -14,6 +14,15 @@ $(document).ready(function() {
     return this.twoReplace("_", " ").titleCase()
   }
 
+  function get_or_default(dict, prop, default_value) {
+    if (dict[prop] !== undefined) {
+      return dict[prop];
+    }
+    else {
+      return default_value;
+    }
+  }
+
   var get_endpoint = function(url) {
     var archivo = null;
     $.ajax({
@@ -86,34 +95,55 @@ $(document).ready(function() {
       }
     }
 
-    remove_elem(['h2', 'embed', '.graficos'])
+    remove_elem(['#entry', '.graficos'])
+
+    $('.box-grafico-seleccionado').append('<div id="entry"></div>');
+
+    grupos = {}
+    $.each(graphs['graficos'], function(i, graf) {
+      grupo = get_or_default(grupos, graf.name, []);
+      grupo.push(graf);
+      grupos[graf.name] = grupo;
+    });
 
 
-    $.each(graphs['graficos'], function(i, grafico) {
-      $('#leftPanel').append('<div class="graficos shadow listado" order="'+ i +'"><span class="">'+ grafico.name +'</span></div>');
+    $.each(Object.keys(grupos), function(i, nombre) {
+      $('#leftPanel').append('<div class="graficos shadow listado" order="'+ i +'"><span class="">'+ nombre +'</span></div>');
       
-      var style = "display:none"
 
-      $('#entry').append(
+      elements_html = document.createElement('div');
+      $(elements_html).css("display:none");
+      $(elements_html).attr('order', i);
+      $(elements_html).attr('class', 'graficos_por_nombre');
+
+
+      $.each(grupos[nombre], function(j, grafico) {
+
+        var span = document.createElement('span')
         $('<h2>', {
           text: grafico.name,
-          style: style,
-          order: i
-        }),
+  
+        }).appendTo($(span));
         $('<embed>', {
           value: grafico.name,
           src: grafico.filename,
-          style: style,
-          order: i
-        })
-      );
+        }).appendTo($(span));
+
+        $(span).appendTo($(elements_html))
+
+      });
+
+      $('#entry').append(elements_html);
+
     });
+
+
+      
 
     $(".graficos").click(function() {
       id_grafico_seleccionado = $(this).attr('order');
-      $('#entry h2').hide();
-      $('#entry embed').hide();
-      $('#entry').find('[order = '+ id_grafico_seleccionado +']').show();
+      $('.graficos_por_nombre').hide();
+      $(".graficos_por_nombre[order="+ id_grafico_seleccionado + "]").show()
       $('#leftPanel').find(".graficos").removeClass("selected");
       $('#leftPanel').find('[order = '+ id_grafico_seleccionado +']').addClass("selected");
     })

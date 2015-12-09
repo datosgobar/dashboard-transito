@@ -58,6 +58,7 @@ body.planificacion {
             top: 130px;
             left: 280px;
             width: 76%;
+            overflow: scroll;
         }
     }
 
@@ -73,18 +74,22 @@ body.planificacion {
         padding-top: 20px;
     }
 
-    .box-grafico-seleccionado {
-        padding: 10px;
+    .graficos_por_nombre {
         margin: 20px;
-        border-radius: 5px;
-        background-color: #FFF;
         width: 100%;
+
+        span {
+            border-radius: 5px;
+            background-color: #FFF;
+            padding: 10px;
+            display: block;
+        }
     }
 
     #entry {
         width: 50%;
         margin: 0 auto;
-        width: 600px;
+
     }
 
     embed {

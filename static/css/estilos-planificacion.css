@@ -40,7 +40,8 @@ body.planificacion {
 .planificacion #paneles #rightPanel {
   top: 130px;
   left: 280px;
-  width: 76%; }
+  width: 76%;
+  overflow: scroll; }
 .planificacion h2 {
   font-family: "AvenirNext-Regular", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 21px;
@@ -51,15 +52,16 @@ body.planificacion {
   display: block;
   margin: 0 auto;
   padding-top: 20px; }
-.planificacion .box-grafico-seleccionado {
-  padding: 10px;
+.planificacion .graficos_por_nombre {
   margin: 20px;
-  border-radius: 5px;
-  background-color: #FFF;
   width: 100%; }
+  .planificacion .graficos_por_nombre span {
+    border-radius: 5px;
+    background-color: #FFF;
+    padding: 10px;
+    display: block; }
 .planificacion #entry {
   width: 50%;
-  margin: 0 auto;
-  width: 600px; }
+  margin: 0 auto; }
 .planificacion embed {
   padding-top: 20px; }
