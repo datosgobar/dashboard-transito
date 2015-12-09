@@ -72,6 +72,7 @@ body.planificacion {
         display: block;
         margin: 0 auto;
         padding-top: 20px;
+        text-align: left;
     }
 
     .graficos_por_nombre {
@@ -82,7 +83,18 @@ body.planificacion {
             background-color: #FFF;
             padding: 10px;
             display: inline-block;
-            width: 40%;
+            width: 600px;
+            margin: 5px;
+        }
+        &.dos_columnas {
+            span {
+                width: 500px;
+            }
+        }
+        &.tres_columnas {
+            span {
+                width: 500px;
+            }
         }
     }
 

@@ -104,16 +104,26 @@ $(document).ready(function() {
       grupos[graf.name] = grupo;
     });
 
+    var keys = Object.keys(grupos).sort();
 
-    $.each(Object.keys(grupos), function(i, nombre) {
+    $.each(keys, function(i, nombre) {
       $('#leftPanel').append('<div class="graficos shadow listado" order="'+ i +'"><span class="">'+ nombre +'</span></div>');
       
 
       elements_html = document.createElement('div');
       $(elements_html).css("display:none");
       $(elements_html).attr('order', i);
-      $(elements_html).attr('class', 'graficos_por_nombre');
+      $(elements_html).addClass('graficos_por_nombre');
       $(elements_html).attr('align',"center");
+
+
+      if (grupos[nombre].length == 2) {
+        $(elements_html).addClass('dos_columnas');
+      }
+
+      if (grupos[nombre].length == 3) {
+        $(elements_html).addClass('tres_columnas');
+      }
 
 
       $.each(grupos[nombre], function(j, grafico) {

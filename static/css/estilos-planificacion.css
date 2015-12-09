@@ -51,7 +51,8 @@ body.planificacion {
   margin-bottom: 4px;
   display: block;
   margin: 0 auto;
-  padding-top: 20px; }
+  padding-top: 20px;
+  text-align: left; }
 .planificacion .graficos_por_nombre {
   margin: 20px;
   width: 100%; }
@@ -60,7 +61,12 @@ body.planificacion {
     background-color: #FFF;
     padding: 10px;
     display: inline-block;
-    width: 40%; }
+    width: 600px;
+    margin: 5px; }
+  .planificacion .graficos_por_nombre.dos_columnas span {
+    width: 500px; }
+  .planificacion .graficos_por_nombre.tres_columnas span {
+    width: 500px; }
 .planificacion #entry {
   margin: 0 auto; }
 .planificacion embed {
