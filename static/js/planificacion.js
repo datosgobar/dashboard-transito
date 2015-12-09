@@ -44,7 +44,7 @@ $(document).ready(function() {
   }
 
   var graficos = get_endpoint('/graficos')
-  var corredores = graficos['graficos']['corredores']
+  var corredores = graficos['graficos']['corredores'].sort()
   var periodos = graficos['graficos']['periodos']
   
   var id_grafico_seleccionado = 0;
@@ -54,20 +54,33 @@ $(document).ready(function() {
     'graficos': []
   }
 
-  var each_array = function(array, id) {
-    $.each(array, function(i, elem) {
-      if (id == 'periodos') elem = elem.replace("_", " ")
-      if (id == 'list_corredores') elem = elem.replaceTitle()
-      $('#' + id).append($('<option>', {
-        value: elem,
-        text: elem,
-        id: elem
-      }));
-    });
-  }
 
-  each_array(periodos, 'periodos')
-  each_array(corredores, 'list_corredores')
+  // Cargo la Fecha
+  var meses = new Array("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
+  $.each(periodos, function(i, elem) {
+    string_inicio = elem.split("_")[0];
+    var fecha_inicio = new Date(string_inicio);
+
+    elem = elem.replace("_", " ")
+
+    $('#periodos').append($('<option>', {
+      value: elem,
+      text: meses[fecha_inicio.getMonth()] + " de " + fecha_inicio.getFullYear(),
+      id: elem
+    }));
+  });
+
+  // Cargo los corredores
+  $.each(corredores, function(i, elem) {
+    elem = elem.replaceTitle();
+
+    $('#list_corredores').append($('<option>', {
+      value: elem,
+      text: elem,
+      id: elem
+    }));
+  });
+
 
   var insert_graficos = function(id) {
     graphs = {
@@ -129,10 +142,6 @@ $(document).ready(function() {
       $.each(grupos[nombre], function(j, grafico) {
         
         var label = grafico.name 
-
-        if (grafico.corredor) {
-          label = grafico.corredor + ": " + label;
-        }
 
         if (grafico.sentido) {
           label = label + ' - ' + grafico.sentido;
