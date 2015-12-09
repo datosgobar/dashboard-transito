@@ -41,7 +41,8 @@ body.planificacion {
   top: 130px;
   left: 280px;
   width: 76%;
-  overflow: scroll; }
+  overflow: scroll;
+  max-height: 80%; }
 .planificacion h2 {
   font-family: "AvenirNext-Regular", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 21px;

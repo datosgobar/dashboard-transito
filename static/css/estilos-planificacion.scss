@@ -58,7 +58,11 @@ body.planificacion {
             top: 130px;
             left: 280px;
             width: 76%;
+
             overflow: scroll;
+
+            max-height: 80%;
+
         }
     }
 
@@ -78,6 +82,7 @@ body.planificacion {
     .graficos_por_nombre {
         margin: 20px;
         width: 100%;
+
         span {
             border-radius: 5px;
             background-color: #FFF;
@@ -106,6 +111,5 @@ body.planificacion {
     embed {
         padding-top: 20px;
     }
-
 
 }
