@@ -229,7 +229,13 @@ def filtro(periodo, tipo="mensuales", corredor=None):
 
     session.close()
 
-    return [{"filename": graph.filename, "name": graph.name} for graph in data if graph]
+    return [{
+        "filename": graph.filename,
+        "name": graph.name,
+        "sentido": graph.sentido,
+        "corredor": graph.nombre_corredor,
+        "periodo": graph.periodo
+    } for graph in data if graph]
 
 
 @bottle.route("/corredores/<periodo>/<corredor>", method="GET")

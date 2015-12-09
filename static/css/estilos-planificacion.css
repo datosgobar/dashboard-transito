@@ -59,9 +59,9 @@ body.planificacion {
     border-radius: 5px;
     background-color: #FFF;
     padding: 10px;
-    display: block; }
+    display: inline-block;
+    width: 40%; }
 .planificacion #entry {
-  width: 50%;
   margin: 0 auto; }
 .planificacion embed {
   padding-top: 20px; }

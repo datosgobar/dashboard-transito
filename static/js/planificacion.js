@@ -70,8 +70,6 @@ $(document).ready(function() {
   each_array(corredores, 'list_corredores')
 
   var insert_graficos = function(id) {
-    console.log("id", id)
-
     graphs = {
       'graficos': []
     }
@@ -115,13 +113,28 @@ $(document).ready(function() {
       $(elements_html).css("display:none");
       $(elements_html).attr('order', i);
       $(elements_html).attr('class', 'graficos_por_nombre');
+      $(elements_html).attr('align',"center");
 
 
       $.each(grupos[nombre], function(j, grafico) {
+        
+        var label = grafico.name 
+
+        if (grafico.corredor) {
+          label = grafico.corredor + ": " + label;
+        }
+
+        if (grafico.sentido) {
+          label = label + ' - ' + grafico.sentido;
+        }
+
+        if (grafico.periodo) {
+          label = label + ' - ' + grafico.periodo;
+        }
 
         var span = document.createElement('span')
         $('<h2>', {
-          text: grafico.name,
+          text: label,
   
         }).appendTo($(span));
         $('<embed>', {

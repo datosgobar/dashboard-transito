@@ -77,19 +77,18 @@ body.planificacion {
     .graficos_por_nombre {
         margin: 20px;
         width: 100%;
-
         span {
             border-radius: 5px;
             background-color: #FFF;
             padding: 10px;
-            display: block;
+            display: inline-block;
+            width: 40%;
         }
     }
 
-    #entry {
-        width: 50%;
-        margin: 0 auto;
 
+    #entry {
+        margin: 0 auto;
     }
 
     embed {

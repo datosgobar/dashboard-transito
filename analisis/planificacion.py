@@ -519,8 +519,11 @@ class GraficosPlanificacion(object):
                 "_" + periodo
 
             if tipo == "mensual":
+                grafico = {}
+                grafico['periodo'] = periodo_txt
+
                 self.__wrpsave(
-                    nombre_y_periodo, graph=bar_chart, save=save, csv=csv, show=show)
+                    nombre_y_periodo, graph=bar_chart, save=save, csv=csv, show=show, grafico=grafico)
             else:
                 graph_name_full_name = self.name_corredor + "_" + nombre_y_periodo
 
@@ -605,8 +608,12 @@ class GraficosPlanificacion(object):
             nombre_y_periodo = self.duracion_anomalias_media_xfranjahoraria.__name__ + "_" + name_dia
 
             if tipo == "mensual":
+
+                grafico = {}
+                grafico['periodo'] = periodo_txt
+
                 self.__wrpsave(
-                    nombre_y_periodo, graph=box_plot, save=save, csv=csv, show=show)
+                    nombre_y_periodo, graph=box_plot, save=save, csv=csv, show=show, grafico=grafico)
             else:
                 name = self.name_corredor + "_" + nombre_y_periodo
                 metadata = self.generar_metadata(
