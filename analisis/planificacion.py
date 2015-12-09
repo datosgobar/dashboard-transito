@@ -49,17 +49,15 @@ color_capital = '#7DCF30'
 color_provincia = '#00AEFF'
 
 style_provincia = DarkenStyle(
-    color_provincia)
+    color_provincia, font_family='Open Sans, sans-serif')
 style_provincia.plot_background = '#FFFFFF'
 style_provincia.label_font_size = 16
 style_provincia.background = '#FFFFFF'
-style_provincia.font_family = 'Open Sans, sans-serif'
 
-style_capital = DarkenStyle(color_capital)
+style_capital = DarkenStyle(color_capital, font_family='Open Sans, sans-serif')
 style_capital.plot_background = '#FFFFFF'
 style_capital.label_font_size = 16
 style_capital.background = '#FFFFFF'
-style_capital.font_family = 'Open Sans, sans-serif'
 
 style_capital_provincia = Style(
     plot_background='#FFFFFF',
@@ -68,11 +66,10 @@ style_capital_provincia = Style(
     colors=(color_capital, color_provincia),
     font_family='Open Sans, sans-serif')
 
-style_linea = LightenStyle('#EFC026')
+style_linea = LightenStyle('#EFC026', font_family='Open Sans, sans-serif')
 style_linea.plot_background = '#FFFFFF'
 style_linea.label_font_size = 16
 style_linea.background = '#FFFFFF'
-style_linea.font_family = 'Open Sans, sans-serif'
 
 style_franjas = Style(
     plot_background='#FFFFFF',
@@ -389,7 +386,7 @@ class GraficosPlanificacion(object):
         self.ax = self.aux[['semana'] + sentidos]
 
         line_chart = pygal.Bar(no_data_text='Sin Datos', include_x_axis=True, style=style_capital_provincia,
-                               x_title='Semanas', y_title='Cantidad')
+                               x_title='Semanas', y_title='Cantidad', legend_at_bottom=True)
         line_chart.x_labels = list(self.aux['semana'])
 
         def set_value(x):
@@ -468,7 +465,7 @@ class GraficosPlanificacion(object):
                 ['sentido', 'duration'])['duration'].all().to_dict().keys())
 
         bar_chart = pygal.Bar(no_data_text='Sin Datos', y_title='Duracion en Minutos',
-                              style=style_capital_provincia, x_label_rotation=x_label_rotation)
+                              style=style_capital_provincia, x_label_rotation=x_label_rotation, legend_at_bottom=True)
         bar_chart.x_labels = list(set(self.aux['corr_name']))
 
         if sentidos == ["centro", "provincia"]:
@@ -538,7 +535,7 @@ class GraficosPlanificacion(object):
         def make_bar(tipodia, periodo, periodo_txt=None):
 
             bar_chart = pygal.Bar(y_title="Cantidad",
-                                  style=style_capital_provincia)
+                                  style=style_capital_provincia, legend_at_bottom=True, no_data_text='Sin Datos')
             bar_chart.x_labels = map(lambda x: str(x), range(1, 25))
 
             franjacentro = tipodia[tipodia['sentido'] == 'centro'][
@@ -632,7 +629,7 @@ class GraficosPlanificacion(object):
 
         def make_box(franja, periodo, periodo_txt):
             box_plot = pygal.Box(
-                no_data_text='Sin Datos', y_title='Duracion en Minutos', style=style_franjas)
+                no_data_text='Sin Datos', y_title='Duracion en Minutos', style=style_franjas, legend_at_bottom=True)
 
             box_plot.add(
                 '00hs - 07hs', list(franja[franja['franja'] == 0]['Duracion en Minutos']))
@@ -702,7 +699,8 @@ class GraficosPlanificacion(object):
 
         x = [.1 * i for i in range(1, 11)]
         y = list(self.aux)
-        line_chart = pygal.Line(style=style_linea)
+        line_chart = pygal.Line(
+            style=style_linea, legend_at_bottom=True, no_data_text='Sin Datos')
         line_chart.x_labels = x
         line_chart.x_title = 'Percentil'
         line_chart.y_title = 'Duracion en Minutos'
@@ -740,7 +738,7 @@ class GraficosPlanificacion(object):
 
         def add_chart(sentido, name, style):
             bar_chart = pygal.HorizontalBar(
-                no_data_text='Sin Datos', x_title='Sentido {0}'.format(name.title()), style=style)
+                no_data_text='Sin Datos', x_title='Sentido {0}'.format(name.title()), style=style, legend_at_bottom=True)
             for key in sentido.values:
                 bar_chart.add(key[0], key[1])
 
@@ -787,7 +785,7 @@ class GraficosPlanificacion(object):
             lc[co] = dict(self.aux[self.aux['corr_name'] == co].groupby(
                 ['sentido', 'indice'])['indice'].all().to_dict().keys())
         bar_chart = pygal.Bar(no_data_text='Sin Datos', y_title='Indice',
-                              style=style_capital_provincia, x_label_rotation=90)
+                              style=style_capital_provincia, x_label_rotation=90, legend_at_bottom=True)
         bar_chart.x_labels = list(set(self.aux['corr_name']))
         bar_chart.add('Capital', set_items(lcent, 'centro'))
         bar_chart.add('Provincia', set_items(lprov, 'provincia'))
@@ -847,7 +845,8 @@ class GraficosPlanificacion(object):
             x2 = list(hpfilter(prev_weeks_data["data"].values, 300)[1])
             x1 = list(hpfilter(target_week_data["data"].values, 300)[1])
 
-            line_chart = pygal.Line(iterpolation="quadratic")
+            line_chart = pygal.Line(
+                iterpolation="quadratic", legend_at_bottom=True, no_data_text='Sin Datos')
             line_chart.add("Ultimo Mes", x1, dots_size=0.1)
             line_chart.add("Ultima semana", x2, dots_size=0.1)
 
@@ -918,7 +917,7 @@ class GraficosPlanificacion(object):
 
         def make_stacked_chart(aux, sentido):
             stacked_chart = pygal.StackedBar(
-                no_data_text='Sin Datos', style=style_franjas)
+                no_data_text='Sin Datos', style=style_franjas, legend_at_bottom=True)
             stacked_chart.x_labels = dias
 
             for key in aux.index.values:
@@ -1024,14 +1023,14 @@ def main():
                                                         grafico.mensuales[grafico.duracion_en_percentiles.__name__]))
         grafico.duracion_en_percentiles(
             tipo="corredores", corredor=nombre_corredor)
-        logger.info(
-            "Corredor {0} - Grafico {1}".format(nombre_corredor, "Ultima semana vs Historico"))
-        grafico.ultima_semana_vs_historico(
-            tipo="corredores", corredor=nombre_corredor)
-        logger.info(
-            "Corredor {0} - Grafico {1}".format(nombre_corredor, "Calendar Franja Horaria"))
-        grafico.bar_calendar_franja(
-            tipo="corredores", corredor=nombre_corredor)
+        # logger.info(
+        #     "Corredor {0} - Grafico {1}".format(nombre_corredor, "Ultima semana vs Historico"))
+        # grafico.ultima_semana_vs_historico(
+        #     tipo="corredores", corredor=nombre_corredor)
+        # logger.info(
+        #     "Corredor {0} - Grafico {1}".format(nombre_corredor, "Calendar Franja Horaria"))
+        # grafico.bar_calendar_franja(
+        #     tipo="corredores", corredor=nombre_corredor)
     logger.info(
         "-------------------------------------------------------------------")
     logger.info("Graficos Generados")
