@@ -211,14 +211,21 @@ def get_tablas():
 
 
 def filtro(periodo, tipo="mensuales", corredor=None):
+
     start, end = periodo.split("_")
+    def filter_corr(corr):
+        if corr == "9_de_julio":
+            return "9 de julio"
+        elif corr == "av._de_mayo":
+            return "Av. de Mayo"
+        return corredor.replace("_", " ").title()
 
     if (tipo == "corredores"):
         query = session.query(Estadisticas) \
             .filter(Estadisticas.tipo_grafico == tipo) \
             .filter(Estadisticas.timestamp_start >= start) \
             .filter(Estadisticas.timestamp_start <= end) \
-            .filter(Estadisticas.nombre_corredor == corredor.replace("_", " "))
+            .filter(Estadisticas.nombre_corredor == filter_corr(corredor))
     else:
         query = session.query(Estadisticas) \
             .filter(Estadisticas.tipo_grafico == tipo) \

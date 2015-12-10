@@ -130,7 +130,8 @@ class GraficosPlanificacion(object):
             set([c.corredor.lower().replace(" ", "_") for c in tabla_corredores if c]))
 
         self.timestamp_end = datetime.datetime.now()
-        self.timestamp_start = self.timestamp_end - datetime.timedelta(weeks=4)
+        self.timestamp_start = self.timestamp_end - \
+            datetime.timedelta(weeks=4)
 
         self.__mkdir(self.savepath_folder, [
                      'mensuales', 'corredores', "mensuales/csv", "mensuales/svg"])
@@ -215,6 +216,13 @@ class GraficosPlanificacion(object):
             columns={'segment': 'iddevice', 'timestamp': 'date'})
         self.lastrecordsdf = anomalyDetection.prepareDataFrame(
             self.lastrecordsdf, timeadjust=pd.Timedelta(hours=-3), doimputation=True)
+
+        def filter_corr(corr):
+            if corr == "9 de julio" or corr == "Av. de Mayo":
+                return corr
+            return corr.title()
+        self.corredores = self.reportdata[
+            'corr_name'].apply(filter_corr).unique()
 
     def _mkdir(self, folder):
         # print folder
@@ -359,7 +367,7 @@ class GraficosPlanificacion(object):
             sentidos = list(set(self.aux['sentido']))
         elif tipo == "corredores":
             self.aux = self.reportdata.copy()
-            if corredor in list(set(self.reportdata['corr_name'])):
+            if corredor in self.corredores:
                 self.aux = self.aux[self.aux['corr_name'] == corredor]
                 sentidos = list(set(self.aux['sentido']))
                 self.name_corredor = corredor.replace(" ", "_").lower()
@@ -440,7 +448,7 @@ class GraficosPlanificacion(object):
         x_label_rotation = 90
         sentidos = list(set(self.aux['sentido']))
         if tipo == 'corredores':
-            if corredor in list(set(self.reportdata['corr_name'])):
+            if corredor in self.corredores:
                 self.aux = self.aux[self.aux['corr_name'] == corredor]
                 sentidos = list(set(self.aux['sentido']))
                 self.name_corredor = corredor.replace(" ", "_").lower()
@@ -513,7 +521,7 @@ class GraficosPlanificacion(object):
 
         sentidos = list(set(self.aux['sentido']))
         if tipo == 'corredores':
-            if corredor in list(set(self.reportdata['corr_name'])):
+            if corredor in self.corredores:
                 self.aux = self.aux[self.aux['corr_name'] == corredor]
                 sentidos = list(set(self.aux['sentido']))
                 self.name_corredor = corredor.replace(" ", "_").lower()
@@ -567,7 +575,8 @@ class GraficosPlanificacion(object):
                 self.__wrpsave(
                     nombre_y_periodo, graph=bar_chart, save=save, csv=csv, show=show, grafico=grafico)
             else:
-                graph_name_full_name = self.name_corredor + "_" + nombre_y_periodo
+                graph_name_full_name = self.name_corredor + \
+                    "_" + nombre_y_periodo
 
                 metadata = self.generar_metadata(
                     graph_name_full_name, tipo='corredores', corredor=corredor)
@@ -594,7 +603,7 @@ class GraficosPlanificacion(object):
         if tipo == "mensual":
             self.aux = self.reportdata.copy()
         else:
-            if corredor in list(set(self.reportdata['corr_name'])):
+            if corredor in self.corredores:
                 self.aux = self.reportdata.copy()
                 self.aux = self.aux[self.aux['corr_name'] == corredor]
                 sentidos = list(set(self.aux['sentido']))
@@ -646,7 +655,8 @@ class GraficosPlanificacion(object):
 
             name_dia = periodo.replace(" ", "_")
 
-            nombre_y_periodo = self.duracion_anomalias_media_xfranjahoraria.__name__ + "_" + name_dia
+            nombre_y_periodo = self.duracion_anomalias_media_xfranjahoraria.__name__ + \
+                "_" + name_dia
 
             if tipo == "mensual":
 
@@ -683,7 +693,7 @@ class GraficosPlanificacion(object):
             self.aux = self.reportdata.duration.quantile(
                 [.1 * i for i in range(1, 11)])
         else:
-            if corredor in list(set(self.reportdata['corr_name'])):
+            if corredor in self.corredores:
                 self.aux = self.reportdata[
                     self.reportdata['corr_name'] == corredor]
                 self.aux = self.aux.duration.quantile(
@@ -712,7 +722,8 @@ class GraficosPlanificacion(object):
             self.__wrpsave(self.duracion_en_percentiles.__name__,
                            graph=line_chart, save=save, csv=csv, show=show)
         else:
-            name = self.name_corredor + "_" + self.duracion_en_percentiles.__name__
+            name = self.name_corredor + "_" + \
+                self.duracion_en_percentiles.__name__
             metadata = self.generar_metadata(
                 name, tipo='corredores', corredor=corredor)
 
@@ -815,7 +826,7 @@ class GraficosPlanificacion(object):
 
     def ultima_semana_vs_historico(self, save=True, csv=False, tipo='corredores', corredor=None, show=False):
 
-        if corredor in list(set(self.reportdata['corr_name'])):
+        if corredor in self.corredores:
             self.name_corredor = corredor.replace(" ", "_").lower()
         else:
             raise Exception("Corredor Inexistente")
@@ -882,7 +893,7 @@ class GraficosPlanificacion(object):
 
     def bar_calendar_franja(self, save=True, csv=True, tipo='corredores', corredor=None, show=False):
 
-        if corredor in list(set(self.reportdata['corr_name'])):
+        if corredor in self.corredores:
             self.name_corredor = corredor.replace(" ", "_").lower()
         else:
             raise Exception("Corredor Inexistente")
@@ -966,14 +977,14 @@ class GraficosPlanificacion(object):
 
     def __generacion_dataframe(self):
 
+        # pdb.set_trace()
+
         self.corrdata = pd.DataFrame(self.corrdata)
         self.valids["timestamp_start"] = pd.to_datetime(
             self.valids["timestamp_start"])
         self.valids["timestamp_end"] = pd.to_datetime(
             self.valids["timestamp_end"])
         self.valids["iddevice"] = self.valids[["id_segment"]]
-        self.valids = self.valids[
-            (self.valids["timestamp_end"] - self.valids["timestamp_start"]).dt.seconds >= 20 * 60]
         self.valids = self.valids[
             ["iddevice", "timestamp_start", "timestamp_end"]].copy()
 
@@ -991,7 +1002,6 @@ class GraficosPlanificacion(object):
             self.reportdata["corr"].str.endswith("_acentro"), "sentido"] = "centro"
         self.reportdata.loc[
             self.reportdata["corr"].str.endswith("_aprovincia"), "sentido"] = "provincia"
-        self.corredores = list(set(self.reportdata['corr_name']))
 
 
 def main():
