@@ -246,6 +246,8 @@ class GraficosPlanificacion(object):
         if tipo == "corredores":
             filesave = self.folders[tipo]['csv'].format(
                 corredor) + "/" + filename.replace("svg", "csv")
+        elif tipo == "mensuales":
+            filesave = filesave.replace("svg", "csv")
         self.aux.to_csv(filesave)
 
     def guardar_grafico(self, grafico={}, instancegraph=True):
