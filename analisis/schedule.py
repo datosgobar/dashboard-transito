@@ -4,7 +4,7 @@
 import datetime
 import time
 import analisis
-import os
+import sys
 
 from dashboard_logging import dashboard_logging
 logger = dashboard_logging(config="analisis/logging.json", name=__name__)
@@ -12,7 +12,7 @@ logger = dashboard_logging(config="analisis/logging.json", name=__name__)
 
 class setInterval:
 
-    def __init__(self):
+    def __init__(self, production):
 
         self.setTimeOut = 0
         self.dawn = [23, 00, 1, 2, 3, 4, 5, 6]
@@ -25,6 +25,7 @@ class setInterval:
         self.night = range(20, 23)  # 12 extraccion lun/sab, 6 extraciones dom
         self.daily = ['Monday', 'Tuesday', 'Wednesday',
                       'Thursday', 'Friday', 'Saturday', 'Sunday']
+        self.production = production
 
     def setCfg(self):
         """
@@ -101,16 +102,19 @@ class setInterval:
             hasta = datetime.datetime.now()
             desde = hasta - datetime.timedelta(minutes=interval)
 
-            analisis.executeLoop(desde, hasta, dontdownload=False)
+            analisis.executeLoop(desde, hasta, dontdownload=False, production=self.production)
             logger.info("run schedule, desde:{1} hasta:{0}, interval:{2}, setTimeout:{3}".format(
                 hasta, desde, interval, self.setTimeOut))
 
             time.sleep(self.setTimeOut)
 
 
-def main():
-    setIntervalTime = setInterval()
+def main(production):
+    setIntervalTime = setInterval(production)
     setIntervalTime.run()
 
 if __name__ == '__main__':
-    main()
+    production = False
+    if len(sys.argv) > 1:
+        production = sys.argv[1] == 'production'
+    main(production)

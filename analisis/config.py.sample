@@ -14,6 +14,11 @@ else:
         host="https://apisensores.buenosaires.gob.ar",
         token="80176b952ffa5d0c8f5f5c916994d037"
     )
+    googlemaps = dict(
+        base_url="https://maps.googleapis.com/maps/api/directions/json",
+        client_id="gme-telventtraficoytransporte",
+        client_secret="KUIqWghCQfrUN8Plym-Uwj6lhps="
+    )
     email = dict(
         debug=True,
         user="luisuranga@buenosaires.gob.ar",

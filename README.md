@@ -14,6 +14,8 @@ La aplicacion se divide en dos partes.
 
 Dispone de una interaccion directa con el servicio cloud Api Sensores https://apisensores.buenosaires.gob.ar, extrae los datos cada un intervalo determinado segun el rango horario y el dia, esto genera un analisis que determina la cantidad de anomalias.
 
+Tambien realiza consultas periodicas a la api de Google Maps, realizando requests a https://maps.googleapis.com/maps/api/directions/json para extraer informacion sobre el comportamiento del transito.
+
 Los errores que pueden generar la falla de conexion entre el servicio apisensores o la perdida conexion con la base de datos, se hacen ademas de logs  mediante el envio de email via smtp.buenosaires.gob.ar puerto (25).
 
 Los datos de configuracion estan en analisis/config.py.sample (api + email)
@@ -48,6 +50,7 @@ $ sudo pip install numpy==1.9.2
 $ sudo pip install pandas==0.16.2
 $ sudo pip install gunicorn==19.3.0
 $ sudo pip install supervisor==3.1.3
+$ sudo pip install requests==2.7.0
 ```
 
 ## Instalacion bajo Mac
@@ -123,9 +126,14 @@ La función que se llama periódicamente es executeLoop() ejecutada por schedule
 
 ### A mano en localhost:
 
-* Ejecutar Schedule
+* Ejecutar Schedule. Para los ambientes de desarrollo, homologacion y qa simplemente correr:
 ```sh
-$ python analisis/schedule.py
+$ python analisis/schedule.py 
+```
+
+Para el ambiente de proudccion correr:
+```sh
+$ python analisis/schedule.py production 
 ```
 
 * Instanciar Python Server en Local
