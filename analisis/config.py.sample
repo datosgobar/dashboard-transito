@@ -31,7 +31,7 @@ else:
         host='localhost',
         db='dashboardoperativo',
         debug=True,
-        client_encoding="utf8"
+        client_encoding=None
     )
     db_url = db['engine'] + "://" + db['user'] + ":" + \
         db['password'] + "@" + db['host'] + "/" + db['db']

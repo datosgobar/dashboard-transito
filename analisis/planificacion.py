@@ -985,7 +985,6 @@ class GraficosPlanificacion(object):
         self.valids = self.valids[
             ["iddevice", "timestamp_start", "timestamp_end"]].copy()
 
-        #self.valids = self.filterAnomaliesByDuration(self.valids)
         valids = self.valids.reset_index(drop=True)
         self.reportdata = pd.merge(
             valids, self.corrdata[["iddevice", "corr", "name"]], on=["iddevice"])
