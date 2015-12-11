@@ -187,8 +187,8 @@ class GraficosPlanificacion(object):
             "distribucion_horaria_sumarizada_domingo": "Distribución horaria de anomalías",
             "duracion_anomalias_media_xfranjahoraria_laborables": "Boxplot duración de anomalías",
             "duracion_anomalias_media_xfranjahoraria_fin_de_semana": "Boxplot duración de anomalías",
-            "ultima_semana_vs_historico": "Tiempos de viaje vs histórico",
-            "bar_calendar_franja": "Cantidad de anomalías por día"
+            "ultima_semana_vs_historico": "Tiempos de viaje vs historico",
+            "bar_calendar_franja": "Cantidad de anomalias por dia"
         }
 
         self.folders['mensuales']['svg'] = self.savepath_folder.replace(
@@ -702,13 +702,6 @@ class GraficosPlanificacion(object):
             else:
                 raise Exception("Corredor Inexistente")
 
-        def formatTime(x):
-            x = int(x)
-            s = "%s" % (x / 60)
-            if (x % 60) != 0:
-                s = "%s %s" % (s, x % 60)
-            return s
-
         x = [.1 * i for i in range(1, 11)]
         y = list(self.aux)
         line_chart = pygal.Line(
@@ -831,8 +824,7 @@ class GraficosPlanificacion(object):
         else:
             raise Exception("Corredor Inexistente")
 
-        target_corr_data = self.reportdata[
-            self.reportdata["corr_name"] == corredor].copy()
+        target_corr_data = self.reportdata[self.reportdata["corr_name"] == corredor].copy()
         target_corr_lastrecordsdf = self.target_corr_lastrecordsdf(corredor)
 
         def make_line(aux, sentido):
@@ -840,8 +832,7 @@ class GraficosPlanificacion(object):
             aux = aux[aux["sentido"] == sentido]
             target_week = aux.date.dt.week.max()
             target_week_data = aux[aux["date"].dt.week == target_week].groupby(
-                [aux["date"].dt.weekday, aux["time"]]
-            )["data"].mean().reset_index()
+                [aux["date"].dt.weekday, aux["time"]])["data"].mean().reset_index()
             prev_weeks_data = aux[(aux["date"].dt.week >= (target_week - 4)) & (aux["date"].dt.week <= target_week)].groupby(
                 [aux["date"].dt.weekday, aux["time"]])["data"].mean().reset_index()
             #
@@ -867,9 +858,12 @@ class GraficosPlanificacion(object):
                 self.ultima_semana_vs_historico.__name__ + "_" + sentido
             metadata = self.generar_metadata(
                 name, tipo='corredores', corredor=corredor)
-            metadata['name'] = corredor + " " + \
-                self.mensuales[
-                    self.ultima_semana_vs_historico.__name__] + " sentido " + sentido
+
+            metadata['name'] = self.mensuales[
+                self.ultima_semana_vs_historico.__name__]
+            metadata['nombre_corredor'] = corredor
+            metadata['sentido'] = sentido
+
             self.generador_csv(
                 metadata.get("filename"), tipo="corredores", corredor=self.name_corredor)
             self.guardar_grafico(metadata, instancegraph=False)
@@ -942,9 +936,12 @@ class GraficosPlanificacion(object):
                 self.bar_calendar_franja.__name__ + "_" + sentido
             metadata = self.generar_metadata(
                 name, tipo='corredores', corredor=corredor)
-            metadata['name'] = corredor + " " + \
-                self.mensuales[
-                    self.bar_calendar_franja.__name__] + " sentido " + sentido
+
+            metadata['name'] = self.mensuales[
+                self.bar_calendar_franja.__name__]
+            metadata['nombre_corredor'] = corredor
+            metadata['sentido'] = sentido
+
             self.generador_csv(
                 metadata.get("filename"), tipo="corredores", corredor=self.name_corredor)
             self.guardar_grafico(metadata, instancegraph=False)
@@ -988,6 +985,7 @@ class GraficosPlanificacion(object):
         self.valids = self.valids[
             ["iddevice", "timestamp_start", "timestamp_end"]].copy()
 
+        #self.valids = self.filterAnomaliesByDuration(self.valids)
         valids = self.valids.reset_index(drop=True)
         self.reportdata = pd.merge(
             valids, self.corrdata[["iddevice", "corr", "name"]], on=["iddevice"])
@@ -1035,14 +1033,14 @@ def main():
                                                         grafico.mensuales[grafico.duracion_en_percentiles.__name__]))
         grafico.duracion_en_percentiles(
             tipo="corredores", corredor=nombre_corredor)
-        # logger.info(
-        #     "Corredor {0} - Grafico {1}".format(nombre_corredor, "Ultima semana vs Historico"))
-        # grafico.ultima_semana_vs_historico(
-        #     tipo="corredores", corredor=nombre_corredor)
-        # logger.info(
-        #     "Corredor {0} - Grafico {1}".format(nombre_corredor, "Calendar Franja Horaria"))
-        # grafico.bar_calendar_franja(
-        #     tipo="corredores", corredor=nombre_corredor)
+        logger.info(
+            "Corredor {0} - Grafico {1}".format(nombre_corredor, "Ultima semana vs Historico"))
+        grafico.ultima_semana_vs_historico(
+            tipo="corredores", corredor=nombre_corredor)
+        logger.info(
+            "Corredor {0} - Grafico {1}".format(nombre_corredor, "Calendar Franja Horaria"))
+        grafico.bar_calendar_franja(
+            tipo="corredores", corredor=nombre_corredor)
     logger.info(
         "-------------------------------------------------------------------")
     logger.info("Graficos Generados")
