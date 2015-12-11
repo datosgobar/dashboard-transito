@@ -846,13 +846,19 @@ class GraficosPlanificacion(object):
             target_week_data["plotx"] = target_week_data["weekday"].astype(
                 str) + "_" + target_week_data["time"].astype(str)
 
-            x2 = list(hpfilter(prev_weeks_data["data"].values, 300)[1])
-            x1 = list(hpfilter(target_week_data["data"].values, 300)[1])
+            y2 = list(hpfilter(prev_weeks_data["data"].values, 300)[1])
+            y1 = list(hpfilter(target_week_data["data"].values, 300)[1])
 
-            line_chart = pygal.Line(
-                iterpolation="quadratic", legend_at_bottom=True, no_data_text='Sin Datos')
-            line_chart.add("Ultimo Mes", x1, dots_size=0.1)
-            line_chart.add("Ultima semana", x2, dots_size=0.1)
+            def get_x_labels(y2, y1):
+                if len(y2) > len(y1):
+                    return range(len(y2))
+                else:
+                    return range(len(y1))
+
+            line_chart = pygal.Line(iterpolation="quadratic", legend_at_bottom=True, no_data_text='Sin Datos')
+            line_chart.x_labels = map(str, get_x_labels(y2, y1))
+            line_chart.add("Ultimo Mes", y1, dots_size=0.1)
+            line_chart.add("Ultima semana", y2, dots_size=0.1)
 
             name = self.name_corredor + "_" + \
                 self.ultima_semana_vs_historico.__name__ + "_" + sentido
