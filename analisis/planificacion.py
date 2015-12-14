@@ -83,7 +83,6 @@ def hpfilter(X, lamb=1600):
     """
         https://github.com/statsmodels/statsmodels/blob/master/statsmodels/tsa/filters/hp_filter.py
     """
-#    _pandas_wrapper = _maybe_get_pandas_wrapper(X)
     X = np.asarray(X, float)
     if X.ndim > 1:
         X = X.squeeze()
@@ -96,7 +95,6 @@ def hpfilter(X, lamb=1600):
     import scipy
     if (X.dtype != np.dtype('<f8') and
             int(scipy.__version__[:3].split('.')[1]) < 11):
-        # scipy umfpack bug on Big Endian machines, will be fixed in 0.11
         use_umfpack = False
     else:
         use_umfpack = True
@@ -108,8 +106,6 @@ def hpfilter(X, lamb=1600):
     else:
         trend = spsolve(I + lamb * K.T.dot(K), X, use_umfpack=use_umfpack)
     cycle = X - trend
-    # if _pandas_wrapper is not None:
-    #     return _pandas_wrapper(cycle), _pandas_wrapper(trend)
     return cycle, trend
 
 
@@ -215,7 +211,7 @@ class GraficosPlanificacion(object):
         self.lastrecordsdf = self.lastrecordsdf.rename(
             columns={'segment': 'iddevice', 'timestamp': 'date'})
         self.lastrecordsdf = anomalyDetection.prepareDataFrame(
-            self.lastrecordsdf, timeadjust=pd.Timedelta(hours=-3), doimputation=True)
+            self.lastrecordsdf, timeadjust=pd.Timedelta(hours=0), doimputation=True)
 
         def filter_corr(corr):
             if corr == "9 de julio" or corr == "Av. de Mayo":
@@ -803,18 +799,15 @@ class GraficosPlanificacion(object):
             ["iddevice", "name"]].copy()
         target_corr_lastrecordsdf = pd.merge(
             self.lastrecordsdf, corrdata_sel, on=["iddevice"]).reset_index()
-        target_corr_lastrecordsdf["corr"] = self.corrdata.set_index("iddevice").loc[
-            target_corr_lastrecordsdf["iddevice"]
-        ].reset_index()["corr"]
+        target_corr_lastrecordsdf["corr"] = self.corrdata.set_index("iddevice").loc[target_corr_lastrecordsdf["iddevice"]
+                                                                                    ].reset_index()["corr"]
 
         target_corr_lastrecordsdf.loc[target_corr_lastrecordsdf[
             "corr"].str.endswith("_acentro"), "sentido"] = "centro"
         target_corr_lastrecordsdf.loc[target_corr_lastrecordsdf[
             "corr"].str.endswith("_aprovincia"), "sentido"] = "provincia"
-        target_corr_lastrecordsdf = target_corr_lastrecordsdf.groupby(
-            ["date", "weekday", "time", "daytype", "franja",
-                "name", "corr", "sentido", "iddevice"]
-        ).sum()["data"].reset_index()
+        target_corr_lastrecordsdf = target_corr_lastrecordsdf.groupby(["date", "weekday", "time", "daytype", "franja", "name", "corr", "sentido", "iddevice"]
+                                                                      ).sum()["data"].reset_index()
         return target_corr_lastrecordsdf
 
     def ultima_semana_vs_historico(self, save=True, csv=False, tipo='corredores', corredor=None, show=False):
@@ -824,7 +817,7 @@ class GraficosPlanificacion(object):
         else:
             raise Exception("Corredor Inexistente")
 
-        target_corr_data = self.reportdata[self.reportdata["corr_name"] == corredor].copy()
+        # target_corr_data = self.reportdata[self.reportdata["corr_name"] == corredor].copy()
         target_corr_lastrecordsdf = self.target_corr_lastrecordsdf(corredor)
 
         def make_line(aux, sentido):
@@ -855,7 +848,8 @@ class GraficosPlanificacion(object):
                 else:
                     return range(len(y1))
 
-            line_chart = pygal.Line(iterpolation="quadratic", legend_at_bottom=True, no_data_text='Sin Datos')
+            line_chart = pygal.Line(
+                iterpolation="quadratic", legend_at_bottom=True, no_data_text='Sin Datos')
             line_chart.x_labels = map(str, get_x_labels(y2, y1))
             line_chart.add("Ultimo Mes", y1, dots_size=0.1)
             line_chart.add("Ultima semana", y2, dots_size=0.1)
@@ -979,8 +973,6 @@ class GraficosPlanificacion(object):
         return result
 
     def __generacion_dataframe(self):
-
-        # pdb.set_trace()
 
         self.corrdata = pd.DataFrame(self.corrdata)
         self.valids["timestamp_start"] = pd.to_datetime(
