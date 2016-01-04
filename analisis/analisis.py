@@ -15,7 +15,7 @@ import anomalyDetection
 import time
 import logging
 from smtp_send import send_email_error
-from googlemaps import getDataFromGoogle
+import googlemaps
 from conn_sql import sqlalchemyDEBUG, instanceSQL
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy import create_engine, exc, event
@@ -206,11 +206,11 @@ def executeLoop(desde, hasta, dontdownload=False, production=False):
         has_new_records = True
     else:
         if production:
-            raw_data = getDataFromGoogle()
+            raw_data = googlemaps.getDataFromGoogle()
         else:
             sensores = [10, 12, 57, 53, 51, 49, 40, 43, 37, 36, 21, 31, 33, 35, 13, 14, 18, 17, 23,
-                24, 25, 26, 28, 30, 32, 45, 47, 38, 44, 48, 48, 11, 56, 54, 55, 41, 22, 16, 15,
-                19, 20, 10, 27, 29, 34, 39, 42, 46, 50, 52]
+                        24, 25, 26, 28, 30, 32, 45, 47, 38, 44, 48, 48, 11, 56, 54, 55, 41, 22, 16, 15,
+                        19, 20, 10, 27, 29, 34, 39, 42, 46, 50, 52]
             raw_data = downloadData(
                 sensores, datetime.timedelta(days=2), desde, hasta)
         filtered_data = filterDuplicateRecords(raw_data, desde, hasta)
@@ -222,7 +222,7 @@ def executeLoop(desde, hasta, dontdownload=False, production=False):
 
 def getLastRecords(desde, hasta):
     """
-    Esta tabla retorna una lista de tuplas de la forma (id_segment, data, timestamp) 
+    Esta tabla retorna una lista de tuplas de la forma (id_segment, data, timestamp)
     con los ultimos registros agregados a la tabla "historical"
     """
     # realizando una consulta
@@ -246,7 +246,7 @@ def getLastRecords(desde, hasta):
 
 def getLastMonthRecords():
     """
-    Esta tabla retorna una lista de tuplas de la forma (id_segment, data, timestamp) con todos los registros 
+    Esta tabla retorna una lista de tuplas de la forma (id_segment, data, timestamp) con todos los registros
     \ agregados a la tabla "historical" en el ultimo mes
     """
     pass
@@ -254,7 +254,7 @@ def getLastMonthRecords():
 
 def updateDetectionParams(desde=None, hasta=None):
     """
-    Esta funcion determina los parametros de deteccion de anomalias para cada segmento y los guarda 
+    Esta funcion determina los parametros de deteccion de anomalias para cada segmento y los guarda
     en el archivo detection_params.json
     """
     if hasta == None:
@@ -446,8 +446,8 @@ def normalize_anomalies(curanomaly):
     """
         funcion que normaliza en formato de los valores a utilizar en el resto del modulo
 
-        {'comentario_causa': '', 'id_segment': 36, 'nivel_anomalia': 2, 
-        'timestamp_start': datetime.datetime(2015, 9, 16, 14, 50), 
+        {'comentario_causa': '', 'id_segment': 36, 'nivel_anomalia': 2,
+        'timestamp_start': datetime.datetime(2015, 9, 16, 14, 50),
         'indicador_anomalia': 0.46, 'timestamp_end': datetime.datetime(2015, 9, 16, 14, 50), 'causa_id': 0}
     """
     def return_datetime(timestamp):
@@ -493,9 +493,9 @@ def normalize_anomalies(curanomaly):
 
 def updateSnapshot(newstates):
     """
-       newstates index 0 
+       newstates index 0
        {'duracion_anomalia': 0, 'tiempo': 755, 'comentario_causa': '', 'indicador_anomalia': 0, 'velocidad': -1, \
-        'anomalia': 0, 'timestamp_medicion': datetime.datetime(2015, 8, 27, 15, 32, 10), 'id': 10, 'causa_id': 0}    
+        'anomalia': 0, 'timestamp_medicion': datetime.datetime(2015, 8, 27, 15, 32, 10), 'id': 10, 'causa_id': 0}
     """
     # pdb.set_trace()
     # conn = conn_sql.getDBConnection()

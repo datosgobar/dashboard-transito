@@ -51,6 +51,7 @@ $ sudo pip install pandas==0.16.2
 $ sudo pip install gunicorn==19.3.0
 $ sudo pip install supervisor==3.1.3
 $ sudo pip install requests==2.7.0
+$ sudo pip install beaker 
 ```
 
 ## Instalacion bajo Mac
@@ -98,11 +99,11 @@ $ python analisis/getDataFake.py
 
             Bajar los datos de Teracode
 
-            $ python analisis.py --download_last_month
+            $ python analisis/analisis.py --download_lastmonth
 
         Generar Modelo:
 
-            $ python analisis.py --generate_detection_params
+            $ python analisis/analisis.py --generate_detection_params
 
     2. Copiar un modelo existente creando un archivo detection_params.json en el directorio ./analisis
     Un modelo se puede encontrar en /analisis/detection_params.json.sample
