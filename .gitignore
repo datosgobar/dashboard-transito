@@ -16,3 +16,4 @@ README.html
 manage.py
 .idea
 *.log
+venv/
